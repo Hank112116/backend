@@ -1,0 +1,23 @@
+@import "common";
+@import "vendor/bootstrap/input-groups";
+@import "vendor/bootstrap/panels";
+@import "modules/detail-data";
+@import "modules/detail-expertise-tags";
+@import "modules/page-header-with-btn";
+
+
+.user-avatar {
+	width: 110px;
+	height: 110px;
+}
+
+.table-title {
+	width: 15em;
+}
+
+.data-group {
+	width: 100%;
+	&.group-half {
+		width: 48%;
+	}
+}

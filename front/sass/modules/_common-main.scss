@@ -1,0 +1,37 @@
+.wrapper {
+  background: #f8f8f8;
+}
+
+.page-wrapper {
+  background: #fff;
+  border-left: 1px solid #e7e7e7;
+  min-height: 800px;
+  margin-bottom: -20px;
+  margin-top: -40px;
+}
+
+@media (min-width: 768px) {
+  .page-wrapper {
+    margin-left: 250px;
+    min-height: 800px;
+  }
+}
+
+.page-wrapper--collapse {
+  margin-left: 0px;
+}
+
+.page-header {
+  text-align: center;
+  text-transform: uppercase;
+  color : $gray-dark;
+  padding-top: 10px;
+}
+
+.link-float-right {
+  float: right;
+}
+
+.pointer {
+  cursor: pointer;
+}

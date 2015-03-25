@@ -1,0 +1,244 @@
+$circle-radius: 35px;
+$comment-type-border-top: 5px;
+$comment-main-color: #00aecc;
+
+%image-circle-block {
+  display: inline-block;
+  height: $circle-radius;
+  width: $circle-radius;
+
+  line-height: $circle-radius;
+  text-align: center;
+
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+}
+
+.comment-search-container {
+  padding: 0px 15px 30px;
+}
+
+.comments {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.comment {
+  width: 750px;
+  margin: 0px auto 50px;
+  position: relative;
+  border: 1px solid #ddd;
+}
+
+.comment-delete {
+  position: absolute;
+  right: 0px;
+  top: -22px;
+
+  height: 22px;
+
+  color: #eee;
+  font-size: 12px;
+  line-height: 16px;
+
+  background: #FF625D;
+  border: 0px solid #ddd;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.comment-delete:focus,
+.comment-delete:active {
+  outline: none;
+}
+
+.comment-profession {
+  text-align: right;
+  border-top: $comment-type-border-top solid $comment-main-color;
+  padding: 10px 0px 12px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.comment-profession-name {
+  display: inline-block;
+  padding-right: 30px;
+}
+
+.comment-profession-image {
+  @extend %image-circle-block;
+
+  position: absolute;
+  right: - $circle-radius / 2;
+  top: $comment-type-border-top + 3px;
+}
+
+.comment-header, .comment-thread-header {
+  padding: 15px 5px;
+  position: relative;
+}
+
+.comment-title {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.comment-meta {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.comment-content,
+.comment-thread-content {
+  line-height: 1.4em;
+
+  padding: 15px 30px 50px;
+
+  overflow: hidden;
+  max-height: 10em;
+
+  @include transition(max-height 1s);
+}
+
+.comment-content:hover,
+.comment-thread-content:hover {
+  max-height: 200em;
+}
+
+.comment-threads {
+  width: 650px;
+  margin-top: 20px;
+  margin-left: 99px;
+}
+
+.comment-threads-info {
+  text-align: right;
+  color: #fff;
+  background: $comment-main-color;
+  padding: 5px;
+  margin-bottom: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+}
+
+.comment-threads-info-count,
+.comment-threads-info-latest {
+  display: inline-block;
+  font-size: 10px;
+  margin-right: 40px;
+
+  .comment-threads-info-value {
+    padding: 0 5px;
+    font-size: 2em;
+    font-weight: lighter;
+  }
+}
+
+.comment-threads-info-expand {
+  display: inline-block;
+  font-size: 1.2em;
+  padding: 0 10px;
+}
+
+.comment-thread {
+  position: relative;
+  margin-bottom: 40px;
+  border: 1px solid #ddd;
+  border-top-width: $comment-type-border-top;
+  border-radius: 5px;
+}
+
+%comment-publisher-bar {
+  position: absolute;
+  top: -20px;
+  left: -15px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 22px;
+}
+
+.comment-publisher {
+  @extend %comment-publisher-bar;
+  padding: 0px ($circle-radius + 15px) 0px 0px;
+}
+
+.comment-thread-publisher {
+  @extend %comment-publisher-bar;
+  padding: 0px 15px 0px 0px;
+}
+
+%comment-private {
+  @extend %image-circle-block;
+
+  position: absolute;
+  right: 0px;
+  top: 0px;
+
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.comment-private-lock {
+  @extend %comment-private;
+  color: #C6E5D9;
+}
+
+.comment-private-unlock {
+  @extend %comment-private;
+  color: #FFC6A5;
+}
+
+.comment-publisher-image,
+.comment-thread-publisher-image {
+  @extend %image-circle-block;
+  float: left;
+}
+
+.comment-publisher-name,
+.comment-thread-publisher-name {
+  padding-left: $circle-radius + 10px;
+  line-height: $circle-radius;
+}
+
+.comment-image {
+  display: inline-block;
+  height: 80px;
+  margin: 2px;
+  border: 1px solid #eee;
+  cursor: pointer;
+
+  img {
+    height: 100%;
+  }
+}
+
+.comment-thread-meta {
+  text-align: right;
+  padding: 2px 10px;
+}
+
+.comment-full-image-view {
+  position: fixed;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  bottom: 10%;
+
+  z-index: 1000;
+
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .4);
+}
+
+.comment-full-image-delete {
+  font-size: 2em;
+  color: #fff;
+
+  float: right;
+  margin: 20px;
+  cursor: pointer;
+}

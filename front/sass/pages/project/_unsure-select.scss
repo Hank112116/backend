@@ -1,0 +1,9 @@
+.select-unsure-wrapper {
+  .input-group-addon {
+    min-width: 4em;
+  }
+
+  .select-unsure {
+    @extend %select-tag;
+  }
+}

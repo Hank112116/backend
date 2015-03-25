@@ -1,0 +1,122 @@
+// Related Sass Modules
+// Please import this files first in manifest file
+//
+// @import "elements/logo";
+//
+// --------------------------------------------------------
+
+// loading animation
+//
+// @param $size Size of loading image px for non-responsive; percentage for responsive
+// @param $isResponsive fixed size or responsive size of loading animation
+// @param $box-top-color
+// @param $box-bottom-color
+// @param @border-width
+// @param $border-radius
+// @param $animation-duration
+@mixin loading($size: 24px, $isResponsive: false, $box-top-color: $gray-light, $box-bottom-color: $gray-dark, $border-width: 1px, $border-radius: 3px, $animation-duration: 8s) {
+    @include hwtrek-logo($size, $isResponsive, $box-top-color, $box-bottom-color, $border-width, $border-radius);
+
+    > .top {
+        @include animation(loading $animation-duration linear infinite);
+    }
+
+    &.above-modal {
+        > .top {
+            z-index: $zindex-modal-loading-top;
+        }
+
+        > .bottom {
+            z-index: $zindex-modal-loading-bottom;
+        }
+    }
+
+    // Uncomment when sass 3.3 release
+    //    @at-root{
+    //    #{&}-oldie{
+    //    @if $isResponsive {
+    //    max-width: 100%;
+    //    height: auto;
+    //    } @else {
+    //    width: $size;
+    //    height: $size;
+    //    }
+    //    }
+    //}
+}
+
+%loading-text {
+    &:after {
+        content: ".......";
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        @include animation(loading-text 1s linear infinite);
+    }
+}
+
+@include keyframes(loading) {
+    0% {
+        @include rotate(0deg);
+    }
+    10% {
+        @include rotate(90deg);
+    }
+    15% {
+        @include rotate(90deg);
+    }
+    20% {
+        @include rotate(-90deg);
+    }
+    25% {
+        @include rotate(-90deg);
+    }
+    35% {
+        @include rotate(0deg);
+    }
+    40% {
+        @include rotate(0deg);
+    }
+    45% {
+        @include rotate(-180deg);
+    }
+    50% {
+        @include rotate(-180deg);
+    }
+    60% {
+        @include rotate(-90deg);
+    }
+    65% {
+        @include rotate(-90deg);
+    }
+    70% {
+        @include rotate(-270deg);
+    }
+    75% {
+        @include rotate(-270deg);
+    }
+    85% {
+        @include rotate(-180deg);
+    }
+    90% {
+        @include rotate(-180deg);
+    }
+    95% {
+        @include rotate(-360deg);
+    }
+    100% {
+        @include rotate(-360deg);
+    }
+}
+
+@include keyframes(loading-text) {
+    0% {
+        max-width: 0;
+    }
+    50% {
+        max-width: 1em;
+    }
+    100% {
+        max-width: 2em;
+    }
+}

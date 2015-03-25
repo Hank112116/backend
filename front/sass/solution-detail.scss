@@ -1,0 +1,47 @@
+@import "common";
+@import "vendor/bootstrap/list-group";
+@import "vendor/bootstrap/panels";
+
+@import "elements/cover-block";
+
+@import "modules/detail-data";
+@import "modules/detail-expertise-tags";
+@import "modules/perk-panel";
+@import "modules/page-header-with-btn";
+
+@import "pages/solution/common";
+@import "pages/solution/gallery";
+
+.off-shelf {
+	padding-left: .5em;
+	color: $brand-danger;
+	font-weight: bolder;
+}
+
+.solution-certification-list {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+	display: inline-block;
+	margin: 0px 20px 20px 0px;
+  }
+}
+
+.solution-certification-logo > img {
+	height: 30px;
+}
+
+.solution-certification-text {
+	border-bottom: 2px dashed #ddd;
+}
+
+.solution-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+
+  li {
+	margin-bottom: 5px;
+  }
+}

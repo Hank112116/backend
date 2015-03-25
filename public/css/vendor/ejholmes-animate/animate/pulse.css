@@ -1,0 +1,76 @@
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes pulse {
+  /* line 4, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  0% {
+    -webkit-transform: scale(1);
+  }
+
+  /* line 5, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  50% {
+    -webkit-transform: scale(1.1);
+  }
+
+  /* line 6, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@-moz-keyframes pulse {
+  /* line 9, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  0% {
+    -moz-transform: scale(1);
+  }
+
+  /* line 10, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  50% {
+    -moz-transform: scale(1.1);
+  }
+
+  /* line 11, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  100% {
+    -moz-transform: scale(1);
+  }
+}
+
+@-o-keyframes pulse {
+  /* line 14, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  0% {
+    -o-transform: scale(1);
+  }
+
+  /* line 15, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  50% {
+    -o-transform: scale(1.1);
+  }
+
+  /* line 16, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  100% {
+    -o-transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  /* line 19, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  0% {
+    transform: scale(1);
+  }
+
+  /* line 20, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  50% {
+    transform: scale(1.1);
+  }
+
+  /* line 21, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* line 24, ../../../../../front/sass/vendor/ejholmes-animate/animate/pulse.scss */
+.pulse {
+  -webkit-animation-name: pulse;
+  -moz-animation-name: pulse;
+  -o-animation-name: pulse;
+  animation-name: pulse;
+}

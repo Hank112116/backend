@@ -1,0 +1,155 @@
+@-webkit-keyframes hinge {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  0% {
+    -webkit-transform: rotate(0);
+    -webkit-transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+  }
+
+  /* line 3, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  20%, 60% {
+    -webkit-transform: rotate(80deg);
+    -webkit-transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+  }
+
+  /* line 4, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  40% {
+    -webkit-transform: rotate(60deg);
+    -webkit-transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+  }
+
+  /* line 5, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  80% {
+    -webkit-transform: rotate(60deg) translateY(0);
+    opacity: 1;
+    -webkit-transform-origin: top left;
+    -webkit-animation-timing-function: ease-in-out;
+  }
+
+  /* line 6, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  100% {
+    -webkit-transform: translateY(700px);
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes hinge {
+  /* line 10, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  0% {
+    -moz-transform: rotate(0);
+    -moz-transform-origin: top left;
+    -moz-animation-timing-function: ease-in-out;
+  }
+
+  /* line 11, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  20%, 60% {
+    -moz-transform: rotate(80deg);
+    -moz-transform-origin: top left;
+    -moz-animation-timing-function: ease-in-out;
+  }
+
+  /* line 12, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  40% {
+    -moz-transform: rotate(60deg);
+    -moz-transform-origin: top left;
+    -moz-animation-timing-function: ease-in-out;
+  }
+
+  /* line 13, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  80% {
+    -moz-transform: rotate(60deg) translateY(0);
+    opacity: 1;
+    -moz-transform-origin: top left;
+    -moz-animation-timing-function: ease-in-out;
+  }
+
+  /* line 14, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  100% {
+    -moz-transform: translateY(700px);
+    opacity: 0;
+  }
+}
+
+@-o-keyframes hinge {
+  /* line 18, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  0% {
+    -o-transform: rotate(0);
+    -o-transform-origin: top left;
+    -o-animation-timing-function: ease-in-out;
+  }
+
+  /* line 19, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  20%, 60% {
+    -o-transform: rotate(80deg);
+    -o-transform-origin: top left;
+    -o-animation-timing-function: ease-in-out;
+  }
+
+  /* line 20, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  40% {
+    -o-transform: rotate(60deg);
+    -o-transform-origin: top left;
+    -o-animation-timing-function: ease-in-out;
+  }
+
+  /* line 21, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  80% {
+    -o-transform: rotate(60deg) translateY(0);
+    opacity: 1;
+    -o-transform-origin: top left;
+    -o-animation-timing-function: ease-in-out;
+  }
+
+  /* line 22, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  100% {
+    -o-transform: translateY(700px);
+    opacity: 0;
+  }
+}
+
+@keyframes hinge {
+  /* line 26, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  0% {
+    transform: rotate(0);
+    transform-origin: top left;
+    animation-timing-function: ease-in-out;
+  }
+
+  /* line 27, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  20%, 60% {
+    transform: rotate(80deg);
+    transform-origin: top left;
+    animation-timing-function: ease-in-out;
+  }
+
+  /* line 28, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  40% {
+    transform: rotate(60deg);
+    transform-origin: top left;
+    animation-timing-function: ease-in-out;
+  }
+
+  /* line 29, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  80% {
+    transform: rotate(60deg) translateY(0);
+    opacity: 1;
+    transform-origin: top left;
+    animation-timing-function: ease-in-out;
+  }
+
+  /* line 30, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+  100% {
+    transform: translateY(700px);
+    opacity: 0;
+  }
+}
+
+/* line 33, ../../../../../front/sass/vendor/ejholmes-animate/animate/hinge.scss */
+.hinge {
+  -webkit-animation-name: hinge;
+  -moz-animation-name: hinge;
+  -o-animation-name: hinge;
+  animation-name: hinge;
+}

@@ -1,0 +1,14 @@
+/**
+ * Cross-browser way (extra markup)
+ * @see http://css-tricks.com/snippets/css/drop-caps/
+ */
+.dropcap {
+    float: left;
+    font-size: $font-size-dropcap;
+    line-height: $line-height-dropcap;
+    padding: $padding-dropcap;
+}
+
+.color-info {
+    color: $brand-info;
+}

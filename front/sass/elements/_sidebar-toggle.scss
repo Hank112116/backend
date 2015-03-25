@@ -1,0 +1,18 @@
+.sidebar-toggle-block {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+}
+
+.btn-sidebar-toggle {
+  color: $link-color;
+  font-size: 2em;
+  background: transparent;
+  border: none;
+  @include transition(color 0.5s);
+
+  &:hover, &:focus {
+    color: $link-hover-color;
+    outline: none;
+  }
+}

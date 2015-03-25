@@ -1,0 +1,17 @@
+app/storage/hwtrek_rsa
+hwp_data
+hwp_schema
+node_modules
+
+tests/_output/*
+
+composer.phar
+Thumbs.db
+_ide_helper.php
+_ide_helper_models.php
+
+.sass-cache
+.DS_Store
+.idea
+.env
+target

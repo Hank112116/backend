@@ -1,0 +1,59 @@
+@-webkit-keyframes slideOutUp {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  0% {
+    -webkit-transform: translateY(0);
+  }
+
+  /* line 6, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-2000px);
+  }
+}
+
+@-moz-keyframes slideOutUp {
+  /* line 13, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  0% {
+    -moz-transform: translateY(0);
+  }
+
+  /* line 17, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  100% {
+    opacity: 0;
+    -moz-transform: translateY(-2000px);
+  }
+}
+
+@-o-keyframes slideOutUp {
+  /* line 24, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  0% {
+    -o-transform: translateY(0);
+  }
+
+  /* line 28, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  100% {
+    opacity: 0;
+    -o-transform: translateY(-2000px);
+  }
+}
+
+@keyframes slideOutUp {
+  /* line 35, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  0% {
+    transform: translateY(0);
+  }
+
+  /* line 39, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+  100% {
+    opacity: 0;
+    transform: translateY(-2000px);
+  }
+}
+
+/* line 45, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideOutUp.scss */
+.slideOutUp {
+  -webkit-animation-name: slideOutUp;
+  -moz-animation-name: slideOutUp;
+  -o-animation-name: slideOutUp;
+  animation-name: slideOutUp;
+}

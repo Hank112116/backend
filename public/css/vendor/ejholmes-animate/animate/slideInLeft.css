@@ -1,0 +1,59 @@
+@-webkit-keyframes slideInLeft {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-2000px);
+  }
+
+  /* line 7, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  100% {
+    -webkit-transform: translateX(0);
+  }
+}
+
+@-moz-keyframes slideInLeft {
+  /* line 13, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  0% {
+    opacity: 0;
+    -moz-transform: translateX(-2000px);
+  }
+
+  /* line 18, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  100% {
+    -moz-transform: translateX(0);
+  }
+}
+
+@-o-keyframes slideInLeft {
+  /* line 24, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  0% {
+    opacity: 0;
+    -o-transform: translateX(-2000px);
+  }
+
+  /* line 29, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  100% {
+    -o-transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  /* line 35, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  0% {
+    opacity: 0;
+    transform: translateX(-2000px);
+  }
+
+  /* line 40, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* line 45, ../../../../../front/sass/vendor/ejholmes-animate/animate/slideInLeft.scss */
+.slideInLeft {
+  -webkit-animation-name: slideInLeft;
+  -moz-animation-name: slideInLeft;
+  -o-animation-name: slideInLeft;
+  animation-name: slideInLeft;
+}

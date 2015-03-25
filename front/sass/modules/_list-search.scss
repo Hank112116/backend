@@ -1,0 +1,17 @@
+@import "vendor/bootstrap/input-groups";
+
+.search-bar {
+  margin-bottom: 15px;
+}
+
+.input-group {
+	margin-bottom: 15px;
+
+	.form-control {
+		height: auto;
+	}
+
+	.date-input {
+		width: 50%;
+	}
+}

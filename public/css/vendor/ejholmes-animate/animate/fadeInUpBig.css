@@ -1,0 +1,63 @@
+@-webkit-keyframes fadeInUpBig {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(2000px);
+  }
+
+  /* line 7, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+  }
+}
+
+@-moz-keyframes fadeInUpBig {
+  /* line 14, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  0% {
+    opacity: 0;
+    -moz-transform: translateY(2000px);
+  }
+
+  /* line 19, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  100% {
+    opacity: 1;
+    -moz-transform: translateY(0);
+  }
+}
+
+@-o-keyframes fadeInUpBig {
+  /* line 26, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  0% {
+    opacity: 0;
+    -o-transform: translateY(2000px);
+  }
+
+  /* line 31, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  100% {
+    opacity: 1;
+    -o-transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUpBig {
+  /* line 38, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  0% {
+    opacity: 0;
+    transform: translateY(2000px);
+  }
+
+  /* line 43, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* line 49, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInUpBig.scss */
+.fadeInUpBig {
+  -webkit-animation-name: fadeInUpBig;
+  -moz-animation-name: fadeInUpBig;
+  -o-animation-name: fadeInUpBig;
+  animation-name: fadeInUpBig;
+}

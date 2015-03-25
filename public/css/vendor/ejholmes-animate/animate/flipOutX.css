@@ -1,0 +1,67 @@
+@-webkit-keyframes flipOutX {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  0% {
+    -webkit-transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  /* line 6, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  100% {
+    -webkit-transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes flipOutX {
+  /* line 13, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  0% {
+    -moz-transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  /* line 17, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  100% {
+    -moz-transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+}
+
+@-o-keyframes flipOutX {
+  /* line 24, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  0% {
+    -o-transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  /* line 28, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  100% {
+    -o-transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flipOutX {
+  /* line 35, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  0% {
+    transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  /* line 39, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+  100% {
+    transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+}
+
+/* line 45, ../../../../../front/sass/vendor/ejholmes-animate/animate/flipOutX.scss */
+.flipOutX {
+  -webkit-animation-name: flipOutX;
+  -webkit-backface-visibility: visible !important;
+  -moz-animation-name: flipOutX;
+  -moz-backface-visibility: visible !important;
+  -o-animation-name: flipOutX;
+  -o-backface-visibility: visible !important;
+  animation-name: flipOutX;
+  backface-visibility: visible !important;
+}

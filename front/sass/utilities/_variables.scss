@@ -1,0 +1,72 @@
+// Brand Logo
+// -------------------------
+$logo-icon-top-size:    percentage(5/8) !default;
+$logo-icon-bottom-size: percentage(3/4) !default;
+
+// Theme colors
+// -------------------------
+$theme-color-dark:      #282132 !default;
+$theme-color-general:   #39314A !default;
+$theme-color-btn:       #60517F !default;
+$theme-color-word:      #625A72 !default;
+
+$theme-color-blue: #00AEEC;
+$theme-color-blue-light: lighten(#00AEEC, 20%);
+
+// Scaffolding
+// -------------------------
+$body-bg:               #f5f5f5 !default;
+$body-bg-image:         "/images/bg4.png" !default;
+$text-color:            $gray-dark !default;
+$body-min-width:        320px !default;
+$headerHeight:          72px !default;
+$startHeaderHeight:     80px !default;
+$bodyOffset:            $headerHeight - 2px !default;
+
+// Links
+// -------------------------
+$link-color:            $theme-color-blue !default;
+$link-hover-color:      $theme-color-blue-light !default;
+
+// Typography
+// -------------------------
+
+$font-family-sans-serif:  Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
+$font-family-monospace:   Monaco, Menlo, Consolas, "Courier New", monospace !default;
+$font-family-base:        $font-family-sans-serif !default;
+
+$font-size-base:          14px !default;
+$font-size-large:         ceil($font-size-base * 1.25) !default; // ~18px
+$font-size-small:         ceil($font-size-base * 0.85) !default; // ~12px
+$font-size-dropcap:       ceil($font-size-base * 4.5) !default; // ~63px
+
+$line-height-base:        1.428571429 !default; // 20/14
+$line-height-computed:    floor($font-size-base * $line-height-base) !default; // ~20px
+$line-height-dropcap:     floor($line-height-computed * 2.5) !default;    // ~50px
+
+$padding-dropcap: 4px 10px 3px 0;
+
+$headings-font-family:    $font-family-base !default;
+$headings-font-weight:    500 !default;
+$headings-line-height:    1.1 !default;
+
+$header-font-size:        $font-size-large !default;
+
+// Iconography
+// -------------------------
+$icon-font-path:          "/fonts/" !default;
+$icon-font-name:          "HWTrek-Icon" !default;
+$icon-base-size:          $font-size-base !default;
+
+// Brick system (Using in projects, experts and solutions list)
+// Similar with bootstrap grid system, this is use for project/expert info block
+// --------------------------------------------------
+$brick-columns-xs:          1 !default;
+$brick-columns-sm:          2 !default;
+$brick-columns-md:          3 !default;
+$brick-columns-lg:          3 !default;
+//$brick-columns-lg:          4 !default;
+//$brick-gutter-width:        20px !default;
+$brick-gutter-width:        30px !default;
+$base-block-unit:           1 !default;

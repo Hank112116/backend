@@ -1,0 +1,75 @@
+@-webkit-keyframes bounce {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+  }
+
+  /* line 3, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  40% {
+    -webkit-transform: translateY(-30px);
+  }
+
+  /* line 4, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  60% {
+    -webkit-transform: translateY(-15px);
+  }
+}
+
+@-moz-keyframes bounce {
+  /* line 8, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  0%, 20%, 50%, 80%, 100% {
+    -moz-transform: translateY(0);
+  }
+
+  /* line 9, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  40% {
+    -moz-transform: translateY(-30px);
+  }
+
+  /* line 10, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  60% {
+    -moz-transform: translateY(-15px);
+  }
+}
+
+@-o-keyframes bounce {
+  /* line 14, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  0%, 20%, 50%, 80%, 100% {
+    -o-transform: translateY(0);
+  }
+
+  /* line 15, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  40% {
+    -o-transform: translateY(-30px);
+  }
+
+  /* line 16, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  60% {
+    -o-transform: translateY(-15px);
+  }
+}
+
+@keyframes bounce {
+  /* line 19, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+
+  /* line 20, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  40% {
+    transform: translateY(-30px);
+  }
+
+  /* line 21, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+/* line 24, ../../../../../front/sass/vendor/ejholmes-animate/animate/bounce.scss */
+.bounce {
+  -webkit-animation-name: bounce;
+  -moz-animation-name: bounce;
+  -o-animation-name: bounce;
+  animation-name: bounce;
+}

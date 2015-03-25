@@ -1,0 +1,100 @@
+
+$expert-color : lighten($theme-color-general, 50%);
+$panel-expert-text:        #fff;
+$panel-expert-border:      $expert-color;
+$panel-expert-heading-bg:  $expert-color;
+
+$creator-color : adjust-hue($expert-color, 180deg);
+$panel-creator-text:       #fff;
+$panel-creator-border:     $creator-color;
+$panel-creator-heading-bg: $creator-color;
+
+.perks {
+	.perk-role {
+		background-color: whitesmoke;
+		font-size: $font-size-large;
+		padding: .3em 1em;
+		color: $gray-light;
+		box-shadow: 1px 1px 2px #ddd;
+	}
+	
+	.panel-expert {
+		@include panel-variant(
+			$panel-expert-border, $panel-expert-text, 
+			$panel-expert-heading-bg, $panel-expert-border
+        );
+
+        & > .panel-heading {
+          height: 40px;
+        }
+	}
+	.panel-custom {
+		@include panel-variant(
+			$panel-creator-border, $panel-creator-text, 
+			$panel-creator-heading-bg, $panel-creator-border
+        );
+
+        & > .panel-heading {
+          height: 40px;
+        }
+	} 
+	.title-date {
+		display: inline-block;
+		float: right;
+	}
+}
+
+.perk-heading {
+  h3 {
+    display: inline-block;
+    float: left;
+  }
+
+  .to-delete {
+    display: inline-block;
+    float : right;
+    font-size: 20px;
+    padding-left: 5px;
+  }
+}
+
+.perk-add {
+  display: block;
+  margin-top: 5px;
+}
+
+.perk-edit {
+  .input-group {
+    width: 100%;
+  }
+
+  .input-group-addon:first-child {
+    width: 8em;
+  }
+
+  .group-helf {
+    .input-group-addon:first-child {
+      width: 4em;
+    }
+
+    width: 28%;
+    float: left;
+    margin-right: 2%;
+  }
+
+  & > div {
+    margin-bottom: 10px;
+  }
+}
+
+span.is-ship-fee {
+  font-size: $font-size-large;
+  padding-left: .5em;
+  color: $gray-light;
+}
+
+.perk-edit-warning {
+  text-align: right;
+  font-size: $font-size-large;
+  color : $brand-danger;
+}

@@ -1,0 +1,10 @@
+@import "common";
+@import "vendor/bootstrap/pagination";
+@import "modules/page-header-with-btn";
+
+
+.cert-tag {
+  min-width: 9em;
+  margin-right: 5px;
+  display: inline-block;
+}

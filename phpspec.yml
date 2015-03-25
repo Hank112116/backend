@@ -1,0 +1,11 @@
+formatter.name: pretty
+
+extensions:
+    - PhpSpec\Laravel\Extension\LaravelExtension
+
+suites:
+  backend_suites:
+    namespace: Backend
+    src_path: app
+    spec_path: app
+    spec_prefix: spec

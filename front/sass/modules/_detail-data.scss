@@ -1,0 +1,42 @@
+$data-group-radius  : 3px;
+$data-group-padding : 5px;
+$grout-min-width    : 90%;
+
+.data-group {
+    border: 1px solid #ddd;
+    border-radius : $data-group-radius;
+    font-size     : $font-size-base;
+    line-height   : $font-size-large;
+    padding-left  : 0px;
+    margin-bottom : 1em;
+    width: $grout-min-width;
+    .label {
+        background-color: whitesmoke;
+        padding : $data-group-padding  1em $data-group-padding 0.5em;
+        border-radius: $data-group-radius 0 0 $data-group-radius;
+        border-right : 1px solid #dfdfdf;
+        display: inline-block;
+        min-width: 10em;
+    }
+
+    .tail {
+        background-color: whitesmoke;
+        padding : $data-group-padding  0.3em $data-group-padding 0.5em;
+        border-radius: 0 $data-group-radius $data-group-radius 0;
+        border-left : 1px solid #dfdfdf;
+        display: inline-block;
+        min-width: 2em;
+        float: right;
+    }
+
+    .content {
+        padding-left : 1em;
+    }
+}
+
+$grout-half-gap : 2%;
+.data-group.group-half {
+    width: ($grout-min-width - $grout-half-gap)/2;
+    float: left;
+    margin-right: $grout-half-gap;
+}

@@ -1,0 +1,55 @@
+@-webkit-keyframes flash {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+
+  /* line 3, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes flash {
+  /* line 7, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+
+  /* line 8, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+@-o-keyframes flash {
+  /* line 12, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+
+  /* line 13, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+@keyframes flash {
+  /* line 17, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+
+  /* line 18, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+/* line 21, ../../../../../front/sass/vendor/ejholmes-animate/animate/flash.scss */
+.flash {
+  -webkit-animation-name: flash;
+  -moz-animation-name: flash;
+  -o-animation-name: flash;
+  animation-name: flash;
+}

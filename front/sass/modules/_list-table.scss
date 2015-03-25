@@ -1,0 +1,29 @@
+.table {
+  word-wrap: break-word;
+}
+
+.table--width-limit, .table--name, .table--user-mail {
+  max-width: 15em;
+}
+
+.table--user-name {
+  max-width: 12em;
+}
+
+.table--text-right {
+  text-align: right;
+}
+
+.table--text-center {
+  text-align: center;
+}
+
+.table--text-light {
+  color: #888;
+}
+
+.cash {
+  display: inline-block;
+  min-width: 6em;
+  text-align: right;
+}

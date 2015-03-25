@@ -1,0 +1,10 @@
+@import "common";
+@import "vendor/bootstrap/input-groups";
+@import "vendor/bootstrap/panels";
+@import "modules/detail-data";
+
+.msg-variable {
+	font-style: normal;
+	font-weight: bold;
+	color: $brand-warning;
+}

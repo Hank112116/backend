@@ -1,0 +1,74 @@
+@import "common";
+@import "vendor/bootstrap/input-groups";
+@import "vendor/bootstrap/panels";
+@import "vendor/fronteed/icheck/blue";
+@import "modules/detail-data";
+@import "modules/page-header-with-btn";
+
+.page-header {
+  text-align: left;
+  margin-left: 8%;
+}
+
+.page-header--user {
+  height: 30px;
+  font-size: 25px;
+  line-height: 40px;
+  .user-avatar {
+    padding: 0;
+    height: 30px;
+  }
+}
+
+.option-tag {
+  min-width: 8em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.option-dimention, .option-weight {
+  font-size: 1.3em;
+}
+
+.option-power {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0.5em;
+  padding: 10px;
+}
+
+.option-power--type {
+  display: inline-block;
+  width: 10em;
+  margin-right: 0.3em;
+}
+
+.option-power--value {
+  min-width: 3em;
+  display: inline-block;
+  text-align: right;
+  background: #fafafa;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-right: 0.5em;
+  color: $brand-primary;
+
+}
+
+.no-content {
+  color: $gray-light;
+}
+
+.adminer-tag {
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  padding: 5px 8px;
+  background: #fcfcfc;
+  border-radius: 3px;
+  border: 1px solid #eee;
+  min-width: 15em;
+}
+
+.icheckbox_minimal-blue {
+  margin-bottom: -4px;
+}

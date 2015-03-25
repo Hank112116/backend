@@ -1,0 +1,18 @@
+.owner-wrapper {
+  margin: 15px 0;
+
+  .owner-image-wrapper {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    float: left;
+
+    background-size: cover;
+    background-position: center;
+  }
+
+  .owner-info-wrapper {
+    margin-left: 80px;
+  }
+}

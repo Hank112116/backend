@@ -1,0 +1,57 @@
+@import "common";
+@import "vendor/bootstrap/panels";
+@import "vendor/bootstrap/input-groups";
+
+.manufacturer-blocks {
+	padding : 1em;
+
+	& > div {
+		padding: 0 3em;
+		margin-bottom: 1em;
+	}
+	
+	.block {
+		position: relative;
+	}
+
+	.icon-remove {
+		position: absolute;
+		top : 10px;
+		right: 45px;
+		font-size: $font-size-large * 1.5;
+		cursor : pointer;
+		color: $brand-danger;
+
+		&:hover {
+			color: lighten($brand-danger, 10%);
+		}
+	}
+
+	& > div > div {
+		 margin-bottom: 1em;
+	}
+
+	.logo {
+		height: 90px;
+		img {
+			height: 75px;
+		}
+		.logo-input {
+			display: inline-block;
+			margin-left: 1em;
+		}
+	}
+}
+
+.btn-block {
+	text-align: center;
+	margin-bottom: 2em;
+	
+	& > button {
+		width: 20%;
+	}
+
+	& > button:first-child {
+		margin-right: 1em;
+	}
+}

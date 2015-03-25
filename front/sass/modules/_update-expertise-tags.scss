@@ -1,0 +1,17 @@
+.expertise {
+	.tag-set {
+		display: inline-block;
+		min-width: 15em;
+		margin-right: 10px;		
+	}
+	label {
+		display: inline-block;
+		min-width: 150px;
+		font-size: $font-size-large;
+		color: $gray;
+		font-weight: normal;
+	}
+	div.icheckbox {
+		margin-right: 3px;
+	}
+}

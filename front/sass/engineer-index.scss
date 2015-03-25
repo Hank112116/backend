@@ -1,0 +1,62 @@
+@import "common"; 
+@import "vendor/bootstrap/panels";
+
+.nav-tabs {
+	margin-bottom: 1em;
+}
+
+.query-logs {
+	text-align : right;
+	margin-bottom: 1em;
+}
+
+.panel-group {
+	margin-bottom: 0;
+
+	.panel {
+		border-radius: 0;
+	}
+}
+
+.panel-heading {
+	border-radius: 0;
+	.panel-title {
+		.method {
+			display: inline-block;
+			padding: .4em .6em;
+			border: 1px solid rgba(255, 255, 255, 0.4);
+			border-radius: 5px;
+			margin-right: 1em;
+		}
+		.badge {
+			background: none;
+			line-height: 2em;
+		}
+	}
+}
+
+
+.panel-body {
+	& > ul {
+		list-style: none;	
+
+		& > li {
+			display: block;
+			margin-bottom: .3em;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
+			
+			font-size: $font-size-large;
+			color: $gray-light;
+			
+			& > span {
+				display: inline-block;
+				margin-right: 1em;
+			}
+
+			.statement {
+				width: 65em;
+			}
+
+		}
+	}
+}

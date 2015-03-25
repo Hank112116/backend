@@ -1,0 +1,124 @@
+@-webkit-keyframes swing {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  20%, 40%, 60%, 80%, 100% {
+    -webkit-transform-origin: top center;
+  }
+
+  /* line 3, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  20% {
+    -webkit-transform: rotate(15deg);
+  }
+
+  /* line 4, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  40% {
+    -webkit-transform: rotate(-10deg);
+  }
+
+  /* line 5, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  60% {
+    -webkit-transform: rotate(5deg);
+  }
+
+  /* line 6, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  80% {
+    -webkit-transform: rotate(-5deg);
+  }
+
+  /* line 7, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@-moz-keyframes swing {
+  /* line 11, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  20% {
+    -moz-transform: rotate(15deg);
+  }
+
+  /* line 12, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  40% {
+    -moz-transform: rotate(-10deg);
+  }
+
+  /* line 13, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  60% {
+    -moz-transform: rotate(5deg);
+  }
+
+  /* line 14, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  80% {
+    -moz-transform: rotate(-5deg);
+  }
+
+  /* line 15, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  100% {
+    -moz-transform: rotate(0deg);
+  }
+}
+
+@-o-keyframes swing {
+  /* line 19, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  20% {
+    -o-transform: rotate(15deg);
+  }
+
+  /* line 20, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  40% {
+    -o-transform: rotate(-10deg);
+  }
+
+  /* line 21, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  60% {
+    -o-transform: rotate(5deg);
+  }
+
+  /* line 22, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  80% {
+    -o-transform: rotate(-5deg);
+  }
+
+  /* line 23, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  100% {
+    -o-transform: rotate(0deg);
+  }
+}
+
+@keyframes swing {
+  /* line 27, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  20% {
+    transform: rotate(15deg);
+  }
+
+  /* line 28, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  40% {
+    transform: rotate(-10deg);
+  }
+
+  /* line 29, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  60% {
+    transform: rotate(5deg);
+  }
+
+  /* line 30, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  80% {
+    transform: rotate(-5deg);
+  }
+
+  /* line 31, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* line 34, ../../../../../front/sass/vendor/ejholmes-animate/animate/swing.scss */
+.swing {
+  -webkit-transform-origin: top center;
+  -moz-transform-origin: top center;
+  -o-transform-origin: top center;
+  transform-origin: top center;
+  -webkit-animation-name: swing;
+  -moz-animation-name: swing;
+  -o-animation-name: swing;
+  animation-name: swing;
+}

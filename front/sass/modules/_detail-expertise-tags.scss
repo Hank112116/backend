@@ -1,0 +1,10 @@
+@import "modules/detail-tags";
+
+.expertise-category {
+    box-shadow: 0 1px 0 #ddd;
+    margin-bottom: 1.5em;
+    .category_title {
+        color: $gray;
+        padding-left: 2px;
+    }
+}

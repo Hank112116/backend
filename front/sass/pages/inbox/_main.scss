@@ -1,0 +1,218 @@
+$circle-radius: 35px;
+$inbox-type-border-top: 5px;
+$inbox-main-color: #FDCB82;
+$inbox-sender-id-color : #88A65E;
+$inbox-sender-icon-color: #A43955;
+
+%image-circle-block {
+  display: inline-block;
+  height: $circle-radius;
+  width: $circle-radius;
+
+  line-height: $circle-radius;
+  text-align: center;
+
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: contain;
+  background-position: center;
+}
+
+.inbox-container {
+  width: 800px;
+  margin: 30px auto;
+}
+
+.inbox {
+  width: 750px;
+  padding-bottom: 30px;
+  margin: 10px auto 60px;
+  position: relative;
+  border: 1px solid #ddd;
+}
+
+.inbox-delete {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+
+  height: 22px;
+
+  color: #eee;
+  font-size: 12px;
+  line-height: 16px;
+
+  background: #FF625D;
+  border: 0px solid #ddd;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.inbox-delete:focus,
+.inbox-delete:active {
+  outline: none;
+}
+
+.inbox-header, .inbox-thread-header {
+  padding: 25px 5px;
+  position: relative;
+}
+
+.inbox-title {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.inbox-meta {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.inbox-content,
+.inbox-thread-content {
+  line-height: 1.4em;
+
+  padding: 15px 30px 50px;
+
+  overflow: hidden;
+  max-height: 10em;
+
+  @include transition(max-height 1s);
+}
+
+.inbox-content:hover,
+.inbox-thread-content:hover {
+  max-height: 200em;
+}
+
+.inbox-threads {
+  width: 650px;
+  margin-top: 20px;
+  margin-left: 99px;
+}
+
+.inbox-threads-info {
+  text-align: right;
+  color: #fff;
+  background: $inbox-main-color;
+  padding: 5px;
+  margin-bottom: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+}
+
+.inbox-threads-info-count,
+.inbox-threads-info-latest {
+  display: inline-block;
+  font-size: 10px;
+  margin-right: 40px;
+
+  .inbox-threads-info-value {
+    padding: 0 5px;
+    font-size: 2em;
+    font-weight: lighter;
+  }
+}
+
+.inbox-threads-info-expand {
+  display: inline-block;
+  font-size: 1.2em;
+  padding: 0 10px;
+}
+
+.inbox-thread {
+  position: relative;
+  margin-bottom: 40px;
+  border: 1px solid #ddd;
+  border-top-width: $inbox-type-border-top;
+  border-radius: 5px;
+}
+
+%inbox-sender-bar {
+  position: absolute;
+  top: -20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 22px;
+}
+
+%inbox-sender-icon {
+  position: absolute;
+  top: 0px;
+  height: 35px;
+  width: 35px;
+  line-height: 35px;
+  text-align: center;
+  color: rgba($inbox-sender-icon-color, .3);
+}
+
+.inbox-sender {
+  @extend %inbox-sender-bar;
+  left: -15px;
+  padding: 0px ($circle-radius + 15px) 0px 0px;
+}
+
+.inbox-thread-sender {
+  @extend %inbox-sender-bar;
+  left: -15px;
+  padding: 0px 15px 0px 0px;
+}
+
+.inbox-sender-image {
+  @extend %image-circle-block;
+  float: left;
+}
+
+.inbox-sender-name {
+  padding-left: $circle-radius + 10px;
+  line-height: $circle-radius;
+}
+
+.inbox-sender-id {
+  color: $inbox-sender-id-color;
+}
+
+.inbox-sender-icon {
+  @extend %inbox-sender-icon;
+  right: 0px;
+}
+
+.inbox-receiver {
+  @extend %inbox-sender-bar;
+  right: -15px;
+  padding: 0px 0px 0px ($circle-radius + 15px);
+}
+
+.inbox-thread-receiver {
+  @extend %inbox-sender-bar;
+  right: -15px;
+  padding: 0px 0px 0px 15px;
+}
+
+.inbox-receiver-image {
+  @extend %image-circle-block;
+  float: right;
+}
+
+.inbox-receiver-name {
+  text-align: right;
+  padding-right: $circle-radius + 10px;
+  line-height: $circle-radius;
+}
+
+.inbox-receiver-id {
+  color: $inbox-sender-id-color;
+}
+
+.inbox-receiver-icon {
+  @extend %inbox-sender-icon;
+  left: 0px;
+}
+
+.inbox-thread-meta {
+  text-align: right;
+  padding: 20px 10px 5px 0px;
+}
+

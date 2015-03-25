@@ -1,0 +1,21 @@
+.form-container {
+	width: 90%;
+	padding-top: 20px;
+	margin-left: 5%;
+	padding-bottom: 3em;
+
+    .form-group {
+      margin-bottom: 30px;
+      label {
+        color : $gray-light;
+        padding-left: 4em;
+      }
+    }
+}
+
+.btn-submit {
+	max-width: 40%;
+	font-size: $font-size-large;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

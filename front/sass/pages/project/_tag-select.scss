@@ -1,0 +1,56 @@
+$tag-color: #00aeec;
+
+%select-tag {
+  color: #888888;
+
+  border-color: #aaa;
+  border-width: 2px;
+  border-style: solid;
+
+  background-color: transparent;
+  cursor: pointer;
+
+  border-radius: 2px;
+  line-height: 20px;
+
+  margin-right: 10px;
+  margin-bottom: 10px;
+
+  @include transition(border-color 0.4s ease, color 0.4s ease);
+
+  &:hover {
+    color: $tag-color;
+    border-color: lighten($tag-color, 20%);
+
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  &.active {
+    color: $tag-color;
+    border-color: lighten($tag-color, 20%);
+
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.select-tags, .other-tag {
+  .tag {
+    @extend %select-tag;
+  }
+}
+
+.other-tag input {
+    padding-left: 5px;
+    min-width: 20em;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 1px;
+    font-size: 16px;
+    color: #666666;
+
+    &:focus {
+      outline: none;
+    }
+}

@@ -1,0 +1,17 @@
+@import "common";
+@import "vendor/bootstrap/pagination";
+@import "vendor/bootstrap-sass-datepicker/datepicker";
+@import "modules/page-header-with-btn";
+@import "modules/list-search";
+@import "modules/list-table";
+
+
+.pagination-container {
+	text-align : center;
+}
+
+.search-bar-btns {
+	margin-left: 0em;
+	margin-bottom: 1em;
+}
+

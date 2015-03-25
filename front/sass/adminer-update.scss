@@ -1,0 +1,16 @@
+@import "common";
+@import "vendor/bootstrap/panels";
+@import "vendor/fronteed/icheck/blue";
+@import "vendor/redactor/redactor";
+@import "modules/update-form";
+@import "modules/update-owner";
+
+.error {
+  padding-top: .2em;
+  color: $brand-warning;
+}
+
+.cert-block {
+  display: inline-block;
+  margin-right: 15px;
+}

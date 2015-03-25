@@ -1,0 +1,67 @@
+// HWTrek Logo
+//
+// @param $size Size of logo image. Px for non-responsive; Percentage for responsive
+// @param $isResponsive fixed size or responsive size of logo
+// @param $box-top-color
+// @param $box-bottom-color
+// @param @border-width
+// @param $border-radius
+@mixin hwtrek-logo($size: 24px, $isResponsive: false, $box-top-color: $gray-light, $box-bottom-color: $gray-dark, $border-width: 1px, $border-radius: 3px) {
+    position: relative;
+
+    @if $isResponsive {
+        width: $size;
+        height: 0;
+        padding-bottom: $size;
+        } @else {
+        width: $size;
+        height: $size;
+    }
+
+    &.center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: floor($size / 2 * -1);
+        margin-left: floor($size / 2 * -1);
+    }
+
+    > .top {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: $logo-icon-top-size;
+        height: 0;
+        padding-bottom: $logo-icon-top-size;
+        z-index: $zindex-loading-top;
+
+        > .box {
+            border-color: $box-top-color;
+        }
+    }
+    
+    > .bottom {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: $logo-icon-bottom-size;
+        height: 0;
+        padding-bottom: $logo-icon-bottom-size;
+        z-index: $zindex-loading-bottom;
+
+        > .box {
+            border-color: $box-bottom-color;
+        }
+    }
+
+    .box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-width: $border-width;
+        border-style: solid;
+        border-radius: $border-radius;
+    }
+}

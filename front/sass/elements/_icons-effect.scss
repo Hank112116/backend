@@ -1,0 +1,6 @@
+@import "../vendor/ejholmes-animate/animate";
+@import "../vendor/ejholmes-animate/animate/swing";
+
+.icon-vibrate {
+  @include animate('swing', 0.5s);
+}

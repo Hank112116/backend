@@ -1,0 +1,63 @@
+@-webkit-keyframes fadeInDownBig {
+  /* line 2, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-2000px);
+  }
+
+  /* line 7, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+  }
+}
+
+@-moz-keyframes fadeInDownBig {
+  /* line 14, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  0% {
+    opacity: 0;
+    -moz-transform: translateY(-2000px);
+  }
+
+  /* line 19, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  100% {
+    opacity: 1;
+    -moz-transform: translateY(0);
+  }
+}
+
+@-o-keyframes fadeInDownBig {
+  /* line 26, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  0% {
+    opacity: 0;
+    -o-transform: translateY(-2000px);
+  }
+
+  /* line 31, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  100% {
+    opacity: 1;
+    -o-transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDownBig {
+  /* line 38, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  0% {
+    opacity: 0;
+    transform: translateY(-2000px);
+  }
+
+  /* line 43, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* line 49, ../../../../../front/sass/vendor/ejholmes-animate/animate/fadeInDownBig.scss */
+.fadeInDownBig {
+  -webkit-animation-name: fadeInDownBig;
+  -moz-animation-name: fadeInDownBig;
+  -o-animation-name: fadeInDownBig;
+  animation-name: fadeInDownBig;
+}

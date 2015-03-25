@@ -1,0 +1,50 @@
+@import "common";
+@import "vendor/bootstrap/panels";
+@import "vendor/bootstrap/input-groups";
+@import "vendor/fronteed/icheck/blue";
+@import "modules/update-form";
+@import "modules/detail-tags";
+
+.tag-desc {
+	font-size: $font-size-large;
+	color: $gray-light;
+}
+
+.tag {
+	display : inline-block;
+	min-width : 13em;
+}
+
+td.wrapper {
+  background: transparent;
+}
+
+.preview-message {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  top: 105%;
+  left: 0;
+  background: #fff;
+  box-shadow: 2px 2px 4px #ddd;
+  margin-bottom: 30px;
+}
+
+.show-preview {
+  font-size: 30px;
+  line-height: 20px;
+  position: absolute;
+  top: 30px;
+  left: -100px;
+  color: #ddd;
+  cursor: pointer;
+
+  &.active {
+    color: $brand-primary;
+  }
+}
+
+.preview-tag {
+  color: $brand-success;
+  font-weight: bold;
+}
