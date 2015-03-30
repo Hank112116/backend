@@ -15,7 +15,7 @@
             <i class="fa fa-eye"></i> Project Page
         </a>
 
-        {{
+        {!!
             link_to_action('ProjectController@showUpdate', 'EDIT',
                 $project->project_id, ['class' => 'btn-mini'])
         !!}

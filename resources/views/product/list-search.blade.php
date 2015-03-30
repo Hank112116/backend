@@ -52,7 +52,7 @@
 
     <div class="col-md-3">
         @if($has_wait_approve_product)
-            {{
+            {!!
                 link_to_action("ProductController@showWaitApproves",
                         'APPROVE PENDING PRODUCTS', '',["class"=>"btn btn-mini btn-warning"])
             !!}

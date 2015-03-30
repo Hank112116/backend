@@ -92,8 +92,11 @@ export default class SolutionCategoryUpdater {
 
     setSubSelection($option) {
         var sub_id = $option.data("sub-category-id"),
-            sub_text = $option.html(),
-            main_id = $option.data("main-category-id");
+            sub_text = $option.html();
+
+        if($option.length == 0) {
+            return;
+        }
 
         this.setSubInput(sub_id);
         this.setSubSelectedText(sub_text);

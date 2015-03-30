@@ -174,12 +174,12 @@ class SolutionModifier implements SolutionModifierInterface
             $delete_key  = "thumb_delete_{$i}";
             $content_key = "thumb_desc_{$i}";
 
-            if ($data[$delete_key] == 1 or !$this->hasGalleryImage($gallery, $data[$key], $i)) {
+            if ($data[$delete_key] == 1 or !$this->hasGalleryImage($gallery, $i, $data, $key)) {
                 unset($gallery[$i]);
                 continue;
             }
 
-            $image_name = $data[$key] ?
+            $image_name = array_key_exists($key, $data) ?
                 $this->image_uploader->uploadImage($data[$key]) :
                 $gallery[$i][Solution::GALLERY_FILENAME];
 
@@ -206,9 +206,9 @@ class SolutionModifier implements SolutionModifierInterface
         ];
     }
 
-    private function hasGalleryImage($gallery, $upload_image, $index)
+    private function hasGalleryImage($gallery, $index, $data, $key)
     {
-        if ($upload_image !== null) {
+        if (array_key_exists($key, $data)) {
             return true;
         }
 

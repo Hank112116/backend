@@ -33,7 +33,7 @@ var SolutionGallery = React.createClass({
 		}
 
 		thumbs = this.state.thumbs.map(function(thumb) {
-			
+
 			thumb.is_cover = false;
 			return thumb;
 
@@ -53,9 +53,9 @@ var SolutionGallery = React.createClass({
 	},
 
 	handleChangeImage: function(file, index) {
-		
+
 		ImageParser.readFile(file, function(e) {
-        	
+
         	var image_url = e.target.result,
         		thumbs = this.state.thumbs;
 
@@ -74,7 +74,7 @@ var SolutionGallery = React.createClass({
 
 		_.times(5, function(num) {
 
-			var image = this.props.galleries[num];
+			var image = this.props.galleries[num],
 				is_cover = false;
 
 			if(image && image.fileName == this.props.cover) {
@@ -86,7 +86,7 @@ var SolutionGallery = React.createClass({
 				index : num,
 				key : 'thumb_' + num,
 				image_url : image? image.fileUrl : null,
-				description : image? image.description : null, 
+				description : image? image.description : null,
 				is_cover : is_cover,
 				is_deleted : false
 			});
@@ -104,9 +104,9 @@ var SolutionGallery = React.createClass({
 
 		var thumbs = this.state.thumbs.map(function(thumb) {
 			return (
-				<Thumb 
-					key = { thumb.key } 
-					thumb = {thumb} 
+				<Thumb
+					key = { thumb.key }
+					thumb = {thumb}
 					is_display = {this.state.is_display}
 					handleChangeImage = { this.handleChangeImage }
 					handleSwitchDeleteImage = { this.handleSwitchDeleteImage }
@@ -119,7 +119,7 @@ var SolutionGallery = React.createClass({
 		return (
 			<div>
 				<Cover cover={this.state.cover} show_preview={this.state.show_preview} />
-				{ thumbs } 
+				{ thumbs }
 			</div>
 		);
 	}

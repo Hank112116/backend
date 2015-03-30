@@ -59,12 +59,12 @@
 					<td>{!! HTML::time($p->update_time)  !!}</td>
 
 					<td>
-						{{
+						{!!
                             link_to_action('ProjectController@showDetail', 'DETAIL',
                                 $p->project_id, ['class' => 'btn-mini'])
                         !!}
 
-						{{
+						{!!
                             link_to_action('ProjectController@showUpdate', 'EDIT',
                                 $p->project_id, ['class' => 'btn-mini'])
                         !!}

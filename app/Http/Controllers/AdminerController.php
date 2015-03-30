@@ -19,8 +19,7 @@ class AdminerController extends BaseController
     public function __construct(
         AdminerInterface $adminer,
         RoleInterface $role
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->adminer_repo = $adminer;
@@ -35,8 +34,7 @@ class AdminerController extends BaseController
     {
         if (Input::get('csv')) {
             $output = $this->adminer_repo->toOutputArray($this->adminer_repo->all());
-
-            return CSV::fromArray($output)->render('adminers.csv');
+            return $this->outputArrayToCsv($output, 'adminers');            
         }
 
         return view('adminer.list')

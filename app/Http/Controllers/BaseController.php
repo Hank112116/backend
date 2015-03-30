@@ -5,6 +5,7 @@ namespace Backend\Http\Controllers;
 use Auth;
 use Input;
 use League\Csv\Writer;
+use League\Csv\Plugin\SkipNullValuesFormatter;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesCommands;
@@ -54,7 +55,7 @@ class BaseController extends Controller
 //
     protected function outputArrayToCsv($output, $name = 'output') {
         $writer = Writer::createFromFileObject(new \SplTempFileObject);
-        $writer->setNullHandlingMode(Writer::NULL_AS_EMPTY);
+        $writer->addFormatter(new SkipNullValuesFormatter());
         return $writer->insertAll($output)->output($name . '.csv');
     }
 }

@@ -20,5 +20,6 @@
     git clone http://172.16.1.82/hwtrek/backend.git apps/backend
     cp apps/backend/.env.dev.example .env
     composer install
+    npm install
     vagrant up
 
