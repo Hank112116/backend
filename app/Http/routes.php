@@ -210,25 +210,4 @@ Route::group(['before' => 'backend.login'], function () {
 //    Route::get('engineer/get-projects-status', 'EngineerController@getProjectsStatus');
 });
 
-/**
- * Upload Editor Image
- * Ajax post by update.js redactor
- * Save both origin and thumb image
- *
- * @route  post /upload-editor-image
- * @vendor aws/aws-sdk-php-laravel
- * @return success ['status' => 'success', 'filelink' => image_path]
- * @return fail    ['status' => 'fail',    'msg' => fail_msg]
- **/
-Route::post('/upload-editor-image', function () {
-    if (!Input::hasFile('file')) {
-        return;
-    }
-
-    $uploader = ImageUp::instance();
-    if ($image = $uploader->uploadImage(Input::file('file'))) {
-        return Response::json(['status' => 'success', 'filelink' => $uploader->getOriginImage()]);
-    } else {
-        return Response::json(['status' => 'fail', 'filelink' => $uploader->err]);
-    }
-});
+Route::post('/upload-editor-image', 'ImageUploadController@index');
