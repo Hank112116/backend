@@ -7,7 +7,7 @@ import * as searchList from "./modules/search-list";
 
 window.Moment = Moment;
 
-$(function () {
+$(() => {
     datePicker.init();
     searchList.init();
 

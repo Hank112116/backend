@@ -3,7 +3,7 @@
 import * as FormUtility from "./libs/FormUtility";
 import * as SolutionUpdater from "./libs/SolutionUpdater";
 
-$((function () {
+$(() => {
     FormUtility.editor();
     SolutionUpdater.boot();
-})());
+});

@@ -2,7 +2,6 @@
   * @jsx React.DOM
   */
 
-var _ = require('lodash');
 var React = require('react');
 
 var Thumb = React.createFactory(require('./Thumb.react'));
@@ -32,12 +31,10 @@ var SolutionGallery = React.createClass({
 			return;
 		}
 
-		thumbs = this.state.thumbs.map(function(thumb) {
-
+		thumbs = this.state.thumbs.map((thumb) => {
 			thumb.is_cover = false;
 			return thumb;
-
-		}.bind(this));
+		});
 
 		thumbs[index].is_cover = true;
 
@@ -54,7 +51,7 @@ var SolutionGallery = React.createClass({
 
 	handleChangeImage: function(file, index) {
 
-		ImageParser.readFile(file, function(e) {
+		ImageParser.readFile(file, (e) => {
 
         	var image_url = e.target.result,
         		thumbs = this.state.thumbs;
@@ -66,13 +63,13 @@ var SolutionGallery = React.createClass({
 				thumbs: thumbs
             });
 
-		}.bind(this));
+		});
 	},
 
 	getInitialState: function() {
 		var thumbs = [], cover = null;
 
-		_.times(5, function(num) {
+		_.times(5, (num) => {
 
 			var image = this.props.galleries[num],
 				is_cover = false;
@@ -91,7 +88,7 @@ var SolutionGallery = React.createClass({
 				is_deleted : false
 			});
 
-		}.bind(this));
+		});
 
 		return {
 			is_display: (this.props.mode == 'display'),
@@ -102,7 +99,7 @@ var SolutionGallery = React.createClass({
 
 	render: function() {
 
-		var thumbs = this.state.thumbs.map(function(thumb) {
+		var thumbs = this.state.thumbs.map((thumb) => {
 			return (
 				<Thumb
 					key = { thumb.key }
@@ -114,7 +111,7 @@ var SolutionGallery = React.createClass({
 					handleChooseCover = { this.handleChooseCover }
 				/>
 			);
-		}.bind(this));
+		});
 
 		return (
 			<div>

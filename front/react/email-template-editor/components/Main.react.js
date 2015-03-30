@@ -2,20 +2,21 @@
  * @jsx React.DOM
  */
 
+import superagent from "superagent"
+
 var React = require('react');
 var Editor = React.createFactory(require('./Editor.react'));
 var Preview = React.createFactory(require('./Preview.react'));
 
 var Main = React.createClass({
     componentDidMount: function() {
-        var _self = this;
-
-        $.get('/mail/template', function(template) {
-            _self.setState({
-                show: true,
-                template: template
+        superagent.get('/mail/template').end((err, res) => {
+            this.setState({
+                show: false,
+                template: res.text
             });
         });
+
     },
 
     getInitialState: function() {

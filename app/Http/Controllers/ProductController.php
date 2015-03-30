@@ -25,8 +25,7 @@ class ProductController extends BaseController
         PerkInterface $perk,
         TransactionInterface $transaction,
         ExpertiseInterface $expertise
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->project_repo     = $project;

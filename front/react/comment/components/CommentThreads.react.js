@@ -28,23 +28,14 @@ var CommentThreads = React.createClass({
     },
 
     genThreads: function () {
-        var _self = this,
-            threads = [];
-
         if (!this.state.is_expand) {
             return null;
         }
 
-        _self.props.threads.forEach(function (thread) {
-            threads.push(
-                <CommentThread
-                    key={thread.comment_id}
-                    thread={thread}
-                    />
-            );
+        return this.props.threads.map((thread) => {
+            return <CommentThread key={thread.comment_id} thread={thread} />
         });
 
-        return threads;
     },
 
     genThreadsInfo: function () {
@@ -62,7 +53,7 @@ var CommentThreads = React.createClass({
                 </div>
 
                 <div className="comment-threads-info-latest">
-                    Last updated at 
+                    Last updated at
                     <span className="comment-threads-info-value">
                     	{this.getLatestUpdated()}
                     </span>

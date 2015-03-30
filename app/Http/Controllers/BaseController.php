@@ -3,6 +3,7 @@
 namespace Backend\Http\Controllers;
 
 use Auth;
+use Illuminate\Support\Collection;
 use Input;
 use League\Csv\Writer;
 use League\Csv\Plugin\SkipNullValuesFormatter;
@@ -53,9 +54,20 @@ class BaseController extends Controller
 //        }
 //    }
 //
-    protected function outputArrayToCsv($output, $name = 'output') {
+    protected function outputArrayToCsv(Collection $output, $name = 'output') {
+        $result = $this->getOutputArray($output);
         $writer = Writer::createFromFileObject(new \SplTempFileObject);
-        $writer->addFormatter(new SkipNullValuesFormatter());
-        return $writer->insertAll($output)->output($name . '.csv');
+        return $writer->insertAll($result)->output($name . '.csv');
+    }
+
+    private function getOutputArray(Collection $output) {
+        $header = [];
+        foreach($output->first() as $head => $value) {
+            $header[$head] = $head;
+        }
+
+        $result = $output->toArray();
+        array_unshift($result, $header);
+        return $result;
     }
 }

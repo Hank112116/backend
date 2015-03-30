@@ -1,7 +1,6 @@
-var InboxConstants = require('../constants/InboxConstants');
-var superagent = require('superagent');
+import superagent from 'superagent';
 
-window.superagent = superagent;
+var InboxConstants = require('../constants/InboxConstants');
 
 module.exports = {
     queryUri: '/inbox/topics',
@@ -21,7 +20,7 @@ module.exports = {
 	delete: function(message_id, callback) {
 		var url = this.deleteUri + message_id;
 		this.post(url, callback);
-	},	
+	},
 
 	request: function(url, callback) {
         callback = callback || function() {};

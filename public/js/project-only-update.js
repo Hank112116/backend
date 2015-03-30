@@ -216,11 +216,11 @@ var FormUtility = _interopRequireWildcard(require("./libs/FormUtility"));
 
 var ProjectUpdater = _interopRequire(require("./libs/ProjectUpdater"));
 
-$((function () {
+$(function () {
     FormUtility.editor();
     FormUtility.preventEnter();
 
     new ProjectUpdater().bootProject();
-})());
+});
 
 },{"./libs/FormUtility":1,"./libs/ProjectUpdater":2}]},{},[3])

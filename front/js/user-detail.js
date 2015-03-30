@@ -2,4 +2,4 @@
 
 import * as tags from "./modules/tags";
 
-$(( () => tags.init() )());
+$(() => tags.init());

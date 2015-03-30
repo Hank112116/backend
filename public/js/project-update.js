@@ -214,9 +214,9 @@ var FormUtility = require("./libs/FormUtility");
 
 var ProjectUpdater = _interopRequire(require("./libs/ProjectUpdater"));
 
-$((function () {
+$(function () {
     FormUtility.editor();
     new ProjectUpdater().bootProject();
-})());
+});
 
 },{"./libs/FormUtility":1,"./libs/ProjectUpdater":2}]},{},[3])

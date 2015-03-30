@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatchers/AppDispatcher');
@@ -17,7 +16,7 @@ var _data = {
 		pages: null,
 		at_page: null,
         use_search: false
-	}	
+	}
 }, loaded_page = [];
 
 var mergeTopics = function(new_topics, page) {
@@ -54,7 +53,7 @@ var InboxStore = _.extend(EventEmitter.prototype, {
 var InboxModifier = {
     initTopics: function(topics) {
         mergeTopics(topics.data, topics.current_page);
-        
+
         _data.meta = {
             total: topics.total,
             pages: topics.last_page,
@@ -140,7 +139,7 @@ AppDispatcher.register(function(payload) {
             _data.meta.at_page = page;
             _data.meta.use_search = false;
 
-            if(loaded_page[page]) {    
+            if(loaded_page[page]) {
                 InboxStore.emitChange();
                 return;
             }

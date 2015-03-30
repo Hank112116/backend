@@ -5,7 +5,7 @@ import * as icheck from "./modules/icheck";
 
 import ProjectUpdater from "./libs/ProjectUpdater";
 
-$(function () {
+$(() => {
     icheck.initRadio();
 
     FormUtility.locationSelector($("#country"));

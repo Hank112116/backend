@@ -28,7 +28,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 "use strict";
 
-var humane = require("../vendor/humane-js/humane");
+var humane = require("../vendor/humane/humane");
 
 var humane;
 
@@ -55,7 +55,7 @@ function showTimedMessage(content, level, sec) {
     });
 }
 
-},{"../vendor/humane-js/humane":5}],3:[function(require,module,exports){
+},{"../vendor/humane/humane":5}],3:[function(require,module,exports){
 "use strict";
 
 exports.init = init;

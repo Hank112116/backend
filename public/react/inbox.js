@@ -1277,7 +1277,6 @@ module.exports = AppDispatcher;
 },{"flux":23,"lodash":26}],19:[function(require,module,exports){
 "use strict";
 
-var _ = require("lodash");
 var EventEmitter = require("events").EventEmitter;
 
 var AppDispatcher = require("../dispatchers/AppDispatcher");
@@ -1457,13 +1456,14 @@ AppDispatcher.register(function (payload) {
 
 module.exports = InboxStore;
 
-},{"../constants/InboxConstants":17,"../dispatchers/AppDispatcher":18,"../utils/InboxApiUtils":20,"events":21,"lodash":26}],20:[function(require,module,exports){
+},{"../constants/InboxConstants":17,"../dispatchers/AppDispatcher":18,"../utils/InboxApiUtils":20,"events":21}],20:[function(require,module,exports){
 "use strict";
 
-var InboxConstants = require("../constants/InboxConstants");
-var superagent = require("superagent");
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-window.superagent = superagent;
+var superagent = _interopRequire(require("superagent"));
+
+var InboxConstants = require("../constants/InboxConstants");
 
 module.exports = {
 				queryUri: "/inbox/topics",

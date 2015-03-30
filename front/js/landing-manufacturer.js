@@ -1,9 +1,15 @@
 "use strict";
 
+import superagent from "superagent"
+
 $(function () {
     $("#js-add-manufacturer").click(function (event) {
         event.preventDefault();
-        $.get("/landing/get-new-manufacturer", (block) => $("#manufacturers").append(block));
+
+        superagent
+            .get("/landing/get-new-manufacturer")
+            .end((err, res) => $("#manufacturers").append(res.text));
+
         return false;
     });
 

@@ -22,8 +22,8 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var tags = _interopRequireWildcard(require("./modules/tags"));
 
-$((function () {
-    tags.init();
-})());
+$(function () {
+  return tags.init();
+});
 
 },{"./modules/tags":1}]},{},[2])

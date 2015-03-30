@@ -24,7 +24,8 @@ var OwnerInput = React.createClass({
 		var user_id = this.refs.user.getDOMNode().value;
 
 		this.setState({ user_id : user_id });
-		(new MemberSelector()).fireTimeoutSelector(user_id, this.props.switchOwner);
+
+		new MemberSelector().fireTimeoutSelector(user_id, this.props.switchOwner);
 	},
 
 	render: function() {

@@ -76,11 +76,11 @@ var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? ob
 
 var FormUtility = _interopRequireWildcard(require("./libs/FormUtility"));
 
-$((function () {
+$(function () {
     FormUtility.locationSelector($("#country"));
     FormUtility.locationSelector($("#city"));
     FormUtility.editor();
     FormUtility.preventEnter();
-})());
+});
 
 },{"./libs/FormUtility":1}]},{},[2])

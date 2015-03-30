@@ -14,14 +14,15 @@ var CommentDelete = React.createClass({
             title: "Are you sure?",
             desc: "This will delete this topic / thread!",
             confirmButton: "Yes, delete it!",
-            handleOnConfirm: function() {   
+            handleOnConfirm: function() {
                 _self.props.handleDelete(_self.props.comment_id);
             }
         });
     },
 
     render: function() {
-        return null;
+
+        return null; // Disable the delete ability now
 
     	return (
             <button className="comment-delete" onClick={this.alertDelete}>

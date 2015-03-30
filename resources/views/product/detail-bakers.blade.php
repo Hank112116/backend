@@ -14,7 +14,7 @@
             <td>{!! $baker->transaction_id !!}</td>
             <td>#{!! $baker->perk->perk_id !!} {!! $baker->perk->perk_title !!}</td>
             <td>
-                <a href="//{!! Config::get('app.front_domain')}}/profile/{!! $baker->user->user_id !!}" target="_blank">
+                <a href="//{!! config('app.front_domain') !!}/profile/{!! $baker->user->user_id !!}" target="_blank">
                     {!! $baker->name !!}
                 </a> {{-- use the name record in transaction table , rather in user table --}}
             </td>
@@ -24,4 +24,5 @@
             <td>{!! $baker->transaction_date_time !!}</td>
         </tr>
     @endforeach
+
 </table>

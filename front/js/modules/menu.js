@@ -2,7 +2,7 @@
 
 export function init() {
     var width,
-        $sidebar_collapse = $("div.sidebar-collapse"),
+        $sidebar_collapse = $(".sidebar-collapse"),
         $page_collapse = $(".page-wrapper");
 
     $("#side-menu").metisMenu();

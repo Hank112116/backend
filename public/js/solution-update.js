@@ -503,9 +503,9 @@ var FormUtility = _interopRequireWildcard(require("./libs/FormUtility"));
 
 var SolutionUpdater = _interopRequireWildcard(require("./libs/SolutionUpdater"));
 
-$((function () {
+$(function () {
     FormUtility.editor();
     SolutionUpdater.boot();
-})());
+});
 
 },{"./libs/FormUtility":1,"./libs/SolutionUpdater":5}]},{},[6])

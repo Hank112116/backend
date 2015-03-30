@@ -1,6 +1,6 @@
 "use strict";
 
-var humane = require("../vendor/humane-js/humane");
+var humane = require("../vendor/humane/humane");
 
 export var humane;
 
