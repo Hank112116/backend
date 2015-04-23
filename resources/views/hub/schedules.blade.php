@@ -37,7 +37,9 @@
                     <a href="{!! $s->textFrontLink() !!}" target="_blank">{!! $s->project_title !!}</a>
                 </td>
                 <td>
+                    @if($s->user)
                     <a href="{!! $s->user->textFrontLink() !!}" target="_blank">{!! $s->user->textFullName() !!}</a>
+                    @endif
                 </td>
                 <td>
                     <div class="process-btns">

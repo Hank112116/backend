@@ -6706,11 +6706,11 @@ td.wrapper {
 .preview-message {
   position: absolute;
   width: 100%;
-  z-index: 999;
-  top: 105%;
-  left: 0;
+  z-index: 20;
+  top: 25px;
+  left: -130px;
   background: #fff;
-  box-shadow: 2px 2px 4px #ddd;
+  box-shadow: 2px 2px 4px #ddd, -2px -2px 4px #ddd;
   margin-bottom: 30px;
 }
 
@@ -6723,13 +6723,14 @@ td.wrapper {
   left: -100px;
   color: #ddd;
   cursor: pointer;
+  z-index: 30;
 }
-/* line 42, ../../front/sass/mail-template-update.scss */
+/* line 43, ../../front/sass/mail-template-update.scss */
 .show-preview.active {
   color: #428bca;
 }
 
-/* line 47, ../../front/sass/mail-template-update.scss */
+/* line 48, ../../front/sass/mail-template-update.scss */
 .preview-tag {
   color: #5cb85c;
   font-weight: bold;
