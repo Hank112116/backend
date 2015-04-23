@@ -4,7 +4,7 @@ import * as menu from "./modules/menu";
 import * as icheck from "./modules/icheck";
 import * as Notifier from "./libs/Notifier";
 
-window.Notifier = require("./libs/Notifier");
+window.Notifier = Notifier;
 
 $(function () {
     menu.init();

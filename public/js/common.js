@@ -9,7 +9,7 @@ var icheck = _interopRequireWildcard(require("./modules/icheck"));
 
 var Notifier = _interopRequireWildcard(require("./libs/Notifier"));
 
-window.Notifier = require("./libs/Notifier");
+window.Notifier = Notifier;
 
 $(function () {
     menu.init();
@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function init() {
     var width,
-        $sidebar_collapse = $("div.sidebar-collapse"),
+        $sidebar_collapse = $(".sidebar-collapse"),
         $page_collapse = $(".page-wrapper");
 
     $("#side-menu").metisMenu();

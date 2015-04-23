@@ -70,7 +70,7 @@ class HubRepo implements HubInterface
         }
 
         $body = json_decode($result->body, true);
-        $version_id = $body['data']['version_id'];
+        $version_id = $body['version_id'];
 
         $version = \DB::table('pms_schedule_version')
             ->select('create_time')

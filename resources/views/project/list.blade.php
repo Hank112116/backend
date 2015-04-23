@@ -103,8 +103,12 @@
     </div>
 </div>
 
-@include('layouts.paginate', ['collection' => $projects, 'per_page' => isset($per_page)? $per_page : ''])
-
+@if($show_paginate)
+    @include('layouts.paginate', [
+        'collection' => $projects,
+        'per_page' => isset($per_page)? $per_page : ''
+    ])
+@endif
 
 @stop
 
