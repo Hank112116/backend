@@ -724,13 +724,13 @@ th {
 /* line 1, ../../front/sass/elements/_sidebar-toggle.scss */
 .sidebar-toggle-block {
   position: fixed;
-  left: 0px;
-  bottom: 0px;
+  right: 0px;
+  top: 5px;
 }
 
 /* line 7, ../../front/sass/elements/_sidebar-toggle.scss */
 .btn-sidebar-toggle {
-  color: #428bca;
+  color: #fff;
   font-size: 2em;
   background: transparent;
   border: none;

@@ -88,20 +88,22 @@
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="{!! action('LandingController@showFeature') !!}">
-                                <i class="fa fa-tag fa-fw"></i>
-                                Feature
+                                <i class="fa fa-tag fa-fw"></i> Feature
                             </a>
                         </li>
                         <li>
                             <a href="{!! action('LandingController@showReferenceProject') !!}">
-                                <i class="fa fa-tag fa-fw"></i>
-                                Connected thru HWTrek
+                                <i class="fa fa-tag fa-fw"></i> Connected thru HWTrek
                             </a>
                         </li>
                         <li>
                             <a href="{!! action('LandingController@showManufacturer') !!}">
-                                <i class="fa fa-tag fa-fw"></i>
-                                Manufacturer
+                                <i class="fa fa-tag fa-fw"></i> Manufacturer
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{!! action('LandingController@showHello') !!}">
+                                <i class="fa fa-tag fa-fw"></i> Hello
                             </a>
                         </li>
 

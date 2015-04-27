@@ -71,7 +71,7 @@ class ProjectController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($projects);
         }
-
+        
         return view('project.list')
             ->with([
                 'title'         => $title ?: 'projects',

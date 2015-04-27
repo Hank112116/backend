@@ -1,11 +1,11 @@
 .sidebar-toggle-block {
   position: fixed;
-  left: 0px;
-  bottom: 0px;
+  right: 0px;
+  top: 5px;
 }
 
 .btn-sidebar-toggle {
-  color: $link-color;
+  color: #fff;
   font-size: 2em;
   background: transparent;
   border: none;

@@ -5,10 +5,14 @@ namespace Backend\Http\Controllers;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingManufacturerInterface;
 use Backend\Repo\RepoInterfaces\LandingReferProjectInterface;
+use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
+use Guzzle\Log\LogAdapterInterface;
+use Illuminate\Http\Request;
 use Input;
 use Noty;
 use Redirect;
 use Response;
+use Browser\Browser;
 
 class LandingController extends BaseController
 {
@@ -31,6 +35,11 @@ class LandingController extends BaseController
         return view('landing.feature')
             ->with('types', $this->feature->types())
             ->with('features', $this->feature->all());
+    }
+
+    public function showHello(LogAccessHelloInterface $repo)
+    {
+        return view('landing.hello')->with(['records' => $repo->latest()]);
     }
 
     public function findFeatureEntity($type)
@@ -116,5 +125,13 @@ class LandingController extends BaseController
         Noty::success('Update refers successful');
 
         return Redirect::action('LandingController@showReferenceProject');
+    }
+
+    public function updateHelloRedirect(Request $request, LogAccessHelloInterface $repo)
+    {
+        $default = "signup?status=2";
+        $repo->updateHelloDestination($request->get('destination', $default));
+
+        return Response::json(['status' => 'success',]);
     }
 }

@@ -46,6 +46,9 @@ trait PaginateTrait
     {
         $container = $this->getContainer($model, $page, $limit, $users);
 
-        return (new Paginator($container->items, $container->totalItems, $limit));
+        $paginator = new Paginator($container->items, $container->totalItems, $limit);
+        $paginator->setPath('/' . \Request::path());
+
+        return $paginator;
     }
 }

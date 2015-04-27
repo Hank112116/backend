@@ -49,7 +49,6 @@ module.exports = {
 
 	togglePrivate: function(topic_id) {
 		var url = this.query + '/private/' + topic_id;
-
 		this.request(url);
 	},
 
