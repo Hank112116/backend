@@ -54,19 +54,19 @@ class BaseController extends Controller
 //        }
 //    }
 //
-    protected function outputArrayToCsv(Collection $output, $name = 'output') {
+    protected function outputArrayToCsv($output, $name = 'output') {
         $result = $this->getOutputArray($output);
         $writer = Writer::createFromFileObject(new \SplTempFileObject);
         return $writer->insertAll($result)->output($name . '.csv');
     }
 
-    private function getOutputArray(Collection $output) {
+    private function getOutputArray($output) {
         $header = [];
-        foreach($output->first() as $head => $value) {
+        foreach(($output instanceof Collection)? $output->first() : $output[0] as $head => $value) {
             $header[$head] = $head;
         }
 
-        $result = $output->toArray();
+        $result = ($output instanceof Collection)? $output->toArray() : $output;
         array_unshift($result, $header);
         return $result;
     }
