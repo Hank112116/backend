@@ -143,17 +143,7 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\Lara\HubRepo'
         );
 
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\CommentInterface', function ($app) {
-                return new Lara\CommentRepo(
-                    new \Backend\Model\Eloquent\Comment(),
-                    $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\ProjectInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\ProductInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\SolutionInterface')
-                );
-            }
-        );
+        $this->app->bind('Backend\Repo\RepoInterfaces\CommentInterface', 'Backend\Repo\Lara\CommentRepo');
 
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\LogAccessHelloInterface',

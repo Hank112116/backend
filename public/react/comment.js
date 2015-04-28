@@ -1628,7 +1628,8 @@ var CommentList = React.createClass({ displayName: "CommentList",
         return React.DOM.div({ className: "comment", key: comment.comment_id, "data-id": comment.comment_id }, CommentDelete({
             handleDelete: CommentActions.deleteTopic,
             comment_id: comment.comment_id }), this.genCommentBelongingHeader(comment), React.DOM.div({ className: "comment-publisher" }, React.DOM.div({ className: "comment-publisher-image",
-            style: publisher_image_style }), React.DOM.div({ className: "comment-publisher-name" }, publisher.full_name), this.genCommentLock(comment)), React.DOM.div({ className: "comment-header" }, React.DOM.div({ className: "comment-title" }, comment.title), React.DOM.div({ className: "comment-meta" }, Moment.time(comment.date_added))), CommentImages({ images: comment.image_urls }), React.DOM.div({ className: "comment-content" }, comment.comments), CommentThreads({
+            style: publisher_image_style }), React.DOM.div({ className: "comment-publisher-name" }, publisher.full_name), this.genCommentLock(comment)), React.DOM.div({ className: "comment-header" }, React.DOM.div({ className: "comment-title" }, comment.title), React.DOM.div({ className: "comment-meta" }, Moment.time(comment.date_added))), CommentImages({ images: comment.image_urls }), React.DOM.div({ className: "comment-content",
+            dangerouslySetInnerHTML: { __html: comment.comments } }), CommentThreads({
             threads: comment.threads,
             handleDelete: this.props.handleDeleteThread }));
     },
@@ -1826,7 +1827,8 @@ var CommentThread = React.createClass({ displayName: "CommentThread",
     return React.DOM.div({ className: "comment-thread" }, CommentDelete({
       handleDelete: CommentActions.deleteThread,
       comment_id: thread.comment_id }), React.DOM.div({ className: "comment-thread-publisher" }, React.DOM.div({ className: "comment-thread-publisher-image",
-      style: publisher_image_style }), React.DOM.div({ className: "comment-thread-publisher-name" }, publisher.full_name)), React.DOM.div({ className: "comment-thread-meta" }, Moment.time(thread.date_added)), CommentImages({ images: thread.image_urls }), React.DOM.div({ className: "comment-thread-content" }, thread.comments));
+      style: publisher_image_style }), React.DOM.div({ className: "comment-thread-publisher-name" }, publisher.full_name)), React.DOM.div({ className: "comment-thread-meta" }, Moment.time(thread.date_added)), CommentImages({ images: thread.image_urls }), React.DOM.div({ className: "comment-thread-content",
+      dangerouslySetInnerHTML: { __html: thread.comments } }));
   }
 });
 

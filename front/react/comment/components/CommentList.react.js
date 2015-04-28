@@ -109,8 +109,8 @@ var CommentList = React.createClass({
 
                 <CommentImages images={comment.image_urls} />
 
-                <div className="comment-content">
-                    { comment.comments }
+                <div className="comment-content"
+                     dangerouslySetInnerHTML={{__html: comment.comments}}>
                 </div>
 
                 <CommentThreads 

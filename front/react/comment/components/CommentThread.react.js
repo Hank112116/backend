@@ -42,8 +42,8 @@ var CommentThread = React.createClass({
 
                 <CommentImages images={thread.image_urls} />
 
-                <div className="comment-thread-content">
-                    { thread.comments }
+                <div className="comment-thread-content"
+                     dangerouslySetInnerHTML={{__html: thread.comments}}>
                 </div>
             </div>
 		);

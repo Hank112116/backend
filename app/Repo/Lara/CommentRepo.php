@@ -9,9 +9,11 @@ use Backend\Repo\RepoInterfaces\ProductInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Illuminate\Support\Collection;
+use Mews\Purifier\Purifier;
 
 class CommentRepo implements CommentInterface
 {
+
     use PaginateTrait;
 
     const SEARCH_BY_TOPIC_CREATOR = 'topic_creator';
@@ -24,7 +26,8 @@ class CommentRepo implements CommentInterface
         UserInterface $user_repo,
         ProjectInterface $project_repo,
         ProductInterface $product_repo,
-        SolutionInterface $solution_repo
+        SolutionInterface $solution_repo,
+        Purifier $purifier
     ) {
         $this->comment = $comment;
 
@@ -32,6 +35,7 @@ class CommentRepo implements CommentInterface
         $this->project_repo  = $project_repo;
         $this->prodcut_repo  = $product_repo;
         $this->solution_repo = $solution_repo;
+        $this->purifier = $purifier;
     }
 
     public function find($comment_id)
@@ -47,6 +51,8 @@ class CommentRepo implements CommentInterface
             ->queryProfession()
             ->get();
 
+        $comments = $this->processed($comments);
+
         $this->setPaginateTotal($this->comment->queryTopic()->queryProfession()->count());
 
         return $this->getPaginateContainer($this->comment, $page, $limit, $comments);
@@ -61,24 +67,26 @@ class CommentRepo implements CommentInterface
         $ids = $this->user_repo->byName($value)->lists('user_id');
 
         switch ($where) {
-        case self::SEARCH_BY_TOPIC_CREATOR :
-            $where_column = 'user_id';
-            break;
+            case self::SEARCH_BY_TOPIC_CREATOR :
+                $where_column = 'user_id';
+                break;
 
-        case self::SEARCH_BY_PROFESSION_NAME :
-            $where_column = 'profession_id';
-            break;
+            case self::SEARCH_BY_PROFESSION_NAME :
+                $where_column = 'profession_id';
+                break;
         }
 
         if (count($ids) == 0) {
             return new Collection();
         }
 
-        return $this->comment->queryEagerLoad()
+        $comments = $this->comment->queryEagerLoad()
             ->queryTopic()
             ->queryProfession()
             ->whereIn($where_column, $ids)
             ->get();
+
+        return $this->processed($comments);
     }
 
     public function projectTopicsByPage($page = 1, $limit = 20)
@@ -88,6 +96,8 @@ class CommentRepo implements CommentInterface
             ->queryTopic()
             ->queryProject()
             ->get();
+
+        $comments = $this->processed($comments);
 
         $this->setPaginateTotal($this->comment->queryTopic()->queryProject()->count());
 
@@ -101,38 +111,38 @@ class CommentRepo implements CommentInterface
         }
 
         switch ($where) {
-        case self::SEARCH_BY_TOPIC_CREATOR :
-            $ids = $this->user_repo->byName($value)->lists('user_id');
-            $where_column = 'user_id';
-            break;
+            case self::SEARCH_BY_TOPIC_CREATOR :
+                $ids          = $this->user_repo->byName($value)->lists('user_id');
+                $where_column = 'user_id';
+                break;
 
-        case self::SEARCH_BY_TITLE :
-            $ids = array_merge(
-                $this->project_repo->byTitle($value)->lists('project_id'),
-                $this->prodcut_repo->byTitle($value)->lists('project_id')
-            );
+            case self::SEARCH_BY_TITLE :
+                $ids = array_merge(
+                    $this->project_repo->byTitle($value)->lists('project_id'),
+                    $this->prodcut_repo->byTitle($value)->lists('project_id')
+                );
 
-            $where_column = 'project_id';
-            break;
+                $where_column = 'project_id';
+                break;
 
-        case self::SEARCH_BY_OWNER :
-            $ids = array_merge(
-                $this->project_repo->byUserName($value)->lists('project_id'),
-                $this->prodcut_repo->byUserName($value)->lists('project_id')
-            );
-            $where_column = 'project_id';
-            break;
+            case self::SEARCH_BY_OWNER :
+                $ids          = array_merge(
+                    $this->project_repo->byUserName($value)->lists('project_id'),
+                    $this->prodcut_repo->byUserName($value)->lists('project_id')
+                );
+                $where_column = 'project_id';
+                break;
         }
 
         if (count($ids) == 0) {
             return new Collection();
         }
 
-        return $this->comment->queryEagerLoad()
+        return $this->processed($this->comment->queryEagerLoad()
             ->queryTopic()
             ->queryProject()
             ->whereIn($where_column, $ids)
-            ->get();
+            ->get());
     }
 
     public function solutionTopicsByPage($page = 1, $limit = 20)
@@ -142,6 +152,8 @@ class CommentRepo implements CommentInterface
             ->queryTopic()
             ->querySolution()
             ->get();
+
+        $comments = $this->processed($comments);
 
         $this->setPaginateTotal($this->comment->queryTopic()->querySolution()->count());
 
@@ -155,31 +167,45 @@ class CommentRepo implements CommentInterface
         }
 
         switch ($where) {
-        case self::SEARCH_BY_TOPIC_CREATOR :
-            $ids = $this->user_repo->byName($value)->lists('user_id');
-            $where_column = 'user_id';
-            break;
+            case self::SEARCH_BY_TOPIC_CREATOR :
+                $ids          = $this->user_repo->byName($value)->lists('user_id');
+                $where_column = 'user_id';
+                break;
 
-        case self::SEARCH_BY_TITLE :
-            $ids = $this->solution_repo->byTitle($value)->lists('solution_id');
-            $where_column = 'solution_id';
-            break;
+            case self::SEARCH_BY_TITLE :
+                $ids          = $this->solution_repo->byTitle($value)->lists('solution_id');
+                $where_column = 'solution_id';
+                break;
 
-        case self::SEARCH_BY_OWNER :
-            $ids = $this->solution_repo->byUserName($value)->lists('solution_id');
-            $where_column = 'solution_id';
-            break;
+            case self::SEARCH_BY_OWNER :
+                $ids          = $this->solution_repo->byUserName($value)->lists('solution_id');
+                $where_column = 'solution_id';
+                break;
         }
 
         if (count($ids) == 0) {
             return new Collection();
         }
 
-        return $this->comment->queryEagerLoad()
+        $comments = $this->comment->queryEagerLoad()
             ->queryTopic()
             ->querySolution()
             ->whereIn($where_column, $ids)
             ->get();
+
+        return $this->processed($comments);
+    }
+
+    private function processed(Collection $comments)
+    {
+        $comments->each(function ($comment) {
+            $comment->comments = nl2br($this->purifier->clean($comment->comments));
+            if($comment->threads->count() > 0) {
+                $comment->threads = $this->processed($comment->threads);
+            }
+        });
+
+        return $comments;
     }
 
     public function deleteTopicAndThreads(Comment $topic)

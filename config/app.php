@@ -89,6 +89,7 @@ return [
          */
         'Illuminate\Html\HtmlServiceProvider',
         'Intervention\Image\ImageServiceProvider',
+        'Mews\Purifier\PurifierServiceProvider',
 
         /*
          * Backend Service Providers...

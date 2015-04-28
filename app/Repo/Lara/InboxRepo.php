@@ -4,6 +4,8 @@ use Backend\Model\Eloquent\Inbox;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Backend\Repo\RepoInterfaces\InboxInterface;
+use Illuminate\Support\Collection;
+use Mews\Purifier\Purifier;
 
 class InboxRepo implements InboxInterface {
 
@@ -19,10 +21,12 @@ class InboxRepo implements InboxInterface {
 
     public function __construct(
         Inbox $inbox,
-        UserInterface $user_repo
+        UserInterface $user_repo,
+        Purifier $purifier
     ) {
         $this->inbox = $inbox;
         $this->user_repo = $user_repo;
+        $this->purifier = $purifier;
     }
 
     public function topicsByPage($page = 1, $limit = 20)
@@ -31,6 +35,8 @@ class InboxRepo implements InboxInterface {
             ->queryEagerLoad()
             ->queryTopic()
             ->get();
+
+        $topics = $this->processed($topics);
 
         $this->setPaginateTotal($this->inbox->queryTopic()->count());
 
@@ -68,11 +74,11 @@ class InboxRepo implements InboxInterface {
                 break;
         }
 
-        return $this->inbox
+        return processed($this->inbox
             ->queryEagerLoad()
             ->queryTopic()
             ->whereIn($where_column, $ids)
-            ->get();
+            ->get());
     }
 
     public function bySender($sender_id)
@@ -83,6 +89,15 @@ class InboxRepo implements InboxInterface {
     public function byReceiver($receiver_id)
     {
 
+    }
+
+    private function processed(Collection $inboxes)
+    {
+        $inboxes->each(function ($inbox) {
+            $inbox->message_content = nl2br($this->purifier->clean($inbox->message_content));
+        });
+
+        return $inboxes;
     }
 
     public function delete($message_id)
