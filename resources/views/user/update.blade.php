@@ -35,9 +35,7 @@
         <div class="form-group">
             <label for="verify" class="col-md-3">
                 EMail Verify<br/>
-                <span class="color-info">
-                    {!! $user->textEmailVerify() !!}
-                </span>
+                <span class="color-info">{!! $user->textEmailVerify() !!}</span>
             </label>
 
             <div class="col-md-5">
@@ -122,7 +120,7 @@
                     {!! $user->user_name !!}
                 @else
                     {!! Form::text(
-                        'user_name', $user->user_name,
+                        'user_name', htmlspecialchars($user->user_name),
                         ['placeholder' => 'Enter First Name', 'class'=>'form-control', 'id' => 'first-name']) !!}
                 @endif
 
@@ -136,7 +134,7 @@
                 @if($is_restricted)
                     {!! $user->last_name !!}
                 @else
-                    {!! Form::text('last_name', $user->last_name,
+                    {!! Form::text('last_name', htmlspecialchars($user->last_name),
                     ['placeholder' => 'Enter Last Name', 'class'=>'form-control', 'id'=>'last-name']) !!}
                 @endif
             </div>

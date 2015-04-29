@@ -60,11 +60,9 @@
 
         <ul id='main-category-options' class="category-options">
             @foreach($category_options['main'] as $mc)
-
             <li id="main-category-{!! $mc['main_id'] !!}-{!! $mc['sub_id']  !!}"
                     data-main-category-id="{!! $mc['main_id'] !!}"
                     data-sub-category-id="{!! $mc['sub_id'] !!}">{!! $mc['text'] !!}</li>
-
             @endforeach
         </ul>
     </div>
@@ -94,7 +92,7 @@
     <label for="title" class="col-md-3">Title</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
-            name="solution_title" value="{!! $solution->solution_title !!}">
+            name="solution_title" value="{!! htmlspecialchars($solution->solution_title) !!}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -105,9 +103,8 @@
 <div class="form-group">
     <label for="solution_summary" class="col-md-3">Summary</label>
     <div class="col-md-5">
-        <textarea id="solution_summary" name="solution_summary" maxlength="150" class="form-control" rows="5">{!!
-            $solution->solution_summary
-        !!}</textarea>
+        <textarea id="solution_summary" name="solution_summary"
+                  maxlength="150" class="form-control" rows="5">{!! $solution->solution_summary !!}</textarea>
     </div>
 </div>
 <!-- End Summary -->
@@ -132,7 +129,7 @@
         <div class="target-stage-container select-tags" data-select-tags = "project_progress" >
             @foreach($project_progress_options as $index => $progress)
                <div data-id='{!! $index  !!}'
-                    class='btn btn-primary tag {!! $solution->hasProjectProgress($index)? 'active' : '' !!}'   >
+                    class='btn btn-primary tag {!! $solution->hasProjectProgress($index)? "active" : "" !!}'   >
                    {!! $progress  !!}
                </div>
             @endforeach
@@ -175,7 +172,8 @@
             <div class="btn btn-primary tag project-category-other {!! $solution->project_category_co_work_other? 'active' : '' !!}"
                  data-other-tag = "project_category">
                 <span class="tag-other">Other (30)</span>
-                <input type="text" maxlength="30" name="project_category_co_work_other" value="{!! $solution->project_category_co_work_other  !!}" />
+                <input type="text" maxlength="30" name="project_category_co_work_other"
+                       value="{!! $solution->project_category_co_work_other  !!}" />
             </div>
         </div>
 

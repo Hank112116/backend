@@ -53,7 +53,8 @@
 <div class="form-group">
     <label for="title" class="col-md-3">Project Name</label>
     <div class="col-md-5">
-        <input type="text" class="form-control" id="title" maxlength="55" name="project_title" value="{!! $project->project_title !!}">
+        <input type="text" class="form-control" id="title" maxlength="55"
+               name="project_title" value="{!! htmlspecialchars($project->project_title) !!}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -70,9 +71,7 @@
 <!-- Project Location -->
 <div class="form-group">
     <label for="address" class="col-md-3">Project Location</label>
-    <div class="col-md-5">
-        {!! $project->project_address !!}
-    </div>
+    <div class="col-md-5">{!! $project->project_address !!}</div>
     <div class="col-md-5"></div>
 </div>
 
