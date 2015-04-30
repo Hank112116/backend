@@ -95,6 +95,9 @@ class InboxRepo implements InboxInterface {
     {
         $inboxes->each(function ($inbox) {
             $inbox->message_content = nl2br($this->purifier->clean($inbox->message_content));
+            if($inbox->threads->count() > 0) {
+                $inbox->threads = $this->processed($inbox->threads);
+            }
         });
 
         return $inboxes;
