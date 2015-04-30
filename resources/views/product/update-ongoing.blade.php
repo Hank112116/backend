@@ -11,10 +11,7 @@
 
 @section('content')
 	<div class="page-header">
-	    <h1>
-	        <i class="fa fa-copy"></i>
-	        PRPDUCT EDIT
-	    </h1>
+	    <h1><i class="fa fa-copy"></i>PRPDUCT EDIT</h1>
 	</div>
             
     <div id="to-approve" class="form-container">

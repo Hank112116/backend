@@ -154,6 +154,18 @@ class User extends Eloquent
         return $this->getImagePath();
     }
 
+    public function getSocialAttribute() {
+        if($this->fb_uid) {
+            return 'facebook';
+        }
+
+        if($this->ln_uid) {
+            return 'linkedin';
+        }
+
+        return '';
+    }
+
     public function isExpert()
     {
         return $this->user_type == static::TYPE_EXPERT;

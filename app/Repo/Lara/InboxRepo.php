@@ -74,7 +74,7 @@ class InboxRepo implements InboxInterface {
                 break;
         }
 
-        return processed($this->inbox
+        return $this->processed($this->inbox
             ->queryEagerLoad()
             ->queryTopic()
             ->whereIn($where_column, $ids)

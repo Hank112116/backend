@@ -77,7 +77,8 @@
                 @if($user->isToBeExpert())
                 <br/>
                 <span class="color-info">
-                    <i class="fa fa-exclamation-triangle fa-fw"></i> Pending to be expert
+                    <i class="fa fa-exclamation-triangle fa-fw"></i>
+                    Pending to be expert
                 </span>
                 @endif
             </label>

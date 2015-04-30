@@ -1,11 +1,9 @@
 
 <!-- Image Gallery -->
 <div class="form-group">
-
     <div class="col-md-3">
         <label for="cover">Cover Gallery</label>
     </div>
-
     <div class="col-md-8">
         Please upload image with 16:10 ratio, or the thumb image will be transform automatically
     </div>
@@ -42,7 +40,6 @@
 <!-- Solution Owner Switch Block -->
 <div class="form-group">
     <label for="member" class="col-md-3">Solution Owner</label>
-
     <div id="owner-selector" class="col-md-5"
          data-user = '{!! $solution->user->toBasicJson() !!}'>
     </div>
@@ -54,9 +51,7 @@
     <label for="category" class="col-md-3">Category</label>
 
     <div class="col-md-4 category-list-wrapper">
-        <div id="main-category" class="selected-category">
-
-        </div>
+        <div id="main-category" class="selected-category"></div>
 
         <ul id='main-category-options' class="category-options">
             @foreach($category_options['main'] as $mc)

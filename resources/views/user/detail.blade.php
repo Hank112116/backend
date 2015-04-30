@@ -35,7 +35,14 @@
 
 			<div class="data-group">
 			  <span class="label">EMail</span>
-			  <span class="content">{!! $user->email !!}</span>
+			  <span class="content">
+				  {!! $user->email !!}
+				  @if('facebook' === $user->social)
+					  <i class="fa fa-facebook-square"></i>
+				  @elseif('linkedin' === $user->social)
+					  <i class="fa fa-linkedin-square"></i>
+				  @endif
+			  </span>
 			</div>
 
 			<div class="data-group group-half">

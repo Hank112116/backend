@@ -57,7 +57,14 @@
                     </td>
 
                     <td>{!! $user->textType() !!}</td>
-                    <td class="table--user-mail">{!! $user->email !!}</td>
+                    <td class="table--user-mail">
+                        {!! $user->email !!}
+                        @if('facebook' === $user->social)
+                            <i class="fa fa-facebook-square"></i>
+                        @elseif('linkedin' === $user->social)
+                            <i class="fa fa-linkedin-square"></i>
+                        @endif
+                    </td>
 
                     <td>{!! $user->country !!}<br/>{!! $user->city !!}</td>
 
@@ -77,12 +84,18 @@
                     <td>{!! $user->textActive() !!}</td>
 
                     <td>
-                        {!! link_to_action('UserController@showDetail', 'DETAIL', $user->user_id, ['class' => 'btn-mini']) !!}
+                        {!! link_to_action(
+                                'UserController@showDetail', 'DETAIL',
+                                $user->user_id, ['class' => 'btn-mini']) !!}
 
                         @if(!$is_restricted and !$user->isExpert() and $user->isToBeExpert())
-                            {!! link_to_action('UserController@showUpdate', 'EDIT & To-Expert',$user->user_id, ['class' => 'btn-mini btn-danger']) !!}
+                            {!! link_to_action(
+                                    'UserController@showUpdate', 'EDIT & To-Expert',
+                                    $user->user_id, ['class' => 'btn-mini btn-danger']) !!}
                         @else
-                            {!! link_to_action('UserController@showUpdate', 'EDIT',$user->user_id, ['class' => 'btn-mini']) !!}
+                            {!! link_to_action(
+                                    'UserController@showUpdate', 'EDIT',
+                                    $user->user_id, ['class' => 'btn-mini']) !!}
                         @endif
                     </td>
                 </tr>
