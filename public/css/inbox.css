@@ -6246,28 +6246,28 @@ body.stop-scrolling {
 /* line 72, ../../front/sass/pages/inbox/_main.scss */
 .inbox-content,
 .inbox-thread-content {
-  line-height: 1.4em;
+  height: auto;
   padding: 15px 30px 50px;
   overflow: hidden;
-  max-height: 10em;
+  line-height: 1.4em;
   -webkit-transition: max-height 1s;
   transition: max-height 1s;
 }
 
-/* line 84, ../../front/sass/pages/inbox/_main.scss */
+/* line 81, ../../front/sass/pages/inbox/_main.scss */
 .inbox-content:hover,
 .inbox-thread-content:hover {
   max-height: 200em;
 }
 
-/* line 89, ../../front/sass/pages/inbox/_main.scss */
+/* line 86, ../../front/sass/pages/inbox/_main.scss */
 .inbox-threads {
   width: 650px;
   margin-top: 20px;
   margin-left: 99px;
 }
 
-/* line 95, ../../front/sass/pages/inbox/_main.scss */
+/* line 92, ../../front/sass/pages/inbox/_main.scss */
 .inbox-threads-info {
   text-align: right;
   color: #fff;
@@ -6279,14 +6279,14 @@ body.stop-scrolling {
   cursor: pointer;
 }
 
-/* line 106, ../../front/sass/pages/inbox/_main.scss */
+/* line 103, ../../front/sass/pages/inbox/_main.scss */
 .inbox-threads-info-count,
 .inbox-threads-info-latest {
   display: inline-block;
   font-size: 10px;
   margin-right: 40px;
 }
-/* line 112, ../../front/sass/pages/inbox/_main.scss */
+/* line 109, ../../front/sass/pages/inbox/_main.scss */
 .inbox-threads-info-count .inbox-threads-info-value,
 .inbox-threads-info-latest .inbox-threads-info-value {
   padding: 0 5px;
@@ -6294,14 +6294,14 @@ body.stop-scrolling {
   font-weight: lighter;
 }
 
-/* line 119, ../../front/sass/pages/inbox/_main.scss */
+/* line 116, ../../front/sass/pages/inbox/_main.scss */
 .inbox-threads-info-expand {
   display: inline-block;
   font-size: 1.2em;
   padding: 0 10px;
 }
 
-/* line 125, ../../front/sass/pages/inbox/_main.scss */
+/* line 122, ../../front/sass/pages/inbox/_main.scss */
 .inbox-thread {
   position: relative;
   margin-bottom: 40px;
@@ -6310,7 +6310,7 @@ body.stop-scrolling {
   border-radius: 5px;
 }
 
-/* line 133, ../../front/sass/pages/inbox/_main.scss */
+/* line 130, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender, .inbox-thread-sender, .inbox-receiver, .inbox-thread-receiver {
   position: absolute;
   top: -20px;
@@ -6319,7 +6319,7 @@ body.stop-scrolling {
   border-radius: 22px;
 }
 
-/* line 141, ../../front/sass/pages/inbox/_main.scss */
+/* line 138, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender-icon, .inbox-receiver-icon {
   position: absolute;
   top: 0px;
@@ -6330,74 +6330,74 @@ body.stop-scrolling {
   color: rgba(164, 57, 85, 0.3);
 }
 
-/* line 151, ../../front/sass/pages/inbox/_main.scss */
+/* line 148, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender {
   left: -15px;
   padding: 0px 50px 0px 0px;
 }
 
-/* line 157, ../../front/sass/pages/inbox/_main.scss */
+/* line 154, ../../front/sass/pages/inbox/_main.scss */
 .inbox-thread-sender {
   left: -15px;
   padding: 0px 15px 0px 0px;
 }
 
-/* line 163, ../../front/sass/pages/inbox/_main.scss */
+/* line 160, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender-image {
   float: left;
 }
 
-/* line 168, ../../front/sass/pages/inbox/_main.scss */
+/* line 165, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender-name {
   padding-left: 45px;
   line-height: 35px;
 }
 
-/* line 173, ../../front/sass/pages/inbox/_main.scss */
+/* line 170, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender-id {
   color: #88A65E;
 }
 
-/* line 177, ../../front/sass/pages/inbox/_main.scss */
+/* line 174, ../../front/sass/pages/inbox/_main.scss */
 .inbox-sender-icon {
   right: 0px;
 }
 
-/* line 182, ../../front/sass/pages/inbox/_main.scss */
+/* line 179, ../../front/sass/pages/inbox/_main.scss */
 .inbox-receiver {
   right: -15px;
   padding: 0px 0px 0px 50px;
 }
 
-/* line 188, ../../front/sass/pages/inbox/_main.scss */
+/* line 185, ../../front/sass/pages/inbox/_main.scss */
 .inbox-thread-receiver {
   right: -15px;
   padding: 0px 0px 0px 15px;
 }
 
-/* line 194, ../../front/sass/pages/inbox/_main.scss */
+/* line 191, ../../front/sass/pages/inbox/_main.scss */
 .inbox-receiver-image {
   float: right;
 }
 
-/* line 199, ../../front/sass/pages/inbox/_main.scss */
+/* line 196, ../../front/sass/pages/inbox/_main.scss */
 .inbox-receiver-name {
   text-align: right;
   padding-right: 45px;
   line-height: 35px;
 }
 
-/* line 205, ../../front/sass/pages/inbox/_main.scss */
+/* line 202, ../../front/sass/pages/inbox/_main.scss */
 .inbox-receiver-id {
   color: #88A65E;
 }
 
-/* line 209, ../../front/sass/pages/inbox/_main.scss */
+/* line 206, ../../front/sass/pages/inbox/_main.scss */
 .inbox-receiver-icon {
   left: 0px;
 }
 
-/* line 214, ../../front/sass/pages/inbox/_main.scss */
+/* line 211, ../../front/sass/pages/inbox/_main.scss */
 .inbox-thread-meta {
   text-align: right;
   padding: 20px 10px 5px 0px;

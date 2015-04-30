@@ -71,13 +71,10 @@ $inbox-sender-icon-color: #A43955;
 
 .inbox-content,
 .inbox-thread-content {
-  line-height: 1.4em;
-
+  height: auto;
   padding: 15px 30px 50px;
-
   overflow: hidden;
-  max-height: 10em;
-
+  line-height: 1.4em;
   @include transition(max-height 1s);
 }
 

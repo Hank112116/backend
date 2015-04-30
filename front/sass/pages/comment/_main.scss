@@ -93,11 +93,9 @@ $comment-main-color: #00aecc;
 .comment-content,
 .comment-thread-content {
   line-height: 1.4em;
-
   padding: 15px 30px 50px;
-
+  height: auto;
   overflow: hidden;
-  max-height: 10em;
 
   @include transition(max-height 1s);
 }
