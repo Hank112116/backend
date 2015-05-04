@@ -1,9 +1,15 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 var moment = require("moment-timezone");
 
@@ -12,43 +18,51 @@ var Moment = (function () {
 		_classCallCheck(this, Moment);
 	}
 
-	_createClass(Moment, null, {
-		ago: {
-			value: function ago(time) {
-				return moment.tz(time, "America/Los_Angeles").fromNow();
-			}
-		},
-		time: {
-			value: function time(date) {
-				return moment(date).format("YYYY, MMM D, HH:mm");
-			}
-		},
-		timeTW: {
-			value: function timeTW(date) {
-				return moment.tz(date, "America/Los_Angeles").tz("Asia/Taipei").format("YYYY, MMM D, HH:mm");
-			}
+	_createClass(Moment, null, [{
+		key: "ago",
+		value: function ago(time) {
+			return moment.tz(time, "America/Los_Angeles").fromNow();
 		}
-	});
+	}, {
+		key: "time",
+		value: function time(date) {
+			return moment(date).format("YYYY, MMM D, HH:mm");
+		}
+	}, {
+		key: "timeTW",
+		value: function timeTW(date) {
+			return moment.tz(date, "America/Los_Angeles").tz("Asia/Taipei").format("YYYY, MMM D, HH:mm");
+		}
+	}]);
 
 	return Moment;
 })();
 
-module.exports = Moment;
+exports["default"] = Moment;
+module.exports = exports["default"];
 
 },{"moment-timezone":6}],2:[function(require,module,exports){
 "use strict";
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } };
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var Moment = _interopRequire(require("./libs/Moment"));
+var _Moment = require("./libs/Moment");
 
-var datePicker = _interopRequireWildcard(require("./modules/date-picker"));
+var _Moment2 = _interopRequireDefault(_Moment);
 
-var searchList = _interopRequireWildcard(require("./modules/search-list"));
+var _import = require("./modules/date-picker");
 
-window.Moment = Moment;
+var datePicker = _interopRequireWildcard(_import);
+
+var _import2 = require("./modules/search-list");
+
+var searchList = _interopRequireWildcard(_import2);
+
+"use strict";
+
+window.Moment = _Moment2["default"];
 
 $(function () {
     datePicker.init();
@@ -56,17 +70,17 @@ $(function () {
 
     $("[data-ago]").each(function (index, block) {
         var $self = $(block);
-        $self.html(Moment.ago($self.data("ago")));
+        $self.html(_Moment2["default"].ago($self.data("ago")));
     });
 });
 
 },{"./libs/Moment":1,"./modules/date-picker":3,"./modules/search-list":4}],3:[function(require,module,exports){
 "use strict";
 
-exports.init = init;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.init = init;
 "use strict";
 
 function init() {
@@ -88,10 +102,10 @@ function init() {
 },{}],4:[function(require,module,exports){
 "use strict";
 
-exports.init = init;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.init = init;
 "use strict";
 
 function init() {

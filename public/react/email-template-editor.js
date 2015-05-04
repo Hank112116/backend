@@ -1,19 +1,21 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
 /**
  * @jsx React.DOM
  */
 
-var superagent = _interopRequire(require("superagent"));
+var _superagent = require('superagent');
 
-var React = require("react");
-var Main = React.createFactory(require("./email-template-editor/components/Main.react"));
-var element = document.getElementById("email-template-editor");
+var _superagent2 = _interopRequireDefault(_superagent);
 
-window.superagent = superagent;
+var React = require('react');
+var Main = React.createFactory(require('./email-template-editor/components/Main.react'));
+var element = document.getElementById('email-template-editor');
+
+window.superagent = _superagent2['default'];
 
 React.render(Main({ message: element.innerHTML }), element);
 
@@ -22,11 +24,11 @@ React.render(Main({ message: element.innerHTML }), element);
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var Editor = React.createClass({ displayName: "Editor",
+var Editor = React.createClass({ displayName: 'Editor',
     handleChange: function handleChange(event) {
         this.setState({
             message: event.target.value
@@ -40,8 +42,8 @@ var Editor = React.createClass({ displayName: "Editor",
     },
 
     render: function render() {
-        return React.DOM.textarea({ id: "message", name: "message", ref: "editor",
-            className: "form-control", rows: "20",
+        return React.DOM.textarea({ id: 'message', name: 'message', ref: 'editor',
+            className: 'form-control', rows: '20',
             value: this.state.message,
             onChange: this.handleChange });
     }
@@ -50,25 +52,27 @@ var Editor = React.createClass({ displayName: "Editor",
 module.exports = Editor;
 
 },{"react":160}],3:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
 /**
  * @jsx React.DOM
  */
 
-var superagent = _interopRequire(require("superagent"));
+var _superagent = require('superagent');
 
-var React = require("react");
-var Editor = React.createFactory(require("./Editor.react"));
-var Preview = React.createFactory(require("./Preview.react"));
+var _superagent2 = _interopRequireDefault(_superagent);
 
-var Main = React.createClass({ displayName: "Main",
+var React = require('react');
+var Editor = React.createFactory(require('./Editor.react'));
+var Preview = React.createFactory(require('./Preview.react'));
+
+var Main = React.createClass({ displayName: 'Main',
     componentDidMount: function componentDidMount() {
         var _this = this;
 
-        superagent.get("/mail/template").end(function (err, res) {
+        _superagent2['default'].get('/mail/template').end(function (err, res) {
             _this.setState({
                 show: false,
                 template: res.text
@@ -96,9 +100,9 @@ var Main = React.createClass({ displayName: "Main",
     },
 
     render: function render() {
-        var show_preview_classes = "show-preview " + (this.state.show ? "active" : "");
+        var show_preview_classes = 'show-preview ' + (this.state.show ? 'active' : '');
 
-        return React.DOM.div(null, React.DOM.div({ className: show_preview_classes, onClick: this.switchShowPreview }, React.DOM.i({ className: "fa fa-eye" })), Editor({
+        return React.DOM.div(null, React.DOM.div({ className: show_preview_classes, onClick: this.switchShowPreview }, React.DOM.i({ className: 'fa fa-eye' })), Editor({
             message: this.props.message,
             onChangeEdition: this.onChangeEdition }), Preview({ show: this.state.show, render: this.state.render, template: this.state.template }));
     }
@@ -111,33 +115,23 @@ module.exports = Main;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var Preview = React.createClass({ displayName: "Preview",
-    render: (function (_render) {
-        var _renderWrapper = function render() {
-            return _render.apply(this, arguments);
-        };
-
-        _renderWrapper.toString = function () {
-            return _render.toString();
-        };
-
-        return _renderWrapper;
-    })(function () {
+var Preview = React.createClass({ displayName: 'Preview',
+    render: function render() {
         if (!this.props.show) {
             return null;
         }
 
-        var render = this.props.render.replace(/\{break\}/g, "<br/>").replace(/(\{.+\})/g, "<i class=\"preview-tag\">$1</i>");
+        var render = this.props.render.replace(/\{break\}/g, '<br/>').replace(/(\{.+\})/g, '<i class="preview-tag">$1</i>');
 
-        var content = this.props.template.replace("{content}", render);
+        var content = this.props.template.replace('{content}', render);
 
-        return React.DOM.div({ className: "preview-message",
+        return React.DOM.div({ className: 'preview-message',
             dangerouslySetInnerHTML: { __html: content } });
-    })
+    }
 });
 
 module.exports = Preview;

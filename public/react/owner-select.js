@@ -1,9 +1,15 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 var MemberSelector = (function () {
     function MemberSelector() {
@@ -12,76 +18,78 @@ var MemberSelector = (function () {
         this.timer = 0;
     }
 
-    _createClass(MemberSelector, {
-        fireTimeoutSelector: {
-            value: function fireTimeoutSelector(user_id, callback) {
-                var _this = this;
+    _createClass(MemberSelector, [{
+        key: "fireTimeoutSelector",
+        value: function fireTimeoutSelector(user_id, callback) {
+            var _this = this;
 
-                if (!/\d+/.test(user_id)) {
-                    return;
-                }
-
-                clearTimeout(this.timer);
-                this.timer = setTimeout(function () {
-                    return _this.fireSelector(user_id, callback);
-                }, 2000);
+            if (!/\d+/.test(user_id)) {
+                return;
             }
-        },
-        fireSelector: {
-            value: function fireSelector(user_id, callback) {
-                var _this = this;
 
-                $.getJSON("/user/api/search/" + user_id, function (feedback) {
-                    return _this.onSelectSuccess(feedback, user_id, callback);
-                });
-            }
-        },
-        onSelectSuccess: {
-            value: function onSelectSuccess(feedback, user_id, callback) {
-                var user = feedback.ok === "ok" ? feedback : { user_id: "" };
+            clearTimeout(this.timer);
+            this.timer = setTimeout(function () {
+                return _this.fireSelector(user_id, callback);
+            }, 2000);
+        }
+    }, {
+        key: "fireSelector",
+        value: function fireSelector(user_id, callback) {
+            var _this2 = this;
 
-                callback(user);
+            $.getJSON("/user/api/search/" + user_id, function (feedback) {
+                return _this2.onSelectSuccess(feedback, user_id, callback);
+            });
+        }
+    }, {
+        key: "onSelectSuccess",
+        value: function onSelectSuccess(feedback, user_id, callback) {
+            var user = feedback.ok === "ok" ? feedback : { user_id: "" };
 
-                if (feedback.ok !== "ok") {
-                    Notifier.showTimedMessage("No member with id [ " + user_id + " ]", "warning", 3);
-                }
+            callback(user);
+
+            if (feedback.ok !== "ok") {
+                Notifier.showTimedMessage("No member with id [ " + user_id + " ]", "warning", 3);
             }
         }
-    });
+    }]);
 
     return MemberSelector;
 })();
 
-module.exports = MemberSelector;
+exports["default"] = MemberSelector;
+module.exports = exports["default"];
 
 },{}],2:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var OwnerSelector = React.createFactory(require("./owner-select/components/OwnerSelector.react"));
+var React = require('react');
+var OwnerSelector = React.createFactory(require('./owner-select/components/OwnerSelector.react'));
 
-var user = $("#owner-selector").data("user");
+var user = $('#owner-selector').data('user');
 
-React.render(OwnerSelector({ user: user }), document.getElementById("owner-selector"));
+React.render(OwnerSelector({ user: user }), document.getElementById('owner-selector'));
 
 },{"./owner-select/components/OwnerSelector.react":4,"react":161}],3:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _MemberSelector = require('../../../js/libs/MemberSelector');
+
+var _MemberSelector2 = _interopRequireDefault(_MemberSelector);
 
 /**
   * @jsx React.DOM
   */
 
-var React = require("react");
+var React = require('react');
 
-var MemberSelector = _interopRequire(require("../../../js/libs/MemberSelector"));
-
-var OwnerInput = React.createClass({ displayName: "OwnerInput",
+var OwnerInput = React.createClass({ displayName: 'OwnerInput',
 	getInitialState: function getInitialState() {
 		return {
 			user_id: this.props.user_id,
@@ -100,11 +108,11 @@ var OwnerInput = React.createClass({ displayName: "OwnerInput",
 
 		this.setState({ user_id: user_id });
 
-		new MemberSelector().fireTimeoutSelector(user_id, this.props.switchOwner);
+		new _MemberSelector2['default']().fireTimeoutSelector(user_id, this.props.switchOwner);
 	},
 
 	render: function render() {
-		return React.DOM.input({ type: "text", id: "member", name: "user_id", ref: "user",
+		return React.DOM.input({ type: 'text', id: 'member', name: 'user_id', ref: 'user',
 			value: this.state.user_id,
 			onChange: this.switchOwner });
 	}
@@ -117,19 +125,19 @@ module.exports = OwnerInput;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var OwnerWrapper = React.createFactory(require("./OwnerWrapper.react"));
-var OwnerInput = React.createFactory(require("./OwnerInput.react"));
+var React = require('react');
+var OwnerWrapper = React.createFactory(require('./OwnerWrapper.react'));
+var OwnerInput = React.createFactory(require('./OwnerInput.react'));
 
-var OwnerSelector = React.createClass({ displayName: "OwnerSelector",
+var OwnerSelector = React.createClass({ displayName: 'OwnerSelector',
 	getInitialState: function getInitialState() {
 		if (!this.props.user) {
 			return { user: {} };
 		}
 
-		var user = typeof this.props.user === "string" ? JSON.parse(this.props.user) : this.props.user;
+		var user = typeof this.props.user === 'string' ? JSON.parse(this.props.user) : this.props.user;
 
 		return {
 			user: user
@@ -152,11 +160,11 @@ module.exports = OwnerSelector;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var OwnerWrapper = React.createClass({ displayName: "OwnerWrapper",
+var OwnerWrapper = React.createClass({ displayName: 'OwnerWrapper',
 	render: function render() {
 		var user = this.props.user;
 
@@ -165,10 +173,10 @@ var OwnerWrapper = React.createClass({ displayName: "OwnerWrapper",
 		}
 
 		var bg = {
-			backgroundImage: "url(" + user.image + ")"
+			backgroundImage: 'url(' + user.image + ')'
 		};
 
-		return React.DOM.div({ className: "owner-wrapper" }, React.DOM.div({ className: "owner-image-wrapper", style: bg }), React.DOM.div({ className: "owner-info-wrapper" }, React.DOM.div(null, React.DOM.a({ href: user.link, target: "_blank" }, user.full_name), React.DOM.br(null), user.is_expert ? "Expert" : "Creator"), React.DOM.div({ className: user.is_expert ? "" : "hide" }, user.position, "  at  ", user.company)));
+		return React.DOM.div({ className: 'owner-wrapper' }, React.DOM.div({ className: 'owner-image-wrapper', style: bg }), React.DOM.div({ className: 'owner-info-wrapper' }, React.DOM.div(null, React.DOM.a({ href: user.link, target: '_blank' }, user.full_name), React.DOM.br(null), user.is_expert ? 'Expert' : 'Creator'), React.DOM.div({ className: user.is_expert ? '' : 'hide' }, user.position, '  at  ', user.company)));
 	}
 });
 

@@ -1,9 +1,13 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
 
-var superagent = _interopRequire(require("superagent"));
+var _superagent = require("superagent");
+
+var _superagent2 = _interopRequireDefault(_superagent);
+
+"use strict";
 
 var frontUrl = document.querySelector("[data-front-url]").dataset.frontUrl,
     destination = document.querySelector("[name=destination]");
@@ -13,7 +17,7 @@ document.querySelector("#test").addEventListener("click", function () {
 });
 
 document.querySelector("#save").addEventListener("click", function () {
-    superagent.post("/landing/update-hello-redirect").send({ destination: destination.value }).set("Accept", "application/json").end(function (err, res) {
+    _superagent2["default"].post("/landing/update-hello-redirect").send({ destination: destination.value }).set("Accept", "application/json").end(function (err, res) {
         return Notifier.showTimedMessage("Update success", "success", 5);
     });
 });

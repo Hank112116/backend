@@ -3,33 +3,33 @@
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var BugReporter = React.createFactory(require("./bug-reporter/components/BugReporter.react"));
+var React = require('react');
+var BugReporter = React.createFactory(require('./bug-reporter/components/BugReporter.react'));
 
-React.render(BugReporter(null), document.getElementById("bug-reporter"));
+React.render(BugReporter(null), document.getElementById('bug-reporter'));
 
 },{"./bug-reporter/components/BugReporter.react":2,"react":159}],2:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var Switcher = React.createFactory(require("./Switcher.react"));
+var React = require('react');
+var Switcher = React.createFactory(require('./Switcher.react'));
 
-var BugReporter = React.createClass({ displayName: "BugReporter",
+var BugReporter = React.createClass({ displayName: 'BugReporter',
 	getInitialState: function getInitialState() {
 		return {
 			on: true,
-			bug: "",
-			report: ""
+			bug: '',
+			report: ''
 		};
 	},
 
-	"switch": function _switch() {
+	'switch': function _switch() {
 		this.setState({
 			on: !this.state.on
 		});
@@ -40,14 +40,14 @@ var BugReporter = React.createClass({ displayName: "BugReporter",
 			return null;
 		}
 
-		var report = this.state.report.replace(/\n/gi, "<br/>");
-		return React.DOM.div({ className: "bug-report", dangerouslySetInnerHTML: { __html: report } });
+		var report = this.state.report.replace(/\n/gi, '<br/>');
+		return React.DOM.div({ className: 'bug-report', dangerouslySetInnerHTML: { __html: report } });
 	},
 
 	handleChange: function handleChange(event) {
 		var _this = this;
 
-		$.post("/engineer/bug-decode", { bug: event.target.value }, function (result) {
+		$.post('/engineer/bug-decode', { bug: event.target.value }, function (result) {
 			return _this.setState({ report: result.report });
 		});
 
@@ -57,8 +57,8 @@ var BugReporter = React.createClass({ displayName: "BugReporter",
 	},
 
 	render: function render() {
-		return React.DOM.div(null, Switcher({ onSwitch: this["switch"], on: this.state.on }), React.DOM.textarea({ className: "bug-content",
-			ref: "bug",
+		return React.DOM.div(null, Switcher({ onSwitch: this['switch'], on: this.state.on }), React.DOM.textarea({ className: 'bug-content',
+			ref: 'bug',
 			value: this.state.bug,
 			onChange: this.handleChange }), this.genReport());
 	}
@@ -71,15 +71,15 @@ module.exports = BugReporter;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var Switcher = React.createClass({ displayName: "Switcher",
+var Switcher = React.createClass({ displayName: 'Switcher',
 	render: function render() {
-		var switchClass = "onoffswitch-label" + (this.props.on ? " active" : "");
+		var switchClass = 'onoffswitch-label' + (this.props.on ? ' active' : '');
 
-		return React.DOM.div({ className: "onoffswitch" }, React.DOM.label({ className: switchClass, onClick: this.props.onSwitch }, React.DOM.span({ className: "onoffswitch-inner" }), React.DOM.span({ className: "onoffswitch-switch" })));
+		return React.DOM.div({ className: 'onoffswitch' }, React.DOM.label({ className: switchClass, onClick: this.props.onSwitch }, React.DOM.span({ className: 'onoffswitch-inner' }), React.DOM.span({ className: 'onoffswitch-switch' })));
 	}
 });
 

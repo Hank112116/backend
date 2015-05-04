@@ -16,7 +16,6 @@
 
         <div>
             @if($solution->isOngoing() and !$is_restricted)
-
                 @if($solution->isOffShelf())
                     <a href="{!! action('SolutionController@onShelf', $solution->solution_id) !!}"
                         class="btn-mini btn-flat-green">

@@ -3,11 +3,11 @@
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var Cropper = React.createFactory(require("./cropper/components/Cropper.react"));
-var element = document.getElementById("cropper");
+var React = require('react');
+var Cropper = React.createFactory(require('./cropper/components/Cropper.react'));
+var element = document.getElementById('cropper');
 
 React.render(Cropper({ image: element.dataset.image }), element);
 
@@ -16,15 +16,15 @@ React.render(Cropper({ image: element.dataset.image }), element);
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var ResizeSpot = React.createFactory(require("./ResizeSpot.react"));
+var React = require('react');
+var ResizeSpot = React.createFactory(require('./ResizeSpot.react'));
 
-var DataUrlGenerator = require("../utils/DataUrlGenerator");
-var ResetImageData = require("../utils/ResetImageData");
+var DataUrlGenerator = require('../utils/DataUrlGenerator');
+var ResetImageData = require('../utils/ResetImageData');
 
-var Cropper = React.createClass({ displayName: "Cropper",
+var Cropper = React.createClass({ displayName: 'Cropper',
 	handleSwitchResizeSpot: function handleSwitchResizeSpot(point) {
 		if (point === this.state.point) {
 			return;
@@ -155,16 +155,16 @@ var Cropper = React.createClass({ displayName: "Cropper",
 			top: this.state.container_top,
 			left: this.state.container_left
 		},
-		    resize_container_classes = "resize-container " + (this.state.is_resizing ? "active" : "");
+		    resize_container_classes = 'resize-container ' + (this.state.is_resizing ? 'active' : '');
 
-		return React.DOM.div({ className: "component",
-			ref: "component",
+		return React.DOM.div({ className: 'component',
+			ref: 'component',
 			onMouseDown: this.handleStartResize,
 			onMouseMove: this.handleResize,
 			onMouseUp: this.handleEndResize,
-			onDoubleClick: this.handleCrop }, React.DOM.div({ className: "overlay", ref: "overlay" }, React.DOM.div({ className: "overlay-inner" })), React.DOM.div({ className: resize_container_classes,
-			ref: "container",
-			style: position }, ResizeSpot({ point: "nw", onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: "ne", onSwitchResizeSpot: this.handleSwitchResizeSpot }), React.DOM.img({ className: "resize-image", src: this.state.image }), ResizeSpot({ point: "sw", onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: "se", onSwitchResizeSpot: this.handleSwitchResizeSpot })));
+			onDoubleClick: this.handleCrop }, React.DOM.div({ className: 'overlay', ref: 'overlay' }, React.DOM.div({ className: 'overlay-inner' })), React.DOM.div({ className: resize_container_classes,
+			ref: 'container',
+			style: position }, ResizeSpot({ point: 'nw', onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: 'ne', onSwitchResizeSpot: this.handleSwitchResizeSpot }), React.DOM.img({ className: 'resize-image', src: this.state.image }), ResizeSpot({ point: 'sw', onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: 'se', onSwitchResizeSpot: this.handleSwitchResizeSpot })));
 	}
 });
 
@@ -175,14 +175,14 @@ module.exports = Cropper;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var ResizeSpot = React.createClass({ displayName: "ResizeSpot",
+var ResizeSpot = React.createClass({ displayName: 'ResizeSpot',
 
 	render: function render() {
-		var classes = "resize-handle resize-handle-" + this.props.point;
+		var classes = 'resize-handle resize-handle-' + this.props.point;
 
 		return React.DOM.span({ className: classes,
 			onMouseOver: this.props.onSwitchResizeSpot.bind(null, this.props.point) });
@@ -192,7 +192,7 @@ var ResizeSpot = React.createClass({ displayName: "ResizeSpot",
 module.exports = ResizeSpot;
 
 },{"react":161}],4:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var DataUrlGenerator = {
   imageUrlToDataUrl: function imageUrlToDataUrl(image_url, image_opt, clip_opt, callback) {
@@ -209,27 +209,27 @@ var DataUrlGenerator = {
   },
 
   imageObjToDataUrl: function imageObjToDataUrl(image_obj, image_opt, clip_opt) {
-    var cv = document.createElement("canvas");
+    var cv = document.createElement('canvas');
 
     cv.width = image_opt.width;
     cv.height = image_opt.height;
 
     if (!clip_opt) {
 
-      cv.getContext("2d").drawImage(image_obj, image_opt.x, image_opt.y, image_opt.width, image_opt.height);
+      cv.getContext('2d').drawImage(image_obj, image_opt.x, image_opt.y, image_opt.width, image_opt.height);
     } else {
 
-      cv.getContext("2d").drawImage(image_obj, clip_opt.x, clip_opt.y, clip_opt.width, clip_opt.height, image_opt.x, image_opt.y, image_opt.width, image_opt.height);
+      cv.getContext('2d').drawImage(image_obj, clip_opt.x, clip_opt.y, clip_opt.width, clip_opt.height, image_opt.x, image_opt.y, image_opt.width, image_opt.height);
     }
 
-    return cv.toDataURL("image/png");
+    return cv.toDataURL('image/png');
   }
 };
 
 module.exports = DataUrlGenerator;
 
 },{}],5:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var ResetImageData = {
 	gen: function gen(image_data, mouse_data, point) {
@@ -237,19 +237,19 @@ var ResetImageData = {
 		var spot;
 
 		switch (point) {
-			case "nw":
+			case 'nw':
 				spot = this.getNorthWestSpot(image_data, mouse_data);
 				break;
 
-			case "ne":
+			case 'ne':
 				spot = this.getNorthEestSpot(image_data, mouse_data);
 				break;
 
-			case "se":
+			case 'se':
 				spot = this.getSouthEastSpot(image_data, mouse_data);
 				break;
 
-			case "sw":
+			case 'sw':
 				spot = this.getSouthWestSpot(image_data, mouse_data);
 				break;
 		}

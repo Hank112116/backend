@@ -152,7 +152,7 @@ class Solution extends Eloquent
     private function isStatus($status)
     {
         foreach ($status as $key => $status_flag) {
-            if ($this->getAttributeValue($key) !== $status_flag) {
+            if ($this->getAttributeValue($key) != $status_flag) {
                 return false;
             }
         }

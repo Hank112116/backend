@@ -1,9 +1,15 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 var moment = require("moment-timezone");
 
@@ -12,36 +18,36 @@ var Moment = (function () {
 		_classCallCheck(this, Moment);
 	}
 
-	_createClass(Moment, null, {
-		ago: {
-			value: function ago(time) {
-				return moment.tz(time, "America/Los_Angeles").fromNow();
-			}
-		},
-		time: {
-			value: function time(date) {
-				return moment(date).format("YYYY, MMM D, HH:mm");
-			}
-		},
-		timeTW: {
-			value: function timeTW(date) {
-				return moment.tz(date, "America/Los_Angeles").tz("Asia/Taipei").format("YYYY, MMM D, HH:mm");
-			}
+	_createClass(Moment, null, [{
+		key: "ago",
+		value: function ago(time) {
+			return moment.tz(time, "America/Los_Angeles").fromNow();
 		}
-	});
+	}, {
+		key: "time",
+		value: function time(date) {
+			return moment(date).format("YYYY, MMM D, HH:mm");
+		}
+	}, {
+		key: "timeTW",
+		value: function timeTW(date) {
+			return moment.tz(date, "America/Los_Angeles").tz("Asia/Taipei").format("YYYY, MMM D, HH:mm");
+		}
+	}]);
 
 	return Moment;
 })();
 
-module.exports = Moment;
+exports["default"] = Moment;
+module.exports = exports["default"];
 
 },{"moment-timezone":39}],2:[function(require,module,exports){
 "use strict";
 
-exports.alert = alert;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.alert = alert;
 "use strict";
 
 var sweetAlert = require("../vendor/sweetalert/sweetalert.es6.js");
@@ -60,44 +66,49 @@ function alert(param) {
 }
 
 },{"../vendor/sweetalert/sweetalert.es6.js":11}],3:[function(require,module,exports){
-"use strict";
+'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 var defaultParams = {
-  title: "",
-  text: "",
+  title: '',
+  text: '',
   type: null,
   allowOutsideClick: false,
   showConfirmButton: true,
   showCancelButton: false,
   closeOnConfirm: true,
   closeOnCancel: true,
-  confirmButtonText: "OK",
-  confirmButtonColor: "#AEDEF4",
-  cancelButtonText: "Cancel",
+  confirmButtonText: 'OK',
+  confirmButtonColor: '#AEDEF4',
+  cancelButtonText: 'Cancel',
   imageUrl: null,
   imageSize: null,
   timer: null,
-  customClass: "",
+  customClass: '',
   html: false,
   animation: true,
   allowEscapeKey: true,
-  inputType: "text",
-  inputPlaceholder: ""
+  inputType: 'text',
+  inputPlaceholder: ''
 };
 
-module.exports = defaultParams;
+exports['default'] = defaultParams;
+module.exports = exports['default'];
 
 },{}],4:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var colorLuminance = require("./utils").colorLuminance;
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-var getModal = require("./handle-swal-dom").getModal;
+var _colorLuminance = require('./utils');
 
-var _handleDom = require("./handle-dom");
+var _getModal = require('./handle-swal-dom');
 
-var hasClass = _handleDom.hasClass;
-var isDescendant = _handleDom.isDescendant;
+var _hasClass$isDescendant = require('./handle-dom');
 
 /*
  * User clicked on "Confirm"/"OK" or "Cancel"
@@ -106,18 +117,18 @@ var handleButton = function handleButton(event, params, modal) {
   var e = event || window.event;
   var target = e.target || e.srcElement;
 
-  var targetedConfirm = target.className.indexOf("confirm") !== -1;
-  var targetedOverlay = target.className.indexOf("sweet-overlay") !== -1;
-  var modalIsVisible = hasClass(modal, "visible");
-  var doneFunctionExists = params.doneFunction && modal.getAttribute("data-has-done-function") === "true";
+  var targetedConfirm = target.className.indexOf('confirm') !== -1;
+  var targetedOverlay = target.className.indexOf('sweet-overlay') !== -1;
+  var modalIsVisible = _hasClass$isDescendant.hasClass(modal, 'visible');
+  var doneFunctionExists = params.doneFunction && modal.getAttribute('data-has-done-function') === 'true';
 
   // Since the user can change the background-color of the confirm button programmatically,
   // we must calculate what the color should be on hover/active
   var normalColor, hoverColor, activeColor;
   if (targetedConfirm && params.confirmButtonColor) {
     normalColor = params.confirmButtonColor;
-    hoverColor = colorLuminance(normalColor, -0.04);
-    activeColor = colorLuminance(normalColor, -0.14);
+    hoverColor = _colorLuminance.colorLuminance(normalColor, -0.04);
+    activeColor = _colorLuminance.colorLuminance(normalColor, -0.14);
   }
 
   function shouldSetConfirmButtonColor(color) {
@@ -127,36 +138,36 @@ var handleButton = function handleButton(event, params, modal) {
   }
 
   switch (e.type) {
-    case "mouseover":
+    case 'mouseover':
       shouldSetConfirmButtonColor(hoverColor);
       break;
 
-    case "mouseout":
+    case 'mouseout':
       shouldSetConfirmButtonColor(normalColor);
       break;
 
-    case "mousedown":
+    case 'mousedown':
       shouldSetConfirmButtonColor(activeColor);
       break;
 
-    case "mouseup":
+    case 'mouseup':
       shouldSetConfirmButtonColor(hoverColor);
       break;
 
-    case "focus":
-      var $confirmButton = modal.querySelector("button.confirm");
-      var $cancelButton = modal.querySelector("button.cancel");
+    case 'focus':
+      var $confirmButton = modal.querySelector('button.confirm');
+      var $cancelButton = modal.querySelector('button.cancel');
 
       if (targetedConfirm) {
-        $cancelButton.style.boxShadow = "none";
+        $cancelButton.style.boxShadow = 'none';
       } else {
-        $confirmButton.style.boxShadow = "none";
+        $confirmButton.style.boxShadow = 'none';
       }
       break;
 
-    case "click":
+    case 'click':
       var clickedOnModal = modal === target;
-      var clickedOnModalChild = isDescendant(modal, target);
+      var clickedOnModalChild = _hasClass$isDescendant.isDescendant(modal, target);
 
       // Ignore click outside if allowOutsideClick is false
       if (!clickedOnModal && !clickedOnModalChild && modalIsVisible && !params.allowOutsideClick) {
@@ -167,7 +178,7 @@ var handleButton = function handleButton(event, params, modal) {
         handleConfirm(modal, params);
       } else if (doneFunctionExists && modalIsVisible || targetedOverlay) {
         handleCancel(modal, params);
-      } else if (isDescendant(modal, target) && target.tagName === "BUTTON") {
+      } else if (_hasClass$isDescendant.isDescendant(modal, target) && target.tagName === 'BUTTON') {
         sweetAlert.close();
       }
       break;
@@ -180,11 +191,11 @@ var handleButton = function handleButton(event, params, modal) {
 var handleConfirm = function handleConfirm(modal, params) {
   var callbackValue = true;
 
-  if (hasClass(modal, "show-input")) {
-    callbackValue = modal.querySelector("input").value;
+  if (_hasClass$isDescendant.hasClass(modal, 'show-input')) {
+    callbackValue = modal.querySelector('input').value;
 
     if (!callbackValue) {
-      callbackValue = "";
+      callbackValue = '';
     }
   }
 
@@ -200,8 +211,8 @@ var handleConfirm = function handleConfirm(modal, params) {
  */
 var handleCancel = function handleCancel(modal, params) {
   // Check if callback function expects a parameter (to track cancel actions)
-  var functionAsStr = String(params.doneFunction).replace(/\s/g, "");
-  var functionHandlesCancel = functionAsStr.substring(0, 9) === "function(" && functionAsStr.substring(9, 10) !== ")";
+  var functionAsStr = String(params.doneFunction).replace(/\s/g, '');
+  var functionHandlesCancel = functionAsStr.substring(0, 9) === 'function(' && functionAsStr.substring(9, 10) !== ')';
 
   if (functionHandlesCancel) {
     params.doneFunction(false);
@@ -212,47 +223,48 @@ var handleCancel = function handleCancel(modal, params) {
   }
 };
 
-module.exports = {
+exports['default'] = {
   handleButton: handleButton,
   handleConfirm: handleConfirm,
   handleCancel: handleCancel
 };
+module.exports = exports['default'];
 
 },{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],5:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 var hasClass = function hasClass(elem, className) {
-  return new RegExp(" " + className + " ").test(" " + elem.className + " ");
+  return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
 };
 
 var addClass = function addClass(elem, className) {
   if (!hasClass(elem, className)) {
-    elem.className += " " + className;
+    elem.className += ' ' + className;
   }
 };
 
 var removeClass = function removeClass(elem, className) {
-  var newClass = " " + elem.className.replace(/[\t\r\n]/g, " ") + " ";
+  var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
   if (hasClass(elem, className)) {
-    while (newClass.indexOf(" " + className + " ") >= 0) {
-      newClass = newClass.replace(" " + className + " ", " ");
+    while (newClass.indexOf(' ' + className + ' ') >= 0) {
+      newClass = newClass.replace(' ' + className + ' ', ' ');
     }
-    elem.className = newClass.replace(/^\s+|\s+$/g, "");
+    elem.className = newClass.replace(/^\s+|\s+$/g, '');
   }
 };
 
 var escapeHtml = function escapeHtml(str) {
-  var div = document.createElement("div");
+  var div = document.createElement('div');
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
 };
 
 var _show = function _show(elem) {
-  elem.style.opacity = "";
-  elem.style.display = "block";
+  elem.style.opacity = '';
+  elem.style.display = 'block';
 };
 
 var show = function show(elems) {
@@ -265,8 +277,8 @@ var show = function show(elems) {
 };
 
 var _hide = function _hide(elem) {
-  elem.style.opacity = "";
-  elem.style.display = "none";
+  elem.style.opacity = '';
+  elem.style.display = 'none';
 };
 
 var hide = function hide(elems) {
@@ -290,85 +302,65 @@ var isDescendant = function isDescendant(parent, child) {
 };
 
 var getTopMargin = function getTopMargin(elem) {
-  elem.style.left = "-9999px";
-  elem.style.display = "block";
+  elem.style.left = '-9999px';
+  elem.style.display = 'block';
 
   var height = elem.clientHeight,
       padding;
-  if (typeof getComputedStyle !== "undefined") {
+  if (typeof getComputedStyle !== 'undefined') {
     // IE 8
-    padding = parseInt(getComputedStyle(elem).getPropertyValue("padding-top"), 10);
+    padding = parseInt(getComputedStyle(elem).getPropertyValue('padding-top'), 10);
   } else {
     padding = parseInt(elem.currentStyle.padding);
   }
 
-  elem.style.left = "";
-  elem.style.display = "none";
-  return "-" + parseInt((height + padding) / 2) + "px";
+  elem.style.left = '';
+  elem.style.display = 'none';
+  return '-' + parseInt((height + padding) / 2) + 'px';
 };
 
 var fadeIn = function fadeIn(elem, interval) {
   if (+elem.style.opacity < 1) {
     interval = interval || 16;
     elem.style.opacity = 0;
-    elem.style.display = "block";
+    elem.style.display = 'block';
     var last = +new Date();
-    var tick = (function (_tick) {
-      var _tickWrapper = function tick() {
-        return _tick.apply(this, arguments);
-      };
-
-      _tickWrapper.toString = function () {
-        return _tick.toString();
-      };
-
-      return _tickWrapper;
-    })(function () {
+    var tick = function tick() {
       elem.style.opacity = +elem.style.opacity + (new Date() - last) / 100;
       last = +new Date();
 
       if (+elem.style.opacity < 1) {
         setTimeout(tick, interval);
       }
-    });
+    };
     tick();
   }
-  elem.style.display = "block"; //fallback IE8
+  elem.style.display = 'block'; //fallback IE8
 };
 
 var fadeOut = function fadeOut(elem, interval) {
   interval = interval || 16;
   elem.style.opacity = 1;
   var last = +new Date();
-  var tick = (function (_tick) {
-    var _tickWrapper = function tick() {
-      return _tick.apply(this, arguments);
-    };
-
-    _tickWrapper.toString = function () {
-      return _tick.toString();
-    };
-
-    return _tickWrapper;
-  })(function () {
+  var tick = function tick() {
     elem.style.opacity = +elem.style.opacity - (new Date() - last) / 100;
     last = +new Date();
 
     if (+elem.style.opacity > 0) {
       setTimeout(tick, interval);
     } else {
-      elem.style.display = "none";
+      elem.style.display = 'none';
     }
-  });
+  };
   tick();
 };
 
 var fireClick = function fireClick(node) {
   // Taken from http://www.nonobtrusive.com/2011/11/29/programatically-fire-crossbrowser-click-event-with-javascript/
   // Then fixed for today's Chrome browser.
-  if (typeof MouseEvent === "function") {
+  if (typeof MouseEvent === 'function') {
     // Up-to-date approach
-    var mevt = new MouseEvent("click", {
+    var mevt = new MouseEvent('click', {
       view: window,
       bubbles: false,
       cancelable: true
@@ -376,22 +368,22 @@ var fireClick = function fireClick(node) {
     node.dispatchEvent(mevt);
   } else if (document.createEvent) {
     // Fallback
-    var evt = document.createEvent("MouseEvents");
-    evt.initEvent("click", false, false);
+    var evt = document.createEvent('MouseEvents');
+    evt.initEvent('click', false, false);
     node.dispatchEvent(evt);
   } else if (document.createEventObject) {
-    node.fireEvent("onclick");
-  } else if (typeof node.onclick === "function") {
+    node.fireEvent('onclick');
+  } else if (typeof node.onclick === 'function') {
     node.onclick();
   }
 };
 
 var stopEventPropagation = function stopEventPropagation(e) {
   // In particular, make sure the space bar doesn't scroll the main window.
-  if (typeof e.stopPropagation === "function") {
+  if (typeof e.stopPropagation === 'function') {
     e.stopPropagation();
     e.preventDefault();
-  } else if (window.event && window.event.hasOwnProperty("cancelBubble")) {
+  } else if (window.event && window.event.hasOwnProperty('cancelBubble')) {
     window.event.cancelBubble = true;
   }
 };
@@ -412,22 +404,23 @@ exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
 },{}],6:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _handleDom = require("./handle-dom");
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-var stopEventPropagation = _handleDom.stopEventPropagation;
-var fireClick = _handleDom.fireClick;
+var _stopEventPropagation$fireClick = require('./handle-dom');
 
-var setFocusStyle = require("./handle-swal-dom").setFocusStyle;
+var _setFocusStyle = require('./handle-swal-dom');
 
 var handleKeyDown = function handleKeyDown(event, params, modal) {
   var e = event || window.event;
   var keyCode = e.keyCode || e.which;
 
-  var $okButton = modal.querySelector("button.confirm");
-  var $cancelButton = modal.querySelector("button.cancel");
-  var $modalButtons = modal.querySelectorAll("button[tabindex]");
+  var $okButton = modal.querySelector('button.confirm');
+  var $cancelButton = modal.querySelector('button.cancel');
+  var $modalButtons = modal.querySelectorAll('button[tabindex]');
 
   if ([9, 13, 32, 27].indexOf(keyCode) === -1) {
     // Don't do work on keys we don't care about.
@@ -458,15 +451,15 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
       }
     }
 
-    stopEventPropagation(e);
+    _stopEventPropagation$fireClick.stopEventPropagation(e);
     $targetElement.focus();
 
     if (params.confirmButtonColor) {
-      setFocusStyle($targetElement, params.confirmButtonColor);
+      _setFocusStyle.setFocusStyle($targetElement, params.confirmButtonColor);
     }
   } else {
     if (keyCode === 13) {
-      if ($targetElement.tagName === "INPUT") {
+      if ($targetElement.tagName === 'INPUT') {
         $targetElement = $okButton;
         $okButton.focus();
       }
@@ -480,7 +473,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
       }
     } else if (keyCode === 27 && params.allowEscapeKey === true) {
       $targetElement = $cancelButton;
-      fireClick($targetElement, e);
+      _stopEventPropagation$fireClick.fireClick($targetElement, e);
     } else {
       // Fallback - let the browser handle it.
       $targetElement = undefined;
@@ -488,41 +481,40 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
   }
 };
 
-module.exports = handleKeyDown;
+exports['default'] = handleKeyDown;
+module.exports = exports['default'];
 
 },{"./handle-dom":5,"./handle-swal-dom":7}],7:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var hexToRgb = require("./utils").hexToRgb;
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _handleDom = require("./handle-dom");
+var _hexToRgb = require('./utils');
 
-var removeClass = _handleDom.removeClass;
-var getTopMargin = _handleDom.getTopMargin;
-var fadeIn = _handleDom.fadeIn;
-var show = _handleDom.show;
-var addClass = _handleDom.addClass;
+var _removeClass$getTopMargin$fadeIn$show$addClass = require('./handle-dom');
 
-var defaultParams = _interopRequire(require("./default-params"));
+var _defaultParams = require('./default-params');
 
-var modalClass = ".sweet-alert";
-var overlayClass = ".sweet-overlay";
+var _defaultParams2 = _interopRequireDefault(_defaultParams);
 
 /*
  * Add modal + overlay to DOM
  */
 
-var injectedHTML = _interopRequire(require("./injected-html"));
+var _injectedHTML = require('./injected-html');
+
+var _injectedHTML2 = _interopRequireDefault(_injectedHTML);
+
+var modalClass = '.sweet-alert';
+var overlayClass = '.sweet-overlay';
 
 var sweetAlertInitialize = function sweetAlertInitialize() {
-  var sweetWrap = document.createElement("div");
-  sweetWrap.innerHTML = injectedHTML;
+  var sweetWrap = document.createElement('div');
+  sweetWrap.innerHTML = _injectedHTML2['default'];
 
   // Append elements to body
   while (sweetWrap.firstChild) {
@@ -533,17 +525,7 @@ var sweetAlertInitialize = function sweetAlertInitialize() {
 /*
  * Get DOM element of modal
  */
-var getModal = (function (_getModal) {
-  var _getModalWrapper = function getModal() {
-    return _getModal.apply(this, arguments);
-  };
-
-  _getModalWrapper.toString = function () {
-    return _getModal.toString();
-  };
-
-  return _getModalWrapper;
-})(function () {
+var getModal = function getModal() {
   var $modal = document.querySelector(modalClass);
 
   if (!$modal) {
@@ -552,7 +534,7 @@ var getModal = (function (_getModal) {
   }
 
   return $modal;
-});
+};
 
 /*
  * Get DOM element of input (in modal)
@@ -560,7 +542,7 @@ var getModal = (function (_getModal) {
 var getInput = function getInput() {
   var $modal = getModal();
   if ($modal) {
-    return $modal.querySelector("input");
+    return $modal.querySelector('input');
   }
 };
 
@@ -575,8 +557,8 @@ var getOverlay = function getOverlay() {
  * Add box-shadow style to button (depending on its chosen bg-color)
  */
 var setFocusStyle = function setFocusStyle($button, bgColor) {
-  var rgbColor = hexToRgb(bgColor);
-  $button.style.boxShadow = "0 0 2px rgba(" + rgbColor + ", 0.8), inset 0 0 0 1px rgba(0, 0, 0, 0.05)";
+  var rgbColor = _hexToRgb.hexToRgb(bgColor);
+  $button.style.boxShadow = '0 0 2px rgba(' + rgbColor + ', 0.8), inset 0 0 0 1px rgba(0, 0, 0, 0.05)';
 };
 
 /*
@@ -584,22 +566,22 @@ var setFocusStyle = function setFocusStyle($button, bgColor) {
  */
 var openModal = function openModal() {
   var $modal = getModal();
-  fadeIn(getOverlay(), 10);
-  show($modal);
-  addClass($modal, "showSweetAlert");
-  removeClass($modal, "hideSweetAlert");
+  _removeClass$getTopMargin$fadeIn$show$addClass.fadeIn(getOverlay(), 10);
+  _removeClass$getTopMargin$fadeIn$show$addClass.show($modal);
+  _removeClass$getTopMargin$fadeIn$show$addClass.addClass($modal, 'showSweetAlert');
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($modal, 'hideSweetAlert');
 
   window.previousActiveElement = document.activeElement;
-  var $okButton = $modal.querySelector("button.confirm");
+  var $okButton = $modal.querySelector('button.confirm');
   $okButton.focus();
 
   setTimeout(function () {
-    addClass($modal, "visible");
+    _removeClass$getTopMargin$fadeIn$show$addClass.addClass($modal, 'visible');
   }, 500);
 
-  var timer = $modal.getAttribute("data-timer");
+  var timer = $modal.getAttribute('data-timer');
 
-  if (timer !== "null" && timer !== "") {
+  if (timer !== 'null' && timer !== '') {
     $modal.timeout = setTimeout(function () {
       swal.close();
     }, timer);
@@ -614,10 +596,10 @@ var resetInput = function resetInput() {
   var $modal = getModal();
   var $input = getInput();
 
-  removeClass($modal, "show-input");
-  $input.value = "";
-  $input.setAttribute("type", defaultParams.inputType);
-  $input.setAttribute("placeholder", defaultParams.inputPlaceholder);
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($modal, 'show-input');
+  $input.value = '';
+  $input.setAttribute('type', _defaultParams2['default'].inputType);
+  $input.setAttribute('placeholder', _defaultParams2['default'].inputPlaceholder);
 
   resetInputError();
 };
@@ -630,11 +612,11 @@ var resetInputError = function resetInputError(event) {
 
   var $modal = getModal();
 
-  var $errorIcon = $modal.querySelector(".sa-input-error");
-  removeClass($errorIcon, "show");
+  var $errorIcon = $modal.querySelector('.sa-input-error');
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($errorIcon, 'show');
 
-  var $errorContainer = $modal.querySelector(".sa-error-container");
-  removeClass($errorContainer, "show");
+  var $errorContainer = $modal.querySelector('.sa-error-container');
+  _removeClass$getTopMargin$fadeIn$show$addClass.removeClass($errorContainer, 'show');
 };
 
 /*
@@ -642,7 +624,7 @@ var resetInputError = function resetInputError(event) {
  */
 var fixVerticalPosition = function fixVerticalPosition() {
   var $modal = getModal();
-  $modal.style.marginTop = getTopMargin(getModal());
+  $modal.style.marginTop = _removeClass$getTopMargin$fadeIn$show$addClass.getTopMargin(getModal());
 };
 
 exports.sweetAlertInitialize = sweetAlertInitialize;
@@ -658,6 +640,9 @@ exports.fixVerticalPosition = fixVerticalPosition;
 },{"./default-params":3,"./handle-dom":5,"./injected-html":8,"./utils":10}],8:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var injectedHTML =
 
 // Dark overlay
@@ -690,73 +675,65 @@ var injectedHTML =
 // End of modal
 "</div>";
 
-module.exports = injectedHTML;
+exports["default"] = injectedHTML;
+module.exports = exports["default"];
 
 },{}],9:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var alertTypes = ["error", "warning", "info", "success", "input", "prompt"];
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-var isIE8 = require("./utils").isIE8;
+var _isIE8 = require('./utils');
 
-var _handleSwalDom = require("./handle-swal-dom");
+var _getModal$getInput$setFocusStyle = require('./handle-swal-dom');
 
-var getModal = _handleSwalDom.getModal;
-var getInput = _handleSwalDom.getInput;
-var setFocusStyle = _handleSwalDom.setFocusStyle;
+var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide = require('./handle-dom');
 
-var _handleDom = require("./handle-dom");
-
-var hasClass = _handleDom.hasClass;
-var addClass = _handleDom.addClass;
-var removeClass = _handleDom.removeClass;
-var escapeHtml = _handleDom.escapeHtml;
-var _show = _handleDom._show;
-var show = _handleDom.show;
-var _hide = _handleDom._hide;
-var hide = _handleDom.hide;
+var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
 
 /*
  * Set type, text and actions on modal
  */
 var setParameters = function setParameters(params) {
-  var modal = getModal();
+  var modal = _getModal$getInput$setFocusStyle.getModal();
 
-  var $title = modal.querySelector("h2");
-  var $text = modal.querySelector("p");
-  var $cancelBtn = modal.querySelector("button.cancel");
-  var $confirmBtn = modal.querySelector("button.confirm");
+  var $title = modal.querySelector('h2');
+  var $text = modal.querySelector('p');
+  var $cancelBtn = modal.querySelector('button.cancel');
+  var $confirmBtn = modal.querySelector('button.confirm');
 
   /*
    * Title
    */
-  $title.innerHTML = params.html ? params.title : escapeHtml(params.title).split("\n").join("<br>");
+  $title.innerHTML = params.html ? params.title : _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.title).split('\n').join('<br>');
 
   /*
    * Text
    */
-  $text.innerHTML = params.html ? params.text : escapeHtml(params.text || "").split("\n").join("<br>");
-  if (params.text) show($text);
+  $text.innerHTML = params.html ? params.text : _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.text || '').split('\n').join('<br>');
+  if (params.text) _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($text);
 
   /*
    * Custom class
    */
   if (params.customClass) {
-    addClass(modal, params.customClass);
-    modal.setAttribute("data-custom-class", params.customClass);
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass(modal, params.customClass);
+    modal.setAttribute('data-custom-class', params.customClass);
   } else {
     // Find previously set classes and remove them
-    var customClass = modal.getAttribute("data-custom-class");
-    removeClass(modal, customClass);
-    modal.setAttribute("data-custom-class", "");
+    var customClass = modal.getAttribute('data-custom-class');
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.removeClass(modal, customClass);
+    modal.setAttribute('data-custom-class', '');
   }
 
   /*
    * Icon
    */
-  hide(modal.querySelectorAll(".sa-icon"));
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.hide(modal.querySelectorAll('.sa-icon'));
 
-  if (params.type && !isIE8()) {
+  if (params.type && !_isIE8.isIE8()) {
     var _ret = (function () {
 
       var validType = false;
@@ -769,56 +746,56 @@ var setParameters = function setParameters(params) {
       }
 
       if (!validType) {
-        logStr("Unknown alert type: " + params.type);
+        logStr('Unknown alert type: ' + params.type);
         return {
           v: false
         };
       }
 
-      var typesWithIcons = ["success", "error", "warning", "info"];
+      var typesWithIcons = ['success', 'error', 'warning', 'info'];
       var $icon = undefined;
 
       if (typesWithIcons.indexOf(params.type) !== -1) {
-        $icon = modal.querySelector(".sa-icon." + "sa-" + params.type);
-        show($icon);
+        $icon = modal.querySelector('.sa-icon.' + 'sa-' + params.type);
+        _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($icon);
       }
 
-      var $input = getInput();
+      var $input = _getModal$getInput$setFocusStyle.getInput();
 
       // Animate icon
       switch (params.type) {
 
-        case "success":
-          addClass($icon, "animate");
-          addClass($icon.querySelector(".sa-tip"), "animateSuccessTip");
-          addClass($icon.querySelector(".sa-long"), "animateSuccessLong");
+        case 'success':
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon, 'animate');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-tip'), 'animateSuccessTip');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-long'), 'animateSuccessLong');
           break;
 
-        case "error":
-          addClass($icon, "animateErrorIcon");
-          addClass($icon.querySelector(".sa-x-mark"), "animateXMark");
+        case 'error':
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon, 'animateErrorIcon');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-x-mark'), 'animateXMark');
           break;
 
-        case "warning":
-          addClass($icon, "pulseWarning");
-          addClass($icon.querySelector(".sa-body"), "pulseWarningIns");
-          addClass($icon.querySelector(".sa-dot"), "pulseWarningIns");
+        case 'warning':
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon, 'pulseWarning');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-body'), 'pulseWarningIns');
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass($icon.querySelector('.sa-dot'), 'pulseWarningIns');
           break;
 
-        case "input":
-        case "prompt":
-          $input.setAttribute("type", params.inputType);
-          $input.setAttribute("placeholder", params.inputPlaceholder);
-          addClass(modal, "show-input");
+        case 'input':
+        case 'prompt':
+          $input.setAttribute('type', params.inputType);
+          $input.setAttribute('placeholder', params.inputPlaceholder);
+          _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass(modal, 'show-input');
           setTimeout(function () {
             $input.focus();
-            $input.addEventListener("keyup", swal.resetInputError);
+            $input.addEventListener('keyup', swal.resetInputError);
           }, 400);
           break;
       }
     })();
 
-    if (typeof _ret === "object") {
+    if (typeof _ret === 'object') {
       return _ret.v;
     }
   }
@@ -827,58 +804,58 @@ var setParameters = function setParameters(params) {
    * Custom image
    */
   if (params.imageUrl) {
-    var $customIcon = modal.querySelector(".sa-icon.sa-custom");
+    var $customIcon = modal.querySelector('.sa-icon.sa-custom');
 
-    $customIcon.style.backgroundImage = "url(" + params.imageUrl + ")";
-    show($customIcon);
+    $customIcon.style.backgroundImage = 'url(' + params.imageUrl + ')';
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.show($customIcon);
 
     var _imgWidth = 80;
     var _imgHeight = 80;
 
     if (params.imageSize) {
-      var dimensions = params.imageSize.toString().split("x");
+      var dimensions = params.imageSize.toString().split('x');
       var imgWidth = dimensions[0];
       var imgHeight = dimensions[1];
 
       if (!imgWidth || !imgHeight) {
-        logStr("Parameter imageSize expects value with format WIDTHxHEIGHT, got " + params.imageSize);
+        logStr('Parameter imageSize expects value with format WIDTHxHEIGHT, got ' + params.imageSize);
       } else {
         _imgWidth = imgWidth;
         _imgHeight = imgHeight;
       }
     }
 
-    $customIcon.setAttribute("style", $customIcon.getAttribute("style") + "width:" + _imgWidth + "px; height:" + _imgHeight + "px");
+    $customIcon.setAttribute('style', $customIcon.getAttribute('style') + 'width:' + _imgWidth + 'px; height:' + _imgHeight + 'px');
   }
 
   /*
    * Show cancel button?
    */
-  modal.setAttribute("data-has-cancel-button", params.showCancelButton);
+  modal.setAttribute('data-has-cancel-button', params.showCancelButton);
   if (params.showCancelButton) {
-    $cancelBtn.style.display = "inline-block";
+    $cancelBtn.style.display = 'inline-block';
   } else {
-    hide($cancelBtn);
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.hide($cancelBtn);
   }
 
   /*
    * Show confirm button?
    */
-  modal.setAttribute("data-has-confirm-button", params.showConfirmButton);
+  modal.setAttribute('data-has-confirm-button', params.showConfirmButton);
   if (params.showConfirmButton) {
-    $confirmBtn.style.display = "inline-block";
+    $confirmBtn.style.display = 'inline-block';
   } else {
-    hide($confirmBtn);
+    _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.hide($confirmBtn);
   }
 
   /*
    * Custom text on cancel/confirm buttons
    */
   if (params.cancelButtonText) {
-    $cancelBtn.innerHTML = escapeHtml(params.cancelButtonText);
+    $cancelBtn.innerHTML = _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.cancelButtonText);
   }
   if (params.confirmButtonText) {
-    $confirmBtn.innerHTML = escapeHtml(params.confirmButtonText);
+    $confirmBtn.innerHTML = _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.escapeHtml(params.confirmButtonText);
   }
 
   /*
@@ -889,43 +866,44 @@ var setParameters = function setParameters(params) {
     $confirmBtn.style.backgroundColor = params.confirmButtonColor;
 
     // Set box-shadow to default focused button
-    setFocusStyle($confirmBtn, params.confirmButtonColor);
+    _getModal$getInput$setFocusStyle.setFocusStyle($confirmBtn, params.confirmButtonColor);
   }
 
   /*
    * Allow outside click
    */
-  modal.setAttribute("data-allow-outside-click", params.allowOutsideClick);
+  modal.setAttribute('data-allow-outside-click', params.allowOutsideClick);
 
   /*
    * Callback function
    */
   var hasDoneFunction = params.doneFunction ? true : false;
-  modal.setAttribute("data-has-done-function", hasDoneFunction);
+  modal.setAttribute('data-has-done-function', hasDoneFunction);
 
   /*
    * Animation
    */
   if (!params.animation) {
-    modal.setAttribute("data-animation", "none");
-  } else if (typeof params.animation === "string") {
-    modal.setAttribute("data-animation", params.animation); // Custom animation
+    modal.setAttribute('data-animation', 'none');
+  } else if (typeof params.animation === 'string') {
+    modal.setAttribute('data-animation', params.animation); // Custom animation
   } else {
-    modal.setAttribute("data-animation", "pop");
+    modal.setAttribute('data-animation', 'pop');
   }
 
   /*
    * Timer
    */
-  modal.setAttribute("data-timer", params.timer);
+  modal.setAttribute('data-timer', params.timer);
 };
 
-module.exports = setParameters;
+exports['default'] = setParameters;
+module.exports = exports['default'];
 
 },{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],10:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 /*
@@ -945,7 +923,7 @@ var extend = function extend(a, b) {
  */
 var hexToRgb = function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? parseInt(result[1], 16) + ", " + parseInt(result[2], 16) + ", " + parseInt(result[3], 16) : null;
+  return result ? parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16) : null;
 };
 
 /*
@@ -961,7 +939,7 @@ var isIE8 = function isIE8() {
 var logStr = function logStr(string) {
   if (window.console) {
     // IE...
-    window.console.log("SweetAlert: " + string);
+    window.console.log('SweetAlert: ' + string);
   }
 };
 
@@ -971,21 +949,21 @@ var logStr = function logStr(string) {
  */
 var colorLuminance = function colorLuminance(hex, lum) {
   // Validate hex string
-  hex = String(hex).replace(/[^0-9a-f]/gi, "");
+  hex = String(hex).replace(/[^0-9a-f]/gi, '');
   if (hex.length < 6) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
   lum = lum || 0;
 
   // Convert to decimal and change luminosity
-  var rgb = "#";
+  var rgb = '#';
   var c;
   var i;
 
   for (i = 0; i < 3; i++) {
     c = parseInt(hex.substr(i * 2, 2), 16);
     c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
-    rgb += ("00" + c).substr(c.length);
+    rgb += ('00' + c).substr(c.length);
   }
 
   return rgb;
@@ -998,9 +976,9 @@ exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
 },{}],11:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
@@ -1010,65 +988,37 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
  * jQuery-like functions for manipulating the DOM
  */
 
-var _modulesHandleDom = require("./modules/handle-dom");
-
-var hasClass = _modulesHandleDom.hasClass;
-var addClass = _modulesHandleDom.addClass;
-var removeClass = _modulesHandleDom.removeClass;
-var escapeHtml = _modulesHandleDom.escapeHtml;
-var _show = _modulesHandleDom._show;
-var show = _modulesHandleDom.show;
-var _hide = _modulesHandleDom._hide;
-var hide = _modulesHandleDom.hide;
-var isDescendant = _modulesHandleDom.isDescendant;
-var getTopMargin = _modulesHandleDom.getTopMargin;
-var fadeIn = _modulesHandleDom.fadeIn;
-var fadeOut = _modulesHandleDom.fadeOut;
-var fireClick = _modulesHandleDom.fireClick;
-var stopEventPropagation = _modulesHandleDom.stopEventPropagation;
+var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation = require('./modules/handle-dom');
 
 /*
  * Handy utilities
  */
 
-var _modulesUtils = require("./modules/utils");
-
-var extend = _modulesUtils.extend;
-var hexToRgb = _modulesUtils.hexToRgb;
-var isIE8 = _modulesUtils.isIE8;
-var logStr = _modulesUtils.logStr;
-var colorLuminance = _modulesUtils.colorLuminance;
+var _extend$hexToRgb$isIE8$logStr$colorLuminance = require('./modules/utils');
 
 /*
  *  Handle sweetAlert's DOM elements
  */
 
-var _modulesHandleSwalDom = require("./modules/handle-swal-dom");
-
-var sweetAlertInitialize = _modulesHandleSwalDom.sweetAlertInitialize;
-var getModal = _modulesHandleSwalDom.getModal;
-var getOverlay = _modulesHandleSwalDom.getOverlay;
-var getInput = _modulesHandleSwalDom.getInput;
-var setFocusStyle = _modulesHandleSwalDom.setFocusStyle;
-var openModal = _modulesHandleSwalDom.openModal;
-var resetInput = _modulesHandleSwalDom.resetInput;
-var fixVerticalPosition = _modulesHandleSwalDom.fixVerticalPosition;
+var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition = require('./modules/handle-swal-dom');
 
 // Handle button events and keyboard events
 
-var _modulesHandleClick = require("./modules/handle-click");
+var _handleButton$handleConfirm$handleCancel = require('./modules/handle-click');
 
-var handleButton = _modulesHandleClick.handleButton;
-var handleConfirm = _modulesHandleClick.handleConfirm;
-var handleCancel = _modulesHandleClick.handleCancel;
+var _handleKeyDown = require('./modules/handle-key');
 
-var handleKeyDown = _interopRequire(require("./modules/handle-key"));
+var _handleKeyDown2 = _interopRequireDefault(_handleKeyDown);
 
 // Default values
 
-var defaultParams = _interopRequire(require("./modules/default-params"));
+var _defaultParams = require('./modules/default-params');
 
-var setParameters = _interopRequire(require("./modules/set-params"));
+var _defaultParams2 = _interopRequireDefault(_defaultParams);
+
+var _setParameters = require('./modules/set-params');
+
+var _setParameters2 = _interopRequireDefault(_setParameters);
 
 /*
  * Remember state in cases where opening and handling a modal will fiddle with it.
@@ -1086,8 +1036,8 @@ var sweetAlert, swal;
 sweetAlert = swal = function () {
   var customizations = arguments[0];
 
-  addClass(document.body, "stop-scrolling");
-  resetInput();
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass(document.body, 'stop-scrolling');
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.resetInput();
 
   /*
    * Use argument if defined or default value from params object otherwise.
@@ -1096,41 +1046,41 @@ sweetAlert = swal = function () {
    */
   function argumentOrDefault(key) {
     var args = customizations;
-    return args[key] === undefined ? defaultParams[key] : args[key];
+    return args[key] === undefined ? _defaultParams2['default'][key] : args[key];
   }
 
   if (customizations === undefined) {
-    logStr("SweetAlert expects at least 1 attribute!");
+    _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('SweetAlert expects at least 1 attribute!');
     return false;
   }
 
-  var params = extend({}, defaultParams);
+  var params = _extend$hexToRgb$isIE8$logStr$colorLuminance.extend({}, _defaultParams2['default']);
 
   switch (typeof customizations) {
 
     // Ex: swal("Hello", "Just testing", "info");
-    case "string":
+    case 'string':
       params.title = customizations;
-      params.text = arguments[1] || "";
-      params.type = arguments[2] || "";
+      params.text = arguments[1] || '';
+      params.type = arguments[2] || '';
       break;
 
     // Ex: swal({ title:"Hello", text: "Just testing", type: "info" });
-    case "object":
+    case 'object':
       if (customizations.title === undefined) {
-        logStr("Missing \"title\" argument!");
+        _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('Missing "title" argument!');
         return false;
       }
 
       params.title = customizations.title;
 
-      for (var customName in defaultParams) {
+      for (var customName in _defaultParams2['default']) {
         params[customName] = argumentOrDefault(customName);
       }
 
       // Show "Confirm" instead of "OK" if cancel button is visible
-      params.confirmButtonText = params.showCancelButton ? "Confirm" : defaultParams.confirmButtonText;
-      params.confirmButtonText = argumentOrDefault("confirmButtonText");
+      params.confirmButtonText = params.showCancelButton ? 'Confirm' : _defaultParams2['default'].confirmButtonText;
+      params.confirmButtonText = argumentOrDefault('confirmButtonText');
 
       // Callback function when clicking on "OK"/"Cancel"
       params.doneFunction = arguments[1] || null;
@@ -1138,25 +1088,25 @@ sweetAlert = swal = function () {
       break;
 
     default:
-      logStr("Unexpected type of argument! Expected \"string\" or \"object\", got " + typeof customizations);
+      _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('Unexpected type of argument! Expected "string" or "object", got ' + typeof customizations);
       return false;
 
   }
 
-  setParameters(params);
-  fixVerticalPosition();
-  openModal();
+  _setParameters2['default'](params);
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.fixVerticalPosition();
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.openModal();
 
   // Modal interactions
-  var modal = getModal();
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
 
   /* 
    * Make sure all modal buttons respond to all events
    */
-  var $buttons = modal.querySelectorAll("button");
-  var buttonEvents = ["onclick", "onmouseover", "onmouseout", "onmousedown", "onmouseup", "onfocus"];
-  var onButtonEvent = function (e) {
-    return handleButton(e, params, modal);
+  var $buttons = modal.querySelectorAll('button');
+  var buttonEvents = ['onclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onfocus'];
+  var onButtonEvent = function onButtonEvent(e) {
+    return _handleButton$handleConfirm$handleCancel.handleButton(e, params, modal);
   };
 
   for (var btnIndex = 0; btnIndex < $buttons.length; btnIndex++) {
@@ -1167,12 +1117,12 @@ sweetAlert = swal = function () {
   }
 
   // Clicking outside the modal dismisses it (if allowed by user)
-  getOverlay().onclick = onButtonEvent;
+  _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getOverlay().onclick = onButtonEvent;
 
   previousWindowKeyDown = window.onkeydown;
 
-  var onKeyEvent = function (e) {
-    return handleKeyDown(e, params, modal);
+  var onKeyEvent = function onKeyEvent(e) {
+    return _handleKeyDown2['default'](e, params, modal);
   };
   window.onkeydown = onKeyEvent;
 
@@ -1195,46 +1145,46 @@ sweetAlert = swal = function () {
  */
 sweetAlert.setDefaults = swal.setDefaults = function (userParams) {
   if (!userParams) {
-    throw new Error("userParams is required");
+    throw new Error('userParams is required');
   }
-  if (typeof userParams !== "object") {
-    throw new Error("userParams has to be a object");
+  if (typeof userParams !== 'object') {
+    throw new Error('userParams has to be a object');
   }
 
-  extend(defaultParams, userParams);
+  _extend$hexToRgb$isIE8$logStr$colorLuminance.extend(_defaultParams2['default'], userParams);
 };
 
 /*
  * Animation when closing modal
  */
 sweetAlert.close = swal.close = function () {
-  var modal = getModal();
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
 
-  fadeOut(getOverlay(), 5);
-  fadeOut(modal, 5);
-  removeClass(modal, "showSweetAlert");
-  addClass(modal, "hideSweetAlert");
-  removeClass(modal, "visible");
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.fadeOut(_sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getOverlay(), 5);
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.fadeOut(modal, 5);
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(modal, 'showSweetAlert');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass(modal, 'hideSweetAlert');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(modal, 'visible');
 
   /*
    * Reset icon animations
    */
-  var $successIcon = modal.querySelector(".sa-icon.sa-success");
-  removeClass($successIcon, "animate");
-  removeClass($successIcon.querySelector(".sa-tip"), "animateSuccessTip");
-  removeClass($successIcon.querySelector(".sa-long"), "animateSuccessLong");
+  var $successIcon = modal.querySelector('.sa-icon.sa-success');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($successIcon, 'animate');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($successIcon.querySelector('.sa-tip'), 'animateSuccessTip');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($successIcon.querySelector('.sa-long'), 'animateSuccessLong');
 
-  var $errorIcon = modal.querySelector(".sa-icon.sa-error");
-  removeClass($errorIcon, "animateErrorIcon");
-  removeClass($errorIcon.querySelector(".sa-x-mark"), "animateXMark");
+  var $errorIcon = modal.querySelector('.sa-icon.sa-error');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorIcon, 'animateErrorIcon');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorIcon.querySelector('.sa-x-mark'), 'animateXMark');
 
-  var $warningIcon = modal.querySelector(".sa-icon.sa-warning");
-  removeClass($warningIcon, "pulseWarning");
-  removeClass($warningIcon.querySelector(".sa-body"), "pulseWarningIns");
-  removeClass($warningIcon.querySelector(".sa-dot"), "pulseWarningIns");
+  var $warningIcon = modal.querySelector('.sa-icon.sa-warning');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($warningIcon, 'pulseWarning');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($warningIcon.querySelector('.sa-body'), 'pulseWarningIns');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($warningIcon.querySelector('.sa-dot'), 'pulseWarningIns');
 
   // Make page scrollable again
-  removeClass(document.body, "stop-scrolling");
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass(document.body, 'stop-scrolling');
 
   // Reset the page to its previous state
   window.onkeydown = previousWindowKeyDown;
@@ -1252,17 +1202,17 @@ sweetAlert.close = swal.close = function () {
  * If something is wrong => call showInputError with errorMessage
  */
 sweetAlert.showInputError = swal.showInputError = function (errorMessage) {
-  var modal = getModal();
+  var modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
 
-  var $errorIcon = modal.querySelector(".sa-input-error");
-  addClass($errorIcon, "show");
+  var $errorIcon = modal.querySelector('.sa-input-error');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass($errorIcon, 'show');
 
-  var $errorContainer = modal.querySelector(".sa-error-container");
-  addClass($errorContainer, "show");
+  var $errorContainer = modal.querySelector('.sa-error-container');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.addClass($errorContainer, 'show');
 
-  $errorContainer.querySelector("p").innerHTML = errorMessage;
+  $errorContainer.querySelector('p').innerHTML = errorMessage;
 
-  modal.querySelector("input").focus();
+  modal.querySelector('input').focus();
 };
 
 /*
@@ -1274,25 +1224,25 @@ sweetAlert.resetInputError = swal.resetInputError = function (event) {
     return false;
   }
 
-  var $modal = getModal();
+  var $modal = _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition.getModal();
 
-  var $errorIcon = $modal.querySelector(".sa-input-error");
-  removeClass($errorIcon, "show");
+  var $errorIcon = $modal.querySelector('.sa-input-error');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorIcon, 'show');
 
-  var $errorContainer = $modal.querySelector(".sa-error-container");
-  removeClass($errorContainer, "show");
+  var $errorContainer = $modal.querySelector('.sa-error-container');
+  _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation.removeClass($errorContainer, 'show');
 };
 
 /*
  * Use SweetAlert with RequireJS
  */
-if (typeof define === "function" && define.amd) {
+if (typeof define === 'function' && define.amd) {
   define(function () {
     return sweetAlert;
   });
-} else if (typeof window !== "undefined") {
+} else if (typeof window !== 'undefined') {
   window.sweetAlert = window.swal = sweetAlert;
-} else if (typeof module !== "undefined" && module.exports) {
+} else if (typeof module !== 'undefined' && module.exports) {
   module.exports = sweetAlert;
 }
 
@@ -1301,24 +1251,24 @@ if (typeof define === "function" && define.amd) {
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var Comment = React.createFactory(require("./comment/components/Comment.react"));
-var CommentServerActions = require("./comment/actions/CommentServerActions");
+var Comment = React.createFactory(require('./comment/components/Comment.react'));
+var CommentServerActions = require('./comment/actions/CommentServerActions');
 
-var element = document.getElementById("comments");
+var element = document.getElementById('comments');
 
 CommentServerActions.initComments(1, element.dataset.type);
 
 React.render(Comment({ type: element.dataset.type }), element);
 
 },{"./comment/actions/CommentServerActions":14,"./comment/components/Comment.react":15,"react":196}],13:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var AppDispatcher = require("../dispatchers/AppDispatcher");
-var CommentConstants = require("../constants/CommentConstants");
+var AppDispatcher = require('../dispatchers/AppDispatcher');
+var CommentConstants = require('../constants/CommentConstants');
 
 var CommentAction = {
 
@@ -1362,10 +1312,10 @@ var CommentAction = {
 module.exports = CommentAction;
 
 },{"../constants/CommentConstants":28,"../dispatchers/AppDispatcher":29}],14:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var AppDispatcher = require("../dispatchers/AppDispatcher");
-var CommentConstants = require("../constants/CommentConstants");
+var AppDispatcher = require('../dispatchers/AppDispatcher');
+var CommentConstants = require('../constants/CommentConstants');
 
 var CommentServerAction = {
 
@@ -1386,18 +1336,18 @@ module.exports = CommentServerAction;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var CommentSearchBar = React.createFactory(require("./CommentSearchBar.react"));
-var CommentPaginater = React.createFactory(require("./CommentPaginater.react"));
-var CommentList = React.createFactory(require("./CommentList.react"));
+var React = require('react');
+var CommentSearchBar = React.createFactory(require('./CommentSearchBar.react'));
+var CommentPaginater = React.createFactory(require('./CommentPaginater.react'));
+var CommentList = React.createFactory(require('./CommentList.react'));
 
-var CommentStore = require("../stores/CommentStore");
-var CommentActions = require("../actions/CommentActions");
-var CommentConstants = require("../constants/CommentConstants");
+var CommentStore = require('../stores/CommentStore');
+var CommentActions = require('../actions/CommentActions');
+var CommentConstants = require('../constants/CommentConstants');
 
-var Comment = React.createClass({ displayName: "Comment",
+var Comment = React.createClass({ displayName: 'Comment',
   getInitialState: function getInitialState() {
     return CommentStore.data();
   },
@@ -1431,20 +1381,20 @@ module.exports = Comment;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var SweetAlert = require("../../../js/libs/SweetAlert");
+var React = require('react');
+var SweetAlert = require('../../../js/libs/SweetAlert');
 
-var CommentDelete = React.createClass({ displayName: "CommentDelete",
+var CommentDelete = React.createClass({ displayName: 'CommentDelete',
 
     alertDelete: function alertDelete() {
         var _self = this;
 
         SweetAlert.alert({
-            title: "Are you sure?",
-            desc: "This will delete this topic / thread!",
-            confirmButton: "Yes, delete it!",
+            title: 'Are you sure?',
+            desc: 'This will delete this topic / thread!',
+            confirmButton: 'Yes, delete it!',
             handleOnConfirm: function handleOnConfirm() {
                 _self.props.handleDelete(_self.props.comment_id);
             }
@@ -1455,7 +1405,7 @@ var CommentDelete = React.createClass({ displayName: "CommentDelete",
 
         return null; // Disable the delete ability now
 
-        return React.DOM.button({ className: "comment-delete", onClick: this.alertDelete }, "DELETE");
+        return React.DOM.button({ className: 'comment-delete', onClick: this.alertDelete }, 'DELETE');
     }
 });
 
@@ -1466,17 +1416,17 @@ module.exports = CommentDelete;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var CommentExpertHeader = React.createClass({ displayName: "CommentExpertHeader",
+var CommentExpertHeader = React.createClass({ displayName: 'CommentExpertHeader',
   render: function render() {
     var expert_image_style = {
-      backgroundImage: "url(" + this.props.expert.image_url + ")"
+      backgroundImage: 'url(' + this.props.expert.image_url + ')'
     };
 
-    return React.DOM.div({ className: "comment-profession" }, React.DOM.div({ className: "comment-profession-name" }, "# ", this.props.expert.user_id, " : ", this.props.expert.full_name), React.DOM.div({ className: "comment-profession-image",
+    return React.DOM.div({ className: 'comment-profession' }, React.DOM.div({ className: 'comment-profession-name' }, '# ', this.props.expert.user_id, ' : ', this.props.expert.full_name), React.DOM.div({ className: 'comment-profession-image',
       style: expert_image_style }));
   }
 });
@@ -1488,18 +1438,18 @@ module.exports = CommentExpertHeader;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var CommentFullImage = React.createClass({ displayName: "CommentFullImage",
+var CommentFullImage = React.createClass({ displayName: 'CommentFullImage',
 	deleteView: function deleteView() {
-		React.unmountComponentAtNode(document.getElementById("comment-image-view"));
+		React.unmountComponentAtNode(document.getElementById('comment-image-view'));
 	},
 	render: function render() {
-		var image = this.props.image.replace("/thumb/", "/orig/");
+		var image = this.props.image.replace('/thumb/', '/orig/');
 
-		return React.DOM.div({ className: "comment-full-image-view" }, React.DOM.div({ className: "comment-full-image-delete" }, React.DOM.i({ className: "fa fa-paper-plane", onClick: this.deleteView })), React.DOM.div({ className: "absolute-center is-image" }, React.DOM.img({ src: image })));
+		return React.DOM.div({ className: 'comment-full-image-view' }, React.DOM.div({ className: 'comment-full-image-delete' }, React.DOM.i({ className: 'fa fa-paper-plane', onClick: this.deleteView })), React.DOM.div({ className: 'absolute-center is-image' }, React.DOM.img({ src: image })));
 	}
 });
 
@@ -1510,16 +1460,16 @@ module.exports = CommentFullImage;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var CommentFullImage = React.createFactory(require("./CommentFullImage.react"));
+var React = require('react');
+var CommentFullImage = React.createFactory(require('./CommentFullImage.react'));
 
 var renderFullImage = function renderFullImage(image) {
-	React.renderComponent(CommentFullImage({ image: image }), document.getElementById("comment-image-view"));
+	React.renderComponent(CommentFullImage({ image: image }), document.getElementById('comment-image-view'));
 };
 
-var CommentImages = React.createClass({ displayName: "CommentImages",
+var CommentImages = React.createClass({ displayName: 'CommentImages',
 	fullImage: function fullImage(image) {
 		renderFullImage(image);
 	},
@@ -1530,7 +1480,7 @@ var CommentImages = React.createClass({ displayName: "CommentImages",
 		return _self.props.images.map(function (image) {
 			var bindFullImage = _self.fullImage.bind(_self, image);
 
-			return React.DOM.div({ className: "comment-image",
+			return React.DOM.div({ className: 'comment-image',
 				onClick: bindFullImage,
 				key: image }, React.DOM.img({ src: image }));
 		});
@@ -1541,42 +1491,44 @@ var CommentImages = React.createClass({ displayName: "CommentImages",
 			return null;
 		}
 
-		return React.DOM.div({ className: "comment-images" }, this.genImages());
+		return React.DOM.div({ className: 'comment-images' }, this.genImages());
 	}
 });
 
 module.exports = CommentImages;
 
 },{"./CommentFullImage.react":18,"react":196}],20:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _Moment = require('../../../js/libs/Moment');
+
+var _Moment2 = _interopRequireDefault(_Moment);
 
 /**
  * @jsx React.DOM
  */
 
-var React = require("react");
-var CommentImages = React.createFactory(require("./CommentImages.react"));
+var React = require('react');
+var CommentImages = React.createFactory(require('./CommentImages.react'));
 
-var CommentDelete = React.createFactory(require("./CommentDelete.react"));
-var CommentThreads = React.createFactory(require("./CommentThreads.react"));
+var CommentDelete = React.createFactory(require('./CommentDelete.react'));
+var CommentThreads = React.createFactory(require('./CommentThreads.react'));
 
-var CommentActions = require("../actions/CommentActions");
+var CommentActions = require('../actions/CommentActions');
 
-var Moment = _interopRequire(require("../../../js/libs/Moment"));
-
-var CommentList = React.createClass({ displayName: "CommentList",
+var CommentList = React.createClass({ displayName: 'CommentList',
 
     isCommentBelongingExist: function isCommentBelongingExist(comment) {
         switch (this.props.type) {
-            case "user":
+            case 'user':
                 return !!comment.expert;
 
-            case "project":
+            case 'project':
                 return !!comment.project;
 
-            case "solution":
+            case 'solution':
 
                 return !!comment.solution;
             default:
@@ -1587,16 +1539,16 @@ var CommentList = React.createClass({ displayName: "CommentList",
     genCommentBelongingHeader: function genCommentBelongingHeader(comment) {
 
         switch (this.props.type) {
-            case "user":
-                var CommentExpertHeader = React.createFactory(require("./CommentExpertHeader.react"));
+            case 'user':
+                var CommentExpertHeader = React.createFactory(require('./CommentExpertHeader.react'));
                 return CommentExpertHeader({ expert: comment.expert });
 
-            case "project":
-                var CommentProjectHeader = React.createFactory(require("./CommentProjectHeader.react"));
+            case 'project':
+                var CommentProjectHeader = React.createFactory(require('./CommentProjectHeader.react'));
                 return CommentProjectHeader({ project: comment.project });
 
-            case "solution":
-                var CommentSolutionHeader = React.createFactory(require("./CommentSolutionHeader.react"));
+            case 'solution':
+                var CommentSolutionHeader = React.createFactory(require('./CommentSolutionHeader.react'));
                 return CommentSolutionHeader({ solution: comment.solution });
 
             default:
@@ -1607,8 +1559,8 @@ var CommentList = React.createClass({ displayName: "CommentList",
     genCommentLock: function genCommentLock(comment) {
 
         var is_private = !! +comment.private_comment,
-            class_lock = is_private ? "comment-private-lock" : "comment-private-unlock",
-            icon_lock = is_private ? "fa fa-lock" : "fa fa-unlock-alt";
+            class_lock = is_private ? 'comment-private-lock' : 'comment-private-unlock',
+            icon_lock = is_private ? 'fa fa-lock' : 'fa fa-unlock-alt';
 
         var handleClick = CommentActions.togglePrivate.bind(null, comment.comment_id);
 
@@ -1622,13 +1574,13 @@ var CommentList = React.createClass({ displayName: "CommentList",
 
         var publisher = comment.publisher,
             publisher_image_style = {
-            backgroundImage: "url(" + publisher.image_url + ")"
+            backgroundImage: 'url(' + publisher.image_url + ')'
         };
 
-        return React.DOM.div({ className: "comment", key: comment.comment_id, "data-id": comment.comment_id }, CommentDelete({
+        return React.DOM.div({ className: 'comment', key: comment.comment_id, 'data-id': comment.comment_id }, CommentDelete({
             handleDelete: CommentActions.deleteTopic,
-            comment_id: comment.comment_id }), this.genCommentBelongingHeader(comment), React.DOM.div({ className: "comment-publisher" }, React.DOM.div({ className: "comment-publisher-image",
-            style: publisher_image_style }), React.DOM.div({ className: "comment-publisher-name" }, publisher.full_name), this.genCommentLock(comment)), React.DOM.div({ className: "comment-header" }, React.DOM.div({ className: "comment-title" }, comment.title), React.DOM.div({ className: "comment-meta" }, Moment.time(comment.date_added))), CommentImages({ images: comment.image_urls }), React.DOM.div({ className: "comment-content",
+            comment_id: comment.comment_id }), this.genCommentBelongingHeader(comment), React.DOM.div({ className: 'comment-publisher' }, React.DOM.div({ className: 'comment-publisher-image',
+            style: publisher_image_style }), React.DOM.div({ className: 'comment-publisher-name' }, publisher.full_name), this.genCommentLock(comment)), React.DOM.div({ className: 'comment-header' }, React.DOM.div({ className: 'comment-title' }, comment.title), React.DOM.div({ className: 'comment-meta' }, _Moment2['default'].time(comment.date_added))), CommentImages({ images: comment.image_urls }), React.DOM.div({ className: 'comment-content',
             dangerouslySetInnerHTML: { __html: comment.comments } }), CommentThreads({
             threads: comment.threads,
             handleDelete: this.props.handleDeleteThread }));
@@ -1648,14 +1600,14 @@ module.exports = CommentList;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var CommentActions = require("../actions/CommentActions");
+var React = require('react');
+var CommentActions = require('../actions/CommentActions');
 
-var _ = require("lodash");
+var _ = require('lodash');
 
-var CommentPaginater = React.createClass({ displayName: "CommentPaginater",
+var CommentPaginater = React.createClass({ displayName: 'CommentPaginater',
 
 	genPageList: function genPageList() {
 		var _self = this;
@@ -1664,12 +1616,12 @@ var CommentPaginater = React.createClass({ displayName: "CommentPaginater",
 			var i = index + 1;
 
 			if (i == _self.props.at_page) {
-				return React.DOM.li({ key: i, className: "active" }, React.DOM.span(null, i));
+				return React.DOM.li({ key: i, className: 'active' }, React.DOM.span(null, i));
 			}
 
 			var boundClick = CommentActions.fetchComments.bind(null, i);
 
-			return React.DOM.li({ key: i }, React.DOM.a({ onClick: boundClick, className: "pointer" }, i));
+			return React.DOM.li({ key: i }, React.DOM.a({ onClick: boundClick, className: 'pointer' }, i));
 		});
 	},
 
@@ -1678,7 +1630,7 @@ var CommentPaginater = React.createClass({ displayName: "CommentPaginater",
 			return null;
 		}
 
-		return React.DOM.div({ className: "pagination-container" }, React.DOM.ul({ className: "pagination" }, this.genPageList()));
+		return React.DOM.div({ className: 'pagination-container' }, React.DOM.ul({ className: 'pagination' }, this.genPageList()));
 	}
 
 });
@@ -1690,14 +1642,14 @@ module.exports = CommentPaginater;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var CommentProjectHeader = React.createClass({ displayName: "CommentProjectHeader",
+var CommentProjectHeader = React.createClass({ displayName: 'CommentProjectHeader',
   render: function render() {
 
-    return React.DOM.div({ className: "comment-profession" }, React.DOM.div({ className: "comment-profession-name" }, "# ", this.props.project.project_id, " : ", this.props.project.project_title));
+    return React.DOM.div({ className: 'comment-profession' }, React.DOM.div({ className: 'comment-profession-name' }, '# ', this.props.project.project_id, ' : ', this.props.project.project_title));
   }
 });
 
@@ -1708,25 +1660,25 @@ module.exports = CommentProjectHeader;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var CommentActions = React.createFactory(require("../actions/CommentActions"));
-var CommentSearchInput = React.createFactory(require("./CommentSearchInput.react"));
+var React = require('react');
+var CommentActions = React.createFactory(require('../actions/CommentActions'));
+var CommentSearchInput = React.createFactory(require('./CommentSearchInput.react'));
 
-var _ = require("lodash");
+var _ = require('lodash');
 
-var CommentSearchBar = React.createClass({ displayName: "CommentSearchBar",
+var CommentSearchBar = React.createClass({ displayName: 'CommentSearchBar',
     genSearchInputs: function genSearchInputs() {
         switch (this.props.type) {
-            case "project":
-                return React.DOM.div({ className: "comment-search-container" }, CommentSearchInput({ where: "topic_creator", placeholder: "Topic Creator" }), CommentSearchInput({ where: "owner", placeholder: "Project Owner" }), CommentSearchInput({ where: "title", placeholder: "Project Title" }));
+            case 'project':
+                return React.DOM.div({ className: 'comment-search-container' }, CommentSearchInput({ where: 'topic_creator', placeholder: 'Topic Creator' }), CommentSearchInput({ where: 'owner', placeholder: 'Project Owner' }), CommentSearchInput({ where: 'title', placeholder: 'Project Title' }));
 
-            case "solution":
-                return React.DOM.div({ className: "comment-search-container" }, CommentSearchInput({ where: "topic_creator", placeholder: "Topic Creator" }), CommentSearchInput({ where: "owner", placeholder: "Solution Owner" }), CommentSearchInput({ where: "title", placeholder: "Solution Title" }));
+            case 'solution':
+                return React.DOM.div({ className: 'comment-search-container' }, CommentSearchInput({ where: 'topic_creator', placeholder: 'Topic Creator' }), CommentSearchInput({ where: 'owner', placeholder: 'Solution Owner' }), CommentSearchInput({ where: 'title', placeholder: 'Solution Title' }));
 
-            case "user":
-                return React.DOM.div({ className: "comment-search-container" }, CommentSearchInput({ where: "topic_creator", placeholder: "Topic Creator" }), CommentSearchInput({ where: "profession_name", placeholder: "Member Name" }));
+            case 'user':
+                return React.DOM.div({ className: 'comment-search-container' }, CommentSearchInput({ where: 'topic_creator', placeholder: 'Topic Creator' }), CommentSearchInput({ where: 'profession_name', placeholder: 'Member Name' }));
             default:
                 return null;
         }
@@ -1746,14 +1698,14 @@ module.exports = CommentSearchBar;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var CommentActions = require("../actions/CommentActions");
+var React = require('react');
+var CommentActions = require('../actions/CommentActions');
 
-var _ = require("lodash");
+var _ = require('lodash');
 
-var CommentSearchInput = React.createClass({ displayName: "CommentSearchInput",
+var CommentSearchInput = React.createClass({ displayName: 'CommentSearchInput',
 	handleChange: function handleChange(e) {
 		this.setState({ search: e.target.value });
 	},
@@ -1765,11 +1717,11 @@ var CommentSearchInput = React.createClass({ displayName: "CommentSearchInput",
 	},
 
 	getInitialState: function getInitialState() {
-		return { search: "" };
+		return { search: '' };
 	},
 
 	render: function render() {
-		return React.DOM.div({ className: "comment-search-input" }, React.DOM.input({ type: "text",
+		return React.DOM.div({ className: 'comment-search-input' }, React.DOM.input({ type: 'text',
 			placeholder: this.props.placeholder,
 			value: this.state.search,
 			onChange: this.handleChange,
@@ -1785,49 +1737,51 @@ module.exports = CommentSearchInput;
  * @jsx React.DOM
  */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var CommentSolutionHeader = React.createClass({ displayName: "CommentSolutionHeader",
+var CommentSolutionHeader = React.createClass({ displayName: 'CommentSolutionHeader',
   render: function render() {
-    return React.DOM.div({ className: "comment-profession" }, React.DOM.div({ className: "comment-profession-name" }, "# ", this.props.solution.solution_id, " : ", this.props.solution.solution_title));
+    return React.DOM.div({ className: 'comment-profession' }, React.DOM.div({ className: 'comment-profession-name' }, '# ', this.props.solution.solution_id, ' : ', this.props.solution.solution_title));
   }
 });
 
 module.exports = CommentSolutionHeader;
 
 },{"react":196}],26:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _Moment = require('../../../js/libs/Moment');
+
+var _Moment2 = _interopRequireDefault(_Moment);
 
 /**
  * @jsx React.DOM
  */
 
-var React = require("react");
-var CommentImages = React.createFactory(require("./CommentImages.react"));
-var CommentDelete = React.createFactory(require("./CommentDelete.react"));
+var React = require('react');
+var CommentImages = React.createFactory(require('./CommentImages.react'));
+var CommentDelete = React.createFactory(require('./CommentDelete.react'));
 
-var CommentActions = require("../actions/CommentActions");
+var CommentActions = require('../actions/CommentActions');
 
-var Moment = _interopRequire(require("../../../js/libs/Moment"));
-
-var CommentThread = React.createClass({ displayName: "CommentThread",
+var CommentThread = React.createClass({ displayName: 'CommentThread',
 
   render: function render() {
 
     var thread = this.props.thread,
         publisher = thread.publisher,
         publisher_image_style = {
-      backgroundImage: "url(" + publisher.image_url + ")"
+      backgroundImage: 'url(' + publisher.image_url + ')'
     };
 
-    return React.DOM.div({ className: "comment-thread" }, CommentDelete({
+    return React.DOM.div({ className: 'comment-thread' }, CommentDelete({
       handleDelete: CommentActions.deleteThread,
-      comment_id: thread.comment_id }), React.DOM.div({ className: "comment-thread-publisher" }, React.DOM.div({ className: "comment-thread-publisher-image",
-      style: publisher_image_style }), React.DOM.div({ className: "comment-thread-publisher-name" }, publisher.full_name)), React.DOM.div({ className: "comment-thread-meta" }, Moment.time(thread.date_added)), CommentImages({ images: thread.image_urls }), React.DOM.div({ className: "comment-thread-content",
+      comment_id: thread.comment_id }), React.DOM.div({ className: 'comment-thread-publisher' }, React.DOM.div({ className: 'comment-thread-publisher-image',
+      style: publisher_image_style }), React.DOM.div({ className: 'comment-thread-publisher-name' }, publisher.full_name)), React.DOM.div({ className: 'comment-thread-meta' }, _Moment2['default'].time(thread.date_added)), CommentImages({ images: thread.image_urls }), React.DOM.div({ className: 'comment-thread-content',
       dangerouslySetInnerHTML: { __html: thread.comments } }));
   }
 });
@@ -1835,20 +1789,22 @@ var CommentThread = React.createClass({ displayName: "CommentThread",
 module.exports = CommentThread;
 
 },{"../../../js/libs/Moment":1,"../actions/CommentActions":13,"./CommentDelete.react":16,"./CommentImages.react":19,"react":196}],27:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _Moment = require('../../../js/libs/Moment');
+
+var _Moment2 = _interopRequireDefault(_Moment);
 
 /**
  * @jsx React.DOM
  */
 
-var React = require("react");
-var CommentThread = React.createFactory(require("./CommentThread.react"));
+var React = require('react');
+var CommentThread = React.createFactory(require('./CommentThread.react'));
 
-var Moment = _interopRequire(require("../../../js/libs/Moment"));
-
-var CommentThreads = React.createClass({ displayName: "CommentThreads",
+var CommentThreads = React.createClass({ displayName: 'CommentThreads',
     getInitialState: function getInitialState() {
         return {
             is_expand: false
@@ -1865,7 +1821,7 @@ var CommentThreads = React.createClass({ displayName: "CommentThreads",
         var thread = _.max(this.props.threads, function (thread) {
             return +thread.comment_id;
         });
-        return Moment.ago(thread.date_added);
+        return _Moment2['default'].ago(thread.date_added);
     },
 
     genThreads: function genThreads() {
@@ -1884,21 +1840,21 @@ var CommentThreads = React.createClass({ displayName: "CommentThreads",
             return null;
         }
 
-        return React.DOM.div({ className: "comment-threads-info", onClick: this.toggleThreads }, React.DOM.div({ className: "comment-threads-info-count" }, React.DOM.span({ className: "comment-threads-info-value" }, this.props.threads.length), " threads below"), React.DOM.div({ className: "comment-threads-info-latest" }, "Last updated at", React.DOM.span({ className: "comment-threads-info-value" }, this.getLatestUpdated())), React.DOM.div({ className: "comment-threads-info-expand" }, React.DOM.i({ className: "fa fa-bars" })));
+        return React.DOM.div({ className: 'comment-threads-info', onClick: this.toggleThreads }, React.DOM.div({ className: 'comment-threads-info-count' }, React.DOM.span({ className: 'comment-threads-info-value' }, this.props.threads.length), ' threads below'), React.DOM.div({ className: 'comment-threads-info-latest' }, 'Last updated at', React.DOM.span({ className: 'comment-threads-info-value' }, this.getLatestUpdated())), React.DOM.div({ className: 'comment-threads-info-expand' }, React.DOM.i({ className: 'fa fa-bars' })));
     },
 
     render: function render() {
 
-        return React.DOM.div({ className: "comment-threads" }, this.genThreadsInfo(), this.genThreads());
+        return React.DOM.div({ className: 'comment-threads' }, this.genThreadsInfo(), this.genThreads());
     }
 });
 
 module.exports = CommentThreads;
 
 },{"../../../js/libs/Moment":1,"./CommentThread.react":26,"react":196}],28:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var keyMirror = require("react/lib/keyMirror");
+var keyMirror = require('react/lib/keyMirror');
 
 var constants = {};
 
@@ -1919,22 +1875,22 @@ constants.PER_PAGE = 10;
 module.exports = constants;
 
 },{"react/lib/keyMirror":181}],29:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _ = require("lodash");
-var Dispatcher = require("flux").Dispatcher;
+var _ = require('lodash');
+var Dispatcher = require('flux').Dispatcher;
 
 var AppDispatcher = _.extend(new Dispatcher(), {
 	handleServerAction: function handleServerAction(action) {
 		this.dispatch({
-			source: "SERVER_ACTION",
+			source: 'SERVER_ACTION',
 			action: action
 		});
 	},
 
 	handleViewAction: function handleViewAction(action) {
 		this.dispatch({
-			source: "VIEW_ACTION",
+			source: 'VIEW_ACTION',
 			action: action
 		});
 	}
@@ -1944,15 +1900,15 @@ var AppDispatcher = _.extend(new Dispatcher(), {
 module.exports = AppDispatcher;
 
 },{"flux":34,"lodash":37}],30:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var EventEmitter = require("events").EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 
-var AppDispatcher = require("../dispatchers/AppDispatcher");
-var CommentConstants = require("../constants/CommentConstants");
-var CommentApiUtils = require("../utils/CommentApiUtils");
+var AppDispatcher = require('../dispatchers/AppDispatcher');
+var CommentConstants = require('../constants/CommentConstants');
+var CommentApiUtils = require('../utils/CommentApiUtils');
 
-var CHANGE_EVENT = "change";
+var CHANGE_EVENT = 'change';
 
 var _data = {
 
@@ -1978,7 +1934,7 @@ var mergeComments = function mergeComments(new_comments, page) {
     });
 };
 
-var resetSearchComments = function resetSearchComments(new_comments) {
+var _resetSearchComments = function _resetSearchComments(new_comments) {
     _data.searched_comments = [];
 
     _.each(new_comments, function (comment) {
@@ -2019,21 +1975,11 @@ var CommentModifier = {
         CommentStore.emitChange();
     },
 
-    resetSearchComments: (function (_resetSearchComments) {
-        var _resetSearchCommentsWrapper = function resetSearchComments(_x) {
-            return _resetSearchComments.apply(this, arguments);
-        };
-
-        _resetSearchCommentsWrapper.toString = function () {
-            return _resetSearchComments.toString();
-        };
-
-        return _resetSearchCommentsWrapper;
-    })(function (comments) {
-        resetSearchComments(comments.data);
+    resetSearchComments: function resetSearchComments(comments) {
+        _resetSearchComments(comments.data);
 
         CommentStore.emitChange();
-    }),
+    },
 
     togglePrivate: function togglePrivate(topic_id) {
 
@@ -2055,7 +2001,7 @@ var CommentModifier = {
             return comment.comment_id == topic_id;
         });
 
-        this.say("Delete Topic Comment");
+        this.say('Delete Topic Comment');
         CommentStore.emitChange();
     },
 
@@ -2066,13 +2012,13 @@ var CommentModifier = {
             });
         });
 
-        this.say("Delete Thread Comment");
+        this.say('Delete Thread Comment');
 
         CommentStore.emitChange();
     },
 
     say: function say(msg) {
-        Notifier.showTimedMessage(msg, "success", 5);
+        Notifier.showTimedMessage(msg, 'success', 5);
     },
 
     fetchComments: function fetchComments() {
@@ -2149,32 +2095,34 @@ AppDispatcher.register(function (payload) {
 module.exports = CommentStore;
 
 },{"../constants/CommentConstants":28,"../dispatchers/AppDispatcher":29,"../utils/CommentApiUtils":31,"events":32}],31:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var superagent = _interopRequire(require("superagent"));
+var _superagent = require('superagent');
 
-var CommentActions = require("../actions/CommentActions");
-var CommentConstants = require("../constants/CommentConstants");
+var _superagent2 = _interopRequireDefault(_superagent);
+
+var CommentActions = require('../actions/CommentActions');
+var CommentConstants = require('../constants/CommentConstants');
 
 var categories = {
 	user: {
-		type: "user",
-		query: "/user/comments/professions",
-		search: "/user/comments/search"
+		type: 'user',
+		query: '/user/comments/professions',
+		search: '/user/comments/search'
 	},
 
 	project: {
-		type: "project",
-		query: "/project/comments/projects",
-		search: "/project/comments/search"
+		type: 'project',
+		query: '/project/comments/projects',
+		search: '/project/comments/search'
 	},
 
 	solution: {
-		type: "solution",
-		query: "/solution/comments/solutions",
-		search: "/solution/comments/search"
+		type: 'solution',
+		query: '/solution/comments/solutions',
+		search: '/solution/comments/search'
 	}
 };
 
@@ -2188,34 +2136,34 @@ module.exports = {
 
 	initComments: function initComments(page, type, callback) {
 		this.setCommentType(type);
-		var url = this.query + "?page=" + page + "&pp=" + CommentConstants.PER_PAGE;
+		var url = this.query + '?page=' + page + '&pp=' + CommentConstants.PER_PAGE;
 		this.request(url, callback);
 	},
 
 	fetchComments: function fetchComments(page, callback) {
-		var url = this.query + "?page=" + page + "&pp=" + CommentConstants.PER_PAGE;
+		var url = this.query + '?page=' + page + '&pp=' + CommentConstants.PER_PAGE;
 		this.request(url, callback);
 	},
 
 	searchComments: function searchComments(where, search, callback) {
-		var url = this.search + "?where=" + where + "&search=" + search;
+		var url = this.search + '?where=' + where + '&search=' + search;
 		this.request(url, callback);
 	},
 
 	togglePrivate: function togglePrivate(topic_id) {
-		var url = this.query + "/private/" + topic_id;
+		var url = this.query + '/private/' + topic_id;
 		this.request(url);
 	},
 
 	deleteComment: function deleteComment(comment_id) {
-		var url = this.query + "/delete/" + comment_id;
+		var url = this.query + '/delete/' + comment_id;
 		this.request(url);
 	},
 
 	request: function request(url, callback) {
 		callback = callback || function () {};
 
-		superagent.get(url).set("Content-Type", "application/json").end(function (err, res) {
+		_superagent2['default'].get(url).set('Content-Type', 'application/json').end(function (err, res) {
 			return callback(res.body);
 		});
 

@@ -1,11 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-exports.locationSelector = locationSelector;
-exports.editor = editor;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.locationSelector = locationSelector;
+exports.editor = editor;
 "use strict";
 
 var isKeyEnter = function isKeyEnter(e) {
@@ -56,14 +56,14 @@ function editor() {
         dragUpload: true,
         imageUpload: "/upload-editor-image",
 
-        imageUploadCallback: function (image, response) {
+        imageUploadCallback: function imageUploadCallback(image, response) {
             if (response.status == "fail") {
                 Notifier.showMessage(response.msg, "warning");
                 image.remove();
             }
         },
 
-        imageUploadErrorCallback: function () {
+        imageUploadErrorCallback: function imageUploadErrorCallback() {
             Notifier.showMessage("Some errors happened, try again later", "warning");
         }
     });
@@ -72,9 +72,15 @@ function editor() {
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 /*
  * @dependency bootstrap-tagsinput.js
@@ -85,132 +91,138 @@ var ProjectUpdater = (function () {
         _classCallCheck(this, ProjectUpdater);
     }
 
-    _createClass(ProjectUpdater, {
-        bootProject: {
-            value: function bootProject() {
-                this.initTagsInputs(["key_component", "team"]);
+    _createClass(ProjectUpdater, [{
+        key: "bootProject",
+        value: function bootProject() {
+            this.initTagsInputs(["key_component", "team"]);
 
-                this.initSelectTag($("[data-select-tags=resource]"));
-                this.initSelectOtherTag($("[data-other-tag=resource]"));
+            this.initSelectTag($("[data-select-tags=resource]"));
+            this.initSelectOtherTag($("[data-other-tag=resource]"));
 
-                this.initSelectOne($("[data-select-one=quantity]"));
+            this.initSelectOne($("[data-select-one=quantity]"));
 
-                this.initSelectUnsure($("[data-select-unsure=msrp]"));
-                this.initSelectUnsure($("[data-select-unsure=shipping-date]"));
+            this.initSelectUnsure($("[data-select-unsure=msrp]"));
+            this.initSelectUnsure($("[data-select-unsure=shipping-date]"));
 
-                this.initDatePicker(["launch_date"]);
+            this.initDatePicker(["launch_date"]);
 
-                this.initProjectTagSelector();
-            }
-        },
-        initProjectTagSelector: {
-            value: function initProjectTagSelector() {
-                this.initSelectTag($("[data-select-tags=project-tag]"));
-            }
-        },
-        initTagsInputs: {
-            value: function initTagsInputs(ids) {
-                var _self = this;
-                _.each(ids, function (id) {
-                    _self.initTagsInput($("#" + id));
-                });
-            }
-        },
-        initTagsInput: {
-            value: function initTagsInput($block) {
-                $block.tagsinput({
-                    confirmKeys: [13],
-                    removeable: true,
-                    allowDuplicates: false,
-                    tagClass: "bootstrap-tagsinput--tag"
-                });
-            }
-        },
-        initSelectTag: {
-            value: function initSelectTag($tags_block) {
-                var $input = $tags_block.find("input");
-
-                $tags_block.find(".tag").each(function (index, tag) {
-                    $(tag).click(function (e) {
-                        $(this).toggleClass("active");
-
-                        var tags = _.map($tags_block.find(".tag.active"), function (tag) {
-                            return $(tag).data("id");
-                        });
-
-                        $input.val(tags.join(","));
-                    });
-                });
-            }
-        },
-        initSelectOtherTag: {
-            value: function initSelectOtherTag($other_block) {
-                var $other_input = $other_block.find("input");
-
-                $other_block.click(function () {
-                    return $other_input.focus();
-                });
-
-                $other_input.focus(function () {
-                    return !$other_block.hasClass("active") && $other_block.addClass("active");
-                }).blur(function () {
-                    return !$other_input.val() && $other_block.removeClass("active");
-                });
-            }
-        },
-        initSelectOne: {
-            value: function initSelectOne($tags_block) {
-                var $input = $tags_block.find("input");
-
-                $tags_block.find(".tag").each(function (index, tag) {
-                    var $selected = $(tag);
-
-                    $selected.click(function (e) {
-                        $tags_block.find(".tag").not($selected).removeClass("active");
-                        $selected.addClass("active");
-
-                        $input.val($selected.data("id"));
-                    });
-                });
-            }
-        },
-        initSelectUnsure: {
-            value: function initSelectUnsure($block) {
-                var $input = $block.find("input"),
-                    $unsure = $block.find("[data-unsure]");
-
-                $input.change(function () {
-                    if ($input.val().length > 0) {
-                        $unsure.removeClass("active");
-                    }
-                });
-
-                $unsure.click(function (e) {
-                    $unsure.addClass("active");
-                    $input.val("");
-                });
-            }
-        },
-        initDatePicker: {
-            value: function initDatePicker(ids) {
-                _.each(ids, function (id) {
-                    return $("#" + id).datepicker({ format: "yyyy-mm-dd" });
-                });
-            }
+            this.initProjectTagSelector();
         }
-    });
+    }, {
+        key: "initProjectTagSelector",
+        value: function initProjectTagSelector() {
+            this.initSelectTag($("[data-select-tags=project-tag]"));
+        }
+    }, {
+        key: "initTagsInputs",
+        value: function initTagsInputs(ids) {
+            var _self = this;
+            _.each(ids, function (id) {
+                _self.initTagsInput($("#" + id));
+            });
+        }
+    }, {
+        key: "initTagsInput",
+        value: function initTagsInput($block) {
+            $block.tagsinput({
+                confirmKeys: [13],
+                removeable: true,
+                allowDuplicates: false,
+                tagClass: "bootstrap-tagsinput--tag"
+            });
+        }
+    }, {
+        key: "initSelectTag",
+        value: function initSelectTag($tags_block) {
+            var $input = $tags_block.find("input");
+
+            $tags_block.find(".tag").each(function (index, tag) {
+                $(tag).click(function (e) {
+                    $(this).toggleClass("active");
+
+                    var tags = _.map($tags_block.find(".tag.active"), function (tag) {
+                        return $(tag).data("id");
+                    });
+
+                    $input.val(tags.join(","));
+                });
+            });
+        }
+    }, {
+        key: "initSelectOtherTag",
+        value: function initSelectOtherTag($other_block) {
+            var $other_input = $other_block.find("input");
+
+            $other_block.click(function () {
+                return $other_input.focus();
+            });
+
+            $other_input.focus(function () {
+                return !$other_block.hasClass("active") && $other_block.addClass("active");
+            }).blur(function () {
+                return !$other_input.val() && $other_block.removeClass("active");
+            });
+        }
+    }, {
+        key: "initSelectOne",
+        value: function initSelectOne($tags_block) {
+            var $input = $tags_block.find("input");
+
+            $tags_block.find(".tag").each(function (index, tag) {
+                var $selected = $(tag);
+
+                $selected.click(function (e) {
+                    $tags_block.find(".tag").not($selected).removeClass("active");
+                    $selected.addClass("active");
+
+                    $input.val($selected.data("id"));
+                });
+            });
+        }
+    }, {
+        key: "initSelectUnsure",
+        value: function initSelectUnsure($block) {
+            var $input = $block.find("input"),
+                $unsure = $block.find("[data-unsure]");
+
+            $input.change(function () {
+                if ($input.val().length > 0) {
+                    $unsure.removeClass("active");
+                }
+            });
+
+            $unsure.click(function (e) {
+                $unsure.addClass("active");
+                $input.val("");
+            });
+        }
+    }, {
+        key: "initDatePicker",
+        value: function initDatePicker(ids) {
+            _.each(ids, function (id) {
+                return $("#" + id).datepicker({ format: "yyyy-mm-dd" });
+            });
+        }
+    }]);
 
     return ProjectUpdater;
 })();
 
-module.exports = ProjectUpdater;
+exports["default"] = ProjectUpdater;
+module.exports = exports["default"];
 
 },{}],3:[function(require,module,exports){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 var SolutionCategoryUpdater = (function () {
     function SolutionCategoryUpdater() {
@@ -231,155 +243,161 @@ var SolutionCategoryUpdater = (function () {
         this.initSelected();
     }
 
-    _createClass(SolutionCategoryUpdater, {
-        bindEvents: {
-            value: function bindEvents() {
-                var _self = this;
+    _createClass(SolutionCategoryUpdater, [{
+        key: "bindEvents",
+        value: function bindEvents() {
+            var _self = this;
 
-                _self.$main.click(function () {
-                    _self.$main_options.toggleClass("active");
-                    _self.$sub_options.removeClass("active");
-                });
+            _self.$main.click(function () {
+                _self.$main_options.toggleClass("active");
+                _self.$sub_options.removeClass("active");
+            });
 
-                _self.$sub.click(function () {
-                    _self.$sub_options.toggleClass("active");
-                    _self.$main_options.removeClass("active");
-                });
+            _self.$sub.click(function () {
+                _self.$sub_options.toggleClass("active");
+                _self.$main_options.removeClass("active");
+            });
 
-                _self.$main_options.find("li").click(function () {
-                    _self.setMainSelection($(this));
-                });
+            _self.$main_options.find("li").click(function () {
+                _self.setMainSelection($(this));
+            });
 
-                _self.$sub_options.find("li").click(function () {
-                    _self.setSubSelection($(this));
-                });
-            }
-        },
-        initSelected: {
-            value: function initSelected() {
-                var main_id = this.$main_input.val(),
-                    sub_id = this.$sub_input.val() || "0";
-
-                this.initMainSelected(main_id, sub_id);
-                this.initSubSelected(main_id, sub_id);
-            }
-        },
-        initMainSelected: {
-            value: function initMainSelected(main_id, sub_id) {
-                if (!main_id) {
-                    return;
-                }
-
-                var $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=" + sub_id + "]");
-
-                if ($main_option.length == 0) {
-                    $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=0]");
-                }
-
-                if ($main_option.length == 0) {
-                    return;
-                }
-
-                this.setMainSelection($main_option);
-            }
-        },
-        initSubSelected: {
-            value: function initSubSelected(main_id, sub_id) {
-                var $sub_option = this.$sub_options.find("#sub-category-" + main_id + "-" + sub_id);
-
-                if (!$sub_option) {
-                    return;
-                }
-
-                this.setSubSelection($sub_option);
-            }
-        },
-        setMainSelection: {
-            value: function setMainSelection($option) {
-                var main_id = $option.data("main-category-id"),
-                    main_text = $option.html(),
-                    sub_id = $option.data("sub-category-id");
-
-                this.setMainInput(main_id);
-                this.setMainSelectedText(main_text);
-                this.activeMainSelectedItem($option, main_id);
-
-                this.setSubInput(sub_id);
-                this.resetSubItems(main_id);
-
-                this.$main_options.removeClass("active");
-            }
-        },
-        setSubSelection: {
-            value: function setSubSelection($option) {
-                var sub_id = $option.data("sub-category-id"),
-                    sub_text = $option.html();
-
-                if ($option.length == 0) {
-                    return;
-                }
-
-                this.setSubInput(sub_id);
-                this.setSubSelectedText(sub_text);
-                this.activeSubSelectedItem($option, sub_id);
-
-                this.$sub_options.removeClass("active");
-            }
-        },
-        setMainInput: {
-            value: function setMainInput(main_id) {
-                this.$main_input.val(main_id);
-            }
-        },
-        setSubInput: {
-            value: function setSubInput(sub_id) {
-                this.$sub_input.val(sub_id);
-            }
-        },
-        activeMainSelectedItem: {
-            value: function activeMainSelectedItem($option, main_id) {
-                $option.addClass("active");
-                this.$main_options.find("[data-main-category-id!=" + main_id + "]").removeClass("active");
-            }
-        },
-        activeSubSelectedItem: {
-            value: function activeSubSelectedItem($option, sub_id) {
-                $option.addClass("active");
-                this.$sub_options.find("[data-sub-category-id!=" + sub_id + "]").removeClass("active");
-            }
-        },
-        setMainSelectedText: {
-            value: function setMainSelectedText(main_text) {
-                this.$main.html(main_text);
-                this.setSubSelectedText("");
-            }
-        },
-        setSubSelectedText: {
-            value: function setSubSelectedText(sub_text) {
-                this.$sub.html(sub_text);
-            }
-        },
-        resetSubItems: {
-            value: function resetSubItems(main_id) {
-                this.$sub_options.find("[data-main-category-id!=" + main_id + "]").hide();
-                this.$sub_options.find("[data-main-category-id=" + main_id + "]").show();
-            }
+            _self.$sub_options.find("li").click(function () {
+                _self.setSubSelection($(this));
+            });
         }
-    });
+    }, {
+        key: "initSelected",
+        value: function initSelected() {
+            var main_id = this.$main_input.val(),
+                sub_id = this.$sub_input.val() || "0";
+
+            this.initMainSelected(main_id, sub_id);
+            this.initSubSelected(main_id, sub_id);
+        }
+    }, {
+        key: "initMainSelected",
+        value: function initMainSelected(main_id, sub_id) {
+            if (!main_id) {
+                return;
+            }
+
+            var $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=" + sub_id + "]");
+
+            if ($main_option.length == 0) {
+                $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=0]");
+            }
+
+            if ($main_option.length == 0) {
+                return;
+            }
+
+            this.setMainSelection($main_option);
+        }
+    }, {
+        key: "initSubSelected",
+        value: function initSubSelected(main_id, sub_id) {
+            var $sub_option = this.$sub_options.find("#sub-category-" + main_id + "-" + sub_id);
+
+            if (!$sub_option) {
+                return;
+            }
+
+            this.setSubSelection($sub_option);
+        }
+    }, {
+        key: "setMainSelection",
+        value: function setMainSelection($option) {
+            var main_id = $option.data("main-category-id"),
+                main_text = $option.html(),
+                sub_id = $option.data("sub-category-id");
+
+            this.setMainInput(main_id);
+            this.setMainSelectedText(main_text);
+            this.activeMainSelectedItem($option, main_id);
+
+            this.setSubInput(sub_id);
+            this.resetSubItems(main_id);
+
+            this.$main_options.removeClass("active");
+        }
+    }, {
+        key: "setSubSelection",
+        value: function setSubSelection($option) {
+            var sub_id = $option.data("sub-category-id"),
+                sub_text = $option.html();
+
+            if ($option.length == 0) {
+                return;
+            }
+
+            this.setSubInput(sub_id);
+            this.setSubSelectedText(sub_text);
+            this.activeSubSelectedItem($option, sub_id);
+
+            this.$sub_options.removeClass("active");
+        }
+    }, {
+        key: "setMainInput",
+        value: function setMainInput(main_id) {
+            this.$main_input.val(main_id);
+        }
+    }, {
+        key: "setSubInput",
+        value: function setSubInput(sub_id) {
+            this.$sub_input.val(sub_id);
+        }
+    }, {
+        key: "activeMainSelectedItem",
+        value: function activeMainSelectedItem($option, main_id) {
+            $option.addClass("active");
+            this.$main_options.find("[data-main-category-id!=" + main_id + "]").removeClass("active");
+        }
+    }, {
+        key: "activeSubSelectedItem",
+        value: function activeSubSelectedItem($option, sub_id) {
+            $option.addClass("active");
+            this.$sub_options.find("[data-sub-category-id!=" + sub_id + "]").removeClass("active");
+        }
+    }, {
+        key: "setMainSelectedText",
+        value: function setMainSelectedText(main_text) {
+            this.$main.html(main_text);
+            this.setSubSelectedText("");
+        }
+    }, {
+        key: "setSubSelectedText",
+        value: function setSubSelectedText(sub_text) {
+            this.$sub.html(sub_text);
+        }
+    }, {
+        key: "resetSubItems",
+        value: function resetSubItems(main_id) {
+            this.$sub_options.find("[data-main-category-id!=" + main_id + "]").hide();
+            this.$sub_options.find("[data-main-category-id=" + main_id + "]").show();
+        }
+    }]);
 
     return SolutionCategoryUpdater;
 })();
 
-module.exports = SolutionCategoryUpdater;
+exports["default"] = SolutionCategoryUpdater;
+module.exports = exports["default"];
 
 },{}],4:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _defineProperty = function (obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 var ATTRS = {
     COMPANY_NAME: "companyName",
@@ -402,82 +420,84 @@ var SolutionCustomerUpdater = (function () {
         this.resetCustomerInput();
     }
 
-    _createClass(SolutionCustomerUpdater, {
-        buildCustomers: {
-            value: function buildCustomers(customer) {
-                var $template = this.$template.clone(),
-                    $input_name = $template.find(".js-customer-name"),
-                    $input_url = $template.find(".js-customer-url"),
-                    $delete = $template.find(".js-customer-delete");
+    _createClass(SolutionCustomerUpdater, [{
+        key: "buildCustomers",
+        value: function buildCustomers(customer) {
+            var $template = this.$template.clone(),
+                $input_name = $template.find(".js-customer-name"),
+                $input_url = $template.find(".js-customer-url"),
+                $delete = $template.find(".js-customer-delete");
 
-                customer = customer || { url: "", name: "" };
+            customer = customer || { url: "", name: "" };
 
-                $input_name.val(customer.name);
-                $input_name.focusout(this.resetCustomerInput.bind(this));
+            $input_name.val(customer.name);
+            $input_name.focusout(this.resetCustomerInput.bind(this));
 
-                $input_url.val(customer.url);
-                $input_url.focusout(this.resetCustomerInput.bind(this));
+            $input_url.val(customer.url);
+            $input_url.focusout(this.resetCustomerInput.bind(this));
 
-                $delete.click(this.removeCustomer.bind(this, $template));
+            $delete.click(this.removeCustomer.bind(this, $template));
 
-                this.$customers.append($template);
+            this.$customers.append($template);
 
-                return $template;
-            }
-        },
-        removeCustomer: {
-            value: function removeCustomer($customer_block) {
-                $customer_block.remove();
-                this.resetCustomerInput();
-            }
-        },
-        resetCustomerInput: {
-            value: function resetCustomerInput() {
-                var data = [];
-
-                this.$customers.find(".js-customer-block").each(function (index, block) {
-                    var $block = $(block);
-
-                    data.push((function () {
-                        var _data$push = {};
-
-                        _defineProperty(_data$push, ATTRS.COMPANY_NAME, $block.find(".js-customer-name").val());
-
-                        _defineProperty(_data$push, ATTRS.COMPANY_URL, $block.find(".js-customer-url").val());
-
-                        return _data$push;
-                    })());
-                });
-
-                this.$input.val(JSON.stringify(data));
-            }
+            return $template;
         }
-    });
+    }, {
+        key: "removeCustomer",
+        value: function removeCustomer($customer_block) {
+            $customer_block.remove();
+            this.resetCustomerInput();
+        }
+    }, {
+        key: "resetCustomerInput",
+        value: function resetCustomerInput() {
+            var data = [];
+
+            this.$customers.find(".js-customer-block").each(function (index, block) {
+                var _data$push;
+
+                var $block = $(block);
+
+                data.push((_data$push = {}, _defineProperty(_data$push, ATTRS.COMPANY_NAME, $block.find(".js-customer-name").val()), _defineProperty(_data$push, ATTRS.COMPANY_URL, $block.find(".js-customer-url").val()), _data$push));
+            });
+
+            this.$input.val(JSON.stringify(data));
+        }
+    }]);
 
     return SolutionCustomerUpdater;
 })();
 
-module.exports = SolutionCustomerUpdater;
+exports["default"] = SolutionCustomerUpdater;
+module.exports = exports["default"];
 
 },{}],5:[function(require,module,exports){
 "use strict";
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-exports.boot = boot;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+exports.boot = boot;
+
+var _ProjectUpdater = require("./ProjectUpdater");
+
+var _ProjectUpdater2 = _interopRequireDefault(_ProjectUpdater);
+
+var _SolutionCategoryUpdater = require("./SolutionCategoryUpdater");
+
+var _SolutionCategoryUpdater2 = _interopRequireDefault(_SolutionCategoryUpdater);
+
+var _SolutionCustomerUpdater = require("./SolutionCustomerUpdater");
+
+var _SolutionCustomerUpdater2 = _interopRequireDefault(_SolutionCustomerUpdater);
+
 "use strict";
 
-var ProjectUpdater = _interopRequire(require("./ProjectUpdater"));
-
-var SolutionCategoryUpdater = _interopRequire(require("./SolutionCategoryUpdater"));
-
-var SolutionCustomerUpdater = _interopRequire(require("./SolutionCustomerUpdater"));
-
 function boot() {
-    var projectUpdater = new ProjectUpdater();
+    var projectUpdater = new _ProjectUpdater2["default"]();
 
     projectUpdater.initSelectTag($("[data-select-tags=project_progress]"));
     projectUpdater.initSelectOtherTag($("[data-other-tag=project_progress]"));
@@ -490,18 +510,24 @@ function boot() {
 
     projectUpdater.initProjectTagSelector();
 
-    new SolutionCategoryUpdater();
-    new SolutionCustomerUpdater();
+    new _SolutionCategoryUpdater2["default"]();
+    new _SolutionCustomerUpdater2["default"]();
 }
 
 },{"./ProjectUpdater":2,"./SolutionCategoryUpdater":3,"./SolutionCustomerUpdater":4}],6:[function(require,module,exports){
 "use strict";
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } };
 
-var FormUtility = _interopRequireWildcard(require("./libs/FormUtility"));
+var _import = require("./libs/FormUtility");
 
-var SolutionUpdater = _interopRequireWildcard(require("./libs/SolutionUpdater"));
+var FormUtility = _interopRequireWildcard(_import);
+
+var _import2 = require("./libs/SolutionUpdater");
+
+var SolutionUpdater = _interopRequireWildcard(_import2);
+
+"use strict";
 
 $(function () {
     FormUtility.editor();

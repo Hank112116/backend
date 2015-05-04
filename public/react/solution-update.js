@@ -1,9 +1,15 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+"use strict";
 
 var MemberSelector = (function () {
     function MemberSelector() {
@@ -12,62 +18,64 @@ var MemberSelector = (function () {
         this.timer = 0;
     }
 
-    _createClass(MemberSelector, {
-        fireTimeoutSelector: {
-            value: function fireTimeoutSelector(user_id, callback) {
-                var _this = this;
+    _createClass(MemberSelector, [{
+        key: "fireTimeoutSelector",
+        value: function fireTimeoutSelector(user_id, callback) {
+            var _this = this;
 
-                if (!/\d+/.test(user_id)) {
-                    return;
-                }
-
-                clearTimeout(this.timer);
-                this.timer = setTimeout(function () {
-                    return _this.fireSelector(user_id, callback);
-                }, 2000);
+            if (!/\d+/.test(user_id)) {
+                return;
             }
-        },
-        fireSelector: {
-            value: function fireSelector(user_id, callback) {
-                var _this = this;
 
-                $.getJSON("/user/api/search/" + user_id, function (feedback) {
-                    return _this.onSelectSuccess(feedback, user_id, callback);
-                });
-            }
-        },
-        onSelectSuccess: {
-            value: function onSelectSuccess(feedback, user_id, callback) {
-                var user = feedback.ok === "ok" ? feedback : { user_id: "" };
+            clearTimeout(this.timer);
+            this.timer = setTimeout(function () {
+                return _this.fireSelector(user_id, callback);
+            }, 2000);
+        }
+    }, {
+        key: "fireSelector",
+        value: function fireSelector(user_id, callback) {
+            var _this2 = this;
 
-                callback(user);
+            $.getJSON("/user/api/search/" + user_id, function (feedback) {
+                return _this2.onSelectSuccess(feedback, user_id, callback);
+            });
+        }
+    }, {
+        key: "onSelectSuccess",
+        value: function onSelectSuccess(feedback, user_id, callback) {
+            var user = feedback.ok === "ok" ? feedback : { user_id: "" };
 
-                if (feedback.ok !== "ok") {
-                    Notifier.showTimedMessage("No member with id [ " + user_id + " ]", "warning", 3);
-                }
+            callback(user);
+
+            if (feedback.ok !== "ok") {
+                Notifier.showTimedMessage("No member with id [ " + user_id + " ]", "warning", 3);
             }
         }
-    });
+    }]);
 
     return MemberSelector;
 })();
 
-module.exports = MemberSelector;
+exports["default"] = MemberSelector;
+module.exports = exports["default"];
 
 },{}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+var _interopRequireDefault = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _MemberSelector = require('../../../js/libs/MemberSelector');
+
+var _MemberSelector2 = _interopRequireDefault(_MemberSelector);
 
 /**
   * @jsx React.DOM
   */
 
-var React = require("react");
+var React = require('react');
 
-var MemberSelector = _interopRequire(require("../../../js/libs/MemberSelector"));
-
-var OwnerInput = React.createClass({ displayName: "OwnerInput",
+var OwnerInput = React.createClass({ displayName: 'OwnerInput',
 	getInitialState: function getInitialState() {
 		return {
 			user_id: this.props.user_id,
@@ -86,11 +94,11 @@ var OwnerInput = React.createClass({ displayName: "OwnerInput",
 
 		this.setState({ user_id: user_id });
 
-		new MemberSelector().fireTimeoutSelector(user_id, this.props.switchOwner);
+		new _MemberSelector2['default']().fireTimeoutSelector(user_id, this.props.switchOwner);
 	},
 
 	render: function render() {
-		return React.DOM.input({ type: "text", id: "member", name: "user_id", ref: "user",
+		return React.DOM.input({ type: 'text', id: 'member', name: 'user_id', ref: 'user',
 			value: this.state.user_id,
 			onChange: this.switchOwner });
 	}
@@ -103,19 +111,19 @@ module.exports = OwnerInput;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var OwnerWrapper = React.createFactory(require("./OwnerWrapper.react"));
-var OwnerInput = React.createFactory(require("./OwnerInput.react"));
+var React = require('react');
+var OwnerWrapper = React.createFactory(require('./OwnerWrapper.react'));
+var OwnerInput = React.createFactory(require('./OwnerInput.react'));
 
-var OwnerSelector = React.createClass({ displayName: "OwnerSelector",
+var OwnerSelector = React.createClass({ displayName: 'OwnerSelector',
 	getInitialState: function getInitialState() {
 		if (!this.props.user) {
 			return { user: {} };
 		}
 
-		var user = typeof this.props.user === "string" ? JSON.parse(this.props.user) : this.props.user;
+		var user = typeof this.props.user === 'string' ? JSON.parse(this.props.user) : this.props.user;
 
 		return {
 			user: user
@@ -138,11 +146,11 @@ module.exports = OwnerSelector;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var OwnerWrapper = React.createClass({ displayName: "OwnerWrapper",
+var OwnerWrapper = React.createClass({ displayName: 'OwnerWrapper',
 	render: function render() {
 		var user = this.props.user;
 
@@ -151,10 +159,10 @@ var OwnerWrapper = React.createClass({ displayName: "OwnerWrapper",
 		}
 
 		var bg = {
-			backgroundImage: "url(" + user.image + ")"
+			backgroundImage: 'url(' + user.image + ')'
 		};
 
-		return React.DOM.div({ className: "owner-wrapper" }, React.DOM.div({ className: "owner-image-wrapper", style: bg }), React.DOM.div({ className: "owner-info-wrapper" }, React.DOM.div(null, React.DOM.a({ href: user.link, target: "_blank" }, user.full_name), React.DOM.br(null), user.is_expert ? "Expert" : "Creator"), React.DOM.div({ className: user.is_expert ? "" : "hide" }, user.position, "  at  ", user.company)));
+		return React.DOM.div({ className: 'owner-wrapper' }, React.DOM.div({ className: 'owner-image-wrapper', style: bg }), React.DOM.div({ className: 'owner-info-wrapper' }, React.DOM.div(null, React.DOM.a({ href: user.link, target: '_blank' }, user.full_name), React.DOM.br(null), user.is_expert ? 'Expert' : 'Creator'), React.DOM.div({ className: user.is_expert ? '' : 'hide' }, user.position, '  at  ', user.company)));
 	}
 });
 
@@ -165,13 +173,13 @@ module.exports = OwnerWrapper;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var Cover = React.createClass({ displayName: "Cover",
+var Cover = React.createClass({ displayName: 'Cover',
 	getUrlBackground: function getUrlBackground() {
-		return { backgroundImage: "url(" + this.props.cover + ")" };
+		return { backgroundImage: 'url(' + this.props.cover + ')' };
 	},
 
 	getPreviewBackground: function getPreviewBackground() {
@@ -180,9 +188,9 @@ var Cover = React.createClass({ displayName: "Cover",
 
 	render: function render() {
 
-		var bg = this.props.cover ? { backgroundImage: "url(" + this.props.cover.replace("/thumb/", "/orig/") + ")" } : {};
+		var bg = this.props.cover ? { backgroundImage: 'url(' + this.props.cover.replace('/thumb/', '/orig/') + ')' } : {};
 
-		return React.DOM.div({ className: "solution-cover", style: bg });
+		return React.DOM.div({ className: 'solution-cover', style: bg });
 	}
 });
 
@@ -193,16 +201,16 @@ module.exports = Cover;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var Thumb = React.createFactory(require("./Thumb.react"));
-var Cover = React.createFactory(require("./Cover.react"));
+var Thumb = React.createFactory(require('./Thumb.react'));
+var Cover = React.createFactory(require('./Cover.react'));
 
-var ImageParser = require("../utils/ImageParser");
+var ImageParser = require('../utils/ImageParser');
 
-var SolutionGallery = React.createClass({ displayName: "SolutionGallery",
+var SolutionGallery = React.createClass({ displayName: 'SolutionGallery',
 	handleSwitchDeleteImage: function handleSwitchDeleteImage(index) {
 		var thumbs = this.state.thumbs;
 
@@ -260,24 +268,24 @@ var SolutionGallery = React.createClass({ displayName: "SolutionGallery",
 	},
 
 	getInitialState: function getInitialState() {
-		var _this = this;
+		var _this2 = this;
 
 		var thumbs = [],
 		    cover = null;
 
 		_.times(5, function (num) {
 
-			var image = _this.props.galleries[num],
+			var image = _this2.props.galleries[num],
 			    is_cover = false;
 
-			if (image && image.fileName == _this.props.cover) {
+			if (image && image.fileName == _this2.props.cover) {
 				cover = image.fileUrl;
 				is_cover = true;
 			}
 
 			thumbs.push({
 				index: num,
-				key: "thumb_" + num,
+				key: 'thumb_' + num,
 				image_url: image ? image.fileUrl : null,
 				description: image ? image.description : null,
 				is_cover: is_cover,
@@ -286,24 +294,24 @@ var SolutionGallery = React.createClass({ displayName: "SolutionGallery",
 		});
 
 		return {
-			is_display: this.props.mode == "display",
+			is_display: this.props.mode == 'display',
 			cover: cover,
 			thumbs: thumbs
 		};
 	},
 
 	render: function render() {
-		var _this = this;
+		var _this3 = this;
 
 		var thumbs = this.state.thumbs.map(function (thumb) {
 			return Thumb({
 				key: thumb.key,
 				thumb: thumb,
-				is_display: _this.state.is_display,
-				handleChangeImage: _this.handleChangeImage,
-				handleSwitchDeleteImage: _this.handleSwitchDeleteImage,
-				handleHoverImage: _this.handleHoverImage,
-				handleChooseCover: _this.handleChooseCover });
+				is_display: _this3.state.is_display,
+				handleChangeImage: _this3.handleChangeImage,
+				handleSwitchDeleteImage: _this3.handleSwitchDeleteImage,
+				handleHoverImage: _this3.handleHoverImage,
+				handleChooseCover: _this3.handleChooseCover });
 		});
 
 		return React.DOM.div(null, Cover({ cover: this.state.cover, show_preview: this.state.show_preview }), thumbs);
@@ -317,17 +325,17 @@ module.exports = SolutionGallery;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var ThumbChoose = React.createFactory(require("./ThumbChoose.react"));
-var ThumbDelete = React.createFactory(require("./ThumbDelete.react"));
-var ThumbDescription = React.createFactory(require("./ThumbDescription.react"));
+var ThumbChoose = React.createFactory(require('./ThumbChoose.react'));
+var ThumbDelete = React.createFactory(require('./ThumbDelete.react'));
+var ThumbDescription = React.createFactory(require('./ThumbDescription.react'));
 
-var ImageParser = require("../utils/ImageParser");
+var ImageParser = require('../utils/ImageParser');
 
-var Thumb = React.createClass({ displayName: "Thumb",
+var Thumb = React.createClass({ displayName: 'Thumb',
 	genDeleteThumb: function genDeleteThumb() {
 		if (this.props.is_display) {
 			return null;
@@ -343,10 +351,10 @@ var Thumb = React.createClass({ displayName: "Thumb",
 			return null;
 		}
 
-		return React.DOM.input({ type: "file",
-			ref: "uploader",
+		return React.DOM.input({ type: 'file',
+			ref: 'uploader',
 			name: this.props.thumb.key,
-			className: "solution-image-upload",
+			className: 'solution-image-upload',
 			onChange: this.handleChangeImage });
 	},
 
@@ -355,7 +363,7 @@ var Thumb = React.createClass({ displayName: "Thumb",
 			return null;
 		}
 
-		return React.DOM.input({ type: "hidden", name: "cover", value: this.props.thumb.key, readOnly: true });
+		return React.DOM.input({ type: 'hidden', name: 'cover', value: this.props.thumb.key, readOnly: true });
 	},
 
 	handleHoverImage: function handleHoverImage() {
@@ -371,7 +379,7 @@ var Thumb = React.createClass({ displayName: "Thumb",
 
 		if (!input.files || !input.files[0] || !ImageParser.check(input.files[0])) {
 
-			input.value = "";
+			input.value = '';
 			input.files = null;
 
 			return;
@@ -381,15 +389,15 @@ var Thumb = React.createClass({ displayName: "Thumb",
 	},
 
 	render: function render() {
-		var bg = this.props.thumb.image_url ? { backgroundImage: "url(" + this.props.thumb.image_url + ")" } : {};
+		var bg = this.props.thumb.image_url ? { backgroundImage: 'url(' + this.props.thumb.image_url + ')' } : {};
 
 		if (this.props.is_display && !this.props.thumb.image_url) {
 			return null;
 		}
 
-		return React.DOM.div({ className: "solution-thumb-wrapper" }, ThumbChoose({
+		return React.DOM.div({ className: 'solution-thumb-wrapper' }, ThumbChoose({
 			thumb: this.props.thumb,
-			handleChooseCover: this.props.handleChooseCover }), React.DOM.div({ className: "solution-thumb",
+			handleChooseCover: this.props.handleChooseCover }), React.DOM.div({ className: 'solution-thumb',
 			style: bg,
 			onMouseOver: this.handleHoverImage }, this.genThumbInput()), ThumbDescription({
 			is_display: this.props.is_display,
@@ -404,19 +412,19 @@ module.exports = Thumb;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var ThumbChoose = React.createClass({ displayName: "ThumbChoose",
+var ThumbChoose = React.createClass({ displayName: 'ThumbChoose',
 	handleClick: function handleClick(e) {
 		this.props.handleChooseCover(this.props.thumb.index);
 	},
 
 	render: function render() {
-		var switchClass = "onoffswitch-label" + (this.props.thumb.is_cover ? " active" : "");
+		var switchClass = 'onoffswitch-label' + (this.props.thumb.is_cover ? ' active' : '');
 
-		return React.DOM.div({ className: "solution-thumb-choose" }, React.DOM.div({ className: "onoffswitch" }, React.DOM.label({ className: switchClass, onClick: this.handleClick }, React.DOM.span({ className: "onoffswitch-inner" }), React.DOM.span({ className: "onoffswitch-switch" }))));
+		return React.DOM.div({ className: 'solution-thumb-choose' }, React.DOM.div({ className: 'onoffswitch' }, React.DOM.label({ className: switchClass, onClick: this.handleClick }, React.DOM.span({ className: 'onoffswitch-inner' }), React.DOM.span({ className: 'onoffswitch-switch' }))));
 	}
 });
 
@@ -427,21 +435,21 @@ module.exports = ThumbChoose;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var ThumbDelete = React.createClass({ displayName: "ThumbDelete",
+var ThumbDelete = React.createClass({ displayName: 'ThumbDelete',
 	handleClick: function handleClick(e) {
 		this.props.handleSwitchDeleteImage(this.props.thumb.index);
 	},
 
 	render: function render() {
-		var thumb_delete_name = "thumb_delete_" + this.props.thumb.index,
-		    switchClass = "solution-thumb-delete" + (this.props.thumb.is_deleted ? " active" : ""),
-		    value = this.props.thumb.is_deleted ? "1" : "0";
+		var thumb_delete_name = 'thumb_delete_' + this.props.thumb.index,
+		    switchClass = 'solution-thumb-delete' + (this.props.thumb.is_deleted ? ' active' : ''),
+		    value = this.props.thumb.is_deleted ? '1' : '0';
 
-		return React.DOM.div({ className: switchClass, onClick: this.handleClick }, React.DOM.i({ className: "fa fa-times" }), React.DOM.input({ type: "hidden", name: thumb_delete_name, value: value }));
+		return React.DOM.div({ className: switchClass, onClick: this.handleClick }, React.DOM.i({ className: 'fa fa-times' }), React.DOM.input({ type: 'hidden', name: thumb_delete_name, value: value }));
 	}
 });
 
@@ -452,11 +460,11 @@ module.exports = ThumbDelete;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
-var ThumbDescription = React.createClass({ displayName: "ThumbDescription",
+var ThumbDescription = React.createClass({ displayName: 'ThumbDescription',
 
 	handleKeyDown: function handleKeyDown(e) {
 
@@ -478,14 +486,14 @@ var ThumbDescription = React.createClass({ displayName: "ThumbDescription",
 	},
 
 	render: function render() {
-		var thumb_desc_name = "thumb_desc_" + this.props.thumb.index;
+		var thumb_desc_name = 'thumb_desc_' + this.props.thumb.index;
 
 		if (this.props.is_display) {
-			return React.DOM.div({ className: "solution-thumb-content readonly" }, React.DOM.div({ className: "content-readonly" }, this.state.description));
+			return React.DOM.div({ className: 'solution-thumb-content readonly' }, React.DOM.div({ className: 'content-readonly' }, this.state.description));
 		}
 
-		return React.DOM.div({ className: "solution-thumb-content" }, React.DOM.textarea({
-			ref: "desc",
+		return React.DOM.div({ className: 'solution-thumb-content' }, React.DOM.textarea({
+			ref: 'desc',
 			name: thumb_desc_name,
 			value: this.state.description,
 			onChange: this.handleChangeDescription,
@@ -496,20 +504,20 @@ var ThumbDescription = React.createClass({ displayName: "ThumbDescription",
 module.exports = ThumbDescription;
 
 },{"react":168}],11:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var ImageParser = {
 	LIMIT: 1024 * 1024 * 3,
-	TYPES: ["image/png", "image/jpeg", "image/jpg"],
+	TYPES: ['image/png', 'image/jpeg', 'image/jpg'],
 
 	check: function check(file) {
 		if (this.TYPES.indexOf(file.type) === -1) {
-			Notifier.showTimedMessage("Only accept png | jpg image", "warn", 5);
+			Notifier.showTimedMessage('Only accept png | jpg image', 'warn', 5);
 			return false;
 		}
 
 		if (file.size > this.LIMIT) {
-			Notifier.showTimedMessage("Size too large", "warn", 5);
+			Notifier.showTimedMessage('Size too large', 'warn', 5);
 			return false;
 		}
 
@@ -530,12 +538,12 @@ module.exports = ImageParser;
   * @jsx React.DOM
   */
 
-"use strict";
+'use strict';
 
-var React = require("react");
-var SolutionGallery = React.createFactory(require("./solution-gallery/components/SolutionGallery.react"));
+var React = require('react');
+var SolutionGallery = React.createFactory(require('./solution-gallery/components/SolutionGallery.react'));
 
-var gallery_wrapper = document.getElementById("solution-gallery"),
+var gallery_wrapper = document.getElementById('solution-gallery'),
     galleries = gallery_wrapper.dataset.solutionGallery ? JSON.parse(gallery_wrapper.dataset.solutionGallery) : [];
 
 React.render(SolutionGallery({
@@ -543,11 +551,11 @@ React.render(SolutionGallery({
 	cover: gallery_wrapper.dataset.solutionCover,
 	galleries: galleries }), gallery_wrapper);
 
-var OwnerSelector = React.createFactory(require("./owner-select/components/OwnerSelector.react"));
+var OwnerSelector = React.createFactory(require('./owner-select/components/OwnerSelector.react'));
 
-var user = $("#owner-selector").data("user");
+var user = $('#owner-selector').data('user');
 
-React.render(OwnerSelector({ user: user }), document.getElementById("owner-selector"));
+React.render(OwnerSelector({ user: user }), document.getElementById('owner-selector'));
 
 },{"./owner-select/components/OwnerSelector.react":3,"./solution-gallery/components/SolutionGallery.react":6,"react":168}],13:[function(require,module,exports){
 // shim for using process in browser

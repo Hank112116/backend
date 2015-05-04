@@ -1,11 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-exports.locationSelector = locationSelector;
-exports.editor = editor;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.locationSelector = locationSelector;
+exports.editor = editor;
 "use strict";
 
 var isKeyEnter = function isKeyEnter(e) {
@@ -56,14 +56,14 @@ function editor() {
         dragUpload: true,
         imageUpload: "/upload-editor-image",
 
-        imageUploadCallback: function (image, response) {
+        imageUploadCallback: function imageUploadCallback(image, response) {
             if (response.status == "fail") {
                 Notifier.showMessage(response.msg, "warning");
                 image.remove();
             }
         },
 
-        imageUploadErrorCallback: function () {
+        imageUploadErrorCallback: function imageUploadErrorCallback() {
             Notifier.showMessage("Some errors happened, try again later", "warning");
         }
     });
@@ -72,9 +72,13 @@ function editor() {
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } };
 
-var FormUtility = _interopRequireWildcard(require("./libs/FormUtility"));
+var _import = require("./libs/FormUtility");
+
+var FormUtility = _interopRequireWildcard(_import);
+
+"use strict";
 
 $(function () {
     FormUtility.locationSelector($("#country"));
