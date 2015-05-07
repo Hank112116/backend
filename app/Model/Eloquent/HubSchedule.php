@@ -105,4 +105,8 @@ class HubSchedule extends Project
     {
         return in_array($manager_id, explode(',', $this->hub_managers));
     }
+
+    public function isDeleted() {
+        return $this->is_deleted;
+    }
 }

@@ -42,29 +42,35 @@
                     @endif
                 </td>
                 <td>
-                    <div class="process-btns">
-                        <a class="btn-mini" href="{!! $s->textFrontEditLink() !!}" target="_blank">
-                            <i class="fa fa-pencil fa-fw"></i>EDIT</a>
+                    @if($s->isDeleted())
+                        <a href="" class="btn btn-primary btn-disabled" disabled>This project was deleted</a>
+                    @else
+                        <div class="process-btns">
+                            <a class="btn-mini" href="{!! $s->textFrontEditLink() !!}" target="_blank">
+                                <i class="fa fa-pencil fa-fw"></i>EDIT
+                            </a>
 
-                        @if(!$s->hub_approve)
-                        <a href="{!! action('HubController@approveSchedule', $s->project_id) !!}"
-                           class="btn-mini btn-danger js-approve"><i class="fa fa-pencil fa-fw"></i>APPROVE</a>
-                        @endif
-                    </div>
+                            @if(!$s->hub_approve)
+                            <a href="{!! action('HubController@approveSchedule', $s->project_id) !!}"
+                               class="btn-mini btn-danger js-approve"><i class="fa fa-pencil fa-fw"></i>APPROVE</a>
+                            @endif
+                        </div>
 
-                    <div class="version-btns">
-                        <a href="{!! $preview['project'].$s->project_id  !!}"
-                           target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>LATEST</a>
-                        <a href="{!! $preview['project'].$s->project_id  !!}"
-                           target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>LATEST</a>
-                        <a href="{!! $preview['version'].$s->getOriginVersion()  !!}"
-                           target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>ORIGIN</a>
+                        <div class="version-btns">
+                            <a href="{!! $preview['project'].$s->project_id  !!}"
+                               target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>LATEST</a>
+                            <a href="{!! $preview['project'].$s->project_id  !!}"
+                               target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>LATEST</a>
+                            <a href="{!! $preview['version'].$s->getOriginVersion()  !!}"
+                               target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>ORIGIN</a>
 
-                        @if($s->hub_approve)
-                        <a href="{!! $preview['version'].$s->getApproveVersion() !!}"
-                           target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>APPROVE</a>
-                        @endif
-                    </div>
+                            @if($s->hub_approve)
+                            <a href="{!! $preview['version'].$s->getApproveVersion() !!}"
+                               target="_bland" class="btn-mini"><i class="fa fa-eye fa-fw"></i>APPROVE</a>
+                            @endif
+                        </div>
+                    @endif
+
                 </td>
             </tr>
             @endforeach
