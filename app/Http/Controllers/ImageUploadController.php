@@ -2,7 +2,10 @@
 
 use Backend\Http\Controllers\Controller;
 
-class ImageUploadController extends Controller
+use Input;
+use ImageUp;
+
+class ImageUploadController extends BaseController
 {
 
     /**

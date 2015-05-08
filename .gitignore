@@ -17,5 +17,5 @@ _ide_helper_models.php
 target
 
 vendor/*
-stirage
+storage/images/*
 
