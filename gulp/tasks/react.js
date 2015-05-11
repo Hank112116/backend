@@ -13,7 +13,7 @@ var paths = require('../consts/paths.js');
 var reacts = require('../consts/react_loaders.js');
 
 gulp.task('reactify', function () {
-    _.map(reacts, function (r) {
+    _.each(reacts, function (r) {
         bundleLogger.log( r + '.react.js startd' );
 
         browserify(paths.src.react + r + '.react.js')

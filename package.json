@@ -1,6 +1,6 @@
 {
   "name": "Backend",
-  "version": "0.0.1",
+  "version": "0.1",
   "description": "HWTrek Backend",
   "devDependencies": {
     "babelify": "^5.0.4",
@@ -10,11 +10,9 @@
     "gulp-babel": "^4.0.0",
     "gulp-changed": "^1.0.0",
     "gulp-concat": "^2.4.1",
-    "gulp-imagemin": "^1.0.1",
     "gulp-notify": "^1.7.1",
     "gulp-open": "^0.2.8",
     "gulp-rename": "^1.2.0",
-    "gulp-rimraf": "^0.1.0",
     "gulp-util": "^3.0.1",
     "pretty-hrtime": "^0.2.1",
     "reactify": "^0.14.0",

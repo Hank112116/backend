@@ -11,7 +11,7 @@ var paths = require('../consts/paths.js');
 var js_loaders = require('../consts/js_loaders.js');
 
 gulp.task('browserify', function () {
-    _.map(js_loaders, function (filename) {
+    _.each(js_loaders, function (filename) {
         browserify(paths.src.js + filename)
             .transform(babelify)
             .bundle()
