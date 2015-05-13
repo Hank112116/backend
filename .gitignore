@@ -18,4 +18,5 @@ target
 
 vendor/*
 storage/images/*
+storage/*
 

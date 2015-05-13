@@ -3,8 +3,6 @@
 namespace Backend\Http\Controllers;
 
 use App;
-use Backend\Http\Controllers\BaseController;
-use Backend\LogRetrieve\LogRetrieverInterface;
 use Carbon;
 use DB;
 use Input;
@@ -19,11 +17,13 @@ use Redirect;
 use Response;
 use SSH;
 use Backend\Model\Eloquent\User;
-use View;
 
 class EngineerController extends BaseController
 {
 
+    public function logServer() {
+        return view('engineer.log-server');
+    }
     public function bug()
     {
         return view('engineer.bug');

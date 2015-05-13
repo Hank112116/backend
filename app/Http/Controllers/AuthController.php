@@ -6,6 +6,7 @@ use Auth;
 use Input;
 use Noty;
 use Session;
+use Artisan;
 
 class AuthController extends BaseController
 {
@@ -17,18 +18,22 @@ class AuthController extends BaseController
             'password' => Input::get('password')
         ];
 
-        $is_remember = Input::has('remember');
-
-        if (Auth::attempt($cert, $is_remember)) {
-            Noty::success('Welcome, ' . Auth::user()->name . ". Login success");
-            Session::put('cert', Auth::user()->role->cert);
-
-            return redirect('/user/all');
-        } else {
-
-            Noty::warn('Login fail');
-            return redirect('/');
+        if (Auth::attempt($cert, Input::has('remember'))) {
+            return $this->loginSuccess();
         }
+
+        Noty::warn('Login fail');
+
+        return redirect('/');
+    }
+
+    private function loginSuccess()
+    {
+        $user =  Auth::user();
+
+        Artisan::call('logpass:gen');
+        Session::put('cert', $user->role->cert);
+        Noty::success('Welcome, ' . $user->name . ". Login success");
 
         return redirect('/user/all');
     }
@@ -94,6 +99,7 @@ class AuthController extends BaseController
         }
 
         Noty::warnLang('common.no-permission');
+
         return redirect('/');
     }
 }

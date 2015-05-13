@@ -150,7 +150,6 @@ Route::group(['before' => 'backend.hub'], function () {
     Route::get('hub/schedules', 'HubController@indexSchedule');
     Route::get('hub/questionnaires/detail/{id}', 'HubController@showQuestionnaireDetail');
     Route::get('hub/schedule-manager/{id}', 'HubController@showUpdateScheduleManager');
-
     Route::get('hub/questionnaires/approve/{project_id}', 'HubController@approveSchedule');
 
     Route::post('hub/update-schedule-manager/{id}', 'HubController@updateScheduleManager');
@@ -176,7 +175,6 @@ Route::group(['before' => 'backend.landing'], function () {
 
 // Email Template
 Route::group(['before' => 'backend.mail'], function () {
-
     Route::get('mail/all', 'MailTemplateController@showList');
     Route::get('mail/disactive', 'MailTemplateController@showDisactiveList');
     Route::get('mail/detail/{id}', 'MailTemplateController@showDetail');
@@ -185,7 +183,6 @@ Route::group(['before' => 'backend.mail'], function () {
     Route::get('mail/trigger-active/{id}', 'MailTemplateController@triggerActive');
     Route::get('mail/template', 'MailTemplateController@fetchHtmlTemplate');
 
-
     Route::post('mail/create', 'MailTemplateController@create');
     Route::post('mail/update/{id}', 'MailTemplateController@update');
 });
@@ -193,23 +190,10 @@ Route::group(['before' => 'backend.mail'], function () {
 
 // Engineer
 Route::group(['before' => 'backend.login'], function () {
-
-    Route::get('engineer', 'EngineerController@migrate');
-    Route::get('engineer/project-tag', 'EngineerController@migrateProjectTag');
-    Route::get('engineer/migrate-solution-project-tags', 'EngineerController@migrateTagsColumn');
-    Route::get('engineer/migrate-questionnaire-tags', 'EngineerController@migrateQuestionnaireColumn');
-    Route::get('engineer/update-project-submit-date', 'EngineerController@migrateProjectSubmitDate');
-
-    Route::get('engineer/crop', 'EngineerController@cropTest');
+    Route::get('engineer/log-server', 'EngineerController@logServer');
 
     Route::get('engineer/bug', 'EngineerController@bug');
     Route::post('engineer/bug-decode', 'EngineerController@bugDecode');
-
-//    Route::get('engineer/delete', 'EngineerController@deleteLog');
-//    Route::get('engineer/update-hwtrek-dev-db', 'EngineerController@updateHwtrekDevDatabase');
-//    Route::get('engineer/products-infogragh', 'EngineerController@showProductsInfograph');
-//    Route::get('engineer/get-users-by-month', 'EngineerController@getUsersByMonth');
-//    Route::get('engineer/get-projects-status', 'EngineerController@getProjectsStatus');
 });
 
 Route::post('/upload-editor-image', 'ImageUploadController@index');

@@ -34,8 +34,7 @@ class UserController extends BaseController
         ExpertiseInterface $expertise,
 
         UserApiInterface $user_api
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->user_repo = $user;
