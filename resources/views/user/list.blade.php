@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="page-header">
-    <h1>MEMBERS
+    <h1>{{ $title ?: 'Members' }}
         @if(count($to_expert_ids) > 0)
         <span class='header-notice fa fa-bell icon-vibrate'></span>
         @endif

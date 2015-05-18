@@ -34,7 +34,8 @@ class UserController extends BaseController
         ExpertiseInterface $expertise,
 
         UserApiInterface $user_api
-    ) {
+    )
+    {
         parent::__construct();
 
         $this->user_repo = $user;
@@ -81,11 +82,11 @@ class UserController extends BaseController
 
     public function showToBeExperts()
     {
-        if ($this->is_restricted_adminer) {
-            Noty::warnLang('common.no-permission');
-
-            return Redirect::action('UserController@showList');
-        }
+//        if ($this->is_restricted_adminer) {
+//            Noty::warnLang('common.no-permission');
+//
+//            return Redirect::action('UserController@showList');
+//        }
 
         $users = $this->user_repo->toBeExpertMembers();
 
@@ -95,7 +96,7 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        return $this->showUsers($users, $paginate = false);
+        return $this->showUsers($users, $paginate = false, $title = 'To-Be Expert Members');
     }
 
     public function showSearch($search_by)
@@ -138,7 +139,7 @@ class UserController extends BaseController
         }
     }
 
-    public function showUsers($users, $paginate = true)
+    public function showUsers($users, $paginate = true, $title = '')
     {
         if (Input::has('csv')) {
             return $this->renderCsv($users);
@@ -146,9 +147,10 @@ class UserController extends BaseController
 
         $template = view('user.list')
             ->with([
-                'users'=>  $users,
-                'to_expert_ids'=>  $this->user_repo->toBeExpertMemberIds(),
-                'is_restricted'=>  $this->is_restricted_adminer,
+                'title'         => $title,
+                'users'         => $users,
+                'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
+                'is_restricted' => $this->is_restricted_adminer,
             ]);
 
         return $paginate ? $template->with('per_page', $this->per_page) : $template;

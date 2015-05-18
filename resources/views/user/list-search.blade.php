@@ -63,16 +63,12 @@
 
         @if(!$is_restricted)
             {!! link_to_action("UserController@showCreators",'ALL CREATOR', '',["class"=>"btn btn-mini"]) !!}
+        @endif
 
-
-            @if(count($to_expert_ids) > 0)
-            {!! link_to_action(
-                "UserController@showToBeExperts", 'TO BE EXPERT',
-                '',["class"=>"btn btn-mini btn-warning"]) !!}
-            @else
-                <a href="#" class="btn btn-mini btn-warning btn-disable" disabled="disabled">TO BE EXPERT</a>
-            @endif
-
+        @if(count($to_expert_ids) > 0)
+            {!! link_to_action("UserController@showToBeExperts", 'TO BE EXPERT','',["class"=>"btn btn-mini btn-warning"]) !!}
+        @else
+            <a href="#" class="btn btn-mini btn-warning btn-disable" disabled="disabled">TO BE EXPERT</a>
         @endif
     </div>
 
