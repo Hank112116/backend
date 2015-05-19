@@ -54,20 +54,6 @@
                         @endforeach
                     </div>
 
-                    {{--
-                    <div>
-                        <h4>View Questionnaire Only</h4>
-                        @foreach($adminers as $ad)
-                        @if(!$ad->role->isAdmin() and !$ad->role->isManagerHead())
-                        <div class="adminer-tag">
-                            <input id="adminer_{{$ad->id}}" type='checkbox' name="manager[]" value='{!! $ad->id !!}' !!} />
-                            <label for="adminer_{{$ad->id}}">{!! $ad->name !!}</label>
-                        </div>
-                        @endif
-                        @endforeach
-                    </div>
-                    --}}
-
                     <div class="form-group">
                         <button class="btn-sassy btn-submit">UPDATE</button>
                     </div>
@@ -116,7 +102,7 @@
             <div class="clearfix">
                 <div class="data-group group-half">
                     <span class="label">Expected 1st batch</span>
-                    <span class="content">{!! $q->textFitstBatch() !!}</span>
+                    <span class="content">{!! $q->textFirstBatch() !!}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Estimated budget</span>
@@ -130,7 +116,7 @@
             </div>
 
             @include('hub.q-detail-panel', ['title' => 'Project Brief' , 'content' => $q->scope])
-            @include('hub.q-detail-option', ['title' => 'Project Requirement' , 'type' => 'involved'])
+            @include('hub.q-detail-option',['title' => 'Project Requirement' , 'type' => 'involved'])
             @include('hub.q-detail-panel', ['title' => 'Other Requirement' , 'content' => $q->requirements])
             @include('hub.q-detail-panel', ['title' => 'Project Nature' , 'content' => $q->textProjectNature()])
             @include('hub.q-detail-panel', ['title' => 'Additional project information' , 'content' => $q->information])
@@ -187,29 +173,27 @@
             @include('hub.q-detail-option', ['title' => 'Audio' , 'type' => 'audio'])
 
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Power and Battery
-                </div>
+                <div class="panel-heading">Power and Battery</div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="option-power col-sm-6">
                             <span class="option-power--type">AC Power</span>
-                            <span class="option-power--value">{!! $q->pewer_1_v !!} V</span>
-                            <span class="option-power--value">{!! $q->pewer_1_a !!} A</span>
+                            <span class="option-power--value">{!! $q->power_1_v !!} V</span>
+                            <span class="option-power--value">{!! $q->power_1_a !!} A</span>
                         </div>
                         <div class="option-power col-sm-6">
                             <span class="option-power--type">DC Power</span>
-                            <span class="option-power--value">{!! $q->pewer_2_v !!} V</span>
-                            <span class="option-power--value">{!! $q->pewer_2_a !!} A</span>
+                            <span class="option-power--value">{!! $q->power_2_v !!} V</span>
+                            <span class="option-power--value">{!! $q->power_2_a !!} A</span>
                         </div>
                         <div class="option-power col-sm-6">
                             <span class="option-power--type">Battery</span>
-                            <span class="option-power--value">{!! $q->pewer_3_a !!} mAh</span>
+                            <span class="option-power--value">{!! $q->power_3_a !!} mAh</span>
                         </div>
                         <div class="option-power col-sm-6">
                             <span class="option-power--type">Wireless Charge</span>
-                            <span class="option-power--value">{!! $q->pewer_4_v !!} V</span>
-                            <span class="option-power--value">{!! $q->pewer_4_a !!} A</span>
+                            <span class="option-power--value">{!! $q->power_4_v !!} V</span>
+                            <span class="option-power--value">{!! $q->power_4_a !!} A</span>
                         </div>
                         <div class="option-power col-sm-6">
                             <span class="option-power--type">Other</span>

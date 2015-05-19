@@ -129,7 +129,7 @@ class HubQuestionnaire extends \Eloquent
         return $arr ? explode(',', $arr) : [];
     }
 
-    public function textFitstBatch()
+    public function textFirstBatch()
     {
         return static::$options['quantity'][$this->quantity];
     }
