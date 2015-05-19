@@ -54,7 +54,8 @@ class AdminerRepo implements AdminerInterface
         $adminer           = new Adminer();
         $adminer->name     = $input[ 'name' ];
         $adminer->email    = $input[ 'email' ];
-        $adminer->password = Hash::make($input[ 'password' ]);
+        $adminer->password = bcrypt($input[ 'password' ]);
+        $adminer->remember_token = bcrypt($adminer->email);
 
         $role = $this->role->find($input[ 'role_id' ]);
         $adminer->role()->associate($role);
