@@ -21,7 +21,7 @@
         <br/><spna class="table--text-light">{!! $q->company_name !!}</spna>
     </td>
 
-    <td class="table--text-right">{!! $q->textFitstBatch() !!}</td>
+    <td class="table--text-right">{!! $q->textFirstBatch() !!}</td>
     <td>{!! $q->ship_date !!}</td>
 
     <td>{!! HTML::date($q->date_added) !!}</td>
