@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-        $schedule->command('access:tarball')->everyFiveMinutes();
+        $schedule->command('access:tarball')->daily();
 	}
 
 }
