@@ -2,10 +2,8 @@
 
 namespace Backend\Model\Eloquent;
 use DB;
-use Backend\Model\Eloquent\Adminer;
 use Input;
 use Requests;
-use Config;
 
 /**
  * HubSchedule Model
@@ -23,7 +21,7 @@ class HubSchedule extends Project
 
     public function textFrontEditLink()
     {
-        return "//" . Config::get('app.front_domain') . "/hub/manage-schedule-panel/{$this->project_id}/admin-edit";
+        return "//" . config('app.front_domain') . "/hub/manage-schedule-panel/{$this->project_id}/admin-edit";
     }
 
     public function getOriginVersion()
@@ -53,12 +51,18 @@ class HubSchedule extends Project
     {
         if (!$this->hub_managers) {
             return [];
-        } else {
-            $adminers = Adminer::whereIn('id', explode(',', $this->hub_managers))
-                ->lists('name');
-
-            return $adminers;
         }
+
+        return Adminer::whereIn('id', explode(',', $this->hub_managers))->lists('name');
+    }
+
+    public function getDeletedHubManagerNames()
+    {
+        if (!$this->hub_managers) {
+            return [];
+        }
+
+        return Adminer::onlyTrashed()->whereIn('id', explode(',', $this->hub_managers))->lists('name');
     }
 
     public function approve()
@@ -72,8 +76,8 @@ class HubSchedule extends Project
 
     public function recordApproveVersion()
     {
-        $token        = Config::get('app.hub_token');
-        $snapshot_api = 'https://' . Config::get('app.front_domain') . '/hub/apis/admin-snapshot';
+        $token        = config('app.hub_token');
+        $snapshot_api = 'https://' . config('app.front_domain') . '/hub/apis/admin-snapshot';
 
         $header  = [];
         $data    = [
@@ -87,7 +91,7 @@ class HubSchedule extends Project
 
         $version = DB::table('pms_schedule_version')
             ->select('create_time')
-            ->where('version_id', '=', $obj->version_id)
+            ->where('version_id', $obj->version_id)
             ->first();
 
         return $version->create_time;

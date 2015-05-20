@@ -19,8 +19,7 @@ class HubController extends BaseController
         HubInterface $hub,
         UserInterface $user,
         AdminerInterface $adminer
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->hub_repo     = $hub;

@@ -1,8 +1,8 @@
 <?php namespace Backend\Repo\Lara;
 
-use Backend\Model\Eloquent\Adminer;
 use Validator;
-use Hash;
+
+use Backend\Model\Eloquent\Adminer;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\RoleInterface;
 
@@ -24,6 +24,11 @@ class AdminerRepo implements AdminerInterface
     public function all()
     {
         return $this->adminer->with(['role', 'user'])->get();
+    }
+
+    public function allDeleted()
+    {
+        return $this->adminer->onlyTrashed()->with(['role', 'user'])->get();
     }
 
     public function find($id)
@@ -100,7 +105,7 @@ class AdminerRepo implements AdminerInterface
         }
 
         if (array_get($input, 'password')) {
-            $adminer->password = Hash::make($input[ 'password' ]);
+            $adminer->password = bcrypt($input[ 'password' ]);
         }
 
         return $adminer->save();

@@ -43,19 +43,23 @@
                 <i class="fa fa-user fa-fw"></i> {!! $manager !!}
             </p>
             @endforeach
+
+            @foreach($q->schedule->getDeletedHubManagerNames() as $manager)
+            <p class="hub-manages">
+                <i class="fa fa-flash fa-fw"></i> {!! $manager !!}
+            </p>
+            @endforeach
         @endif
     </td>
 
     <td>
         <a class="btn-mini" href="{!! action('HubController@showQuestionnaireDetail', $q->questionnaire_id) !!}">
-            <i class="fa fa-eye fa-fw"></i>
-            DETAIL
+            <i class="fa fa-eye fa-fw"></i> DETAIL
         </a>
 
         @if(Auth::user()->role->isManagerHead() or $q->schedule->inHubManagers(Auth::user()->id))
             <a class="btn-mini" href="{!! $q->schedule->textFrontEditLink() !!}" target="_blank">
-                <i class="fa fa-pencil fa-fw"></i>
-                EDIT SCHEDULE
+                <i class="fa fa-pencil fa-fw"></i> EDIT SCHEDULE
             </a>
         @endif
     </td>

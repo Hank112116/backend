@@ -21,7 +21,6 @@ class AdminerController extends BaseController
         RoleInterface $role
     ) {
         parent::__construct();
-
         $this->adminer_repo = $adminer;
         $this->role_repo    = $role;
     }
@@ -39,6 +38,7 @@ class AdminerController extends BaseController
 
         return view('adminer.list')
             ->with('adminers', $this->adminer_repo->all())
+            ->with('deleted_adminers', $this->adminer_repo->allDeleted())
             ->with('roles', $this->role_repo->all());
     }
 

@@ -3,6 +3,7 @@
 namespace Backend\Http\Controllers;
 
 use Auth;
+use Illuminate\Http\Request;
 use Input;
 use Noty;
 use Session;
@@ -11,27 +12,25 @@ use Artisan;
 class AuthController extends BaseController
 {
 
-    public function login()
+    public function login(Request $request)
     {
         $cert = [
-            'email'    => Input::get('email'),
-            'password' => Input::get('password')
+            'email'    => $request->get('email'),
+            'password' =>$request->get('password')
         ];
 
-        if (Auth::attempt($cert, Input::has('remember'))) {
-            return $this->loginSuccess();
+        if (!Auth::attempt($cert)) {
+            Noty::warn('Login fail');
+            return redirect('/');
         }
 
-        Noty::warn('Login fail');
-
-        return redirect('/');
+        return $this->loginSuccess();
     }
 
     private function loginSuccess()
     {
         $user =  Auth::user();
 
-        Artisan::call('logpass:gen');
         Session::put('cert', $user->role->cert);
         Noty::success('Welcome, ' . $user->name . ". Login success");
 

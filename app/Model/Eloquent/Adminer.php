@@ -4,8 +4,7 @@ namespace Backend\Model\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-use Session;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
@@ -13,9 +12,11 @@ class Adminer extends Eloquent implements AuthenticatableContract
 {
 
     use Authenticatable;
+    use SoftDeletes;
 
     protected $table = 'adminers';
     protected $hidden = ['password'];
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
@@ -29,7 +30,7 @@ class Adminer extends Eloquent implements AuthenticatableContract
 
     public function isShowLink($cert)
     {
-        return str_contains(Session::get('cert'), $cert);
+        return str_contains(session('cert'), $cert);
     }
 
     public function isRestricted($route_prefix)

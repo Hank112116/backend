@@ -3,6 +3,7 @@
 interface AdminerInterface
 {
     public function all();
+    public function allDeleted();
 
     public function find($id);
 

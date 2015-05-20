@@ -57,7 +57,19 @@
                 </td>
             </tr>
             @endforeach
+
+            @foreach($deleted_adminers as $adminer)
+                <tr>
+                    <td>{!! $adminer->id !!}</td>
+                    <td>{!! $adminer->name !!}</td>
+                    <td>{!! $adminer->email !!}</td>
+                    <td>{!! $adminer->role->name !!}</td>
+                    <td></td>
+                    <td>Deleted</td>
+                </tr>
+            @endforeach
         </table>
+
     </div>
 </div>
 

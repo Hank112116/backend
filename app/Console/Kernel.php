@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		'Backend\Console\Commands\LogPasswordGenerate',
+        'Backend\Console\Commands\AccessLogTarBall'
 	];
 
 	/**
@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
+        $schedule->command('access:tarball')->everyFiveMinutes();
 	}
 
 }

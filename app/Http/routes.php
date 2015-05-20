@@ -119,9 +119,7 @@ Route::group(['before' => 'backend.solution'], function () {
     Route::get('solution/deleted', 'SolutionController@showDeletedSolutions');
 
     Route::get('solution/search/{by}', 'SolutionController@showSearch');
-
     Route::get('solution/detail/{id}', 'SolutionController@showDetail');
-
     Route::get('solution/update/{id}', 'SolutionController@showUpdate');
 
     Route::get('solution/approve/{id}', 'SolutionController@approve');
@@ -190,8 +188,6 @@ Route::group(['before' => 'backend.mail'], function () {
 
 // Engineer
 Route::group(['before' => 'backend.login'], function () {
-    Route::get('engineer/log-server', 'EngineerController@logServer');
-
     Route::get('engineer/bug', 'EngineerController@bug');
     Route::post('engineer/bug-decode', 'EngineerController@bugDecode');
 });

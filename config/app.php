@@ -16,8 +16,6 @@ return [
     'cipher'          => MCRYPT_RIJNDAEL_128,
 
     'debug'           => env('APP_DEBUG'),
-
-
     'front_domain'    => env('FRONT_DOMAIN', 'www.hwtrek.com'),
 
     /*
