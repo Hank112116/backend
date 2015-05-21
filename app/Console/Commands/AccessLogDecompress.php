@@ -3,23 +3,22 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Carbon\Carbon;
 
-class AccessLogTarBall extends Command {
+class AccessLogDecompress extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'access:tarball';
+	protected $name = 'access-log:decompress';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Tarball nginx access log';
+	protected $description = 'Command description.';
 
 	/**
 	 * Create a new command instance.
@@ -38,20 +37,24 @@ class AccessLogTarBall extends Command {
 	 */
 	public function fire()
 	{
-        \Log::info('access:tarball run!!');
-
-        $date = Carbon::yesterday()->toDateString();
         $path = storage_path('logs');
+        $file = $this->argument('file');
 
-        $log = "{$path}/nginx-access.log";
-        $tarball   = "{$path}/nginx-access-{$date}.tar.bz2";
-
-        if(!file_exists($log)) {
-            $this->info("no such file: {$log}");
+        if(!file_exists("{$path}/{$file}")) {
+            $this->info("no such file: {$file}");
             return;
         }
 
-        exec("tar -cjf {$tarball} -C {$path} nginx-access.log && rm -rf {$log}");
+        $handle = fopen("{$path}/{$file}", 'rb');
+        stream_filter_append($handle, 'bzip2.decompress');
+
+        $outputs = [];
+        while(true !== feof($handle)) {
+            $outputs[] = fgets($handle);
+        }
+
+        fclose($handle);
+        dd($outputs);
 	}
 
 	/**
@@ -61,7 +64,9 @@ class AccessLogTarBall extends Command {
 	 */
 	protected function getArguments()
 	{
-		return [];
+		return [
+			['file', InputArgument::REQUIRED, 'decompressing file'],
+		];
 	}
 
 	/**

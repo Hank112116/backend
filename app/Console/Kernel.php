@@ -11,8 +11,9 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-        'Backend\Console\Commands\AccessLogTarBall'
-	];
+        'Backend\Console\Commands\AccessLogCompress',
+        'Backend\Console\Commands\AccessLogDecompress'
+    ];
 
 	/**
 	 * Define the application's command schedule.
@@ -22,7 +23,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-        $schedule->command('access:tarball')->daily();
+        $schedule->command('access-log:compress')->daily();
 	}
 
 }
