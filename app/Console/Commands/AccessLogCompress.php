@@ -38,13 +38,11 @@ class AccessLogCompress extends Command {
 	 */
 	public function fire()
 	{
-        \Log::info('access:tarball run!!');
-
         $date = Carbon::yesterday()->toDateString();
         $path = storage_path('logs');
 
         $log = "{$path}/nginx-access.log";
-        $to   = "{$path}/nginx-access-{$date}.log";
+        $to  = "{$path}/nginx-access-{$date}.log";
 
         if(!file_exists($log)) {
             $this->info("no such file: {$log}");
