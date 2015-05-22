@@ -1400,9 +1400,6 @@ var CommentDelete = React.createClass({ displayName: 'CommentDelete',
     },
 
     render: function render() {
-
-        return null; // Disable the delete ability now
-
         return React.DOM.button({ className: 'comment-delete', onClick: this.alertDelete }, 'DELETE');
     }
 });

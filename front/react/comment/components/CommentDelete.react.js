@@ -21,9 +21,6 @@ var CommentDelete = React.createClass({
     },
 
     render: function() {
-
-        return null; // Disable the delete ability now
-
     	return (
             <button className="comment-delete" onClick={this.alertDelete}>
                 DELETE

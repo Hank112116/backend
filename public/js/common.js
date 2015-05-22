@@ -47,9 +47,9 @@ function showMessage(content, level) {
         return;
     }
 
-    humane.log(content, {
+    humane.create({
         addnCls: level || "info"
-    });
+    }).log(content);
 }
 
 function showTimedMessage(content, level, sec) {
@@ -57,10 +57,10 @@ function showTimedMessage(content, level, sec) {
         return;
     }
 
-    humane.log(content, {
+    humane.create({
         timeout: sec * 1000,
         addnCls: level || "info"
-    });
+    }).log(content);
 }
 
 },{"../vendor/humane/humane":5}],3:[function(require,module,exports){

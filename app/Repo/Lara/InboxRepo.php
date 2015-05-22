@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Model\Eloquent\Comment;
 use Backend\Model\Eloquent\Inbox;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
@@ -101,6 +102,27 @@ class InboxRepo implements InboxInterface {
         });
 
         return $inboxes;
+    }
+
+    public function deleteByCommentId($comment_id) {
+        $letters = $this->inbox->where('comment_id', $comment_id)->get();
+
+        foreach($letters as $letter) {
+            $letter->delete();
+            $this->inbox->where('reply_message_id', $letter->message_id)->delete();
+        }
+    }
+
+    public function deleteRespondCommentThread(Comment $thread) {
+        $letter = $this->inbox->where('comment_id', $thread->main_comment)->first();
+        if(!$letter) {
+            return;
+        }
+
+        $this->inbox
+            ->where('reply_message_id', $letter->message_id)
+            ->where('message_content', 'LIKE', "%{$thread->comments}%")
+            ->delete();
     }
 
     public function delete($message_id)

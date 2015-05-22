@@ -16,8 +16,7 @@ class CommentController extends BaseController
     public function __construct(
         CommentInterface $comment_repo,
         CommentApiInterface $comment_api
-    )
-    {
+    ) {
         parent::__construct();
         $this->comment_repo = $comment_repo;
         $this->comment_api  = $comment_api;

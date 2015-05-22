@@ -9,9 +9,9 @@ export function showMessage(content, level) {
         return;
     }
 
-    humane.log(content, {
+    humane.create({
         addnCls: level || "info"
-    });
+    }).log(content);
 }
 
 export  function showTimedMessage(content, level, sec) {
@@ -19,8 +19,8 @@ export  function showTimedMessage(content, level, sec) {
         return;
     }
 
-    humane.log(content, {
+    humane.create({
         timeout: sec * 1000,
         addnCls: level || "info"
-    });
+    }).log(content);
 }

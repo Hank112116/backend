@@ -2,7 +2,9 @@
 namespace Backend\Repo\Lara;
 
 use Backend\Model\Eloquent\Comment;
+use Backend\Model\Eloquent\Inbox;
 use Backend\Repo\RepoInterfaces\CommentInterface;
+use Backend\Repo\RepoInterfaces\InboxInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\ProductInterface;
@@ -27,6 +29,7 @@ class CommentRepo implements CommentInterface
         ProjectInterface $project_repo,
         ProductInterface $product_repo,
         SolutionInterface $solution_repo,
+        InboxInterface $inbox_repo,
         Purifier $purifier
     ) {
         $this->comment = $comment;
@@ -35,7 +38,9 @@ class CommentRepo implements CommentInterface
         $this->project_repo  = $project_repo;
         $this->prodcut_repo  = $product_repo;
         $this->solution_repo = $solution_repo;
-        $this->purifier = $purifier;
+        $this->inbox_repo   = $inbox_repo;
+
+        $this->purifier      = $purifier;
     }
 
     public function find($comment_id)
@@ -200,7 +205,7 @@ class CommentRepo implements CommentInterface
     {
         $comments->each(function ($comment) {
             $comment->comments = nl2br($this->purifier->clean($comment->comments));
-            if($comment->threads->count() > 0) {
+            if ($comment->threads->count() > 0) {
                 $comment->threads = $this->processed($comment->threads);
             }
         });
@@ -215,11 +220,14 @@ class CommentRepo implements CommentInterface
         $this->comment
             ->where('main_comment', $topic->comment_id)
             ->delete();
+
+        $this->inbox_repo->deleteByCommentId($topic->comment_id);
     }
 
     public function deleteThread(Comment $thread)
     {
         $thread->delete();
+        $this->inbox_repo->deleteRespondCommentThread($thread);
     }
 
     public function togglePrivate(Comment $comment)
