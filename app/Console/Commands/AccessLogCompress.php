@@ -38,6 +38,8 @@ class AccessLogCompress extends Command {
 	 */
 	public function fire()
 	{
+        \Log::info('access-log:compress run!!');
+
         $date = Carbon::yesterday()->toDateString();
         $path = storage_path('logs');
 
