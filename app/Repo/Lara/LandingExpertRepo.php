@@ -28,11 +28,13 @@ class LandingExpertRepo implements LandingExpertInterface
     public function set_expert($sort){
         $this->expertFeature->truncate();
         //key is order number
-        foreach($sort as $key=>$user_id){
-            $expert = new ExpertFeature();
-            $expert->block_data = $user_id;
-            $expert->order = $key;
-            $expert->save();
+        if(is_array($sort)){
+            foreach($sort as $key=>$user_id){
+                $expert = new ExpertFeature();
+                $expert->block_data = $user_id;
+                $expert->order = $key;
+                $expert->save();
+            }
         }
     }
 }

@@ -148,7 +148,7 @@ class LandingController extends BaseController
     {
         $id = Input::get('id');
         $user = $this->expert->get_expert($id);
-        if(sizeof($user) > 0){
+        if(sizeof($user) >0){
             $block = view('landing.expert-block')
                 ->with('user', $user[0])
                 ->render();
