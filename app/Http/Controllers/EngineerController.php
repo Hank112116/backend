@@ -23,7 +23,8 @@ use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 class EngineerController extends BaseController
 {
 
-    public function logServer() {
+    public function logServer()
+    {
         return view('engineer.log-server');
     }
     public function bug()
@@ -110,7 +111,8 @@ class EngineerController extends BaseController
     public function getUsersByMonth()
     {
         $nodes = User::select(DB::raw(
-            "count(user_id) as user_amount, year(date_added) as join_y, month(date_added) as join_m"))
+            "count(user_id) as user_amount, year(date_added) as join_y, month(date_added) as join_m"
+        ))
             ->groupBy('join_y')
             ->groupBy('join_m')
             ->get();
@@ -138,12 +140,12 @@ class EngineerController extends BaseController
 
         foreach ($projects as $p) {
             switch (true) {
-                case $p->isFundEnd() :
+                case $p->isFundEnd():
                     $st = ($p->amount_get < $p->amount) ? 'fail' : 'success';
                     $status[$st]['value'] ++;
                     break;
 
-                case $p->isOnGoing() :
+                case $p->isOnGoing():
                     $status['ongoing']['value'] ++;
                     break;
 
@@ -160,7 +162,8 @@ class EngineerController extends BaseController
     {
         $products = Project::select(
             DB::raw('project.project_title, project.amount, project.end_date,
-                project.amount_get, count(transaction_id) as backers'))
+                project.amount_get, count(transaction_id) as backers')
+        )
             ->leftJoin('transaction', 'project.project_id', '=', 'transaction.project_id')
             ->where('project.active', '=', '1')
             ->where('project.amount', '>', '0')
@@ -187,47 +190,5 @@ class EngineerController extends BaseController
                 'base64'    => $base64,
                 'type'      => $type,
             ]);
-    }
-    public function test(){
-        return view('engineer.test');
-    }
-    public function ajaxTest(){
-
-        #get user
-        $UserModel = new User();
-        $ProjectModel = new Project();
-        $UserList = $UserModel->with('projects')->where("user_id" ,"<" ,"100")->limit(10)->get();
-        
-
-        #echo json_encode($UserList->toArray());
-        return response()->json($UserList);
-    }
-    public function Mail(MailTemplateInterface $MailTemplateRepo){
-        $MailTemplateModel = new MailTemplate();
-        
-        $r = $MailTemplateModel->all();
-        
-        $mailResult=[];
-        
-        $result[] = $r->map(function($Mail) {
-            //print_r($Mail->toArray());
-            $mailResult["task"]=$Mail->task;
-            $message = $Mail->message;
-            $pattern = '/{[\w_]*}/';
-            preg_match_all($pattern, $message, $matches);
-
-            foreach($matches[0] as $Row){
-                if(array_key_exists($Row, $a)) {
-                    $a[$Row]["count"]=1;
-                }else{
-                    $a[$Row]["count"]=$a[$Row]["count"]+1;
-                }
-            }
-
-            $mailResult["tag"]= $a;
-            return $mailResult;
-        });
-        print_r($result);die();
-
     }
 }

@@ -21,8 +21,9 @@ class LogAccessHelloRepo implements LogAccessHelloInterface
             ->take($take)->get();
     }
 
-    public function updateHelloDestination($destination) {
-        if(!$destination) {
+    public function updateHelloDestination($destination)
+    {
+        if (!$destination) {
             return;
         }
 

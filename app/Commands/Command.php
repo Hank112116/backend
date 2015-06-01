@@ -1,7 +1,7 @@
 <?php namespace Backend\Commands;
 
-abstract class Command {
+abstract class Command
+{
 
-	//
-
+    //
 }

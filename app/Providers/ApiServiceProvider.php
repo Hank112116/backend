@@ -8,13 +8,15 @@ class ApiServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            'Backend\Api\ApiInterfaces\UserApiInterface', function () {
+            'Backend\Api\ApiInterfaces\UserApiInterface',
+            function () {
                 return new Lara\UserApi(new \Backend\Model\Eloquent\User());
             }
         );
 
         $this->app->bind(
-            'Backend\Api\ApiInterfaces\CommentApiInterface', function ($app) {
+            'Backend\Api\ApiInterfaces\CommentApiInterface',
+            function ($app) {
                 return new Lara\CommentApi(
                     $app->make('Backend\Repo\RepoInterfaces\CommentInterface')
                 );

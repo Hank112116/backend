@@ -62,6 +62,4 @@ class InboxController extends BaseController
     {
         $this->inbox_repo->delete($message_id);
     }
-
-
 }

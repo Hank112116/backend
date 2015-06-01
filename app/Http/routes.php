@@ -197,20 +197,6 @@ Route::group(['before' => 'backend.login'], function () {
 
 Route::post('/upload-editor-image', 'ImageUploadController@index');
 
-/**
- * 取得所有 ID 小於 100 的 Project
- */
-
-/**
- * 取得所有 ID 小於 100 的 User 並列出他們各有幾個 Projects ( Ajax )
- */
-Route::get('test/test', 'EngineerController@test');
-Route::get('test/ajaxTest', 'EngineerController@ajaxTest');
-/**
- * 取得所有 Email Template，找出 Tags 並統計個別數量，dd 出來
- */
-Route::get('test/mailTemplate', 'EngineerController@Mail');
-
-get('add-a-log', function() {
+get('add-a-log', function () {
     Log::info("Hello World");
 });

@@ -31,5 +31,4 @@ class ImageUploadController extends BaseController
 
         return response()->json(['status' => 'fail', 'filelink' => $uploader->err]);
     }
-
 }

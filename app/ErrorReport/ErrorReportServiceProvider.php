@@ -10,7 +10,8 @@ class ErrorReportServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            'Backend\ErrorReport\ReporterInterface', function (Application $app) {
+            'Backend\ErrorReport\ReporterInterface',
+            function (Application $app) {
                 return new Reporter(
                     new Encrypter(Config::get('app.key')),
                     $app->make('Backend\Logger\LoggerInterface')

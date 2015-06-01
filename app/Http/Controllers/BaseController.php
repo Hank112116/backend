@@ -41,28 +41,30 @@ class BaseController extends Controller
 
         $this->is_restricted_adminer = Auth::user()->isRestricted($this->cert);
     }
-//
-//    /**
-//     * Setup the layout used by the controller.
-//     *
-//     * @return void
-//     */
-//    protected function setupLayout()
-//    {
-//        if (!is_null($this->layout)) {
-//            $this->layout = view($this->layout);
-//        }
-//    }
-//
-    protected function outputArrayToCsv($output, $name = 'output') {
+
+   /**
+    * Setup the layout used by the controller.
+    *
+    * @return void
+    */
+   // protected function setupLayout()
+   // {
+   //     if (!is_null($this->layout)) {
+   //         $this->layout = view($this->layout);
+   //     }
+   // }
+
+    protected function outputArrayToCsv($output, $name = 'output')
+    {
         $result = $this->getOutputArray($output);
         $writer = Writer::createFromFileObject(new \SplTempFileObject);
         return $writer->insertAll($result)->output($name . '.csv');
     }
 
-    private function getOutputArray($output) {
+    private function getOutputArray($output)
+    {
         $header = [];
-        foreach(($output instanceof Collection)? $output->first() : $output[0] as $head => $value) {
+        foreach (($output instanceof Collection)? $output->first() : $output[0] as $head => $value) {
             $header[$head] = $head;
         }
 

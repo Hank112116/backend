@@ -26,16 +26,12 @@ class UserController extends BaseController
 
     public function __construct(
         UserInterface $user,
-
         ProjectInterface $project,
         ProductInterface $product,
-
         SolutionInterface $solution,
         ExpertiseInterface $expertise,
-
         UserApiInterface $user_api
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->user_repo = $user;

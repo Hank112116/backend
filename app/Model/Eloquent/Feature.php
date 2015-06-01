@@ -1,6 +1,7 @@
 <?php
 
 namespace Backend\Model\Eloquent;
+
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -23,11 +24,11 @@ class Feature extends Eloquent
     public function getEntityId()
     {
         switch ($this->block_type) {
-            case 'project' :
+            case 'project':
                 return "project_{$this->block_data}";
             case 'solution':
                 return "solution_{$this->block_data}";
-            case 'expert'  :
+            case 'expert':
                 return "expert_{$this->block_data}";
         }
     }

@@ -72,11 +72,11 @@ class CommentRepo implements CommentInterface
         $ids = $this->user_repo->byName($value)->lists('user_id');
 
         switch ($where) {
-            case self::SEARCH_BY_TOPIC_CREATOR :
+            case self::SEARCH_BY_TOPIC_CREATOR:
                 $where_column = 'user_id';
                 break;
 
-            case self::SEARCH_BY_PROFESSION_NAME :
+            case self::SEARCH_BY_PROFESSION_NAME:
                 $where_column = 'profession_id';
                 break;
         }
@@ -116,12 +116,12 @@ class CommentRepo implements CommentInterface
         }
 
         switch ($where) {
-            case self::SEARCH_BY_TOPIC_CREATOR :
+            case self::SEARCH_BY_TOPIC_CREATOR:
                 $ids          = $this->user_repo->byName($value)->lists('user_id');
                 $where_column = 'user_id';
                 break;
 
-            case self::SEARCH_BY_TITLE :
+            case self::SEARCH_BY_TITLE:
                 $ids = array_merge(
                     $this->project_repo->byTitle($value)->lists('project_id'),
                     $this->prodcut_repo->byTitle($value)->lists('project_id')
@@ -130,7 +130,7 @@ class CommentRepo implements CommentInterface
                 $where_column = 'project_id';
                 break;
 
-            case self::SEARCH_BY_OWNER :
+            case self::SEARCH_BY_OWNER:
                 $ids          = array_merge(
                     $this->project_repo->byUserName($value)->lists('project_id'),
                     $this->prodcut_repo->byUserName($value)->lists('project_id')
@@ -172,17 +172,17 @@ class CommentRepo implements CommentInterface
         }
 
         switch ($where) {
-            case self::SEARCH_BY_TOPIC_CREATOR :
+            case self::SEARCH_BY_TOPIC_CREATOR:
                 $ids          = $this->user_repo->byName($value)->lists('user_id');
                 $where_column = 'user_id';
                 break;
 
-            case self::SEARCH_BY_TITLE :
+            case self::SEARCH_BY_TITLE:
                 $ids          = $this->solution_repo->byTitle($value)->lists('solution_id');
                 $where_column = 'solution_id';
                 break;
 
-            case self::SEARCH_BY_OWNER :
+            case self::SEARCH_BY_OWNER:
                 $ids          = $this->solution_repo->byUserName($value)->lists('solution_id');
                 $where_column = 'solution_id';
                 break;

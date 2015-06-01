@@ -8,7 +8,8 @@ use Backend\Repo\RepoInterfaces\InboxInterface;
 use Illuminate\Support\Collection;
 use Mews\Purifier\Purifier;
 
-class InboxRepo implements InboxInterface {
+class InboxRepo implements InboxInterface
+{
 
     use PaginateTrait;
 
@@ -50,8 +51,7 @@ class InboxRepo implements InboxInterface {
             return new Collection();
         }
 
-        if(
-            $where == self::SEARCH_BY_SENDER_ID or
+        if ($where == self::SEARCH_BY_SENDER_ID or
             $where == self::SEARCH_BY_RECEIVER_ID
         ) {
             $ids = [$value];
@@ -64,13 +64,13 @@ class InboxRepo implements InboxInterface {
         }
 
         switch ($where) {
-            case self::SEARCH_BY_SENDER :
-            case self::SEARCH_BY_SENDER_ID :
+            case self::SEARCH_BY_SENDER:
+            case self::SEARCH_BY_SENDER_ID:
                 $where_column = 'sender_id';
                 break;
 
-            case self::SEARCH_BY_RECEIVER :
-            case self::SEARCH_BY_RECEIVER_ID :
+            case self::SEARCH_BY_RECEIVER:
+            case self::SEARCH_BY_RECEIVER_ID:
                 $where_column = 'receiver_id';
                 break;
         }
@@ -96,7 +96,7 @@ class InboxRepo implements InboxInterface {
     {
         $inboxes->each(function ($inbox) {
             $inbox->message_content = nl2br($this->purifier->clean($inbox->message_content));
-            if($inbox->threads->count() > 0) {
+            if ($inbox->threads->count() > 0) {
                 $inbox->threads = $this->processed($inbox->threads);
             }
         });
@@ -104,18 +104,20 @@ class InboxRepo implements InboxInterface {
         return $inboxes;
     }
 
-    public function deleteByCommentId($comment_id) {
+    public function deleteByCommentId($comment_id)
+    {
         $letters = $this->inbox->where('comment_id', $comment_id)->get();
 
-        foreach($letters as $letter) {
+        foreach ($letters as $letter) {
             $letter->delete();
             $this->inbox->where('reply_message_id', $letter->message_id)->delete();
         }
     }
 
-    public function deleteRespondCommentThread(Comment $thread) {
+    public function deleteRespondCommentThread(Comment $thread)
+    {
         $letter = $this->inbox->where('comment_id', $thread->main_comment)->first();
-        if(!$letter) {
+        if (!$letter) {
             return;
         }
 

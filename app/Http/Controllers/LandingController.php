@@ -25,8 +25,7 @@ class LandingController extends BaseController
         LandingManufacturerInterface $manufacturer,
         LandingReferProjectInterface $refer,
         LandingExpertInterface $expert
-    )
-    {
+    ) {
         $this->feature = $feature;
         $this->manu    = $manufacturer;
         $this->refer   = $refer;
@@ -137,8 +136,9 @@ class LandingController extends BaseController
 
         return Response::json(['status' => 'success',]);
     }
-    public function showExpert(){
-        $experts = $this->expert->get_expert_list();
+    public function showExpert()
+    {
+        $experts = $this->expert->getExpertList();
         $types[] = "expert";
         return view('landing.expert')
             ->with('types', $types)
@@ -147,21 +147,22 @@ class LandingController extends BaseController
     public function findExpertEntity($type)
     {
         $id = Input::get('id');
-        $user = $this->expert->get_expert($id);
-        if(sizeof($user) >0){
+        $user = $this->expert->getExpert($id);
+        if (sizeof($user) >0) {
             $block = view('landing.expert-block')
                 ->with('user', $user[0])
                 ->render();
             $res   = ['status' => 'success', 'new_block' => $block];
-        }else{
+        } else {
             $res   = ['status' => 'fail', "msg" => "No Expert Id!"];
         }
 
         return Response::json($res);
     }
-    public function updateExpert(){
+    public function updateExpert()
+    {
         $sort = Input::get('sort');
-        $this->expert->set_expert($sort);
+        $this->expert->setExpert($sort);
         $res   = ['status' => 'success'];
         return Response::json($res);
     }

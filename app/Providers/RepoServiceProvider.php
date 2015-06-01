@@ -46,7 +46,8 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\ProjectInterface', function ($app) {
+            'Backend\Repo\RepoInterfaces\ProjectInterface',
+            function ($app) {
                 return new Lara\ProjectRepo(
                     new \Backend\Model\Eloquent\Project(),
                     new \Backend\Model\Eloquent\ProjectCategory(),
@@ -58,7 +59,8 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\ProductInterface', function ($app) {
+            'Backend\Repo\RepoInterfaces\ProductInterface',
+            function ($app) {
                 return new Lara\ProductRepo(
                     new \Backend\Model\Eloquent\Project(),
                     $app->make('Backend\Repo\RepoInterfaces\DuplicateProductInterface'),
@@ -71,7 +73,8 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\DuplicateProductInterface', function ($app) {
+            'Backend\Repo\RepoInterfaces\DuplicateProductInterface',
+            function ($app) {
                 return new Lara\DuplicateProductRepo(
                     new \Backend\Model\Eloquent\Project(),
                     new \Backend\Model\Eloquent\DuplicateProject(),
@@ -82,7 +85,8 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\TransactionInterface', function ($app) {
+            'Backend\Repo\RepoInterfaces\TransactionInterface',
+            function ($app) {
                 return new Lara\TransactionRepo(
                     new \Backend\Model\Eloquent\Transaction(),
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
@@ -92,7 +96,8 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\SolutionInterface', function ($app) {
+            'Backend\Repo\RepoInterfaces\SolutionInterface',
+            function ($app) {
                 return new Lara\SolutionRepo(
                     new \Backend\Model\Eloquent\Solution(),
                     $app->make('Backend\Repo\RepoInterfaces\DuplicateSolutionInterface'),
@@ -107,7 +112,8 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\DuplicateSolutionInterface', function ($app) {
+            'Backend\Repo\RepoInterfaces\DuplicateSolutionInterface',
+            function ($app) {
                 return new Lara\DuplicateSolutionRepo(
                     new \Backend\Model\Eloquent\Solution(),
                     new \Backend\Model\Eloquent\DuplicateSolution(),

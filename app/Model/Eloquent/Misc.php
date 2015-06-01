@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Misc extends Model {
+class Misc extends Model
+{
 
     protected $table = 'misc';
     protected $primaryKey = 'misc_id';
@@ -13,7 +14,7 @@ class Misc extends Model {
     public function insertOrUpdate($key, $value)
     {
         $row = $this->where('misc_name', $key)->first();
-        if(!$row) {
+        if (!$row) {
             $this->create([
                 'misc_name' => $key,
                 'misc_value' => $value
