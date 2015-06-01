@@ -7,8 +7,6 @@ var _superagent = require("superagent");
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
-"use strict";
-
 var frontUrl = document.querySelector("[data-front-url]").dataset.frontUrl,
     destination = document.querySelector("[name=destination]");
 

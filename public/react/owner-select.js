@@ -23,8 +23,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-"use strict";
-
 var MemberSelector = (function () {
     function MemberSelector() {
         _classCallCheck(this, MemberSelector);
@@ -75,6 +73,10 @@ exports["default"] = MemberSelector;
 module.exports = exports["default"];
 
 },{}],3:[function(require,module,exports){
+/**
+  * @jsx React.DOM
+  */
+
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -82,10 +84,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _jsLibsMemberSelector = require('../../../js/libs/MemberSelector');
 
 var _jsLibsMemberSelector2 = _interopRequireDefault(_jsLibsMemberSelector);
-
-/**
-  * @jsx React.DOM
-  */
 
 var React = require('react');
 
@@ -233,7 +231,7 @@ process.nextTick = function (fun) {
         }
     }
     queue.push(new Item(fun, args));
-    if (!draining) {
+    if (queue.length === 1 && !draining) {
         setTimeout(drainQueue, 0);
     }
 };

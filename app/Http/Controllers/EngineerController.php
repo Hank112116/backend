@@ -17,6 +17,8 @@ use Redirect;
 use Response;
 use SSH;
 use Backend\Model\Eloquent\User;
+use Backend\Model\Eloquent\MailTemplate;
+use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 
 class EngineerController extends BaseController
 {
@@ -185,5 +187,47 @@ class EngineerController extends BaseController
                 'base64'    => $base64,
                 'type'      => $type,
             ]);
+    }
+    public function test(){
+        return view('engineer.test');
+    }
+    public function ajaxTest(){
+
+        #get user
+        $UserModel = new User();
+        $ProjectModel = new Project();
+        $UserList = $UserModel->with('projects')->where("user_id" ,"<" ,"100")->limit(10)->get();
+        
+
+        #echo json_encode($UserList->toArray());
+        return response()->json($UserList);
+    }
+    public function Mail(MailTemplateInterface $MailTemplateRepo){
+        $MailTemplateModel = new MailTemplate();
+        
+        $r = $MailTemplateModel->all();
+        
+        $mailResult=[];
+        
+        $result[] = $r->map(function($Mail) {
+            //print_r($Mail->toArray());
+            $mailResult["task"]=$Mail->task;
+            $message = $Mail->message;
+            $pattern = '/{[\w_]*}/';
+            preg_match_all($pattern, $message, $matches);
+
+            foreach($matches[0] as $Row){
+                if(array_key_exists($Row, $a)) {
+                    $a[$Row]["count"]=1;
+                }else{
+                    $a[$Row]["count"]=$a[$Row]["count"]+1;
+                }
+            }
+
+            $mailResult["tag"]= $a;
+            return $mailResult;
+        });
+        print_r($result);die();
+
     }
 }

@@ -203,4 +203,7 @@ class User extends Eloquent
     {
         return json_encode($this->toBasicArray());
     }
+    public function get100items(){
+        echo 123;
+    }
 }

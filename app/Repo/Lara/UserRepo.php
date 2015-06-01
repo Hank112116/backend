@@ -71,6 +71,9 @@ class UserRepo implements UserInterface
         return $this->getPaginateContainer($this->user, $page, $limit, $users);
     }
 
+    public function findExpert($id){
+        return $this->user->where("user_id", $id)->where("user_type", User::TYPE_EXPERT)->get();
+    }
     public function creators($page = 1, $limit = 20)
     {
         $users = $this->modelBuilder($this->user, $page, $limit)

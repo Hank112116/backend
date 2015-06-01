@@ -5,20 +5,22 @@
 @stop
 
 @section('js')
-    @jsLoader('landing-project-selector')
+    @jsLoader('landing-expert')
 @stop
-
 @section('content')
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <div class="page-header">
-    <h1>FEATURES</h1>
+<h1>EXPERT</h1>
 </div>
 
-<div id="feature">
+<div id="expert">
     <div class="row search-bar">
 
         @foreach ($types as $type) 
             <div class="col-md-4">
-                {!! Form::open(['action' => ['LandingController@findFeatureEntity', $type], 
+                {!! Form::open(['action' => ['LandingController@findExpertEntity', $type], 
                                'method' => 'POST', 'class' => 'js-search-form']) !!}
 
                     <div class="input-group">
@@ -36,20 +38,20 @@
         @endforeach
 
     </div>
+        
+        <div>
+             
+            <ul id="sortablettt">
+              @foreach ($experts as $expert)
+                  @include('landing.expert-block', ['user' => $expert->entity])
 
-    {!! Form::open(['action' => ['LandingController@updateFeature'], 
-        'method' => 'POST', 'class' => 'update-form', 'id' => 'feature-form']) !!}
-        
-        <div id="block-group">
-            @foreach ($features as $feature)
-                @include('landing.feature-block', ['feature' => $feature])
-            @endforeach
+              @endforeach
+            </ul>
+
         </div>
-        
         <div class="btn-block">
-            <button class="btn-sassy btn-submit">UPDATE</button>    
+            <button class="btn-sassy btn-submit" type="button">UPDATE</button>    
         </div>
-    {!! Form::close() !!}
 </div>
 
 @stop

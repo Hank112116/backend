@@ -3,6 +3,7 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
+use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LandingManufacturerInterface;
 use Backend\Repo\RepoInterfaces\LandingReferProjectInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
@@ -22,12 +23,14 @@ class LandingController extends BaseController
     public function __construct(
         LandingFeatureInterface $feature,
         LandingManufacturerInterface $manufacturer,
-        LandingReferProjectInterface $refer
+        LandingReferProjectInterface $refer,
+        LandingExpertInterface $expert
     )
     {
         $this->feature = $feature;
         $this->manu    = $manufacturer;
         $this->refer   = $refer;
+        $this->expert  = $expert;
     }
 
     public function showFeature()
@@ -133,5 +136,33 @@ class LandingController extends BaseController
         $repo->updateHelloDestination($request->get('destination', $default));
 
         return Response::json(['status' => 'success',]);
+    }
+    public function showExpert(){
+        $experts = $this->expert->get_expert_list();
+        $types[] = "expert";
+        return view('landing.expert')
+            ->with('types', $types)
+            ->with('experts', $experts);
+    }
+    public function findExpertEntity($type)
+    {
+        $id = Input::get('id');
+        $user = $this->expert->get_expert($id);
+        if(sizeof($user) > 0){
+            $block = view('landing.expert-block')
+                ->with('user', $user[0])
+                ->render();
+            $res   = ['status' => 'success', 'new_block' => $block];
+        }else{
+            $res   = ['status' => 'fail', "msg" => "No Expert Id!"];
+        }
+
+        return Response::json($res);
+    }
+    public function updateExpert(){
+        $sort = Input::get('sort');
+        $this->expert->set_expert($sort);
+        $res   = ['status' => 'success'];
+        return Response::json($res);
     }
 }

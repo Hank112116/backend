@@ -160,6 +160,7 @@ Route::group(['before' => 'backend.landing'], function () {
     Route::get('landing/get-new-manufacturer', 'LandingController@getNewManufacturer');
     Route::get('landing/refer', 'LandingController@showReferenceProject');
     Route::get('landing/hello', 'LandingController@showHello');
+    Route::get('landing/expert', 'LandingController@showExpert');
 
     Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
     Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
@@ -169,6 +170,8 @@ Route::group(['before' => 'backend.landing'], function () {
     Route::post('landing/update-refer', 'LandingController@updateReferenceProject');
     Route::post('landing/update-manufacturer', 'LandingController@updateManufacturer');
     Route::post('landing/update-hello-redirect', 'LandingController@updateHelloRedirect');
+    Route::post('landing/find-expert/{tyep}', 'LandingController@findExpertEntity');
+    Route::post('landing/update-expert', 'LandingController@updateExpert');
 });
 
 // Email Template
@@ -201,7 +204,13 @@ Route::post('/upload-editor-image', 'ImageUploadController@index');
 /**
  * 取得所有 ID 小於 100 的 User 並列出他們各有幾個 Projects ( Ajax )
  */
-
+Route::get('test/test', 'EngineerController@test');
+Route::get('test/ajaxTest', 'EngineerController@ajaxTest');
 /**
  * 取得所有 Email Template，找出 Tags 並統計個別數量，dd 出來
  */
+Route::get('test/mailTemplate', 'EngineerController@Mail');
+
+get('add-a-log', function() {
+    Log::info("Hello World");
+});

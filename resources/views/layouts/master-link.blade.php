@@ -92,6 +92,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{!! action('LandingController@showExpert') !!}">
+                                <i class="fa fa-tag fa-fw"></i> Expert
+                            </a>
+                        </li>
+                        <li>
                             <a href="{!! action('LandingController@showReferenceProject') !!}">
                                 <i class="fa fa-tag fa-fw"></i> Connected thru HWTrek
                             </a>
