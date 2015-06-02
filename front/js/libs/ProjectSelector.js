@@ -6,6 +6,7 @@ export default class ProjectSelector {
         this.$group = this.$root.find("#block-group").first();
         this._setFeatureBlocks();
         this.$root.find(".js-search-form").each( (kee, form_block) => this._setSearchForm(form_block) );
+        this._textareaCount();
     }
 
     _setSearchForm(block) {
@@ -37,6 +38,7 @@ export default class ProjectSelector {
                     Notifier.showTimedMessage("Add successful", "information", 2);
                     instance.$group.append(feeback.new_block);
                     instance._setFeatureBlocks();
+                    instance._textareaCount();
                 }
             });
 
@@ -85,5 +87,16 @@ export default class ProjectSelector {
             $(block).find(".js-order").first().attr("value", order);
             order++;
         });
+    }
+    _textareaCount() {
+        $('textarea[maxlength]').keyup(function(){
+            var limit = parseInt($(this).attr('maxlength'));
+            var text = $(this).val();
+            var chars = text.length;
+            var userId = $(this).attr("rel");
+            var tag = "count_"+userId.toString();
+            console.log(tag);
+            $("#"+tag).html(chars+"/"+limit);
+        }); 
     }
 }

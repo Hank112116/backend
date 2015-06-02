@@ -76,8 +76,8 @@
                     </a>
                 </li>
                 @endif
-
-                @if(Auth::user()->isShowLink('front_page'))
+                <?php //print_r(Auth::user()->isShowLink('marketing_full')); die();?>
+                @if(Auth::user()->isShowLink('marketing'))
                 <li>
                     <a href="#">
                         <i class="fa fa-anchor fa-fw"></i>
@@ -86,16 +86,13 @@
                     </a>
 
                     <ul class="nav nav-second-level">
+                        @if(Auth::user()->isShowLink('marketing_full'))
                         <li>
                             <a href="{!! action('LandingController@showFeature') !!}">
                                 <i class="fa fa-tag fa-fw"></i> Feature
                             </a>
                         </li>
-                        <li>
-                            <a href="{!! action('LandingController@showExpert') !!}">
-                                <i class="fa fa-tag fa-fw"></i> Expert
-                            </a>
-                        </li>
+                        
                         <li>
                             <a href="{!! action('LandingController@showReferenceProject') !!}">
                                 <i class="fa fa-tag fa-fw"></i> Connected thru HWTrek
@@ -111,11 +108,16 @@
                                 <i class="fa fa-tag fa-fw"></i> Hello
                             </a>
                         </li>
-
+                        @endif
+                        <li>
+                            <a href="{!! action('LandingController@showExpert') !!}">
+                                <i class="fa fa-tag fa-fw"></i> Home Expert List
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endif
-
+                
                 @if(Auth::user()->isShowLink('hub'))
                 <li>
                     <a href="#">

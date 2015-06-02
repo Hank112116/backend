@@ -1,4 +1,3 @@
-
 <div id="" class="row js-block">
     <div class="col-sm-10 col-sm-offset-1 block">
 
@@ -28,6 +27,12 @@
                         <div class="data-group group-half">
                             <span class="label">Position</span>
                             <span class="content">{!! $user->business_id !!}</span>
+                        </div>
+                        <div class="data-group group-half">
+                            <span class="label">Description</span>
+                            <span class="content"><textarea rows="4" cols="40" 
+                                maxlength="250" rel="{!! $user->user_id !!}">{!! $description !!}</textarea></span>
+                            <span id="count_{!! $user->user_id !!}"></span>
                         </div>
                     </div>   
                 </div> 

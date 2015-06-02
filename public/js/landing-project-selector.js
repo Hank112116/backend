@@ -32,6 +32,7 @@ var ProjectSelector = (function () {
         this.$root.find(".js-search-form").each(function (kee, form_block) {
             return _this._setSearchForm(form_block);
         });
+        this._textareaCount();
     }
 
     _createClass(ProjectSelector, [{
@@ -65,6 +66,7 @@ var ProjectSelector = (function () {
                         Notifier.showTimedMessage("Add successful", "information", 2);
                         instance.$group.append(feeback.new_block);
                         instance._setFeatureBlocks();
+                        instance._textareaCount();
                     }
                 });
 
@@ -114,6 +116,19 @@ var ProjectSelector = (function () {
             this.$root.find(".js-block").each(function (kee, block) {
                 $(block).find(".js-order").first().attr("value", order);
                 order++;
+            });
+        }
+    }, {
+        key: "_textareaCount",
+        value: function _textareaCount() {
+            $("textarea[maxlength]").keyup(function () {
+                var limit = parseInt($(this).attr("maxlength"));
+                var text = $(this).val();
+                var chars = text.length;
+                var userId = $(this).attr("rel");
+                var tag = "count_" + userId.toString();
+                console.log(tag);
+                $("#" + tag).html(chars + "/" + limit);
             });
         }
     }]);

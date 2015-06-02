@@ -25,7 +25,6 @@ class BaseController extends Controller
     {
         $this->page     = $this->page ?: Input::get('page', 1);
         $this->per_page = $this->per_page ?: Input::get('pp', 50);
-
         if (isset($this->cert)) {
             $this->setCert();
         }
@@ -35,7 +34,6 @@ class BaseController extends Controller
     {
         if (!Auth::check()) {
             $this->is_restricted_adminer = true;
-
             return;
         }
 

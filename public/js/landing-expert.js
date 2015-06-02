@@ -9,18 +9,17 @@ new expert();
 "use strict";
 
 var Expert = function Expert() {
-    $("#sortablettt").sortable({
-        revert: true
-    });
-    $("ul, li").disableSelection();
     this.$root = $("body");
     this.$group = this.$root.find("#sortablettt").first();
     var instance = this;
     this.$root.find(".js-search-form").each(function (kee, form_block) {
         instance._setSearchForm(form_block);
     });
+    this._setSortablettt();
     this._setExpertBlocks();
+    this._setSortTable();
     this.btnSubmit();
+    this.textareaCount();
 };
 Expert.prototype._setSearchForm = function (block) {
     var instance = this,
@@ -45,6 +44,8 @@ Expert.prototype._setSearchForm = function (block) {
                 Notifier.showTimedMessage("Add successful", "information", 2);
                 instance.$group.append(feeback.new_block);
                 instance._setExpertBlocks();
+                instance._setSortTable();
+                instance.textareaCount();
             }
         });
     });
@@ -62,17 +63,50 @@ Expert.prototype._setExpertBlocks = function (block) {
         });
     });
 };
+Expert.prototype._setSortablettt = function () {
+    $("#sortablettt").sortable({
+        stop: function stop() {
+            // enable text select on inputs
+            $("#sortablettt").find("textarea").bind("mousedown.ui-disableSelection selectstart.ui-disableSelection", function (e) {
+                e.stopImmediatePropagation();
+            });
+        },
+        revert: true
+    }).disableSelection();
+    $("ul, li").disableSelection();
+};
+Expert.prototype._setSortTable = function () {
+    $("#sortablettt").find("textarea").bind("mousedown.ui-disableSelection selectstart.ui-disableSelection", function (e) {
+        e.stopImmediatePropagation();
+    });
+};
+Expert.prototype.textareaCount = function () {
+    $("textarea[maxlength]").keyup(function () {
+        var limit = parseInt($(this).attr("maxlength"));
+        var text = $(this).val();
+        var chars = text.length;
+        var userId = $(this).attr("rel");
+        var tag = "count_" + userId.toString();
+        console.log(tag);
+        $("#" + tag).html(chars + "/" + limit);
+    });
+};
 Expert.prototype.btnSubmit = function () {
     var instance = this;
     this.$root.find(".btn-submit").click(function () {
-        var sort = [];
+        var user = [];
+        var description = [];
         $(".panel-body").each(function (index) {
-            sort[index] = $(this).attr("rel");
+            user[index] = $(this).attr("rel");
+            description[index] = $(this).find("textarea").val();
         });
         $.ajax({
             type: "POST",
             url: "./update-expert",
-            data: { sort: sort },
+            data: {
+                user: user,
+                description: description
+            },
             dataType: "JSON",
             success: function success(feeback) {
                 if (feeback.status == "fail") {

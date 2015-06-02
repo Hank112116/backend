@@ -42,9 +42,10 @@
         <div>
              
             <ul id="sortablettt">
-              @foreach ($experts as $expert)
-                  @include('landing.expert-block', ['user' => $expert->entity])
-
+              @foreach ($experts as $expert)             
+                  @include('landing.expert-block', 
+                    ['user' => $expert->entity, 
+                     'description' => $expert->description])
               @endforeach
             </ul>
 

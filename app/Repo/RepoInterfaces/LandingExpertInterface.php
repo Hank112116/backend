@@ -4,5 +4,5 @@ interface LandingExpertInterface
 {
     public function getExpertList();
     public function getExpert($user_id);
-    public function setExpert($sort);
+    public function setExpert($data);
 }

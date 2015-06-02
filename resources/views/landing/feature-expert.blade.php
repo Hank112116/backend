@@ -41,6 +41,15 @@
                     <span class="label">Position</span>
                     <span class="content">{!! $user->business_id !!}</span>
                 </div>
+                <div class="data-group group-half">
+                    <span class="label">Description</span>
+                    <span class="content">
+                        <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
+                            value="" maxlength="250"
+                            rel="{!! $feature->getEntityId() !!}" >{!! $feature->description !!}</textarea>
+                    </span>
+                    <span id="count_{!! $feature->getEntityId() !!}"></span>
+                </div>
             </div> 
             <div class="col-md-3 expertise-column">
                 @foreach (explode(',', $user->tags) as $tag)
