@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# Hook for git post-merge
+
+# Update git hooks
+sh deployment/update-hooks.sh
+
+# Update submodules
+sh deployment/update-submodules.sh
+
+# Migrate database when needed.
+sh deployment/check-database-migration.sh
+
+# Update nginx,php,mysql,rsyslog when needed.
+sh deployment/check-config_update.sh

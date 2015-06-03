@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Hook for git pre-commit
+#
+# Lint files before commit
+
+sh deployment/lint-changed-scss-files.sh
+if [ $? != 0 ]; then
+	exit 1
+fi
+
+sh deployment/lint-changed-js-files.sh
+if [ $? != 0 ]; then
+	exit 1
+fi
+
+sh deployment/lint-changed-php-files.sh
+if [ $? != 0 ]; then
+	exit 1
+fi

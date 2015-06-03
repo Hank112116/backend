@@ -3,7 +3,7 @@
 var isKeyEnter = function(e) {
     var code = e.keyCode || e.which;
     return code == 13;
-}
+};
 
 var preventEnter = function() {
     $("form").on("keydown", (e) => {
@@ -12,7 +12,7 @@ var preventEnter = function() {
             return false;
         }
     });
-}
+};
 
 export var isKeyEnter;
 export var preventEnter;

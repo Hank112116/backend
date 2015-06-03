@@ -2,8 +2,8 @@ var Expert = function(){
     this.$root = $("body");
     this.$group = this.$root.find("#sortable");
     var instance = this;
-    this.$root.find(".js-search-form").each( function (kee, form_block){
-        instance._setSearchForm(form_block)
+    this.$root.find(".js-search-form").each( function (kee, formBlock){
+        instance._setSearchForm(formBlock);
     });
     this._setSortable(this.$group);
     this._setExpertBlocks();
@@ -11,7 +11,7 @@ var Expert = function(){
     this.btnSubmit();
     this.textareaCount(this.$group);
 
-}
+};
 Expert.prototype._setSearchForm = function (block){
     var instance = this,
             $block = $(block),
@@ -27,65 +27,62 @@ Expert.prototype._setSearchForm = function (block){
                 success: function success(feeback) {
                     $(block).find(".search_id")[0].value = "";
 
-                    if (feeback.status == "fail") {
+                    if (feeback.status === "fail") {
                         Notifier.showTimedMessage(feeback.msg, "warning", 2);
                         return;
                     }
 
                     Notifier.showTimedMessage("Add successful", "information", 2);
-                    instance.$group.append(feeback.new_block);
+                    instance.$group.append(feeback.newBlock);
                     instance._setExpertBlocks();
                     instance._setSortTable(instance.$group);
                     instance.textareaCount(instance.$group);
                 }
             });
         });
-}
-Expert.prototype._setExpertBlocks = function (block){
-    var instance = this;
+};
+Expert.prototype._setExpertBlocks = function (){
     this.$root.find(".js-block").each(function (kee, block) {
         var $block = $(block);
-        var remove_btn = $block.find(".js-remove").first();
-        var remove_btn = $block.find(".js-remove")
-        remove_btn.unbind("click").click(function () {
+        var removeBtn = $block.find(".js-remove").first();
+        removeBtn.unbind("click").click(function () {
             $block.fadeOut("fast", function () {
                 $block.remove();
             });
         });
     });
-}
+};
 Expert.prototype._setSortable = function ($Sortable){
     $Sortable.sortable({
         stop: function () {
         // enable text select on inputs
         $(this).find("textarea")
-            .bind('mousedown.ui-disableSelection selectstart.ui-disableSelection', function(e) {
+            .bind("mousedown.ui-disableSelection selectstart.ui-disableSelection", function(e) {
                 e.stopImmediatePropagation();
             });
         },
         revert: true
     }).disableSelection();
     $( "ul, li" ).disableSelection();
-}
+};
 Expert.prototype._setSortTable = function ($Sortable){
     $Sortable.find("textarea")
-        .bind('mousedown.ui-disableSelection selectstart.ui-disableSelection', function(e) {
+        .bind("mousedown.ui-disableSelection selectstart.ui-disableSelection", function(e) {
             e.stopImmediatePropagation();
     });
-}
+};
 Expert.prototype.textareaCount = function ($Sortable){
-    $Sortable.find('textarea[maxlength]').keyup(function(){
+    $Sortable.find("textarea[maxlength]").keyup(function(){
         var $this = $(this);
-        var limit = parseInt($this.attr('maxlength'));
+        var limit = parseInt($this.attr("maxlength"));
         var text = $this.val();
         var chars = text.length;
         var userId = $this.attr("rel");
         var tag = "count_"+userId.toString();
         $("#"+tag).text(chars+"/"+limit);
     });  
-}
+};
 Expert.prototype.btnSubmit = function(){
-    var instance = this;
     this.$root.find(".btn-submit").click(function(){
         var user = [];
         var description = [];
@@ -103,7 +100,7 @@ Expert.prototype.btnSubmit = function(){
             },
             dataType: "JSON",
             success: function success(feeback) {
-                if (feeback.status == "fail") {
+                if (feeback.status === "fail") {
                     Notifier.showTimedMessage(feeback.msg, "warning", 2);
                     return;
                 }
@@ -112,5 +109,5 @@ Expert.prototype.btnSubmit = function(){
         });
 
     });
-}
+};
 module.exports = Expert;

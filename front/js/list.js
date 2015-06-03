@@ -1,6 +1,6 @@
 "use strict";
 
-import Moment from './libs/Moment';
+import Moment from "./libs/Moment";
 
 import * as datePicker from "./modules/date-picker";
 import * as searchList from "./modules/search-list";

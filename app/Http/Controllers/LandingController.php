@@ -132,7 +132,7 @@ class LandingController extends BaseController
     public function updateHelloRedirect(Request $request, LogAccessHelloInterface $repo)
     {
         $default = "signup?status=2";
-        $repo->updateHelloDestination($request->get('destination', $default));
+        $repo->updateHelloDestination($request->get('destination'));
 
         return Response::json(['status' => 'success',]);
     }
@@ -153,7 +153,7 @@ class LandingController extends BaseController
                 ->with('user', $user[0])
                 ->with('description', "")
                 ->render();
-            $res   = ['status' => 'success', 'new_block' => $block];
+            $res   = ['status' => 'success', 'newBlock' => $block];
         } else {
             $res   = ['status' => 'fail', "msg" => "No Expert Id!"];
         }

@@ -1,22 +1,22 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
+'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _superagent = require("superagent");
+var _superagent = require('superagent');
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
-var frontUrl = document.querySelector("[data-front-url]").dataset.frontUrl,
-    destination = document.querySelector("[name=destination]");
+var frontUrl = document.querySelector('[data-front-url]').dataset.frontUrl,
+    destination = document.querySelector('[name=destination]');
 
-document.querySelector("#test").addEventListener("click", function () {
-    window.open("https://" + frontUrl + "" + destination.value, "_blank");
+document.querySelector('#test').addEventListener('click', function () {
+    var url = 'https://' + frontUrl + destination.value;
+    window.open(url, '_blank');
 });
-
-document.querySelector("#save").addEventListener("click", function () {
-    _superagent2["default"].post("/landing/update-hello-redirect").send({ destination: destination.value }).set("Accept", "application/json").end(function (err, res) {
-        return Notifier.showTimedMessage("Update success", "success", 5);
+document.querySelector('#save').addEventListener('click', function () {
+    _superagent2['default'].post('/landing/update-hello-redirect').send({ destination: destination.value }).set('Accept', 'application/json').end(function () {
+        return Notifier.showTimedMessage('Update success', 'success', 5);
     });
 });
 
