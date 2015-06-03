@@ -166,12 +166,12 @@ class LandingController extends BaseController
         $user = Input::get('user');
         $description = Input::get('description');
         if (sizeof($user) >0) {
-            foreach($user as $key=>$row){
+            foreach ($user as $key => $row) {
                 $data[$key]["user_id"] = $row;
                 $data[$key]["description"] = $description[$key];
             }
-            $this->expert->setExpert($data);           
-        }else{
+            $this->expert->setExpert($data);
+        } else {
             $this->expert->setExpert($data);
         }
         $res   = ['status' => 'success'];

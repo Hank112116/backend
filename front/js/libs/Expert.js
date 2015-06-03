@@ -1,6 +1,6 @@
 var Expert = function(){
     this.$root = $("body");
-    this.$group = this.$root.find("#sortable").first();
+    this.$group = this.$root.find("#sortable");
     var instance = this;
     this.$root.find(".js-search-form").each( function (kee, form_block){
         instance._setSearchForm(form_block)
@@ -54,11 +54,11 @@ Expert.prototype._setExpertBlocks = function (block){
         });
     });
 }
-Expert.prototype._setSortable = function (Sortable){
-    Sortable.sortable({
+Expert.prototype._setSortable = function ($Sortable){
+    $Sortable.sortable({
         stop: function () {
         // enable text select on inputs
-        Sortable.find("textarea")
+        $(this).find("textarea")
             .bind('mousedown.ui-disableSelection selectstart.ui-disableSelection', function(e) {
                 e.stopImmediatePropagation();
             });
@@ -67,14 +67,14 @@ Expert.prototype._setSortable = function (Sortable){
     }).disableSelection();
     $( "ul, li" ).disableSelection();
 }
-Expert.prototype._setSortTable = function (Sortable){
-    Sortable.find("textarea")
+Expert.prototype._setSortTable = function ($Sortable){
+    $Sortable.find("textarea")
         .bind('mousedown.ui-disableSelection selectstart.ui-disableSelection', function(e) {
             e.stopImmediatePropagation();
     });
 }
-Expert.prototype.textareaCount = function (Sortable){
-    Sortable.find('textarea[maxlength]').keyup(function(){
+Expert.prototype.textareaCount = function ($Sortable){
+    $Sortable.find('textarea[maxlength]').keyup(function(){
         var $this = $(this);
         var limit = parseInt($this.attr('maxlength'));
         var text = $this.val();
