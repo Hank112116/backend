@@ -18,7 +18,7 @@ use Browser\Browser;
 class LandingController extends BaseController
 {
 
-    //protected $cert = 'marketing';
+    protected $cert = 'marketing';
 
     public function __construct(
         LandingFeatureInterface $feature,
@@ -162,13 +162,18 @@ class LandingController extends BaseController
     }
     public function updateExpert()
     {
+        $data = [];
         $user = Input::get('user');
         $description = Input::get('description');
-        foreach ($user as $key => $row) {
-            $data[$key]["user_id"] = $row;
-            $data[$key]["description"] = $description[$key];
+        if (sizeof($user) >0) {
+            foreach($user as $key=>$row){
+                $data[$key]["user_id"] = $row;
+                $data[$key]["description"] = $description[$key];
+            }
+            $this->expert->setExpert($data);           
+        }else{
+            $this->expert->setExpert($data);
         }
-        $this->expert->setExpert($data);
         $res   = ['status' => 'success'];
         return Response::json($res);
     }

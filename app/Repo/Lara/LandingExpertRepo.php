@@ -11,7 +11,9 @@ class LandingExpertRepo implements LandingExpertInterface
         $this->expertFeature =  $expertFeature;
         $this->user = $user;
     }
-
+    private function truncateTable(){
+        $this->expertFeature->truncate();
+    }
     public function getExpertList()
     {
         $expertFeatures = $this->expertFeature->limit(12)->orderBy("order")->get();
@@ -27,7 +29,7 @@ class LandingExpertRepo implements LandingExpertInterface
     }
     public function setExpert($data)
     {
-        $this->expertFeature->truncate();
+        $this->truncateTable();    
         //key is order number
         if (is_array($data)) {
             foreach ($data as $key => $row) {

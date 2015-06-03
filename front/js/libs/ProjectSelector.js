@@ -90,13 +90,13 @@ export default class ProjectSelector {
     }
     _textareaCount() {
         $('textarea[maxlength]').keyup(function(){
-            var limit = parseInt($(this).attr('maxlength'));
-            var text = $(this).val();
+            var $this = $(this);
+            var limit = parseInt($this.attr('maxlength'));
+            var text = $this.val();
             var chars = text.length;
-            var userId = $(this).attr("rel");
+            var userId = $this.attr("rel");
             var tag = "count_"+userId.toString();
-            console.log(tag);
-            $("#"+tag).html(chars+"/"+limit);
+            $("#"+tag).text(chars+"/"+limit);
         }); 
     }
 }
