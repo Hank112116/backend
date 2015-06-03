@@ -7,8 +7,6 @@ var _modulesTags = require("./modules/tags");
 
 var tags = _interopRequireWildcard(_modulesTags);
 
-"use strict";
-
 $(function () {
   return tags.init();
 });
@@ -20,7 +18,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.init = init;
-"use strict";
 
 function init() {
     $(".expertise-category").each(function (key, block) {

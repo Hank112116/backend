@@ -1,6 +1,7 @@
 <?php
 
 namespace Backend\Model\Eloquent;
+
 use DB;
 use Input;
 use Requests;
@@ -110,7 +111,8 @@ class HubSchedule extends Project
         return in_array($manager_id, explode(',', $this->hub_managers));
     }
 
-    public function isDeleted() {
+    public function isDeleted()
+    {
         return $this->is_deleted;
     }
 }

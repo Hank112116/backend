@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
-
 trait PaginateTrait
 {
     protected function setPaginateTotal($total)

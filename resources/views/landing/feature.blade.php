@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader('landing-feature')
+	@cssLoader('landing-expert')
 @stop
 
 @section('js')

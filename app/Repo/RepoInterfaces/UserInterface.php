@@ -5,6 +5,7 @@ use Illuminate\Support\Collection;
 interface UserInterface
 {
     public function find($id);
+    public function findExpert($id);
     public function all();
 
     public function byPage($page, $per_page);

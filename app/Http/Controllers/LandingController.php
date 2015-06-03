@@ -3,6 +3,7 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
+use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LandingManufacturerInterface;
 use Backend\Repo\RepoInterfaces\LandingReferProjectInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
@@ -17,17 +18,18 @@ use Browser\Browser;
 class LandingController extends BaseController
 {
 
-    protected $cert = 'front_page';
+    protected $cert = 'marketing';
 
     public function __construct(
         LandingFeatureInterface $feature,
         LandingManufacturerInterface $manufacturer,
-        LandingReferProjectInterface $refer
-    )
-    {
+        LandingReferProjectInterface $refer,
+        LandingExpertInterface $expert
+    ) {
         $this->feature = $feature;
         $this->manu    = $manufacturer;
         $this->refer   = $refer;
+        $this->expert  = $expert;
     }
 
     public function showFeature()
@@ -133,5 +135,46 @@ class LandingController extends BaseController
         $repo->updateHelloDestination($request->get('destination', $default));
 
         return Response::json(['status' => 'success',]);
+    }
+    public function showExpert()
+    {
+        $experts = $this->expert->getExpertList();
+        $types[] = "expert";
+        return view('landing.expert')
+            ->with('types', $types)
+            ->with('experts', $experts);
+    }
+    public function findExpertEntity($type)
+    {
+        $id = Input::get('id');
+        $user = $this->expert->getExpert($id);
+        if (sizeof($user) >0) {
+            $block = view('landing.expert-block')
+                ->with('user', $user[0])
+                ->with('description', "")
+                ->render();
+            $res   = ['status' => 'success', 'new_block' => $block];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "No Expert Id!"];
+        }
+
+        return Response::json($res);
+    }
+    public function updateExpert()
+    {
+        $data = [];
+        $user = Input::get('user');
+        $description = Input::get('description');
+        if (sizeof($user) >0) {
+            foreach ($user as $key => $row) {
+                $data[$key]["user_id"] = $row;
+                $data[$key]["description"] = $description[$key];
+            }
+            $this->expert->setExpert($data);
+        } else {
+            $this->expert->setExpert($data);
+        }
+        $res   = ['status' => 'success'];
+        return Response::json($res);
     }
 }

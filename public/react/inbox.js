@@ -24,8 +24,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-"use strict";
-
 var moment = require("moment-timezone");
 
 var Moment = (function () {
@@ -63,8 +61,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.alert = alert;
-"use strict";
-
 var sweetAlert = require("../vendor/sweetalert/sweetalert.es6.js");
 
 function alert(param) {
@@ -134,7 +130,7 @@ var handleButton = function handleButton(event, params, modal) {
 
   var targetedConfirm = target.className.indexOf('confirm') !== -1;
   var targetedOverlay = target.className.indexOf('sweet-overlay') !== -1;
-  var modalIsVisible = _handleDom.hasClass(modal, 'visible');
+  var modalIsVisible = (0, _handleDom.hasClass)(modal, 'visible');
   var doneFunctionExists = params.doneFunction && modal.getAttribute('data-has-done-function') === 'true';
 
   // Since the user can change the background-color of the confirm button programmatically,
@@ -142,8 +138,8 @@ var handleButton = function handleButton(event, params, modal) {
   var normalColor, hoverColor, activeColor;
   if (targetedConfirm && params.confirmButtonColor) {
     normalColor = params.confirmButtonColor;
-    hoverColor = _utils.colorLuminance(normalColor, -0.04);
-    activeColor = _utils.colorLuminance(normalColor, -0.14);
+    hoverColor = (0, _utils.colorLuminance)(normalColor, -0.04);
+    activeColor = (0, _utils.colorLuminance)(normalColor, -0.14);
   }
 
   function shouldSetConfirmButtonColor(color) {
@@ -182,7 +178,7 @@ var handleButton = function handleButton(event, params, modal) {
 
     case 'click':
       var clickedOnModal = modal === target;
-      var clickedOnModalChild = _handleDom.isDescendant(modal, target);
+      var clickedOnModalChild = (0, _handleDom.isDescendant)(modal, target);
 
       // Ignore click outside if allowOutsideClick is false
       if (!clickedOnModal && !clickedOnModalChild && modalIsVisible && !params.allowOutsideClick) {
@@ -193,7 +189,7 @@ var handleButton = function handleButton(event, params, modal) {
         handleConfirm(modal, params);
       } else if (doneFunctionExists && modalIsVisible || targetedOverlay) {
         handleCancel(modal, params);
-      } else if (_handleDom.isDescendant(modal, target) && target.tagName === 'BUTTON') {
+      } else if ((0, _handleDom.isDescendant)(modal, target) && target.tagName === 'BUTTON') {
         sweetAlert.close();
       }
       break;
@@ -206,7 +202,7 @@ var handleButton = function handleButton(event, params, modal) {
 var handleConfirm = function handleConfirm(modal, params) {
   var callbackValue = true;
 
-  if (_handleDom.hasClass(modal, 'show-input')) {
+  if ((0, _handleDom.hasClass)(modal, 'show-input')) {
     callbackValue = modal.querySelector('input').value;
 
     if (!callbackValue) {
@@ -466,11 +462,11 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
       }
     }
 
-    _handleDom.stopEventPropagation(e);
+    (0, _handleDom.stopEventPropagation)(e);
     $targetElement.focus();
 
     if (params.confirmButtonColor) {
-      _handleSwalDom.setFocusStyle($targetElement, params.confirmButtonColor);
+      (0, _handleSwalDom.setFocusStyle)($targetElement, params.confirmButtonColor);
     }
   } else {
     if (keyCode === 13) {
@@ -488,7 +484,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
       }
     } else if (keyCode === 27 && params.allowEscapeKey === true) {
       $targetElement = $cancelButton;
-      _handleDom.fireClick($targetElement, e);
+      (0, _handleDom.fireClick)($targetElement, e);
     } else {
       // Fallback - let the browser handle it.
       $targetElement = undefined;
@@ -572,7 +568,7 @@ var getOverlay = function getOverlay() {
  * Add box-shadow style to button (depending on its chosen bg-color)
  */
 var setFocusStyle = function setFocusStyle($button, bgColor) {
-  var rgbColor = _utils.hexToRgb(bgColor);
+  var rgbColor = (0, _utils.hexToRgb)(bgColor);
   $button.style.boxShadow = '0 0 2px rgba(' + rgbColor + ', 0.8), inset 0 0 0 1px rgba(0, 0, 0, 0.05)';
 };
 
@@ -581,17 +577,17 @@ var setFocusStyle = function setFocusStyle($button, bgColor) {
  */
 var openModal = function openModal() {
   var $modal = getModal();
-  _handleDom.fadeIn(getOverlay(), 10);
-  _handleDom.show($modal);
-  _handleDom.addClass($modal, 'showSweetAlert');
-  _handleDom.removeClass($modal, 'hideSweetAlert');
+  (0, _handleDom.fadeIn)(getOverlay(), 10);
+  (0, _handleDom.show)($modal);
+  (0, _handleDom.addClass)($modal, 'showSweetAlert');
+  (0, _handleDom.removeClass)($modal, 'hideSweetAlert');
 
   window.previousActiveElement = document.activeElement;
   var $okButton = $modal.querySelector('button.confirm');
   $okButton.focus();
 
   setTimeout(function () {
-    _handleDom.addClass($modal, 'visible');
+    (0, _handleDom.addClass)($modal, 'visible');
   }, 500);
 
   var timer = $modal.getAttribute('data-timer');
@@ -611,7 +607,7 @@ var resetInput = function resetInput() {
   var $modal = getModal();
   var $input = getInput();
 
-  _handleDom.removeClass($modal, 'show-input');
+  (0, _handleDom.removeClass)($modal, 'show-input');
   $input.value = '';
   $input.setAttribute('type', _defaultParams2['default'].inputType);
   $input.setAttribute('placeholder', _defaultParams2['default'].inputPlaceholder);
@@ -628,10 +624,10 @@ var resetInputError = function resetInputError(event) {
   var $modal = getModal();
 
   var $errorIcon = $modal.querySelector('.sa-input-error');
-  _handleDom.removeClass($errorIcon, 'show');
+  (0, _handleDom.removeClass)($errorIcon, 'show');
 
   var $errorContainer = $modal.querySelector('.sa-error-container');
-  _handleDom.removeClass($errorContainer, 'show');
+  (0, _handleDom.removeClass)($errorContainer, 'show');
 };
 
 /*
@@ -639,7 +635,7 @@ var resetInputError = function resetInputError(event) {
  */
 var fixVerticalPosition = function fixVerticalPosition() {
   var $modal = getModal();
-  $modal.style.marginTop = _handleDom.getTopMargin(getModal());
+  $modal.style.marginTop = (0, _handleDom.getTopMargin)(getModal());
 };
 
 exports.sweetAlertInitialize = sweetAlertInitialize;
@@ -712,7 +708,7 @@ var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
  * Set type, text and actions on modal
  */
 var setParameters = function setParameters(params) {
-  var modal = _handleSwalDom.getModal();
+  var modal = (0, _handleSwalDom.getModal)();
 
   var $title = modal.querySelector('h2');
   var $text = modal.querySelector('p');
@@ -722,33 +718,33 @@ var setParameters = function setParameters(params) {
   /*
    * Title
    */
-  $title.innerHTML = params.html ? params.title : _handleDom.escapeHtml(params.title).split('\n').join('<br>');
+  $title.innerHTML = params.html ? params.title : (0, _handleDom.escapeHtml)(params.title).split('\n').join('<br>');
 
   /*
    * Text
    */
-  $text.innerHTML = params.html ? params.text : _handleDom.escapeHtml(params.text || '').split('\n').join('<br>');
-  if (params.text) _handleDom.show($text);
+  $text.innerHTML = params.html ? params.text : (0, _handleDom.escapeHtml)(params.text || '').split('\n').join('<br>');
+  if (params.text) (0, _handleDom.show)($text);
 
   /*
    * Custom class
    */
   if (params.customClass) {
-    _handleDom.addClass(modal, params.customClass);
+    (0, _handleDom.addClass)(modal, params.customClass);
     modal.setAttribute('data-custom-class', params.customClass);
   } else {
     // Find previously set classes and remove them
     var customClass = modal.getAttribute('data-custom-class');
-    _handleDom.removeClass(modal, customClass);
+    (0, _handleDom.removeClass)(modal, customClass);
     modal.setAttribute('data-custom-class', '');
   }
 
   /*
    * Icon
    */
-  _handleDom.hide(modal.querySelectorAll('.sa-icon'));
+  (0, _handleDom.hide)(modal.querySelectorAll('.sa-icon'));
 
-  if (params.type && !_utils.isIE8()) {
+  if (params.type && !(0, _utils.isIE8)()) {
     var _ret = (function () {
 
       var validType = false;
@@ -772,36 +768,36 @@ var setParameters = function setParameters(params) {
 
       if (typesWithIcons.indexOf(params.type) !== -1) {
         $icon = modal.querySelector('.sa-icon.' + 'sa-' + params.type);
-        _handleDom.show($icon);
+        (0, _handleDom.show)($icon);
       }
 
-      var $input = _handleSwalDom.getInput();
+      var $input = (0, _handleSwalDom.getInput)();
 
       // Animate icon
       switch (params.type) {
 
         case 'success':
-          _handleDom.addClass($icon, 'animate');
-          _handleDom.addClass($icon.querySelector('.sa-tip'), 'animateSuccessTip');
-          _handleDom.addClass($icon.querySelector('.sa-long'), 'animateSuccessLong');
+          (0, _handleDom.addClass)($icon, 'animate');
+          (0, _handleDom.addClass)($icon.querySelector('.sa-tip'), 'animateSuccessTip');
+          (0, _handleDom.addClass)($icon.querySelector('.sa-long'), 'animateSuccessLong');
           break;
 
         case 'error':
-          _handleDom.addClass($icon, 'animateErrorIcon');
-          _handleDom.addClass($icon.querySelector('.sa-x-mark'), 'animateXMark');
+          (0, _handleDom.addClass)($icon, 'animateErrorIcon');
+          (0, _handleDom.addClass)($icon.querySelector('.sa-x-mark'), 'animateXMark');
           break;
 
         case 'warning':
-          _handleDom.addClass($icon, 'pulseWarning');
-          _handleDom.addClass($icon.querySelector('.sa-body'), 'pulseWarningIns');
-          _handleDom.addClass($icon.querySelector('.sa-dot'), 'pulseWarningIns');
+          (0, _handleDom.addClass)($icon, 'pulseWarning');
+          (0, _handleDom.addClass)($icon.querySelector('.sa-body'), 'pulseWarningIns');
+          (0, _handleDom.addClass)($icon.querySelector('.sa-dot'), 'pulseWarningIns');
           break;
 
         case 'input':
         case 'prompt':
           $input.setAttribute('type', params.inputType);
           $input.setAttribute('placeholder', params.inputPlaceholder);
-          _handleDom.addClass(modal, 'show-input');
+          (0, _handleDom.addClass)(modal, 'show-input');
           setTimeout(function () {
             $input.focus();
             $input.addEventListener('keyup', swal.resetInputError);
@@ -820,7 +816,7 @@ var setParameters = function setParameters(params) {
     var $customIcon = modal.querySelector('.sa-icon.sa-custom');
 
     $customIcon.style.backgroundImage = 'url(' + params.imageUrl + ')';
-    _handleDom.show($customIcon);
+    (0, _handleDom.show)($customIcon);
 
     var _imgWidth = 80;
     var _imgHeight = 80;
@@ -848,7 +844,7 @@ var setParameters = function setParameters(params) {
   if (params.showCancelButton) {
     $cancelBtn.style.display = 'inline-block';
   } else {
-    _handleDom.hide($cancelBtn);
+    (0, _handleDom.hide)($cancelBtn);
   }
 
   /*
@@ -858,17 +854,17 @@ var setParameters = function setParameters(params) {
   if (params.showConfirmButton) {
     $confirmBtn.style.display = 'inline-block';
   } else {
-    _handleDom.hide($confirmBtn);
+    (0, _handleDom.hide)($confirmBtn);
   }
 
   /*
    * Custom text on cancel/confirm buttons
    */
   if (params.cancelButtonText) {
-    $cancelBtn.innerHTML = _handleDom.escapeHtml(params.cancelButtonText);
+    $cancelBtn.innerHTML = (0, _handleDom.escapeHtml)(params.cancelButtonText);
   }
   if (params.confirmButtonText) {
-    $confirmBtn.innerHTML = _handleDom.escapeHtml(params.confirmButtonText);
+    $confirmBtn.innerHTML = (0, _handleDom.escapeHtml)(params.confirmButtonText);
   }
 
   /*
@@ -879,7 +875,7 @@ var setParameters = function setParameters(params) {
     $confirmBtn.style.backgroundColor = params.confirmButtonColor;
 
     // Set box-shadow to default focused button
-    _handleSwalDom.setFocusStyle($confirmBtn, params.confirmButtonColor);
+    (0, _handleSwalDom.setFocusStyle)($confirmBtn, params.confirmButtonColor);
   }
 
   /*
@@ -914,14 +910,14 @@ exports['default'] = setParameters;
 module.exports = exports['default'];
 
 },{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],11:[function(require,module,exports){
+/*
+ * Allow user to pass their own params
+ */
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-/*
- * Allow user to pass their own params
- */
 var extend = function extend(a, b) {
   for (var key in b) {
     if (b.hasOwnProperty(key)) {
@@ -989,10 +985,6 @@ exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
 },{}],12:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1000,6 +992,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 /*
  * jQuery-like functions for manipulating the DOM
  */
+'use strict';
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _modulesHandleDom = require('./modules/handle-dom');
 
@@ -1049,8 +1044,8 @@ var sweetAlert, swal;
 sweetAlert = swal = function () {
   var customizations = arguments[0];
 
-  _modulesHandleDom.addClass(document.body, 'stop-scrolling');
-  _modulesHandleSwalDom.resetInput();
+  (0, _modulesHandleDom.addClass)(document.body, 'stop-scrolling');
+  (0, _modulesHandleSwalDom.resetInput)();
 
   /*
    * Use argument if defined or default value from params object otherwise.
@@ -1063,11 +1058,11 @@ sweetAlert = swal = function () {
   }
 
   if (customizations === undefined) {
-    _modulesUtils.logStr('SweetAlert expects at least 1 attribute!');
+    (0, _modulesUtils.logStr)('SweetAlert expects at least 1 attribute!');
     return false;
   }
 
-  var params = _modulesUtils.extend({}, _modulesDefaultParams2['default']);
+  var params = (0, _modulesUtils.extend)({}, _modulesDefaultParams2['default']);
 
   switch (typeof customizations) {
 
@@ -1081,7 +1076,7 @@ sweetAlert = swal = function () {
     // Ex: swal({ title:"Hello", text: "Just testing", type: "info" });
     case 'object':
       if (customizations.title === undefined) {
-        _modulesUtils.logStr('Missing "title" argument!');
+        (0, _modulesUtils.logStr)('Missing "title" argument!');
         return false;
       }
 
@@ -1101,17 +1096,17 @@ sweetAlert = swal = function () {
       break;
 
     default:
-      _modulesUtils.logStr('Unexpected type of argument! Expected "string" or "object", got ' + typeof customizations);
+      (0, _modulesUtils.logStr)('Unexpected type of argument! Expected "string" or "object", got ' + typeof customizations);
       return false;
 
   }
 
-  _modulesSetParams2['default'](params);
-  _modulesHandleSwalDom.fixVerticalPosition();
-  _modulesHandleSwalDom.openModal();
+  (0, _modulesSetParams2['default'])(params);
+  (0, _modulesHandleSwalDom.fixVerticalPosition)();
+  (0, _modulesHandleSwalDom.openModal)();
 
   // Modal interactions
-  var modal = _modulesHandleSwalDom.getModal();
+  var modal = (0, _modulesHandleSwalDom.getModal)();
 
   /* 
    * Make sure all modal buttons respond to all events
@@ -1119,7 +1114,7 @@ sweetAlert = swal = function () {
   var $buttons = modal.querySelectorAll('button');
   var buttonEvents = ['onclick', 'onmouseover', 'onmouseout', 'onmousedown', 'onmouseup', 'onfocus'];
   var onButtonEvent = function onButtonEvent(e) {
-    return _modulesHandleClick.handleButton(e, params, modal);
+    return (0, _modulesHandleClick.handleButton)(e, params, modal);
   };
 
   for (var btnIndex = 0; btnIndex < $buttons.length; btnIndex++) {
@@ -1130,12 +1125,12 @@ sweetAlert = swal = function () {
   }
 
   // Clicking outside the modal dismisses it (if allowed by user)
-  _modulesHandleSwalDom.getOverlay().onclick = onButtonEvent;
+  (0, _modulesHandleSwalDom.getOverlay)().onclick = onButtonEvent;
 
   previousWindowKeyDown = window.onkeydown;
 
   var onKeyEvent = function onKeyEvent(e) {
-    return _modulesHandleKey2['default'](e, params, modal);
+    return (0, _modulesHandleKey2['default'])(e, params, modal);
   };
   window.onkeydown = onKeyEvent;
 
@@ -1164,40 +1159,40 @@ sweetAlert.setDefaults = swal.setDefaults = function (userParams) {
     throw new Error('userParams has to be a object');
   }
 
-  _modulesUtils.extend(_modulesDefaultParams2['default'], userParams);
+  (0, _modulesUtils.extend)(_modulesDefaultParams2['default'], userParams);
 };
 
 /*
  * Animation when closing modal
  */
 sweetAlert.close = swal.close = function () {
-  var modal = _modulesHandleSwalDom.getModal();
+  var modal = (0, _modulesHandleSwalDom.getModal)();
 
-  _modulesHandleDom.fadeOut(_modulesHandleSwalDom.getOverlay(), 5);
-  _modulesHandleDom.fadeOut(modal, 5);
-  _modulesHandleDom.removeClass(modal, 'showSweetAlert');
-  _modulesHandleDom.addClass(modal, 'hideSweetAlert');
-  _modulesHandleDom.removeClass(modal, 'visible');
+  (0, _modulesHandleDom.fadeOut)((0, _modulesHandleSwalDom.getOverlay)(), 5);
+  (0, _modulesHandleDom.fadeOut)(modal, 5);
+  (0, _modulesHandleDom.removeClass)(modal, 'showSweetAlert');
+  (0, _modulesHandleDom.addClass)(modal, 'hideSweetAlert');
+  (0, _modulesHandleDom.removeClass)(modal, 'visible');
 
   /*
    * Reset icon animations
    */
   var $successIcon = modal.querySelector('.sa-icon.sa-success');
-  _modulesHandleDom.removeClass($successIcon, 'animate');
-  _modulesHandleDom.removeClass($successIcon.querySelector('.sa-tip'), 'animateSuccessTip');
-  _modulesHandleDom.removeClass($successIcon.querySelector('.sa-long'), 'animateSuccessLong');
+  (0, _modulesHandleDom.removeClass)($successIcon, 'animate');
+  (0, _modulesHandleDom.removeClass)($successIcon.querySelector('.sa-tip'), 'animateSuccessTip');
+  (0, _modulesHandleDom.removeClass)($successIcon.querySelector('.sa-long'), 'animateSuccessLong');
 
   var $errorIcon = modal.querySelector('.sa-icon.sa-error');
-  _modulesHandleDom.removeClass($errorIcon, 'animateErrorIcon');
-  _modulesHandleDom.removeClass($errorIcon.querySelector('.sa-x-mark'), 'animateXMark');
+  (0, _modulesHandleDom.removeClass)($errorIcon, 'animateErrorIcon');
+  (0, _modulesHandleDom.removeClass)($errorIcon.querySelector('.sa-x-mark'), 'animateXMark');
 
   var $warningIcon = modal.querySelector('.sa-icon.sa-warning');
-  _modulesHandleDom.removeClass($warningIcon, 'pulseWarning');
-  _modulesHandleDom.removeClass($warningIcon.querySelector('.sa-body'), 'pulseWarningIns');
-  _modulesHandleDom.removeClass($warningIcon.querySelector('.sa-dot'), 'pulseWarningIns');
+  (0, _modulesHandleDom.removeClass)($warningIcon, 'pulseWarning');
+  (0, _modulesHandleDom.removeClass)($warningIcon.querySelector('.sa-body'), 'pulseWarningIns');
+  (0, _modulesHandleDom.removeClass)($warningIcon.querySelector('.sa-dot'), 'pulseWarningIns');
 
   // Make page scrollable again
-  _modulesHandleDom.removeClass(document.body, 'stop-scrolling');
+  (0, _modulesHandleDom.removeClass)(document.body, 'stop-scrolling');
 
   // Reset the page to its previous state
   window.onkeydown = previousWindowKeyDown;
@@ -1215,13 +1210,13 @@ sweetAlert.close = swal.close = function () {
  * If something is wrong => call showInputError with errorMessage
  */
 sweetAlert.showInputError = swal.showInputError = function (errorMessage) {
-  var modal = _modulesHandleSwalDom.getModal();
+  var modal = (0, _modulesHandleSwalDom.getModal)();
 
   var $errorIcon = modal.querySelector('.sa-input-error');
-  _modulesHandleDom.addClass($errorIcon, 'show');
+  (0, _modulesHandleDom.addClass)($errorIcon, 'show');
 
   var $errorContainer = modal.querySelector('.sa-error-container');
-  _modulesHandleDom.addClass($errorContainer, 'show');
+  (0, _modulesHandleDom.addClass)($errorContainer, 'show');
 
   $errorContainer.querySelector('p').innerHTML = errorMessage;
 
@@ -1237,13 +1232,13 @@ sweetAlert.resetInputError = swal.resetInputError = function (event) {
     return false;
   }
 
-  var $modal = _modulesHandleSwalDom.getModal();
+  var $modal = (0, _modulesHandleSwalDom.getModal)();
 
   var $errorIcon = $modal.querySelector('.sa-input-error');
-  _modulesHandleDom.removeClass($errorIcon, 'show');
+  (0, _modulesHandleDom.removeClass)($errorIcon, 'show');
 
   var $errorContainer = $modal.querySelector('.sa-error-container');
-  _modulesHandleDom.removeClass($errorContainer, 'show');
+  (0, _modulesHandleDom.removeClass)($errorContainer, 'show');
 };
 
 /*
@@ -1555,6 +1550,10 @@ var Sender = React.createClass({ displayName: 'Sender',
 module.exports = Sender;
 
 },{"react":193}],22:[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1562,10 +1561,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _jsLibsMoment = require('../../../js/libs/Moment');
 
 var _jsLibsMoment2 = _interopRequireDefault(_jsLibsMoment);
-
-/**
- * @jsx React.DOM
- */
 
 var React = require('react');
 var Delete = React.createFactory(require('./Delete.react'));
@@ -1588,6 +1583,10 @@ var Thread = React.createClass({ displayName: 'Thread',
 module.exports = Thread;
 
 },{"../../../js/libs/Moment":2,"../actions/InboxActions":13,"./Delete.react":15,"./Receiver.react":18,"./Sender.react":21,"react":193}],23:[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1595,10 +1594,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _jsLibsMoment = require('../../../js/libs/Moment');
 
 var _jsLibsMoment2 = _interopRequireDefault(_jsLibsMoment);
-
-/**
- * @jsx React.DOM
- */
 
 var React = require('react');
 var Thread = React.createFactory(require('./Thread.react'));
@@ -1656,6 +1651,10 @@ var Threads = React.createClass({ displayName: 'Threads',
 module.exports = Threads;
 
 },{"../../../js/libs/Moment":2,"./Thread.react":22,"react":193}],24:[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -1663,10 +1662,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _jsLibsMoment = require('../../../js/libs/Moment');
 
 var _jsLibsMoment2 = _interopRequireDefault(_jsLibsMoment);
-
-/**
- * @jsx React.DOM
- */
 
 var React = require('react');
 
@@ -2315,7 +2310,7 @@ process.nextTick = function (fun) {
         }
     }
     queue.push(new Item(fun, args));
-    if (!draining) {
+    if (queue.length === 1 && !draining) {
         setTimeout(drainQueue, 0);
     }
 };
@@ -2679,7 +2674,7 @@ module.exports = invariant;
 (function (global){
 /**
  * @license
- * lodash 3.8.0 (Custom Build) <https://lodash.com/>
+ * lodash 3.9.3 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern -d -o ./index.js`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -2692,7 +2687,7 @@ module.exports = invariant;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '3.8.0';
+  var VERSION = '3.9.3';
 
   /** Used to compose bitmasks for wrapper metadata. */
   var BIND_FLAG = 1,
@@ -2797,6 +2792,9 @@ module.exports = invariant;
   /** Used to detect host constructors (Safari > 5). */
   var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
+  /** Used to detect unsigned integer values. */
+  var reIsUint = /^\d+$/;
+
   /** Used to match latin-1 supplementary letters (excluding mathematical operators). */
   var reLatin1 = /[\xc0-\xd6\xd8-\xde\xdf-\xf6\xf8-\xff]/g;
 
@@ -2831,9 +2829,8 @@ module.exports = invariant;
     'Array', 'ArrayBuffer', 'Date', 'Error', 'Float32Array', 'Float64Array',
     'Function', 'Int8Array', 'Int16Array', 'Int32Array', 'Math', 'Number',
     'Object', 'RegExp', 'Set', 'String', '_', 'clearTimeout', 'document',
-    'isFinite', 'parseInt', 'setTimeout', 'TypeError', 'Uint8Array',
-    'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap',
-    'window'
+    'isFinite', 'parseFloat', 'parseInt', 'setTimeout', 'TypeError', 'Uint8Array',
+    'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap', 'window'
   ];
 
   /** Used to make template sourceURLs easier to identify. */
@@ -2954,29 +2951,40 @@ module.exports = invariant;
   /**
    * Used as a reference to the global object.
    *
-   * The `this` value is used if it is the global object to avoid Greasemonkey's
+   * The `this` value is used if it's the global object to avoid Greasemonkey's
    * restricted `window` object, otherwise the `window` object is used.
    */
   var root = freeGlobal || ((freeWindow !== (this && this.window)) && freeWindow) || freeSelf || this;
+
+  /*--------------------------------------------------------------------------*/
 
   /**
    * The base implementation of `compareAscending` which compares values and
    * sorts them in ascending order without guaranteeing a stable sort.
    *
    * @private
-   * @param {*} value The value to compare to `other`.
-   * @param {*} other The value to compare to `value`.
+   * @param {*} value The value to compare.
+   * @param {*} other The other value to compare.
    * @returns {number} Returns the sort order indicator for `value`.
    */
   function baseCompareAscending(value, other) {
     if (value !== other) {
-      var valIsReflexive = value === value,
+      var valIsNull = value === null,
+          valIsUndef = value === undefined,
+          valIsReflexive = value === value;
+
+      var othIsNull = other === null,
+          othIsUndef = other === undefined,
           othIsReflexive = other === other;
 
-      if (value > other || !valIsReflexive || (value === undefined && othIsReflexive)) {
+      if ((value > other && !othIsNull) || !valIsReflexive ||
+          (valIsNull && !othIsUndef && othIsReflexive) ||
+          (valIsUndef && othIsReflexive)) {
         return 1;
       }
-      if (value < other || !othIsReflexive || (other === undefined && valIsReflexive)) {
+      if ((value < other && !valIsNull) || !othIsReflexive ||
+          (othIsNull && !valIsUndef && valIsReflexive) ||
+          (othIsUndef && valIsReflexive)) {
         return -1;
       }
     }
@@ -3044,7 +3052,7 @@ module.exports = invariant;
   }
 
   /**
-   * Converts `value` to a string if it is not one. An empty string is returned
+   * Converts `value` to a string if it's not one. An empty string is returned
    * for `null` or `undefined` values.
    *
    * @private
@@ -3056,17 +3064,6 @@ module.exports = invariant;
       return value;
     }
     return value == null ? '' : (value + '');
-  }
-
-  /**
-   * Used by `_.max` and `_.min` as the default callback for string values.
-   *
-   * @private
-   * @param {string} string The string to inspect.
-   * @returns {number} Returns the code unit of the first character of the string.
-   */
-  function charAtCallback(string) {
-    return string.charCodeAt(0);
   }
 
   /**
@@ -3329,6 +3326,8 @@ module.exports = invariant;
     return htmlUnescapes[chr];
   }
 
+  /*--------------------------------------------------------------------------*/
+
   /**
    * Create a new pristine `lodash` function using the given `context` object.
    *
@@ -3389,7 +3388,7 @@ module.exports = invariant;
         stringProto = String.prototype;
 
     /** Used to detect DOM support. */
-    var document = (document = context.window) && document.document;
+    var document = (document = context.window) ? document.document : null;
 
     /** Used to resolve the decompiled source of functions. */
     var fnToString = Function.prototype.toString;
@@ -3411,26 +3410,24 @@ module.exports = invariant;
 
     /** Used to detect if a method is native. */
     var reIsNative = RegExp('^' +
-      escapeRegExp(objToString)
-      .replace(/toString|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+      escapeRegExp(fnToString.call(hasOwnProperty))
+      .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
     );
 
     /** Native method references. */
-    var ArrayBuffer = isNative(ArrayBuffer = context.ArrayBuffer) && ArrayBuffer,
-        bufferSlice = isNative(bufferSlice = ArrayBuffer && new ArrayBuffer(0).slice) && bufferSlice,
+    var ArrayBuffer = getNative(context, 'ArrayBuffer'),
+        bufferSlice = getNative(ArrayBuffer && new ArrayBuffer(0), 'slice'),
         ceil = Math.ceil,
         clearTimeout = context.clearTimeout,
         floor = Math.floor,
-        getOwnPropertySymbols = isNative(getOwnPropertySymbols = Object.getOwnPropertySymbols) && getOwnPropertySymbols,
-        getPrototypeOf = isNative(getPrototypeOf = Object.getPrototypeOf) && getPrototypeOf,
+        getPrototypeOf = getNative(Object, 'getPrototypeOf'),
+        parseFloat = context.parseFloat,
         push = arrayProto.push,
-        preventExtensions = isNative(preventExtensions = Object.preventExtensions) && preventExtensions,
-        propertyIsEnumerable = objectProto.propertyIsEnumerable,
-        Set = isNative(Set = context.Set) && Set,
+        Set = getNative(context, 'Set'),
         setTimeout = context.setTimeout,
         splice = arrayProto.splice,
-        Uint8Array = isNative(Uint8Array = context.Uint8Array) && Uint8Array,
-        WeakMap = isNative(WeakMap = context.WeakMap) && WeakMap;
+        Uint8Array = getNative(context, 'Uint8Array'),
+        WeakMap = getNative(context, 'WeakMap');
 
     /** Used to clone array buffers. */
     var Float64Array = (function() {
@@ -3438,44 +3435,21 @@ module.exports = invariant;
       // where the array buffer's `byteLength` is not a multiple of the typed
       // array's `BYTES_PER_ELEMENT`.
       try {
-        var func = isNative(func = context.Float64Array) && func,
+        var func = getNative(context, 'Float64Array'),
             result = new func(new ArrayBuffer(10), 0, 1) && func;
       } catch(e) {}
-      return result;
-    }());
-
-    /** Used as `baseAssign`. */
-    var nativeAssign = (function() {
-      // Avoid `Object.assign` in Firefox 34-37 which have an early implementation
-      // with a now defunct try/catch behavior. See https://bugzilla.mozilla.org/show_bug.cgi?id=1103344
-      // for more details.
-      //
-      // Use `Object.preventExtensions` on a plain object instead of simply using
-      // `Object('x')` because Chrome and IE fail to throw an error when attempting
-      // to assign values to readonly indexes of strings.
-      var func = preventExtensions && isNative(func = Object.assign) && func;
-      try {
-        if (func) {
-          var object = preventExtensions({ '1': 0 });
-          object[0] = 1;
-        }
-      } catch(e) {
-        // Only attempt in strict mode.
-        try { func(object, 'xo'); } catch(e) {}
-        return !object[1] && func;
-      }
-      return false;
+      return result || null;
     }());
 
     /* Native method references for those with the same name as other `lodash` methods. */
-    var nativeIsArray = isNative(nativeIsArray = Array.isArray) && nativeIsArray,
-        nativeCreate = isNative(nativeCreate = Object.create) && nativeCreate,
+    var nativeCreate = getNative(Object, 'create'),
+        nativeIsArray = getNative(Array, 'isArray'),
         nativeIsFinite = context.isFinite,
-        nativeKeys = isNative(nativeKeys = Object.keys) && nativeKeys,
+        nativeKeys = getNative(Object, 'keys'),
         nativeMax = Math.max,
         nativeMin = Math.min,
-        nativeNow = isNative(nativeNow = Date.now) && nativeNow,
-        nativeNumIsFinite = isNative(nativeNumIsFinite = Number.isFinite) && nativeNumIsFinite,
+        nativeNow = getNative(Date, 'now'),
+        nativeNumIsFinite = getNative(Number, 'isFinite'),
         nativeParseInt = context.parseInt,
         nativeRandom = Math.random;
 
@@ -3484,7 +3458,7 @@ module.exports = invariant;
         POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
 
     /** Used as references for the maximum length and index of an array. */
-    var MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1,
+    var MAX_ARRAY_LENGTH = 4294967295,
         MAX_ARRAY_INDEX = MAX_ARRAY_LENGTH - 1,
         HALF_MAX_ARRAY_LENGTH = MAX_ARRAY_LENGTH >>> 1;
 
@@ -3495,13 +3469,15 @@ module.exports = invariant;
      * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
      * of an array-like value.
      */
-    var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+    var MAX_SAFE_INTEGER = 9007199254740991;
 
     /** Used to store function metadata. */
     var metaMap = WeakMap && new WeakMap;
 
     /** Used to lookup unminified function names. */
     var realNames = {};
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Creates a `lodash` object which wraps `value` to enable implicit chaining.
@@ -3542,30 +3518,31 @@ module.exports = invariant;
      * `filter`, `flatten`, `flattenDeep`, `flow`, `flowRight`, `forEach`,
      * `forEachRight`, `forIn`, `forInRight`, `forOwn`, `forOwnRight`, `functions`,
      * `groupBy`, `indexBy`, `initial`, `intersection`, `invert`, `invoke`, `keys`,
-     * `keysIn`, `map`, `mapValues`, `matches`, `matchesProperty`, `memoize`,
-     * `merge`, `mixin`, `negate`, `omit`, `once`, `pairs`, `partial`, `partialRight`,
-     * `partition`, `pick`, `plant`, `pluck`, `property`, `propertyOf`, `pull`,
-     * `pullAt`, `push`, `range`, `rearg`, `reject`, `remove`, `rest`, `reverse`,
-     * `shuffle`, `slice`, `sort`, `sortBy`, `sortByAll`, `sortByOrder`, `splice`,
-     * `spread`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`,
-     * `throttle`, `thru`, `times`, `toArray`, `toPlainObject`, `transform`,
-     * `union`, `uniq`, `unshift`, `unzip`, `values`, `valuesIn`, `where`,
-     * `without`, `wrap`, `xor`, `zip`, and `zipObject`
+     * `keysIn`, `map`, `mapKeys`, `mapValues`, `matches`, `matchesProperty`,
+     * `memoize`, `merge`, `method`, `methodOf`, `mixin`, `negate`, `omit`, `once`,
+     * `pairs`, `partial`, `partialRight`, `partition`, `pick`, `plant`, `pluck`,
+     * `property`, `propertyOf`, `pull`, `pullAt`, `push`, `range`, `rearg`,
+     * `reject`, `remove`, `rest`, `restParam`, `reverse`, `set`, `shuffle`,
+     * `slice`, `sort`, `sortBy`, `sortByAll`, `sortByOrder`, `splice`, `spread`,
+     * `take`, `takeRight`, `takeRightWhile`, `takeWhile`, `tap`, `throttle`,
+     * `thru`, `times`, `toArray`, `toPlainObject`, `transform`, `union`, `uniq`,
+     * `unshift`, `unzip`, `unzipWith`, `values`, `valuesIn`, `where`, `without`,
+     * `wrap`, `xor`, `zip`, `zipObject`, `zipWith`
      *
      * The wrapper methods that are **not** chainable by default are:
      * `add`, `attempt`, `camelCase`, `capitalize`, `clone`, `cloneDeep`, `deburr`,
      * `endsWith`, `escape`, `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`,
-     * `findLast`, `findLastIndex`, `findLastKey`, `findWhere`, `first`, `has`,
-     * `identity`, `includes`, `indexOf`, `inRange`, `isArguments`, `isArray`,
-     * `isBoolean`, `isDate`, `isElement`, `isEmpty`, `isEqual`, `isError`, `isFinite`
-     * `isFunction`, `isMatch`, `isNative`, `isNaN`, `isNull`, `isNumber`, `isObject`,
-     * `isPlainObject`, `isRegExp`, `isString`, `isUndefined`, `isTypedArray`,
-     * `join`, `kebabCase`, `last`, `lastIndexOf`, `max`, `min`, `noConflict`,
-     * `noop`, `now`, `pad`, `padLeft`, `padRight`, `parseInt`, `pop`, `random`,
-     * `reduce`, `reduceRight`, `repeat`, `result`, `runInContext`, `shift`, `size`,
-     * `snakeCase`, `some`, `sortedIndex`, `sortedLastIndex`, `startCase`, `startsWith`,
-     * `sum`, `template`, `trim`, `trimLeft`, `trimRight`, `trunc`, `unescape`,
-     * `uniqueId`, `value`, and `words`
+     * `findLast`, `findLastIndex`, `findLastKey`, `findWhere`, `first`, `get`,
+     * `gt`, `gte`, `has`, `identity`, `includes`, `indexOf`, `inRange`, `isArguments`,
+     * `isArray`, `isBoolean`, `isDate`, `isElement`, `isEmpty`, `isEqual`, `isError`,
+     * `isFinite` `isFunction`, `isMatch`, `isNative`, `isNaN`, `isNull`, `isNumber`,
+     * `isObject`, `isPlainObject`, `isRegExp`, `isString`, `isUndefined`,
+     * `isTypedArray`, `join`, `kebabCase`, `last`, `lastIndexOf`, `lt`, `lte`,
+     * `max`, `min`, `noConflict`, `noop`, `now`, `pad`, `padLeft`, `padRight`,
+     * `parseInt`, `pop`, `random`, `reduce`, `reduceRight`, `repeat`, `result`,
+     * `runInContext`, `shift`, `size`, `snakeCase`, `some`, `sortedIndex`,
+     * `sortedLastIndex`, `startCase`, `startsWith`, `sum`, `template`, `trim`,
+     * `trimLeft`, `trimRight`, `trunc`, `unescape`, `uniqueId`, `value`, and `words`
      *
      * The wrapper method `sample` will return a wrapped value when `n` is provided,
      * otherwise an unwrapped value is returned.
@@ -3642,30 +3619,11 @@ module.exports = invariant;
 
     (function(x) {
       var Ctor = function() { this.x = x; },
-          args = arguments,
           object = { '0': x, 'length': x },
           props = [];
 
       Ctor.prototype = { 'valueOf': x, 'y': x };
       for (var key in new Ctor) { props.push(key); }
-
-      /**
-       * Detect if functions can be decompiled by `Function#toString`
-       * (all but Firefox OS certified apps, older Opera mobile browsers, and
-       * the PlayStation 3; forced `false` for Windows 8 apps).
-       *
-       * @memberOf _.support
-       * @type boolean
-       */
-      support.funcDecomp = /\bthis\b/.test(function() { return this; });
-
-      /**
-       * Detect if `Function#name` is supported (all but IE).
-       *
-       * @memberOf _.support
-       * @type boolean
-       */
-      support.funcNames = typeof Function.name == 'string';
 
       /**
        * Detect if the DOM is supported.
@@ -3677,24 +3635,6 @@ module.exports = invariant;
         support.dom = document.createDocumentFragment().nodeType === 11;
       } catch(e) {
         support.dom = false;
-      }
-
-      /**
-       * Detect if `arguments` object indexes are non-enumerable.
-       *
-       * In Firefox < 4, IE < 9, PhantomJS, and Safari < 5.1 `arguments` object
-       * indexes are non-enumerable. Chrome < 25 and Node.js < 0.11.0 treat
-       * `arguments` object indexes as non-enumerable and fail `hasOwnProperty`
-       * checks for indexes that exceed the number of function parameters and
-       * whose associated argument values are `0`.
-       *
-       * @memberOf _.support
-       * @type boolean
-       */
-      try {
-        support.nonEnumArgs = !propertyIsEnumerable.call(args, 1);
-      } catch(e) {
-        support.nonEnumArgs = true;
       }
     }(1, 0));
 
@@ -3758,6 +3698,8 @@ module.exports = invariant;
         '_': lodash
       }
     };
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Creates a lazy wrapper object which wraps `value` to enable lazy evaluation.
@@ -3887,6 +3829,8 @@ module.exports = invariant;
       return result;
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      * Creates a cache object to store key/value pairs.
      *
@@ -3955,6 +3899,8 @@ module.exports = invariant;
       return this;
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      *
      * Creates a cache object to store unique values.
@@ -4003,6 +3949,8 @@ module.exports = invariant;
         data.hash[value] = true;
       }
     }
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Copies the values of `source` to `array`.
@@ -4087,6 +4035,35 @@ module.exports = invariant;
     }
 
     /**
+     * A specialized version of `baseExtremum` for arrays which invokes `iteratee`
+     * with one argument: (value).
+     *
+     * @private
+     * @param {Array} array The array to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @param {Function} comparator The function used to compare values.
+     * @param {*} exValue The initial extremum value.
+     * @returns {*} Returns the extremum value.
+     */
+    function arrayExtremum(array, iteratee, comparator, exValue) {
+      var index = -1,
+          length = array.length,
+          computed = exValue,
+          result = computed;
+
+      while (++index < length) {
+        var value = array[index],
+            current = +iteratee(value);
+
+        if (comparator(current, computed)) {
+          computed = current;
+          result = value;
+        }
+      }
+      return result;
+    }
+
+    /**
      * A specialized version of `_.filter` for arrays without support for callback
      * shorthands and `this` binding.
      *
@@ -4126,48 +4103,6 @@ module.exports = invariant;
 
       while (++index < length) {
         result[index] = iteratee(array[index], index, array);
-      }
-      return result;
-    }
-
-    /**
-     * A specialized version of `_.max` for arrays without support for iteratees.
-     *
-     * @private
-     * @param {Array} array The array to iterate over.
-     * @returns {*} Returns the maximum value.
-     */
-    function arrayMax(array) {
-      var index = -1,
-          length = array.length,
-          result = NEGATIVE_INFINITY;
-
-      while (++index < length) {
-        var value = array[index];
-        if (value > result) {
-          result = value;
-        }
-      }
-      return result;
-    }
-
-    /**
-     * A specialized version of `_.min` for arrays without support for iteratees.
-     *
-     * @private
-     * @param {Array} array The array to iterate over.
-     * @returns {*} Returns the minimum value.
-     */
-    function arrayMin(array) {
-      var index = -1,
-          length = array.length,
-          result = POSITIVE_INFINITY;
-
-      while (++index < length) {
-        var value = array[index];
-        if (value < result) {
-          result = value;
-        }
       }
       return result;
     }
@@ -4302,10 +4237,8 @@ module.exports = invariant;
      * @returns {Object} Returns `object`.
      */
     function assignWith(object, source, customizer) {
-      var props = keys(source);
-      push.apply(props, getSymbols(source));
-
       var index = -1,
+          props = keys(source),
           length = props.length;
 
       while (++index < length) {
@@ -4330,11 +4263,11 @@ module.exports = invariant;
      * @param {Object} source The source object.
      * @returns {Object} Returns `object`.
      */
-    var baseAssign = nativeAssign || function(object, source) {
+    function baseAssign(object, source) {
       return source == null
         ? object
-        : baseCopy(source, getSymbols(source), baseCopy(source, keys(source), object));
-    };
+        : baseCopy(source, keys(source), object);
+    }
 
     /**
      * The base implementation of `_.at` without support for string collections
@@ -4349,7 +4282,7 @@ module.exports = invariant;
       var index = -1,
           isNil = collection == null,
           isArr = !isNil && isArrayLike(collection),
-          length = isArr && collection.length,
+          length = isArr ? collection.length : 0,
           propsLength = props.length,
           result = Array(propsLength);
 
@@ -4490,14 +4423,14 @@ module.exports = invariant;
      * @returns {Object} Returns the new object.
      */
     var baseCreate = (function() {
-      function Object() {}
+      function object() {}
       return function(prototype) {
         if (isObject(prototype)) {
-          Object.prototype = prototype;
-          var result = new Object;
-          Object.prototype = null;
+          object.prototype = prototype;
+          var result = new object;
+          object.prototype = null;
         }
-        return result || context.Object();
+        return result || {};
       };
     }());
 
@@ -4602,6 +4535,32 @@ module.exports = invariant;
       baseEach(collection, function(value, index, collection) {
         result = !!predicate(value, index, collection);
         return result;
+      });
+      return result;
+    }
+
+    /**
+     * Gets the extremum value of `collection` invoking `iteratee` for each value
+     * in `collection` to generate the criterion by which the value is ranked.
+     * The `iteratee` is invoked with three arguments: (value, index|key, collection).
+     *
+     * @private
+     * @param {Array|Object|string} collection The collection to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @param {Function} comparator The function used to compare values.
+     * @param {*} exValue The initial extremum value.
+     * @returns {*} Returns the extremum value.
+     */
+    function baseExtremum(collection, iteratee, comparator, exValue) {
+      var computed = exValue,
+          result = computed;
+
+      baseEach(collection, function(value, index, collection) {
+        var current = +iteratee(value, index, collection);
+        if (comparator(current, computed) || (current === exValue && current === result)) {
+          computed = current;
+          result = value;
+        }
       });
       return result;
     }
@@ -4822,11 +4781,11 @@ module.exports = invariant;
       if (pathKey !== undefined && pathKey in toObject(object)) {
         path = [pathKey];
       }
-      var index = -1,
+      var index = 0,
           length = path.length;
 
-      while (object != null && ++index < length) {
-        object = object[path[index]];
+      while (object != null && index < length) {
+        object = object[path[index++]];
       }
       return (index && index == length) ? object : undefined;
     }
@@ -4845,17 +4804,10 @@ module.exports = invariant;
      * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
      */
     function baseIsEqual(value, other, customizer, isLoose, stackA, stackB) {
-      // Exit early for identical values.
       if (value === other) {
         return true;
       }
-      var valType = typeof value,
-          othType = typeof other;
-
-      // Exit early for unlike primitive values.
-      if ((valType != 'function' && valType != 'object' && othType != 'function' && othType != 'object') ||
-          value == null || other == null) {
-        // Return `false` unless both values are `NaN`.
+      if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
         return value !== value && other !== other;
       }
       return baseIsEqualDeep(value, other, baseIsEqual, customizer, isLoose, stackA, stackB);
@@ -4906,11 +4858,11 @@ module.exports = invariant;
         return equalByTag(object, other, objTag);
       }
       if (!isLoose) {
-        var valWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
-            othWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+        var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+            othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
 
-        if (valWrapped || othWrapped) {
-          return equalFunc(valWrapped ? object.value() : object, othWrapped ? other.value() : other, customizer, isLoose, stackA, stackB);
+        if (objIsWrapped || othIsWrapped) {
+          return equalFunc(objIsWrapped ? object.value() : object, othIsWrapped ? other.value() : other, customizer, isLoose, stackA, stackB);
         }
       }
       if (!isSameTag) {
@@ -4945,41 +4897,43 @@ module.exports = invariant;
      *
      * @private
      * @param {Object} object The object to inspect.
-     * @param {Array} props The source property names to match.
-     * @param {Array} values The source values to match.
-     * @param {Array} strictCompareFlags Strict comparison flags for source values.
+     * @param {Array} matchData The propery names, values, and compare flags to match.
      * @param {Function} [customizer] The function to customize comparing objects.
      * @returns {boolean} Returns `true` if `object` is a match, else `false`.
      */
-    function baseIsMatch(object, props, values, strictCompareFlags, customizer) {
-      var index = -1,
-          length = props.length,
+    function baseIsMatch(object, matchData, customizer) {
+      var index = matchData.length,
+          length = index,
           noCustomizer = !customizer;
 
-      while (++index < length) {
-        if ((noCustomizer && strictCompareFlags[index])
-              ? values[index] !== object[props[index]]
-              : !(props[index] in object)
+      if (object == null) {
+        return !length;
+      }
+      object = toObject(object);
+      while (index--) {
+        var data = matchData[index];
+        if ((noCustomizer && data[2])
+              ? data[1] !== object[data[0]]
+              : !(data[0] in object)
             ) {
           return false;
         }
       }
-      index = -1;
       while (++index < length) {
-        var key = props[index],
+        data = matchData[index];
+        var key = data[0],
             objValue = object[key],
-            srcValue = values[index];
+            srcValue = data[1];
 
-        if (noCustomizer && strictCompareFlags[index]) {
-          var result = objValue !== undefined || (key in object);
-        } else {
-          result = customizer ? customizer(objValue, srcValue, key) : undefined;
-          if (result === undefined) {
-            result = baseIsEqual(srcValue, objValue, customizer, true);
+        if (noCustomizer && data[2]) {
+          if (objValue === undefined && !(key in object)) {
+            return false;
           }
-        }
-        if (!result) {
-          return false;
+        } else {
+          var result = customizer ? customizer(objValue, srcValue, key) : undefined;
+          if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, true) : result)) {
+            return false;
+          }
         }
       }
       return true;
@@ -5012,50 +4966,34 @@ module.exports = invariant;
      * @returns {Function} Returns the new function.
      */
     function baseMatches(source) {
-      var props = keys(source),
-          length = props.length;
+      var matchData = getMatchData(source);
+      if (matchData.length == 1 && matchData[0][2]) {
+        var key = matchData[0][0],
+            value = matchData[0][1];
 
-      if (!length) {
-        return constant(true);
-      }
-      if (length == 1) {
-        var key = props[0],
-            value = source[key];
-
-        if (isStrictComparable(value)) {
-          return function(object) {
-            if (object == null) {
-              return false;
-            }
-            return object[key] === value && (value !== undefined || (key in toObject(object)));
-          };
-        }
-      }
-      var values = Array(length),
-          strictCompareFlags = Array(length);
-
-      while (length--) {
-        value = source[props[length]];
-        values[length] = value;
-        strictCompareFlags[length] = isStrictComparable(value);
+        return function(object) {
+          if (object == null) {
+            return false;
+          }
+          return object[key] === value && (value !== undefined || (key in toObject(object)));
+        };
       }
       return function(object) {
-        return object != null && baseIsMatch(toObject(object), props, values, strictCompareFlags);
+        return baseIsMatch(object, matchData);
       };
     }
 
     /**
-     * The base implementation of `_.matchesProperty` which does not which does
-     * not clone `value`.
+     * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
      *
      * @private
      * @param {string} path The path of the property to get.
-     * @param {*} value The value to compare.
+     * @param {*} srcValue The value to compare.
      * @returns {Function} Returns the new function.
      */
-    function baseMatchesProperty(path, value) {
+    function baseMatchesProperty(path, srcValue) {
       var isArr = isArray(path),
-          isCommon = isKey(path) && isStrictComparable(value),
+          isCommon = isKey(path) && isStrictComparable(srcValue),
           pathKey = (path + '');
 
       path = toPath(path);
@@ -5073,9 +5011,9 @@ module.exports = invariant;
           key = last(path);
           object = toObject(object);
         }
-        return object[key] === value
-          ? (value !== undefined || (key in object))
-          : baseIsEqual(value, object[key], null, true);
+        return object[key] === srcValue
+          ? (srcValue !== undefined || (key in object))
+          : baseIsEqual(srcValue, object[key], undefined, true);
       };
     }
 
@@ -5095,11 +5033,9 @@ module.exports = invariant;
       if (!isObject(object)) {
         return object;
       }
-      var isSrcArr = isArrayLike(source) && (isArray(source) || isTypedArray(source));
-      if (!isSrcArr) {
-        var props = keys(source);
-        push.apply(props, getSymbols(source));
-      }
+      var isSrcArr = isArrayLike(source) && (isArray(source) || isTypedArray(source)),
+          props = isSrcArr ? null : keys(source);
+
       arrayEach(props || source, function(srcValue, key) {
         if (props) {
           key = srcValue;
@@ -5118,7 +5054,7 @@ module.exports = invariant;
           if (isCommon) {
             result = srcValue;
           }
-          if ((isSrcArr || result !== undefined) &&
+          if ((result !== undefined || (isSrcArr && !(key in object))) &&
               (isCommon || (result === result ? (result !== value) : (value === value)))) {
             object[key] = result;
           }
@@ -5225,7 +5161,7 @@ module.exports = invariant;
     function basePullAt(array, indexes) {
       var length = array ? indexes.length : 0;
       while (length--) {
-        var index = parseFloat(indexes[length]);
+        var index = indexes[length];
         if (index != previous && isIndex(index)) {
           var previous = index;
           splice.call(array, index, 1);
@@ -5538,7 +5474,7 @@ module.exports = invariant;
           var mid = (low + high) >>> 1,
               computed = array[mid];
 
-          if (retHighest ? (computed <= value) : (computed < value)) {
+          if ((retHighest ? (computed <= value) : (computed < value)) && computed !== null) {
             low = mid + 1;
           } else {
             high = mid;
@@ -5568,17 +5504,23 @@ module.exports = invariant;
       var low = 0,
           high = array ? array.length : 0,
           valIsNaN = value !== value,
+          valIsNull = value === null,
           valIsUndef = value === undefined;
 
       while (low < high) {
         var mid = floor((low + high) / 2),
             computed = iteratee(array[mid]),
+            isDef = computed !== undefined,
             isReflexive = computed === computed;
 
         if (valIsNaN) {
           var setLow = isReflexive || retHighest;
+        } else if (valIsNull) {
+          setLow = isReflexive && isDef && (retHighest || computed != null);
         } else if (valIsUndef) {
-          setLow = isReflexive && (retHighest || computed !== undefined);
+          setLow = isReflexive && (retHighest || isDef);
+        } else if (computed == null) {
+          setLow = false;
         } else {
           setLow = retHighest ? (computed <= value) : (computed < value);
         }
@@ -5768,19 +5710,19 @@ module.exports = invariant;
       return restParam(function(object, sources) {
         var index = -1,
             length = object == null ? 0 : sources.length,
-            customizer = length > 2 && sources[length - 2],
-            guard = length > 2 && sources[2],
-            thisArg = length > 1 && sources[length - 1];
+            customizer = length > 2 ? sources[length - 2] : undefined,
+            guard = length > 2 ? sources[2] : undefined,
+            thisArg = length > 1 ? sources[length - 1] : undefined;
 
         if (typeof customizer == 'function') {
           customizer = bindCallback(customizer, thisArg, 5);
           length -= 2;
         } else {
-          customizer = typeof thisArg == 'function' ? thisArg : null;
+          customizer = typeof thisArg == 'function' ? thisArg : undefined;
           length -= (customizer ? 1 : 0);
         }
         if (guard && isIterateeCall(sources[0], sources[1], guard)) {
-          customizer = length < 3 ? null : customizer;
+          customizer = length < 3 ? undefined : customizer;
           length = 1;
         }
         while (++index < length) {
@@ -5905,8 +5847,20 @@ module.exports = invariant;
      */
     function createCtorWrapper(Ctor) {
       return function() {
+        // Use a `switch` statement to work with class constructors.
+        // See https://people.mozilla.org/~jorendorff/es6-draft.html#sec-ecmascript-function-objects-call-thisargument-argumentslist
+        // for more details.
+        var args = arguments;
+        switch (args.length) {
+          case 0: return new Ctor;
+          case 1: return new Ctor(args[0]);
+          case 2: return new Ctor(args[0], args[1]);
+          case 3: return new Ctor(args[0], args[1], args[2]);
+          case 4: return new Ctor(args[0], args[1], args[2], args[3]);
+          case 5: return new Ctor(args[0], args[1], args[2], args[3], args[4]);
+        }
         var thisBinding = baseCreate(Ctor.prototype),
-            result = Ctor.apply(thisBinding, arguments);
+            result = Ctor.apply(thisBinding, args);
 
         // Mimic the constructor's `return` behavior.
         // See https://es5.github.io/#x13.2.2 for more details.
@@ -5937,32 +5891,24 @@ module.exports = invariant;
      * Creates a `_.max` or `_.min` function.
      *
      * @private
-     * @param {Function} arrayFunc The function to get the extremum value from an array.
-     * @param {boolean} [isMin] Specify returning the minimum, instead of the maximum,
-     *  extremum value.
+     * @param {Function} comparator The function used to compare values.
+     * @param {*} exValue The initial extremum value.
      * @returns {Function} Returns the new extremum function.
      */
-    function createExtremum(arrayFunc, isMin) {
+    function createExtremum(comparator, exValue) {
       return function(collection, iteratee, thisArg) {
         if (thisArg && isIterateeCall(collection, iteratee, thisArg)) {
           iteratee = null;
         }
-        var func = getCallback(),
-            noIteratee = iteratee == null;
-
-        if (!(func === baseCallback && noIteratee)) {
-          noIteratee = false;
-          iteratee = func(iteratee, thisArg, 3);
-        }
-        if (noIteratee) {
-          var isArr = isArray(collection);
-          if (!isArr && isString(collection)) {
-            iteratee = charAtCallback;
-          } else {
-            return arrayFunc(isArr ? collection : toIterable(collection));
+        iteratee = getCallback(iteratee, thisArg, 3);
+        if (iteratee.length == 1) {
+          collection = toIterable(collection);
+          var result = arrayExtremum(collection, iteratee, comparator, exValue);
+          if (!(collection.length && result === exValue)) {
+            return result;
           }
         }
-        return extremumBy(collection, iteratee, isMin);
+        return baseExtremum(collection, iteratee, comparator, exValue);
       };
     }
 
@@ -6025,11 +5971,8 @@ module.exports = invariant;
      */
     function createFlow(fromRight) {
       return function() {
-        var length = arguments.length;
-        if (!length) {
-          return function() { return arguments[0]; };
-        }
         var wrapper,
+            length = arguments.length,
             index = fromRight ? length : -1,
             leftIndex = 0,
             funcs = Array(length);
@@ -6039,15 +5982,17 @@ module.exports = invariant;
           if (typeof func != 'function') {
             throw new TypeError(FUNC_ERROR_TEXT);
           }
-          var funcName = wrapper ? '' : getFuncName(func);
-          wrapper = funcName == 'wrapper' ? new LodashWrapper([]) : wrapper;
+          if (!wrapper && LodashWrapper.prototype.thru && getFuncName(func) == 'wrapper') {
+            wrapper = new LodashWrapper([]);
+          }
         }
         index = wrapper ? -1 : length;
         while (++index < length) {
           func = funcs[index];
-          funcName = getFuncName(func);
 
-          var data = funcName == 'wrapper' ? getData(func) : null;
+          var funcName = getFuncName(func),
+              data = funcName == 'wrapper' ? getData(func) : null;
+
           if (data && isLaziable(data[0]) && data[1] == (ARY_FLAG | CURRY_FLAG | PARTIAL_FLAG | REARG_FLAG) && !data[4].length && data[9] == 1) {
             wrapper = wrapper[getFuncName(data[0])].apply(wrapper, data[3]);
           } else {
@@ -6060,7 +6005,7 @@ module.exports = invariant;
             return wrapper.plant(args[0]).value();
           }
           var index = 0,
-              result = funcs[index].apply(this, args);
+              result = length ? funcs[index].apply(this, args) : args[0];
 
           while (++index < length) {
             result = funcs[index].call(this, result);
@@ -6209,10 +6154,8 @@ module.exports = invariant;
           isBindKey = bitmask & BIND_KEY_FLAG,
           isCurry = bitmask & CURRY_FLAG,
           isCurryBound = bitmask & CURRY_BOUND_FLAG,
-          isCurryRight = bitmask & CURRY_RIGHT_FLAG;
-
-      var Ctor = !isBindKey && createCtorWrapper(func),
-          key = func;
+          isCurryRight = bitmask & CURRY_RIGHT_FLAG,
+          Ctor = isBindKey ? null : createCtorWrapper(func);
 
       function wrapper() {
         // Avoid `arguments` object use disqualifying optimizations by
@@ -6259,17 +6202,18 @@ module.exports = invariant;
             return result;
           }
         }
-        var thisBinding = isBind ? thisArg : this;
-        if (isBindKey) {
-          func = thisBinding[key];
-        }
+        var thisBinding = isBind ? thisArg : this,
+            fn = isBindKey ? thisBinding[func] : func;
+
         if (argPos) {
           args = reorder(args, argPos);
         }
         if (isAry && ary < args.length) {
           args.length = ary;
         }
-        var fn = (this && this !== root && this instanceof wrapper) ? (Ctor || createCtorWrapper(func)) : func;
+        if (this && this !== root && this instanceof wrapper) {
+          fn = Ctor || createCtorWrapper(func);
+        }
         return fn.apply(thisBinding, args);
       }
       return wrapper;
@@ -6343,10 +6287,10 @@ module.exports = invariant;
      */
     function createSortedIndex(retHighest) {
       return function(array, value, iteratee, thisArg) {
-        var func = getCallback(iteratee);
-        return (func === baseCallback && iteratee == null)
+        var callback = getCallback(iteratee);
+        return (iteratee == null && callback === baseCallback)
           ? binaryIndex(array, value, retHighest)
-          : binaryIndexBy(array, value, func(iteratee, thisArg, 1), retHighest);
+          : binaryIndexBy(array, value, callback(iteratee, thisArg, 1), retHighest);
       };
     }
 
@@ -6432,40 +6376,35 @@ module.exports = invariant;
     function equalArrays(array, other, equalFunc, customizer, isLoose, stackA, stackB) {
       var index = -1,
           arrLength = array.length,
-          othLength = other.length,
-          result = true;
+          othLength = other.length;
 
       if (arrLength != othLength && !(isLoose && othLength > arrLength)) {
         return false;
       }
-      // Deep compare the contents, ignoring non-numeric properties.
-      while (result && ++index < arrLength) {
+      // Ignore non-index properties.
+      while (++index < arrLength) {
         var arrValue = array[index],
-            othValue = other[index];
+            othValue = other[index],
+            result = customizer ? customizer(isLoose ? othValue : arrValue, isLoose ? arrValue : othValue, index) : undefined;
 
-        result = undefined;
-        if (customizer) {
-          result = isLoose
-            ? customizer(othValue, arrValue, index)
-            : customizer(arrValue, othValue, index);
-        }
-        if (result === undefined) {
-          // Recursively compare arrays (susceptible to call stack limits).
-          if (isLoose) {
-            var othIndex = othLength;
-            while (othIndex--) {
-              othValue = other[othIndex];
-              result = (arrValue && arrValue === othValue) || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
-              if (result) {
-                break;
-              }
-            }
-          } else {
-            result = (arrValue && arrValue === othValue) || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
+        if (result !== undefined) {
+          if (result) {
+            continue;
           }
+          return false;
+        }
+        // Recursively compare arrays (susceptible to call stack limits).
+        if (isLoose) {
+          if (!arraySome(other, function(othValue) {
+                return arrValue === othValue || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
+              })) {
+            return false;
+          }
+        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB))) {
+          return false;
         }
       }
-      return !!result;
+      return true;
     }
 
     /**
@@ -6530,29 +6469,22 @@ module.exports = invariant;
       if (objLength != othLength && !isLoose) {
         return false;
       }
-      var skipCtor = isLoose,
-          index = -1;
-
-      while (++index < objLength) {
-        var key = objProps[index],
-            result = isLoose ? key in other : hasOwnProperty.call(other, key);
-
-        if (result) {
-          var objValue = object[key],
-              othValue = other[key];
-
-          result = undefined;
-          if (customizer) {
-            result = isLoose
-              ? customizer(othValue, objValue, key)
-              : customizer(objValue, othValue, key);
-          }
-          if (result === undefined) {
-            // Recursively compare objects (susceptible to call stack limits).
-            result = (objValue && objValue === othValue) || equalFunc(objValue, othValue, customizer, isLoose, stackA, stackB);
-          }
+      var index = objLength;
+      while (index--) {
+        var key = objProps[index];
+        if (!(isLoose ? key in other : hasOwnProperty.call(other, key))) {
+          return false;
         }
-        if (!result) {
+      }
+      var skipCtor = isLoose;
+      while (++index < objLength) {
+        key = objProps[index];
+        var objValue = object[key],
+            othValue = other[key],
+            result = customizer ? customizer(isLoose ? othValue : objValue, isLoose? objValue : othValue, key) : undefined;
+
+        // Recursively compare objects (susceptible to call stack limits).
+        if (!(result === undefined ? equalFunc(objValue, othValue, customizer, isLoose, stackA, stackB) : result)) {
           return false;
         }
         skipCtor || (skipCtor = key == 'constructor');
@@ -6570,34 +6502,6 @@ module.exports = invariant;
         }
       }
       return true;
-    }
-
-    /**
-     * Gets the extremum value of `collection` invoking `iteratee` for each value
-     * in `collection` to generate the criterion by which the value is ranked.
-     * The `iteratee` is invoked with three arguments: (value, index, collection).
-     *
-     * @private
-     * @param {Array|Object|string} collection The collection to iterate over.
-     * @param {Function} iteratee The function invoked per iteration.
-     * @param {boolean} [isMin] Specify returning the minimum, instead of the
-     *  maximum, extremum value.
-     * @returns {*} Returns the extremum value.
-     */
-    function extremumBy(collection, iteratee, isMin) {
-      var exValue = isMin ? POSITIVE_INFINITY : NEGATIVE_INFINITY,
-          computed = exValue,
-          result = computed;
-
-      baseEach(collection, function(value, index, collection) {
-        var current = iteratee(value, index, collection);
-        if ((isMin ? (current < computed) : (current > computed)) ||
-            (current === exValue && current === result)) {
-          computed = current;
-          result = value;
-        }
-      });
-      return result;
     }
 
     /**
@@ -6633,29 +6537,20 @@ module.exports = invariant;
      * @param {Function} func The function to query.
      * @returns {string} Returns the function name.
      */
-    var getFuncName = (function() {
-      if (!support.funcNames) {
-        return constant('');
-      }
-      if (constant.name == 'constant') {
-        return baseProperty('name');
-      }
-      return function(func) {
-        var result = func.name,
-            array = realNames[result],
-            length = array ? array.length : 0;
+    function getFuncName(func) {
+      var result = func.name,
+          array = realNames[result],
+          length = array ? array.length : 0;
 
-        while (length--) {
-          var data = array[length],
-              otherFunc = data.func;
-
-          if (otherFunc == null || otherFunc == func) {
-            return data.name;
-          }
+      while (length--) {
+        var data = array[length],
+            otherFunc = data.func;
+        if (otherFunc == null || otherFunc == func) {
+          return data.name;
         }
-        return result;
-      };
-    }());
+      }
+      return result;
+    }
 
     /**
      * Gets the appropriate "indexOf" function. If the `_.indexOf` method is
@@ -6685,15 +6580,34 @@ module.exports = invariant;
     var getLength = baseProperty('length');
 
     /**
-     * Creates an array of the own symbols of `object`.
+     * Gets the propery names, values, and compare flags of `object`.
      *
      * @private
      * @param {Object} object The object to query.
-     * @returns {Array} Returns the array of symbols.
+     * @returns {Array} Returns the match data of `object`.
      */
-    var getSymbols = !getOwnPropertySymbols ? constant([]) : function(object) {
-      return getOwnPropertySymbols(toObject(object));
-    };
+    function getMatchData(object) {
+      var result = pairs(object),
+          length = result.length;
+
+      while (length--) {
+        result[length][2] = isStrictComparable(result[length][1]);
+      }
+      return result;
+    }
+
+    /**
+     * Gets the native function at `key` of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {string} key The key of the method to get.
+     * @returns {*} Returns the function if it's native, else `undefined`.
+     */
+    function getNative(object, key) {
+      var value = object == null ? undefined : object[key];
+      return isNative(value) ? value : undefined;
+    }
 
     /**
      * Gets the view, applying any `transforms` to the `start` and `end` positions.
@@ -6835,7 +6749,7 @@ module.exports = invariant;
      * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
      */
     function isIndex(value, length) {
-      value = +value;
+      value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
       length = length == null ? MAX_SAFE_INTEGER : length;
       return value > -1 && value % 1 == 0 && value < length;
     }
@@ -6892,7 +6806,15 @@ module.exports = invariant;
      */
     function isLaziable(func) {
       var funcName = getFuncName(func);
-      return !!funcName && func === lodash[funcName] && funcName in LazyWrapper.prototype;
+      if (!(funcName in LazyWrapper.prototype)) {
+        return false;
+      }
+      var other = lodash[funcName];
+      if (func === other) {
+        return true;
+      }
+      var data = getData(other);
+      return !!data && func === data[0];
     }
 
     /**
@@ -7132,11 +7054,10 @@ module.exports = invariant;
     function shimKeys(object) {
       var props = keysIn(object),
           propsLength = props.length,
-          length = propsLength && object.length,
-          support = lodash.support;
+          length = propsLength && object.length;
 
-      var allowIndexes = length && isLength(length) &&
-        (isArray(object) || (support.nonEnumArgs && isArguments(object)));
+      var allowIndexes = !!length && isLength(length) &&
+        (isArray(object) || isArguments(object));
 
       var index = -1,
           result = [];
@@ -7151,7 +7072,7 @@ module.exports = invariant;
     }
 
     /**
-     * Converts `value` to an array-like object if it is not one.
+     * Converts `value` to an array-like object if it's not one.
      *
      * @private
      * @param {*} value The value to process.
@@ -7168,7 +7089,7 @@ module.exports = invariant;
     }
 
     /**
-     * Converts `value` to an object if it is not one.
+     * Converts `value` to an object if it's not one.
      *
      * @private
      * @param {*} value The value to process.
@@ -7179,7 +7100,7 @@ module.exports = invariant;
     }
 
     /**
-     * Converts `value` to property path array if it is not one.
+     * Converts `value` to property path array if it's not one.
      *
      * @private
      * @param {*} value The value to process.
@@ -7208,6 +7129,8 @@ module.exports = invariant;
         ? wrapper.clone()
         : new LodashWrapper(wrapper.__wrapped__, wrapper.__chain__, arrayCopy(wrapper.__actions__));
     }
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Creates an array of elements split into groups the length of `size`.
@@ -7276,8 +7199,8 @@ module.exports = invariant;
     }
 
     /**
-     * Creates an array excluding all values of the provided arrays using
-     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * Creates an array of unique `array` values not included in the other
+     * provided arrays using [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
      * for equality comparisons.
      *
      * @static
@@ -7750,8 +7673,8 @@ module.exports = invariant;
     }
 
     /**
-     * Creates an array of unique values in all provided arrays using
-     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * Creates an array of unique values that are included in all of the provided
+     * arrays using [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
      * for equality comparisons.
      *
      * @static
@@ -7763,27 +7686,19 @@ module.exports = invariant;
      * _.intersection([1, 2], [4, 2], [2, 1]);
      * // => [2]
      */
-    function intersection() {
-      var args = [],
-          argsIndex = -1,
-          argsLength = arguments.length,
-          caches = [],
+    var intersection = restParam(function(arrays) {
+      var othLength = arrays.length,
+          othIndex = othLength,
+          caches = Array(length),
           indexOf = getIndexOf(),
           isCommon = indexOf == baseIndexOf,
           result = [];
 
-      while (++argsIndex < argsLength) {
-        var value = arguments[argsIndex];
-        if (isArrayLike(value)) {
-          args.push(value);
-          caches.push((isCommon && value.length >= 120) ? createCache(argsIndex && value) : null);
-        }
+      while (othIndex--) {
+        var value = arrays[othIndex] = isArrayLike(value = arrays[othIndex]) ? value : [];
+        caches[othIndex] = (isCommon && value.length >= 120) ? createCache(othIndex && value) : null;
       }
-      argsLength = args.length;
-      if (argsLength < 2) {
-        return result;
-      }
-      var array = args[0],
+      var array = arrays[0],
           index = -1,
           length = array ? array.length : 0,
           seen = caches[0];
@@ -7792,10 +7707,10 @@ module.exports = invariant;
       while (++index < length) {
         value = array[index];
         if ((seen ? cacheIndexOf(seen, value) : indexOf(result, value, 0)) < 0) {
-          argsIndex = argsLength;
-          while (--argsIndex) {
-            var cache = caches[argsIndex];
-            if ((cache ? cacheIndexOf(cache, value) : indexOf(args[argsIndex], value, 0)) < 0) {
+          var othIndex = othLength;
+          while (--othIndex) {
+            var cache = caches[othIndex];
+            if ((cache ? cacheIndexOf(cache, value) : indexOf(arrays[othIndex], value, 0)) < 0) {
               continue outer;
             }
           }
@@ -7806,7 +7721,7 @@ module.exports = invariant;
         }
       }
       return result;
-    }
+    });
 
     /**
      * Gets the last element of `array`.
@@ -8312,8 +8227,8 @@ module.exports = invariant;
     }
 
     /**
-     * Creates an array of unique values, in order, of the provided arrays using
-     * [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+     * Creates an array of unique values, in order, from all of the provided arrays
+     * using [`SameValueZero`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
      * for equality comparisons.
      *
      * @static
@@ -8389,9 +8304,9 @@ module.exports = invariant;
         iteratee = isIterateeCall(array, isSorted, thisArg) ? null : isSorted;
         isSorted = false;
       }
-      var func = getCallback();
-      if (!(func === baseCallback && iteratee == null)) {
-        iteratee = func(iteratee, thisArg, 3);
+      var callback = getCallback();
+      if (!(iteratee == null && callback === baseCallback)) {
+        iteratee = callback(iteratee, thisArg, 3);
       }
       return (isSorted && getIndexOf() == baseIndexOf)
         ? sortedUniq(array, iteratee)
@@ -8494,7 +8409,7 @@ module.exports = invariant;
     });
 
     /**
-     * Creates an array that is the [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
+     * Creates an array of unique values that is the [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
      * of the provided arrays.
      *
      * @static
@@ -8598,8 +8513,8 @@ module.exports = invariant;
      */
     var zipWith = restParam(function(arrays) {
       var length = arrays.length,
-          iteratee = arrays[length - 2],
-          thisArg = arrays[length - 1];
+          iteratee = length > 2 ? arrays[length - 2] : undefined,
+          thisArg = length > 1 ? arrays[length - 1] : undefined;
 
       if (length > 2 && typeof iteratee == 'function') {
         length -= 2;
@@ -8610,6 +8525,8 @@ module.exports = invariant;
       arrays.length = length;
       return unzipWith(arrays, iteratee, thisArg);
     });
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Creates a `lodash` object that wraps `value` with explicit method
@@ -8860,6 +8777,8 @@ module.exports = invariant;
     function wrapperValue() {
       return baseWrapperValue(this.__wrapped__, this.__actions__);
     }
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Creates an array of elements corresponding to the given keys, or indexes,
@@ -9352,7 +9271,7 @@ module.exports = invariant;
     });
 
     /**
-     * Invokes the method at `path` on each element in `collection`, returning
+     * Invokes the method at `path` of each element in `collection`, returning
      * an array of the results of each invoked method. Any additional arguments
      * are provided to each invoked method. If `methodName` is a function it is
      * invoked for, and `this` bound to, each element in `collection`.
@@ -9380,7 +9299,7 @@ module.exports = invariant;
           result = isArrayLike(collection) ? Array(collection.length) : [];
 
       baseEach(collection, function(value) {
-        var func = isFunc ? path : (isProp && value != null && value[path]);
+        var func = isFunc ? path : ((isProp && value != null) ? value[path] : null);
         result[++index] = func ? func.apply(value, args) : invokePath(value, path, args);
       });
       return result;
@@ -9402,7 +9321,7 @@ module.exports = invariant;
      * callback returns `true` for elements that have the properties of the given
      * object, else `false`.
      *
-     * Many lodash methods are guarded to work as interatees for methods like
+     * Many lodash methods are guarded to work as iteratees for methods like
      * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
      *
      * The guarded methods are:
@@ -9546,7 +9465,7 @@ module.exports = invariant;
      * value. The `iteratee` is bound to `thisArg` and invoked with four arguments:
      * (accumulator, value, index|key, collection).
      *
-     * Many lodash methods are guarded to work as interatees for methods like
+     * Many lodash methods are guarded to work as iteratees for methods like
      * `_.reduce`, `_.reduceRight`, and `_.transform`.
      *
      * The guarded methods are:
@@ -9668,8 +9587,20 @@ module.exports = invariant;
         var length = collection.length;
         return length > 0 ? collection[baseRandom(0, length - 1)] : undefined;
       }
-      var result = shuffle(collection);
-      result.length = nativeMin(n < 0 ? 0 : (+n || 0), result.length);
+      var index = -1,
+          result = toArray(collection),
+          length = result.length,
+          lastIndex = length - 1;
+
+      n = nativeMin(n < 0 ? 0 : (+n || 0), length);
+      while (++index < n) {
+        var rand = baseRandom(index, lastIndex),
+            value = result[rand];
+
+        result[rand] = result[index];
+        result[index] = value;
+      }
+      result.length = n;
       return result;
     }
 
@@ -9688,20 +9619,7 @@ module.exports = invariant;
      * // => [4, 1, 3, 2]
      */
     function shuffle(collection) {
-      collection = toIterable(collection);
-
-      var index = -1,
-          length = collection.length,
-          result = Array(length);
-
-      while (++index < length) {
-        var rand = baseRandom(0, index);
-        if (index != rand) {
-          result[index] = result[rand];
-        }
-        result[rand] = collection[index];
-      }
-      return result;
+      return sample(collection, POSITIVE_INFINITY);
     }
 
     /**
@@ -9982,6 +9900,8 @@ module.exports = invariant;
       return filter(collection, baseMatches(source));
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      * Gets the number of milliseconds that have elapsed since the Unix epoch
      * (1 January 1970 00:00:00 UTC).
@@ -9999,6 +9919,8 @@ module.exports = invariant;
     var now = nativeNow || function() {
       return new Date().getTime();
     };
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * The opposite of `_.before`; this method creates a function that invokes
@@ -10323,12 +10245,13 @@ module.exports = invariant;
     var curryRight = createCurry(CURRY_RIGHT_FLAG);
 
     /**
-     * Creates a function that delays invoking `func` until after `wait` milliseconds
-     * have elapsed since the last time it was invoked. The created function comes
-     * with a `cancel` method to cancel delayed invocations. Provide an options
-     * object to indicate that `func` should be invoked on the leading and/or
-     * trailing edge of the `wait` timeout. Subsequent calls to the debounced
-     * function return the result of the last `func` invocation.
+     * Creates a debounced function that delays invoking `func` until after `wait`
+     * milliseconds have elapsed since the last time the debounced function was
+     * invoked. The debounced function comes with a `cancel` method to cancel
+     * delayed invocations. Provide an options object to indicate that `func`
+     * should be invoked on the leading and/or trailing edge of the `wait` timeout.
+     * Subsequent calls to the debounced function return the result of the last
+     * `func` invocation.
      *
      * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
      * on the trailing edge of the timeout only if the the debounced function is
@@ -10642,14 +10565,14 @@ module.exports = invariant;
       }
       var memoized = function() {
         var args = arguments,
-            cache = memoized.cache,
-            key = resolver ? resolver.apply(this, args) : args[0];
+            key = resolver ? resolver.apply(this, args) : args[0],
+            cache = memoized.cache;
 
         if (cache.has(key)) {
           return cache.get(key);
         }
         var result = func.apply(this, args);
-        cache.set(key, result);
+        memoized.cache = cache.set(key, result);
         return result;
       };
       memoized.cache = new memoize.Cache;
@@ -10896,12 +10819,12 @@ module.exports = invariant;
     }
 
     /**
-     * Creates a function that only invokes `func` at most once per every `wait`
-     * milliseconds. The created function comes with a `cancel` method to cancel
-     * delayed invocations. Provide an options object to indicate that `func`
-     * should be invoked on the leading and/or trailing edge of the `wait` timeout.
-     * Subsequent calls to the throttled function return the result of the last
-     * `func` call.
+     * Creates a throttled function that only invokes `func` at most once per
+     * every `wait` milliseconds. The throttled function comes with a `cancel`
+     * method to cancel delayed invocations. Provide an options object to indicate
+     * that `func` should be invoked on the leading and/or trailing edge of the
+     * `wait` timeout. Subsequent calls to the throttled function return the
+     * result of the last `func` call.
      *
      * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
      * on the trailing edge of the timeout only if the the throttled function is
@@ -10979,6 +10902,8 @@ module.exports = invariant;
       return createWrapper(wrapper, PARTIAL_FLAG, null, [value], []);
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      * Creates a clone of `value`. If `isDeep` is `true` nested objects are cloned,
      * otherwise they are assigned by reference. If `customizer` is provided it is
@@ -11039,8 +10964,9 @@ module.exports = invariant;
         customizer = isDeep;
         isDeep = false;
       }
-      customizer = typeof customizer == 'function' && bindCallback(customizer, thisArg, 1);
-      return baseClone(value, isDeep, customizer);
+      return typeof customizer == 'function'
+        ? baseClone(value, isDeep, bindCallback(customizer, thisArg, 1))
+        : baseClone(value, isDeep);
     }
 
     /**
@@ -11089,8 +11015,57 @@ module.exports = invariant;
      * // => 20
      */
     function cloneDeep(value, customizer, thisArg) {
-      customizer = typeof customizer == 'function' && bindCallback(customizer, thisArg, 1);
-      return baseClone(value, true, customizer);
+      return typeof customizer == 'function'
+        ? baseClone(value, true, bindCallback(customizer, thisArg, 1))
+        : baseClone(value, true);
+    }
+
+    /**
+     * Checks if `value` is greater than `other`.
+     *
+     * @static
+     * @memberOf _
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if `value` is greater than `other`, else `false`.
+     * @example
+     *
+     * _.gt(3, 1);
+     * // => true
+     *
+     * _.gt(3, 3);
+     * // => false
+     *
+     * _.gt(1, 3);
+     * // => false
+     */
+    function gt(value, other) {
+      return value > other;
+    }
+
+    /**
+     * Checks if `value` is greater than or equal to `other`.
+     *
+     * @static
+     * @memberOf _
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if `value` is greater than or equal to `other`, else `false`.
+     * @example
+     *
+     * _.gte(3, 1);
+     * // => true
+     *
+     * _.gte(3, 3);
+     * // => true
+     *
+     * _.gte(1, 3);
+     * // => false
+     */
+    function gte(value, other) {
+      return value >= other;
     }
 
     /**
@@ -11253,6 +11228,7 @@ module.exports = invariant;
      *
      * @static
      * @memberOf _
+     * @alias eq
      * @category Lang
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
@@ -11282,12 +11258,9 @@ module.exports = invariant;
      * // => true
      */
     function isEqual(value, other, customizer, thisArg) {
-      customizer = typeof customizer == 'function' && bindCallback(customizer, thisArg, 3);
-      if (!customizer && isStrictComparable(value) && isStrictComparable(other)) {
-        return value === other;
-      }
+      customizer = typeof customizer == 'function' ? bindCallback(customizer, thisArg, 3) : undefined;
       var result = customizer ? customizer(value, other) : undefined;
-      return result === undefined ? baseIsEqual(value, other, customizer) : !!result;
+      return  result === undefined ? baseIsEqual(value, other, customizer) : !!result;
     }
 
     /**
@@ -11389,7 +11362,7 @@ module.exports = invariant;
       // Avoid a V8 JIT bug in Chrome 19-20.
       // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
       var type = typeof value;
-      return type == 'function' || (!!value && type == 'object');
+      return !!value && (type == 'object' || type == 'function');
     }
 
     /**
@@ -11432,33 +11405,8 @@ module.exports = invariant;
      * // => true
      */
     function isMatch(object, source, customizer, thisArg) {
-      var props = keys(source),
-          length = props.length;
-
-      if (!length) {
-        return true;
-      }
-      if (object == null) {
-        return false;
-      }
-      customizer = typeof customizer == 'function' && bindCallback(customizer, thisArg, 3);
-      object = toObject(object);
-      if (!customizer && length == 1) {
-        var key = props[0],
-            value = source[key];
-
-        if (isStrictComparable(value)) {
-          return value === object[key] && (value !== undefined || (key in object));
-        }
-      }
-      var values = Array(length),
-          strictCompareFlags = Array(length);
-
-      while (length--) {
-        value = values[length] = source[props[length]];
-        strictCompareFlags[length] = isStrictComparable(value);
-      }
-      return baseIsMatch(object, props, values, strictCompareFlags, customizer);
+      customizer = typeof customizer == 'function' ? bindCallback(customizer, thisArg, 3) : undefined;
+      return baseIsMatch(object, getMatchData(source), customizer);
     }
 
     /**
@@ -11598,8 +11546,8 @@ module.exports = invariant;
       if (!(value && objToString.call(value) == objectTag)) {
         return false;
       }
-      var valueOf = value.valueOf,
-          objProto = isNative(valueOf) && (objProto = getPrototypeOf(valueOf)) && getPrototypeOf(objProto);
+      var valueOf = getNative(value, 'valueOf'),
+          objProto = valueOf && (objProto = getPrototypeOf(valueOf)) && getPrototypeOf(objProto);
 
       return objProto
         ? (value == objProto || getPrototypeOf(value) == objProto)
@@ -11687,6 +11635,54 @@ module.exports = invariant;
     }
 
     /**
+     * Checks if `value` is less than `other`.
+     *
+     * @static
+     * @memberOf _
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if `value` is less than `other`, else `false`.
+     * @example
+     *
+     * _.lt(1, 3);
+     * // => true
+     *
+     * _.lt(3, 3);
+     * // => false
+     *
+     * _.lt(3, 1);
+     * // => false
+     */
+    function lt(value, other) {
+      return value < other;
+    }
+
+    /**
+     * Checks if `value` is less than or equal to `other`.
+     *
+     * @static
+     * @memberOf _
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if `value` is less than or equal to `other`, else `false`.
+     * @example
+     *
+     * _.lte(1, 3);
+     * // => true
+     *
+     * _.lte(3, 3);
+     * // => true
+     *
+     * _.lte(3, 1);
+     * // => false
+     */
+    function lte(value, other) {
+      return value <= other;
+    }
+
+    /**
      * Converts `value` to an array.
      *
      * @static
@@ -11738,6 +11734,8 @@ module.exports = invariant;
     function toPlainObject(value) {
       return baseCopy(value, keysIn(value));
     }
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Assigns own enumerable properties of source object(s) to the destination
@@ -12078,7 +12076,7 @@ module.exports = invariant;
     }
 
     /**
-     * Gets the property value of `path` on `object`. If the resolved value is
+     * Gets the property value at `path` of `object`. If the resolved value is
      * `undefined` the `defaultValue` is used in its place.
      *
      * @static
@@ -12136,10 +12134,14 @@ module.exports = invariant;
       if (!result && !isKey(path)) {
         path = toPath(path);
         object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+        if (object == null) {
+          return false;
+        }
         path = last(path);
-        result = object != null && hasOwnProperty.call(object, path);
+        result = hasOwnProperty.call(object, path);
       }
-      return result;
+      return result || (isLength(object.length) && isIndex(path, object.length) &&
+        (isArray(object) || isArguments(object)));
     }
 
     /**
@@ -12220,7 +12222,7 @@ module.exports = invariant;
      * // => ['0', '1']
      */
     var keys = !nativeKeys ? shimKeys : function(object) {
-      var Ctor = object != null && object.constructor;
+      var Ctor = object == null ? null : object.constructor;
       if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
           (typeof object != 'function' && isArrayLike(object))) {
         return shimKeys(object);
@@ -12259,7 +12261,7 @@ module.exports = invariant;
       }
       var length = object.length;
       length = (length && isLength(length) &&
-        (isArray(object) || (support.nonEnumArgs && isArguments(object))) && length) || 0;
+        (isArray(object) || isArguments(object)) && length) || 0;
 
       var Ctor = object.constructor,
           index = -1,
@@ -12446,6 +12448,8 @@ module.exports = invariant;
      * // => [['barney', 36], ['fred', 40]] (iteration order is not guaranteed)
      */
     function pairs(object) {
+      object = toObject(object);
+
       var index = -1,
           props = keys(object),
           length = props.length,
@@ -12566,13 +12570,13 @@ module.exports = invariant;
 
       var index = -1,
           length = path.length,
-          endIndex = length - 1,
+          lastIndex = length - 1,
           nested = object;
 
       while (nested != null && ++index < length) {
         var key = path[index];
         if (isObject(nested)) {
-          if (index == endIndex) {
+          if (index == lastIndex) {
             nested[key] = value;
           } else if (nested[key] == null) {
             nested[key] = isIndex(path[index + 1]) ? [] : {};
@@ -12622,7 +12626,7 @@ module.exports = invariant;
           if (isArr) {
             accumulator = isArray(object) ? new Ctor : [];
           } else {
-            accumulator = baseCreate(isFunction(Ctor) && Ctor.prototype);
+            accumulator = baseCreate(isFunction(Ctor) ? Ctor.prototype : null);
           }
         } else {
           accumulator = {};
@@ -12689,6 +12693,8 @@ module.exports = invariant;
     function valuesIn(object) {
       return baseValues(object, keysIn(object));
     }
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * Checks if `n` is between `start` and up to but not including, `end`. If
@@ -12794,6 +12800,8 @@ module.exports = invariant;
       return baseRandom(min, max);
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      * Converts `string` to [camel case](https://en.wikipedia.org/wiki/CamelCase).
      *
@@ -12897,7 +12905,7 @@ module.exports = invariant;
      * use a third-party library like [_he_](https://mths.be/he).
      *
      * Though the ">" character is escaped for symmetry, characters like
-     * ">" and "/" don't require escaping in HTML and have no special meaning
+     * ">" and "/" don't need escaping in HTML and have no special meaning
      * unless they're part of a tag or unquoted attribute value.
      * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
      * (under "semi-related fun fact") for more details.
@@ -12974,7 +12982,7 @@ module.exports = invariant;
     });
 
     /**
-     * Pads `string` on the left and right sides if it is shorter than `length`.
+     * Pads `string` on the left and right sides if it's shorter than `length`.
      * Padding characters are truncated if they can't be evenly divided by `length`.
      *
      * @static
@@ -13012,7 +13020,7 @@ module.exports = invariant;
     }
 
     /**
-     * Pads `string` on the left side if it is shorter than `length`. Padding
+     * Pads `string` on the left side if it's shorter than `length`. Padding
      * characters are truncated if they exceed `length`.
      *
      * @static
@@ -13036,7 +13044,7 @@ module.exports = invariant;
     var padLeft = createPadDir();
 
     /**
-     * Pads `string` on the right side if it is shorter than `length`. Padding
+     * Pads `string` on the right side if it's shorter than `length`. Padding
      * characters are truncated if they exceed `length`.
      *
      * @static
@@ -13517,7 +13525,7 @@ module.exports = invariant;
     }
 
     /**
-     * Truncates `string` if it is longer than the given maximum string length.
+     * Truncates `string` if it's longer than the given maximum string length.
      * The last characters of the truncated string are replaced with the omission
      * string which defaults to "...".
      *
@@ -13659,6 +13667,8 @@ module.exports = invariant;
       return string.match(pattern || reWords) || [];
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      * Attempts to invoke `func`, returning either the result or the caught error
      * object. Any additional arguments are provided to `func` when it is invoked.
@@ -13776,7 +13786,7 @@ module.exports = invariant;
     }
 
     /**
-     * Creates a function which performs a deep comparison between a given object
+     * Creates a function that performs a deep comparison between a given object
      * and `source`, returning `true` if the given object has equivalent property
      * values, else `false`.
      *
@@ -13805,7 +13815,7 @@ module.exports = invariant;
     }
 
     /**
-     * Creates a function which compares the property value of `path` on a given
+     * Creates a function that compares the property value of `path` on a given
      * object to `value`.
      *
      * **Note:** This method supports comparing arrays, booleans, `Date` objects,
@@ -13816,7 +13826,7 @@ module.exports = invariant;
      * @memberOf _
      * @category Utility
      * @param {Array|string} path The path of the property to get.
-     * @param {*} value The value to compare.
+     * @param {*} srcValue The value to match.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -13828,17 +13838,19 @@ module.exports = invariant;
      * _.find(users, _.matchesProperty('user', 'fred'));
      * // => { 'user': 'fred' }
      */
-    function matchesProperty(path, value) {
-      return baseMatchesProperty(path, baseClone(value, true));
+    function matchesProperty(path, srcValue) {
+      return baseMatchesProperty(path, baseClone(srcValue, true));
     }
 
     /**
-     * Creates a function which invokes the method at `path` on a given object.
+     * Creates a function that invokes the method at `path` on a given object.
+     * Any additional arguments are provided to the invoked method.
      *
      * @static
      * @memberOf _
      * @category Utility
      * @param {Array|string} path The path of the method to invoke.
+     * @param {...*} [args] The arguments to invoke the method with.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -13860,13 +13872,15 @@ module.exports = invariant;
     });
 
     /**
-     * The opposite of `_.method`; this method creates a function which invokes
-     * the method at a given path on `object`.
+     * The opposite of `_.method`; this method creates a function that invokes
+     * the method at a given path on `object`. Any additional arguments are
+     * provided to the invoked method.
      *
      * @static
      * @memberOf _
      * @category Utility
      * @param {Object} object The object to query.
+     * @param {...*} [args] The arguments to invoke the method with.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -13910,9 +13924,6 @@ module.exports = invariant;
      *   });
      * }
      *
-     * // use `_.runInContext` to avoid conflicts (esp. in Node.js)
-     * var _ = require('lodash').runInContext();
-     *
      * _.mixin({ 'vowels': vowels });
      * _.vowels('fred');
      * // => ['e']
@@ -13927,8 +13938,8 @@ module.exports = invariant;
     function mixin(object, source, options) {
       if (options == null) {
         var isObj = isObject(source),
-            props = isObj && keys(source),
-            methodNames = props && props.length && baseFunctions(source, props);
+            props = isObj ? keys(source) : null,
+            methodNames = (props && props.length) ? baseFunctions(source, props) : null;
 
         if (!(methodNames ? methodNames.length : isObj)) {
           methodNames = false;
@@ -13995,7 +14006,7 @@ module.exports = invariant;
     }
 
     /**
-     * A no-operation function which returns `undefined` regardless of the
+     * A no-operation function that returns `undefined` regardless of the
      * arguments it receives.
      *
      * @static
@@ -14013,7 +14024,7 @@ module.exports = invariant;
     }
 
     /**
-     * Creates a function which returns the property value at `path` on a
+     * Creates a function that returns the property value at `path` on a
      * given object.
      *
      * @static
@@ -14039,7 +14050,7 @@ module.exports = invariant;
     }
 
     /**
-     * The opposite of `_.property`; this method creates a function which returns
+     * The opposite of `_.property`; this method creates a function that returns
      * the property value at a given path on `object`.
      *
      * @static
@@ -14193,6 +14204,8 @@ module.exports = invariant;
       return baseToString(prefix) + id;
     }
 
+    /*------------------------------------------------------------------------*/
+
     /**
      * Adds two numbers.
      *
@@ -14258,7 +14271,7 @@ module.exports = invariant;
      * _.max(users, 'age');
      * // => { 'user': 'fred', 'age': 40 }
      */
-    var max = createExtremum(arrayMax);
+    var max = createExtremum(gt, NEGATIVE_INFINITY);
 
     /**
      * Gets the minimum value of `collection`. If `collection` is empty or falsey
@@ -14307,7 +14320,7 @@ module.exports = invariant;
      * _.min(users, 'age');
      * // => { 'user': 'barney', 'age': 36 }
      */
-    var min = createExtremum(arrayMin, true);
+    var min = createExtremum(lt, POSITIVE_INFINITY);
 
     /**
      * Gets the sum of the values in `collection`.
@@ -14345,17 +14358,19 @@ module.exports = invariant;
       if (thisArg && isIterateeCall(collection, iteratee, thisArg)) {
         iteratee = null;
       }
-      var func = getCallback(),
+      var callback = getCallback(),
           noIteratee = iteratee == null;
 
-      if (!(func === baseCallback && noIteratee)) {
+      if (!(noIteratee && callback === baseCallback)) {
         noIteratee = false;
-        iteratee = func(iteratee, thisArg, 3);
+        iteratee = callback(iteratee, thisArg, 3);
       }
       return noIteratee
         ? arraySum(isArray(collection) ? collection : toIterable(collection))
         : baseSum(collection, iteratee);
     }
+
+    /*------------------------------------------------------------------------*/
 
     // Ensure wrappers are instances of `baseLodash`.
     lodash.prototype = baseLodash.prototype;
@@ -14504,6 +14519,8 @@ module.exports = invariant;
     // Add functions to `lodash.prototype`.
     mixin(lodash, lodash);
 
+    /*------------------------------------------------------------------------*/
+
     // Add functions that return unwrapped values when chaining.
     lodash.add = add;
     lodash.attempt = attempt;
@@ -14525,6 +14542,8 @@ module.exports = invariant;
     lodash.findWhere = findWhere;
     lodash.first = first;
     lodash.get = get;
+    lodash.gt = gt;
+    lodash.gte = gte;
     lodash.has = has;
     lodash.identity = identity;
     lodash.includes = includes;
@@ -14554,6 +14573,8 @@ module.exports = invariant;
     lodash.kebabCase = kebabCase;
     lodash.last = last;
     lodash.lastIndexOf = lastIndexOf;
+    lodash.lt = lt;
+    lodash.lte = lte;
     lodash.max = max;
     lodash.min = min;
     lodash.noConflict = noConflict;
@@ -14590,6 +14611,7 @@ module.exports = invariant;
     lodash.all = every;
     lodash.any = some;
     lodash.contains = includes;
+    lodash.eq = isEqual;
     lodash.detect = find;
     lodash.foldl = reduce;
     lodash.foldr = reduceRight;
@@ -14607,6 +14629,8 @@ module.exports = invariant;
       return source;
     }()), false);
 
+    /*------------------------------------------------------------------------*/
+
     // Add functions capable of returning wrapped and unwrapped values when chaining.
     lodash.sample = sample;
 
@@ -14618,6 +14642,8 @@ module.exports = invariant;
         return sample(value, n);
       });
     };
+
+    /*------------------------------------------------------------------------*/
 
     /**
      * The semantic version number.
@@ -14846,6 +14872,8 @@ module.exports = invariant;
     return lodash;
   }
 
+  /*--------------------------------------------------------------------------*/
+
   // Export lodash.
   var _ = runInContext();
 
@@ -14869,7 +14897,7 @@ module.exports = invariant;
     if (moduleExports) {
       (freeModule.exports = _)._ = _;
     }
-    // Export for Narwhal or Rhino -require.
+    // Export for Rhino with CommonJS support.
     else {
       freeExports._ = _;
     }
@@ -15897,7 +15925,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 
 },{"moment":38}],38:[function(require,module,exports){
 //! moment.js
-//! version : 2.10.2
+//! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -15920,28 +15948,12 @@ moment.tz.load(require('./data/packed/latest.json'));
         hookCallback = callback;
     }
 
-    function defaultParsingFlags() {
-        // We need to deep clone this object.
-        return {
-            empty           : false,
-            unusedTokens    : [],
-            unusedInput     : [],
-            overflow        : -2,
-            charsLeftOver   : 0,
-            nullInput       : false,
-            invalidMonth    : null,
-            invalidFormat   : false,
-            userInvalidated : false,
-            iso             : false
-        };
-    }
-
     function isArray(input) {
         return Object.prototype.toString.call(input) === '[object Array]';
     }
 
     function isDate(input) {
-        return Object.prototype.toString.call(input) === '[object Date]' || input instanceof Date;
+        return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
     }
 
     function map(arr, fn) {
@@ -15978,21 +15990,45 @@ moment.tz.load(require('./data/packed/latest.json'));
         return createLocalOrUTC(input, format, locale, strict, true).utc();
     }
 
+    function defaultParsingFlags() {
+        // We need to deep clone this object.
+        return {
+            empty           : false,
+            unusedTokens    : [],
+            unusedInput     : [],
+            overflow        : -2,
+            charsLeftOver   : 0,
+            nullInput       : false,
+            invalidMonth    : null,
+            invalidFormat   : false,
+            userInvalidated : false,
+            iso             : false
+        };
+    }
+
+    function getParsingFlags(m) {
+        if (m._pf == null) {
+            m._pf = defaultParsingFlags();
+        }
+        return m._pf;
+    }
+
     function valid__isValid(m) {
         if (m._isValid == null) {
+            var flags = getParsingFlags(m);
             m._isValid = !isNaN(m._d.getTime()) &&
-                m._pf.overflow < 0 &&
-                !m._pf.empty &&
-                !m._pf.invalidMonth &&
-                !m._pf.nullInput &&
-                !m._pf.invalidFormat &&
-                !m._pf.userInvalidated;
+                flags.overflow < 0 &&
+                !flags.empty &&
+                !flags.invalidMonth &&
+                !flags.nullInput &&
+                !flags.invalidFormat &&
+                !flags.userInvalidated;
 
             if (m._strict) {
                 m._isValid = m._isValid &&
-                    m._pf.charsLeftOver === 0 &&
-                    m._pf.unusedTokens.length === 0 &&
-                    m._pf.bigHour === undefined;
+                    flags.charsLeftOver === 0 &&
+                    flags.unusedTokens.length === 0 &&
+                    flags.bigHour === undefined;
             }
         }
         return m._isValid;
@@ -16001,10 +16037,10 @@ moment.tz.load(require('./data/packed/latest.json'));
     function valid__createInvalid (flags) {
         var m = create_utc__createUTC(NaN);
         if (flags != null) {
-            extend(m._pf, flags);
+            extend(getParsingFlags(m), flags);
         }
         else {
-            m._pf.userInvalidated = true;
+            getParsingFlags(m).userInvalidated = true;
         }
 
         return m;
@@ -16040,7 +16076,7 @@ moment.tz.load(require('./data/packed/latest.json'));
             to._offset = from._offset;
         }
         if (typeof from._pf !== 'undefined') {
-            to._pf = from._pf;
+            to._pf = getParsingFlags(from);
         }
         if (typeof from._locale !== 'undefined') {
             to._locale = from._locale;
@@ -16075,7 +16111,7 @@ moment.tz.load(require('./data/packed/latest.json'));
     }
 
     function isMoment (obj) {
-        return obj instanceof Moment || (obj != null && hasOwnProp(obj, '_isAMomentObject'));
+        return obj instanceof Moment || (obj != null && obj._isAMomentObject != null);
     }
 
     function toInt(argumentForCoercion) {
@@ -16513,7 +16549,7 @@ moment.tz.load(require('./data/packed/latest.json'));
         if (month != null) {
             array[MONTH] = month;
         } else {
-            config._pf.invalidMonth = input;
+            getParsingFlags(config).invalidMonth = input;
         }
     });
 
@@ -16597,7 +16633,7 @@ moment.tz.load(require('./data/packed/latest.json'));
         var overflow;
         var a = m._a;
 
-        if (a && m._pf.overflow === -2) {
+        if (a && getParsingFlags(m).overflow === -2) {
             overflow =
                 a[MONTH]       < 0 || a[MONTH]       > 11  ? MONTH :
                 a[DATE]        < 1 || a[DATE]        > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
@@ -16607,11 +16643,11 @@ moment.tz.load(require('./data/packed/latest.json'));
                 a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
                 -1;
 
-            if (m._pf._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+            if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
                 overflow = DATE;
             }
 
-            m._pf.overflow = overflow;
+            getParsingFlags(m).overflow = overflow;
         }
 
         return m;
@@ -16624,10 +16660,12 @@ moment.tz.load(require('./data/packed/latest.json'));
     }
 
     function deprecate(msg, fn) {
-        var firstTime = true;
+        var firstTime = true,
+            msgWithStack = msg + '\n' + (new Error()).stack;
+
         return extend(function () {
             if (firstTime) {
-                warn(msg);
+                warn(msgWithStack);
                 firstTime = false;
             }
             return fn.apply(this, arguments);
@@ -16672,7 +16710,7 @@ moment.tz.load(require('./data/packed/latest.json'));
             match = from_string__isoRegex.exec(string);
 
         if (match) {
-            config._pf.iso = true;
+            getParsingFlags(config).iso = true;
             for (i = 0, l = isoDates.length; i < l; i++) {
                 if (isoDates[i][1].exec(string)) {
                     // match[5] should be 'T' or undefined
@@ -16952,7 +16990,7 @@ moment.tz.load(require('./data/packed/latest.json'));
             yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
 
             if (config._dayOfYear > daysInYear(yearToUse)) {
-                config._pf._overflowDayOfYear = true;
+                getParsingFlags(config)._overflowDayOfYear = true;
             }
 
             date = createUTCDate(yearToUse, 0, config._dayOfYear);
@@ -17048,7 +17086,7 @@ moment.tz.load(require('./data/packed/latest.json'));
         }
 
         config._a = [];
-        config._pf.empty = true;
+        getParsingFlags(config).empty = true;
 
         // This array is used to make a Date, either with `new Date` or `Date.UTC`
         var string = '' + config._i,
@@ -17064,7 +17102,7 @@ moment.tz.load(require('./data/packed/latest.json'));
             if (parsedInput) {
                 skipped = string.substr(0, string.indexOf(parsedInput));
                 if (skipped.length > 0) {
-                    config._pf.unusedInput.push(skipped);
+                    getParsingFlags(config).unusedInput.push(skipped);
                 }
                 string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
                 totalParsedInputLength += parsedInput.length;
@@ -17072,27 +17110,29 @@ moment.tz.load(require('./data/packed/latest.json'));
             // don't parse if it's not a known token
             if (formatTokenFunctions[token]) {
                 if (parsedInput) {
-                    config._pf.empty = false;
+                    getParsingFlags(config).empty = false;
                 }
                 else {
-                    config._pf.unusedTokens.push(token);
+                    getParsingFlags(config).unusedTokens.push(token);
                 }
                 addTimeToArrayFromToken(token, parsedInput, config);
             }
             else if (config._strict && !parsedInput) {
-                config._pf.unusedTokens.push(token);
+                getParsingFlags(config).unusedTokens.push(token);
             }
         }
 
         // add remaining unparsed input length to the string
-        config._pf.charsLeftOver = stringLength - totalParsedInputLength;
+        getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
         if (string.length > 0) {
-            config._pf.unusedInput.push(string);
+            getParsingFlags(config).unusedInput.push(string);
         }
 
         // clear _12h flag if hour is <= 12
-        if (config._pf.bigHour === true && config._a[HOUR] <= 12) {
-            config._pf.bigHour = undefined;
+        if (getParsingFlags(config).bigHour === true &&
+                config._a[HOUR] <= 12 &&
+                config._a[HOUR] > 0) {
+            getParsingFlags(config).bigHour = undefined;
         }
         // handle meridiem
         config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
@@ -17136,7 +17176,7 @@ moment.tz.load(require('./data/packed/latest.json'));
             currentScore;
 
         if (config._f.length === 0) {
-            config._pf.invalidFormat = true;
+            getParsingFlags(config).invalidFormat = true;
             config._d = new Date(NaN);
             return;
         }
@@ -17147,7 +17187,6 @@ moment.tz.load(require('./data/packed/latest.json'));
             if (config._useUTC != null) {
                 tempConfig._useUTC = config._useUTC;
             }
-            tempConfig._pf = defaultParsingFlags();
             tempConfig._f = config._f[i];
             configFromStringAndFormat(tempConfig);
 
@@ -17156,12 +17195,12 @@ moment.tz.load(require('./data/packed/latest.json'));
             }
 
             // if there is any input that was not parsed add a penalty for that format
-            currentScore += tempConfig._pf.charsLeftOver;
+            currentScore += getParsingFlags(tempConfig).charsLeftOver;
 
             //or tokens
-            currentScore += tempConfig._pf.unusedTokens.length * 10;
+            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
 
-            tempConfig._pf.score = currentScore;
+            getParsingFlags(tempConfig).score = currentScore;
 
             if (scoreToBeat == null || currentScore < scoreToBeat) {
                 scoreToBeat = currentScore;
@@ -17204,6 +17243,8 @@ moment.tz.load(require('./data/packed/latest.json'));
             configFromStringAndArray(config);
         } else if (format) {
             configFromStringAndFormat(config);
+        } else if (isDate(input)) {
+            config._d = input;
         } else {
             configFromInput(config);
         }
@@ -17256,7 +17297,6 @@ moment.tz.load(require('./data/packed/latest.json'));
         c._i = input;
         c._f = format;
         c._strict = strict;
-        c._pf = defaultParsingFlags();
 
         return createFromConfig(c);
     }
@@ -17830,11 +17870,25 @@ moment.tz.load(require('./data/packed/latest.json'));
     }
 
     function from (time, withoutSuffix) {
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
         return create__createDuration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
     }
 
     function fromNow (withoutSuffix) {
         return this.from(local__createLocal(), withoutSuffix);
+    }
+
+    function to (time, withoutSuffix) {
+        if (!this.isValid()) {
+            return this.localeData().invalidDate();
+        }
+        return create__createDuration({from: this, to: time}).locale(this.locale()).humanize(!withoutSuffix);
+    }
+
+    function toNow (withoutSuffix) {
+        return this.to(local__createLocal(), withoutSuffix);
     }
 
     function locale (key) {
@@ -17939,11 +17993,11 @@ moment.tz.load(require('./data/packed/latest.json'));
     }
 
     function parsingFlags () {
-        return extend({}, this._pf);
+        return extend({}, getParsingFlags(this));
     }
 
     function invalidAt () {
-        return this._pf.overflow;
+        return getParsingFlags(this).overflow;
     }
 
     addFormatToken(0, ['gg', 2], 0, function () {
@@ -18094,7 +18148,7 @@ moment.tz.load(require('./data/packed/latest.json'));
         if (weekday != null) {
             week.d = weekday;
         } else {
-            config._pf.invalidWeekday = input;
+            getParsingFlags(config).invalidWeekday = input;
         }
     });
 
@@ -18219,7 +18273,7 @@ moment.tz.load(require('./data/packed/latest.json'));
     });
     addParseToken(['h', 'hh'], function (input, array, config) {
         array[HOUR] = toInt(input);
-        config._pf.bigHour = true;
+        getParsingFlags(config).bigHour = true;
     });
 
     // LOCALES
@@ -18336,6 +18390,8 @@ moment.tz.load(require('./data/packed/latest.json'));
     momentPrototype__proto.format       = format;
     momentPrototype__proto.from         = from;
     momentPrototype__proto.fromNow      = fromNow;
+    momentPrototype__proto.to           = to;
+    momentPrototype__proto.toNow        = toNow;
     momentPrototype__proto.get          = getSet;
     momentPrototype__proto.invalidAt    = invalidAt;
     momentPrototype__proto.isAfter      = isAfter;
@@ -18524,7 +18580,7 @@ moment.tz.load(require('./data/packed/latest.json'));
         }
         // Lenient ordinal parsing accepts just a number in addition to
         // number + (possibly) stuff coming from _ordinalParseLenient.
-        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
+        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + (/\d{1,2}/).source);
     }
 
     var prototype__proto = Locale.prototype;
@@ -18741,13 +18797,13 @@ moment.tz.load(require('./data/packed/latest.json'));
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(yearsToDays(this._months / 12));
             switch (units) {
-                case 'week'   : return days / 7            + milliseconds / 6048e5;
-                case 'day'    : return days                + milliseconds / 864e5;
-                case 'hour'   : return days * 24           + milliseconds / 36e5;
-                case 'minute' : return days * 24 * 60      + milliseconds / 6e4;
-                case 'second' : return days * 24 * 60 * 60 + milliseconds / 1000;
+                case 'week'   : return days / 7     + milliseconds / 6048e5;
+                case 'day'    : return days         + milliseconds / 864e5;
+                case 'hour'   : return days * 24    + milliseconds / 36e5;
+                case 'minute' : return days * 1440  + milliseconds / 6e4;
+                case 'second' : return days * 86400 + milliseconds / 1000;
                 // Math.floor prevents floating point math errors here
-                case 'millisecond': return Math.floor(days * 24 * 60 * 60 * 1000) + milliseconds;
+                case 'millisecond': return Math.floor(days * 864e5) + milliseconds;
                 default: throw new Error('Unknown unit ' + units);
             }
         }
@@ -18948,7 +19004,7 @@ moment.tz.load(require('./data/packed/latest.json'));
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.10.2';
+    utils_hooks__hooks.version = '2.10.3';
 
     setHookCallback(local__createLocal);
 

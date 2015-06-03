@@ -15,8 +15,6 @@ var _libsNotifier = require("./libs/Notifier");
 
 var Notifier = _interopRequireWildcard(_libsNotifier);
 
-"use strict";
-
 window.Notifier = Notifier;
 
 $(function () {
@@ -34,8 +32,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.showMessage = showMessage;
 exports.showTimedMessage = showTimedMessage;
-"use strict";
-
 var humane = require("../vendor/humane/humane");
 
 var humane;
@@ -71,7 +67,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.init = init;
 exports.initRadio = initRadio;
-"use strict";
 
 function init() {
     $("input[type=checkbox]").iCheck({
@@ -92,7 +87,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.init = init;
-"use strict";
 
 function init() {
     var width,

@@ -12,7 +12,8 @@ class ModelServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-            'Backend\Model\ModelInterfaces\ProjectProfileGeneratorInterface', function ($app) {
+            'Backend\Model\ModelInterfaces\ProjectProfileGeneratorInterface',
+            function ($app) {
                 return new ProjectProfileGenerator(
                     $app->make('Backend\Repo\RepoInterfaces\DuplicateProductInterface')
                 );
@@ -20,7 +21,8 @@ class ModelServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            'Backend\Model\ModelInterfaces\ProjectTagBuilderInterface', function ($app) {
+            'Backend\Model\ModelInterfaces\ProjectTagBuilderInterface',
+            function ($app) {
                 return new ProjectTagBuilder(
                     new \Backend\Model\Eloquent\ProjectTag()
                 );
@@ -28,7 +30,8 @@ class ModelServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Model\ModelInterfaces\ProjectModifierInterface', function ($app) {
+            'Backend\Model\ModelInterfaces\ProjectModifierInterface',
+            function ($app) {
                 return new ProjectModifier(
                     new \Backend\Model\Eloquent\Project(),
                     new \Backend\Model\Eloquent\DuplicateProject(),
@@ -39,7 +42,8 @@ class ModelServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Model\ModelInterfaces\SolutionModifierInterface', function ($app) {
+            'Backend\Model\ModelInterfaces\SolutionModifierInterface',
+            function ($app) {
                 return new SolutionModifier(
                     new \Backend\Model\Eloquent\Solution(),
                     new \Backend\Model\Eloquent\DuplicateSolution(),

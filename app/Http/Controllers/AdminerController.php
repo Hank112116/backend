@@ -33,7 +33,7 @@ class AdminerController extends BaseController
     {
         if (Input::get('csv')) {
             $output = $this->adminer_repo->toOutputArray($this->adminer_repo->all());
-            return $this->outputArrayToCsv($output, 'adminers');            
+            return $this->outputArrayToCsv($output, 'adminers');
         }
 
         return view('adminer.list')

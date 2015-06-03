@@ -17,11 +17,14 @@ use Redirect;
 use Response;
 use SSH;
 use Backend\Model\Eloquent\User;
+use Backend\Model\Eloquent\MailTemplate;
+use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 
 class EngineerController extends BaseController
 {
 
-    public function logServer() {
+    public function logServer()
+    {
         return view('engineer.log-server');
     }
     public function bug()
@@ -108,7 +111,8 @@ class EngineerController extends BaseController
     public function getUsersByMonth()
     {
         $nodes = User::select(DB::raw(
-            "count(user_id) as user_amount, year(date_added) as join_y, month(date_added) as join_m"))
+            "count(user_id) as user_amount, year(date_added) as join_y, month(date_added) as join_m"
+        ))
             ->groupBy('join_y')
             ->groupBy('join_m')
             ->get();
@@ -136,12 +140,12 @@ class EngineerController extends BaseController
 
         foreach ($projects as $p) {
             switch (true) {
-                case $p->isFundEnd() :
+                case $p->isFundEnd():
                     $st = ($p->amount_get < $p->amount) ? 'fail' : 'success';
                     $status[$st]['value'] ++;
                     break;
 
-                case $p->isOnGoing() :
+                case $p->isOnGoing():
                     $status['ongoing']['value'] ++;
                     break;
 
@@ -158,7 +162,8 @@ class EngineerController extends BaseController
     {
         $products = Project::select(
             DB::raw('project.project_title, project.amount, project.end_date,
-                project.amount_get, count(transaction_id) as backers'))
+                project.amount_get, count(transaction_id) as backers')
+        )
             ->leftJoin('transaction', 'project.project_id', '=', 'transaction.project_id')
             ->where('project.active', '=', '1')
             ->where('project.amount', '>', '0')

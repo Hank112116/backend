@@ -29,8 +29,7 @@ class UserRepo implements UserInterface
         User $user,
         ExpertiseInterface $expertise,
         ImageUp $image_uploader
-    )
-    {
+    ) {
         $this->user           = $user;
         $this->expertise      = $expertise;
         $this->image_uplodaer = $image_uploader;
@@ -54,9 +53,12 @@ class UserRepo implements UserInterface
     public function findWithDetail($id)
     {
         $user = $this->user->with(
-            'projects', 'projects.category',
-            'solutions', 'solutions',
-            'backedProducts', 'backedProducts.project'
+            'projects',
+            'projects.category',
+            'solutions',
+            'solutions',
+            'backedProducts',
+            'backedProducts.project'
         )->find($id);
 
         return $user;
@@ -71,6 +73,10 @@ class UserRepo implements UserInterface
         return $this->getPaginateContainer($this->user, $page, $limit, $users);
     }
 
+    public function findExpert($id)
+    {
+        return $this->user->where("user_id", $id)->where("user_type", User::TYPE_EXPERT)->get();
+    }
     public function creators($page = 1, $limit = 20)
     {
         $users = $this->modelBuilder($this->user, $page, $limit)

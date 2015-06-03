@@ -38,6 +38,15 @@
                     <span class="label">Approve Date</span>
                     <span class="content">{!! HTML::date($solution->approve_time) !!}</span>
                 </div>
+                <div class="data-group group-half">
+                    <span class="label">Description</span>
+                    <span class="content">
+                        <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
+                            value="" maxlength="250"
+                            rel="{!! $feature->getEntityId() !!}">{!! $feature->description !!}</textarea>
+                    </span>
+                    <span id="count_{!! $feature->getEntityId() !!}"></span>
+                </div>
             </div> 
             <div class="col-md-3 expertise-column">
                 @foreach (explode(',', $solution->tags) as $tag)

@@ -1,6 +1,7 @@
 <?php
 
 namespace Backend\Model\Eloquent;
+
 use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 

@@ -78,7 +78,7 @@ class AuthController extends BaseController
 
     public function landingFilter()
     {
-        return $this->routeFilter($type = 'front_page');
+        return $this->routeFilter($type = 'marketing');
     }
 
     public function mailFilter()

@@ -75,7 +75,8 @@ class User extends Eloquent
         return $this->primaryKey;
     }
 
-    public function verified() {
+    public function verified()
+    {
         return $this->email_verify==self::EMAIL_VERIFY;
     }
 
@@ -154,12 +155,13 @@ class User extends Eloquent
         return $this->getImagePath();
     }
 
-    public function getSocialAttribute() {
-        if($this->fb_uid) {
+    public function getSocialAttribute()
+    {
+        if ($this->fb_uid) {
             return 'facebook';
         }
 
-        if($this->ln_uid) {
+        if ($this->ln_uid) {
             return 'linkedin';
         }
 
@@ -202,5 +204,9 @@ class User extends Eloquent
     public function toBasicJson()
     {
         return json_encode($this->toBasicArray());
+    }
+    public function get100items()
+    {
+        echo 123;
     }
 }

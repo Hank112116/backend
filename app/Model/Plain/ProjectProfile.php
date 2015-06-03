@@ -157,75 +157,75 @@ class ProjectProfile
     private function textProjectSubmit()
     {
         switch (true) {
-        case $this->isProjectSubmittedPublic() :
-        case $this->isProjectSubmittedPrivate() :
-            return 'Y';
+            case $this->isProjectSubmittedPublic():
+            case $this->isProjectSubmittedPrivate():
+                return 'Y';
 
-        default :  //   !$project->isProjectSubmitted()
-            return 'N';
+            default:  //   !$project->isProjectSubmitted()
+                return 'N';
         }
     }
 
     private function textProductSubmit()
     {
         switch (true) {
-        case $this->isStatus($this->ongoing_product) :
-            return 'Y';
+            case $this->isStatus($this->ongoing_product):
+                return 'Y';
 
-        case $this->is_wait_approve_product :
-            return 'Pending';
+            case $this->is_wait_approve_product:
+                return 'Pending';
 
-        default : // $project->isProductDraft() :
-            return 'N';
+            default: // $project->isProductDraft() :
+                return 'N';
         }
     }
 
     private function textProjectStatus()
     {
         switch (true) {
-        case $this->isProjectSubmittedPublic() :
-            return 'Expert-Only Project';
-        case $this->isProjectSubmittedPrivate() :
-            return 'Private Project';
-        default :  //   !$project->isProjectSubmitted()
-            return 'Unfinished Draft';
+            case $this->isProjectSubmittedPublic():
+                return 'Expert-Only Project';
+            case $this->isProjectSubmittedPrivate():
+                return 'Private Project';
+            default:  //   !$project->isProjectSubmitted()
+                return 'Unfinished Draft';
         }
     }
 
     private function textProductStatus()
     {
         switch (true) {
-        case $this->isStatus($this->ongoing_product) :
-            return $this->textProductOngoingStatus();
+            case $this->isStatus($this->ongoing_product):
+                return $this->textProductOngoingStatus();
 
-        case $this->is_wait_approve_product :
-            return 'Waiting for review';
+            case $this->is_wait_approve_product:
+                return 'Waiting for review';
 
-        default : // $project->isProductDraft() :
-            return 'Crowdfund Draft';
+            default: // $project->isProductDraft() :
+                return 'Crowdfund Draft';
         }
     }
 
     private function textProductOngoingStatus()
     {
         switch (true) {
-        case $this->is_fund_end and $this->isFundSuccess():
-            return 'Funding Successful';
+            case $this->is_fund_end and $this->isFundSuccess():
+                return 'Funding Successful';
 
-        case $this->is_fund_end and !$this->isFundSuccess():
-            return 'Funding Unsuccessful';
+            case $this->is_fund_end and !$this->isFundSuccess():
+                return 'Funding Unsuccessful';
 
-        case $this->isBetweenCustomerFunding() :
-            return 'Crowdfunding for Customer';
+            case $this->isBetweenCustomerFunding():
+                return 'Crowdfunding for Customer';
 
-        case $this->isBetweenExpertFunding() :
-            return 'Crowdfunding for Expert';
+            case $this->isBetweenExpertFunding():
+                return 'Crowdfunding for Expert';
 
-        case $this->is_postpone:
-            return 'Postpone';
+            case $this->is_postpone:
+                return 'Postpone';
 
-        default:
-            return 'Crowdfunding Campaign';
+            default:
+                return 'Crowdfunding Campaign';
         }
     }
 }

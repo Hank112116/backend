@@ -86,7 +86,8 @@ class SolutionModifier implements SolutionModifierInterface
     public function approve($solution_id)
     {
         $setter = array_merge(
-            $this->solution->on_shelf_status, [
+            $this->solution->on_shelf_status,
+            [
             'is_manager_approved' => 0,
             'approve_time'        => Carbon::now(),
             ]
@@ -98,7 +99,8 @@ class SolutionModifier implements SolutionModifierInterface
     public function reject($solution_id)
     {
         $setter = array_merge(
-            $this->solution->draft_status, [
+            $this->solution->draft_status,
+            [
             'is_manager_approved' => 0,
             'approve_time'        => Carbon::now(),
             ]

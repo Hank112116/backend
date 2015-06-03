@@ -137,11 +137,11 @@ class ProjectController extends BaseController
     public function updateStatus($status, $project_id)
     {
         switch ($status) {
-            case 'draft' :
+            case 'draft':
                 $this->project_repo->toDraft($project_id);
                 break;
 
-            case 'private' :
+            case 'private':
                 $this->project_repo->toSubmittedPrivate($project_id);
                 break;
 

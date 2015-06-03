@@ -86,4 +86,4 @@ class PerkRepo implements PerkInterface
 
         return $perk;
     }
-};
+}

@@ -44,7 +44,8 @@ class Inbox extends Eloquent
 
                 $query->addSelect(User::$partial);
 
-            }]);;
+            }]);
+            ;
     }
 
     public function scopeQueryEagerLoad(Builder $query)
@@ -63,7 +64,8 @@ class Inbox extends Eloquent
 
                 $query->addSelect(User::$partial);
 
-            }]);;
+            }]);
+            ;
     }
 
     public function scopeQueryTopic(Builder $q)
@@ -88,5 +90,4 @@ class Inbox extends Eloquent
     {
         $q->where('receiver_id', $receiver_id);
     }
-
 }

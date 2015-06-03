@@ -7,8 +7,6 @@ var _libsFormUtility = require("./libs/FormUtility");
 
 var FormUtility = _interopRequireWildcard(_libsFormUtility);
 
-"use strict";
-
 $(function () {
     FormUtility.locationSelector($("#country"));
     FormUtility.locationSelector($("#city"));
@@ -24,8 +22,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.locationSelector = locationSelector;
 exports.editor = editor;
-"use strict";
-
 var isKeyEnter = function isKeyEnter(e) {
     var code = e.keyCode || e.which;
     return code == 13;

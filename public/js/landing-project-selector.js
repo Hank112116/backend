@@ -7,8 +7,6 @@ var _libsProjectSelector = require("./libs/ProjectSelector");
 
 var _libsProjectSelector2 = _interopRequireDefault(_libsProjectSelector);
 
-"use strict";
-
 new _libsProjectSelector2["default"]();
 
 },{"./libs/ProjectSelector":2}],2:[function(require,module,exports){
@@ -22,8 +20,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-"use strict";
-
 var ProjectSelector = (function () {
     function ProjectSelector() {
         var _this = this;
@@ -36,6 +32,7 @@ var ProjectSelector = (function () {
         this.$root.find(".js-search-form").each(function (kee, form_block) {
             return _this._setSearchForm(form_block);
         });
+        this._textareaCount();
     }
 
     _createClass(ProjectSelector, [{
@@ -69,6 +66,7 @@ var ProjectSelector = (function () {
                         Notifier.showTimedMessage("Add successful", "information", 2);
                         instance.$group.append(feeback.new_block);
                         instance._setFeatureBlocks();
+                        instance._textareaCount();
                     }
                 });
 
@@ -118,6 +116,19 @@ var ProjectSelector = (function () {
             this.$root.find(".js-block").each(function (kee, block) {
                 $(block).find(".js-order").first().attr("value", order);
                 order++;
+            });
+        }
+    }, {
+        key: "_textareaCount",
+        value: function _textareaCount() {
+            $("textarea[maxlength]").keyup(function () {
+                var $this = $(this);
+                var limit = parseInt($this.attr("maxlength"));
+                var text = $this.val();
+                var chars = text.length;
+                var userId = $this.attr("rel");
+                var tag = "count_" + userId.toString();
+                $("#" + tag).text(chars + "/" + limit);
             });
         }
     }]);

@@ -160,6 +160,7 @@ Route::group(['before' => 'backend.landing'], function () {
     Route::get('landing/get-new-manufacturer', 'LandingController@getNewManufacturer');
     Route::get('landing/refer', 'LandingController@showReferenceProject');
     Route::get('landing/hello', 'LandingController@showHello');
+    Route::get('landing/expert', 'LandingController@showExpert');
 
     Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
     Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
@@ -169,6 +170,8 @@ Route::group(['before' => 'backend.landing'], function () {
     Route::post('landing/update-refer', 'LandingController@updateReferenceProject');
     Route::post('landing/update-manufacturer', 'LandingController@updateManufacturer');
     Route::post('landing/update-hello-redirect', 'LandingController@updateHelloRedirect');
+    Route::post('landing/find-expert/{tyep}', 'LandingController@findExpertEntity');
+    Route::post('landing/update-expert', 'LandingController@updateExpert');
 });
 
 // Email Template
@@ -193,3 +196,7 @@ Route::group(['before' => 'backend.login'], function () {
 });
 
 Route::post('/upload-editor-image', 'ImageUploadController@index');
+
+get('add-a-log', function () {
+    Log::info("Hello World");
+});

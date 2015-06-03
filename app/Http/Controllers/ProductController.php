@@ -153,7 +153,8 @@ class ProductController extends BaseController
 
         return view($is_wait_approve_ongoing ? 'product.update-ongoing' : 'product.update')
             ->with([
-                'category_options' => $this->project_repo->categoryOptions($is_selected = $project->category ? true : false),
+                'category_options' => $this->project_repo->
+                    categoryOptions($is_selected = $project->category ? true : false),
                 'project'          => $project
             ]);
     }
@@ -172,7 +173,8 @@ class ProductController extends BaseController
             ->with([
                 'project_tag_tree'      => $this->project_repo->projectTagTree(),
 
-                'current_stage_options' => $this->project_repo->currentStageOptions($is_selected = $project->category ? true : false),
+                'current_stage_options' => $this->project_repo->
+                    currentStageOptions($is_selected = $project->category ? true : false),
                 'resource_options'      => $this->project_repo->resourceOptions(),
                 'quantity_options'      => $this->project_repo->quantityOptions(),
 

@@ -22,7 +22,6 @@ class LandingFeatureRepo implements LandingFeatureInterface
         foreach ($features as $f) {
             $f->entity = $this->entityByType($f->block_data, $f->block_type);
         }
-
         return $features;
     }
 
@@ -40,17 +39,17 @@ class LandingFeatureRepo implements LandingFeatureInterface
     {
         $entity = null;
         switch ($type) {
-        case 'project' :
-            $entity = $this->project->find($id);
-            break;
+            case 'project':
+                $entity = $this->project->find($id);
+                break;
 
-        case 'solution':
-            $entity = $this->solution->find($id);
-            break;
+            case 'solution':
+                $entity = $this->solution->find($id);
+                break;
 
-        case 'expert'  :
-            $entity = $this->user->find($id);
-            break;
+            case 'expert':
+                $entity = $this->user->find($id);
+                break;
         }
 
         return $entity;

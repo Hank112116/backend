@@ -1,5 +1,6 @@
 <?php
 namespace Backend\Model\Eloquent;
+
 use Input;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 

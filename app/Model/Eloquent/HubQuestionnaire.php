@@ -1,5 +1,6 @@
 <?php
 namespace Backend\Model\Eloquent;
+
 /**
  * HubQuestionnaire Model
  *

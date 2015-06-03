@@ -41,7 +41,8 @@ class AccessLogDecompress extends Command
     {
         $path = storage_path('logs');
         $date = Carbon::yesterday()->toDateString();
-        $file = "nginx-access-{$date}.log.bz2";;
+        $file = "nginx-access-{$date}.log.bz2";
+        ;
 
         $pem  = "~/.ssh/hwtrek-vpc-oregon-admin-panel.pem";
         $from = "centos@backend.hwtrek.com:/var/hwtrek/backend/storage/logs/{$file}";
@@ -98,5 +99,4 @@ class AccessLogDecompress extends Command
     {
         return [];
     }
-
 }

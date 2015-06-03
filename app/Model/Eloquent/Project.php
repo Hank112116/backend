@@ -194,7 +194,7 @@ class Project extends Eloquent
                 $v = ''; // parse_str will set $v
                 parse_str($url['query']); // ex: https://www.youtube.com/watch?v=p0yfv7A25a4
                 return "//www.youtube.com/embed/{$v}";
-            case 'youtu.be' :
+            case 'youtu.be':
                 return "//www.youtube.com/embed{$url['path']}";
             case 'vimeo.com':
                 return "//player.vimeo.com/video{$url['path']}";

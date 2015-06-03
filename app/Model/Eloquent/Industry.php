@@ -1,6 +1,7 @@
 <?php
 
 namespace Backend\Model\Eloquent;
+
 class Industry
 {
 

@@ -21,8 +21,7 @@ class SolutionController extends BaseController
         SolutionInterface $solution,
         ProjectInterface $project,
         AdminerInterface $adminer
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->solution_repo = $solution;

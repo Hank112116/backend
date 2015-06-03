@@ -7,8 +7,6 @@ var _superagent = require("superagent");
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
-"use strict";
-
 $(function () {
     $("#js-add-manufacturer").click(function (event) {
         event.preventDefault();

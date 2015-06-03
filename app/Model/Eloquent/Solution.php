@@ -219,16 +219,16 @@ class Solution extends Eloquent
     public function textStatus()
     {
         switch (true) {
-            case $this->isOffShelf()    :
+            case $this->isOffShelf():
                 return 'Off Shelf';
 
-            case $this->isOnShelf()     :
+            case $this->isOnShelf():
                 return 'On Shelf';
 
-            case $this->isWaitApprove() :
+            case $this->isWaitApprove():
                 return 'Pending for approve';
 
-            case $this->isDraft()       :
+            case $this->isDraft():
                 return 'Unfinished Solution';
             default:
                 return 'N/A';
