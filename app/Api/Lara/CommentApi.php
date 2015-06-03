@@ -14,29 +14,29 @@ class CommentApi extends BaseApi implements CommentApiInterface
     {
         $comment = $this->comment_repo->find($comment_id);
         if (!$comment) {
-            return $this->json_fail('No comment found');
+            return $this->jsonFail('No comment found');
         }
 
         if ($comment->isTopic()) {
             $this->comment_repo->deleteTopicAndThreads($comment);
 
-            return $this->json_ok(['msg' => 'delete topic success']);
+            return $this->jsonOK(['msg' => 'delete topic success']);
         }
 
         $this->comment_repo->deleteThread($comment);
 
-        return $this->json_ok(['msg' => 'delete thread success']);
+        return $this->jsonOK(['msg' => 'delete thread success']);
     }
 
     public function togglePrivate($comment_id)
     {
         $comment = $this->comment_repo->find($comment_id);
         if (!$comment) {
-            return $this->json_fail('No comment found');
+            return $this->jsonFail('No comment found');
         }
 
         $this->comment_repo->togglePrivate($comment);
 
-        return $this->json_ok(['msg' => 'updated']);
+        return $this->jsonOK(['msg' => 'updated']);
     }
 }

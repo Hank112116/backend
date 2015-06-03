@@ -15,9 +15,9 @@ class UserApi extends BaseApi implements UserApiInterface
         $user = $this->user->find($user_id);
 
         if (!$user) {
-            return $this->json_fail();
+            return $this->jsonFail();
         }
 
-        return $this->json_ok($user->toBasicArray());
+        return $this->jsonOK($user->toBasicArray());
     }
 }

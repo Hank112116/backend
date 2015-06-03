@@ -4,12 +4,12 @@ use Response;
 
 class BaseApi
 {
-    public function json_ok($data)
+    public function jsonOK($data)
     {
         return $this->json($data);
     }
 
-    public function json_fail($msg = '')
+    public function jsonFail($msg = '')
     {
         return $this->json(['msg' => $msg], false);
     }
