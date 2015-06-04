@@ -8,7 +8,7 @@ source $(dirname $0)/config.sh
 
 # Regular experssion for lintable files
 declare -r LINTER="linters/psr2.xml"
-declare -r LINTABLE_FILES=".php$"
+declare -r LINTABLE_FILES="^app/.php$"
 
 cd ${REPO_ROOT}
 
