@@ -1,0 +1,85 @@
+// @see http://jshint.com/docs/options/
+{
+  // Enforcing options
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "freeze": true,
+  "immed": true,
+  "indent": 4,
+  "latedef": "nofunc",
+  "newcap": true,
+  "noarg": true,
+  "nonbsp": true,
+  "nonew": true,
+  "quotmark": true,
+  "undef": true,
+  "unused": true,
+  "strict": true,
+  "maxdepth": 4,
+  // Relaxing options
+  "expr": true,
+  // Ignore Expected an assignment or function call and instead saw an expression.
+  "eqnull": true,
+  // Environments
+  "browser": true,
+  "jquery": true,
+  "globals": {
+    "CL" : true,
+    "COMMENTS_TYPES": true,
+
+    "Faq": true,
+    "Update": true,
+    "Favorite": true,
+    "CommentLoader": true,
+
+    "CommonHelper": true,
+
+    "InformationBox": true,
+    "Logger": true,
+    "Sharer": true,
+    "InboxModal": true,
+    "Comments": true,
+    "ProjectActivityChart": true,
+    "VideoLoader": true,
+    "MemberTypeCarousel": true,
+    "HubSelect": true,
+
+    "ProjectData": true,
+    "Validator": true,
+    "ProjectHandler": true,
+    "CreateController": true,
+    "ProjectGroupManager": true,
+    "Guide": true,
+    "ProjectTag": true,
+    "ProjectTool": true,
+    "ProjectPreview": true,
+    "ProjectCard": true,
+    "CreatePerk": true,
+    "ProductPreview": true,
+
+    "Solution": true,
+    "SolutionTabSwitcher": true,
+    "RelateProposedCategory": true,
+    "SolutionImageSwitcher": true,
+    "HistoryController": true,
+    "ProjectMatchProposer": true,
+    "SolutionTrackActivity": true,
+    "ManagerProposer" : true,
+    "ProjectMatchSelector": true,
+    "HistoryUpdater": true,
+    "SolutionCompareSelect": true,
+    "SolutionCompare": true,
+
+    "accounting": true,
+    "validateNumber": true,
+
+    "_": true,
+    "humps": true,
+    "console": true,
+    "FB": true,
+    "google": true,
+    "echo": true
+  }
+}

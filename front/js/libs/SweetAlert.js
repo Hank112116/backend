@@ -1,3 +1,4 @@
+// jshint unused: false
 "use strict";
 
 var sweetAlert = require("../vendor/sweetalert/sweetalert.es6.js");

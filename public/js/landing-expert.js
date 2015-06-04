@@ -1,8 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
-
 var expert = require("./libs/Expert.js");
-
 new expert();
 
 },{"./libs/Expert.js":2}],2:[function(require,module,exports){
@@ -12,8 +10,8 @@ var Expert = function Expert() {
     this.$root = $("body");
     this.$group = this.$root.find("#sortable");
     var instance = this;
-    this.$root.find(".js-search-form").each(function (kee, form_block) {
-        instance._setSearchForm(form_block);
+    this.$root.find(".js-search-form").each(function (kee, formBlock) {
+        instance._setSearchForm(formBlock);
     });
     this._setSortable(this.$group);
     this._setExpertBlocks();
@@ -36,13 +34,13 @@ Expert.prototype._setSearchForm = function (block) {
             success: function success(feeback) {
                 $(block).find(".search_id")[0].value = "";
 
-                if (feeback.status == "fail") {
+                if (feeback.status === "fail") {
                     Notifier.showTimedMessage(feeback.msg, "warning", 2);
                     return;
                 }
 
                 Notifier.showTimedMessage("Add successful", "information", 2);
-                instance.$group.append(feeback.new_block);
+                instance.$group.append(feeback.newBlock);
                 instance._setExpertBlocks();
                 instance._setSortTable(instance.$group);
                 instance.textareaCount(instance.$group);
@@ -50,13 +48,11 @@ Expert.prototype._setSearchForm = function (block) {
         });
     });
 };
-Expert.prototype._setExpertBlocks = function (block) {
-    var instance = this;
+Expert.prototype._setExpertBlocks = function () {
     this.$root.find(".js-block").each(function (kee, block) {
         var $block = $(block);
-        var remove_btn = $block.find(".js-remove").first();
-        var remove_btn = $block.find(".js-remove");
-        remove_btn.unbind("click").click(function () {
+        var removeBtn = $block.find(".js-remove").first();
+        removeBtn.unbind("click").click(function () {
             $block.fadeOut("fast", function () {
                 $block.remove();
             });
@@ -92,7 +88,6 @@ Expert.prototype.textareaCount = function ($Sortable) {
     });
 };
 Expert.prototype.btnSubmit = function () {
-    var instance = this;
     this.$root.find(".btn-submit").click(function () {
         var user = [];
         var description = [];
@@ -110,7 +105,7 @@ Expert.prototype.btnSubmit = function () {
             },
             dataType: "JSON",
             success: function success(feeback) {
-                if (feeback.status == "fail") {
+                if (feeback.status === "fail") {
                     Notifier.showTimedMessage(feeback.msg, "warning", 2);
                     return;
                 }

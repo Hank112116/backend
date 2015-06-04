@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="HWTrekStandard">
+    <description>This standard ignore the line length</description>
+
+    <!-- Insert all sniff from PSR2 standard -->
+    <rule ref="PSR2"/>
+
+    <!-- Give a large number to ignore this rule -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="1024"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+     </rule>
+</ruleset>

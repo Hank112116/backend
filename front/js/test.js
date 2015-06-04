@@ -27,5 +27,5 @@ $.getJSON( "/test/ajaxTest", function( data ) {
 
   });
   
-  $("#test").html(userList.join(''));
+  $("#test").html(userList.join(""));
 });
