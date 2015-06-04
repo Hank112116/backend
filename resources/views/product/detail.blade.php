@@ -159,7 +159,7 @@
 
         @include('modules.detail-panel', [
             'column_title' => 'Description',
-            'column_content' => $project->description
+            'column_content' => Purifier::clean($project->description)
         ])
 
 

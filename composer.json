@@ -19,7 +19,8 @@
     "barryvdh/laravel-ide-helper": "~2.0",
     "league/csv": "~7.0",
     "gabrielbull/browser": "dev-master",
-    "mews/purifier": "~2.0"
+    "mews/purifier": "~2.0",
+    "ezyang/htmlpurifier": "~4.6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",

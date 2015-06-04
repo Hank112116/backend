@@ -149,6 +149,7 @@ return [
         'HTML'      => 'Illuminate\Html\HtmlFacade',
         'Carbon'    => 'Carbon\Carbon',
         'Image'     => 'Intervention\Image\Facades\Image',
+        'Purifier' => 'Mews\Purifier\Facades\Purifier',
     ],
 
 ];

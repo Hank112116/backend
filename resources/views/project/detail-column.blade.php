@@ -97,12 +97,12 @@
 
 		@include('modules.detail-panel', [
 		    'column_title' => 'Preliminary Specifications',
-		    'column_content' => $project->preliminary_spec
+		    'column_content' => Purifier::clean($project->preliminary_spec)
 		])
 
         @include('modules.detail-panel', [
             'column_title' => 'Description',
-            'column_content' => $project->description
+            'column_content' => Purifier::clean($project->description)
         ])
 	</div>
 
