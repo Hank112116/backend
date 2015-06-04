@@ -13,7 +13,7 @@
 @section('content')
 
 <div class="page-header">
-    <h1>{!! $solution->solution_title !!}</h1>
+    <h1>{{ $solution->solution_title }}</h1>
 
 	<div></div>
 
@@ -46,7 +46,7 @@
 			<!-- Title -->
 			<div class="data-group">
 			  	<span class="label">Title</span>
-			  	<span class="content">{!! $solution->textTitle() !!}</span>
+			  	<span class="content">{{ $solution->textTitle() }}</span>
 			</div>
 
 			<!-- Category, User -->

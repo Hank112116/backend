@@ -18,13 +18,13 @@
             <div class="col-md-7">
                 <div class="data-group">
                     <span class="label">Title</span>
-                    <span class="content">{!! $project->project_title !!}</span>
+                    <span class="content">{{ $project->project_title }}</span>
                 </div>
 
                 <div class="data-group group-half">
                     <span class="label">User</span>
                     <span class="content">
-                      {!! $project->user->last_name !!} {!! $project->user->user_name !!}
+                      {{ $project->user->last_name }} {{ $project->user->user_name }}
                     </span>
                 </div>
 
@@ -62,7 +62,7 @@
                     <span class="content">
                         <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
                             value="" maxlength="250"
-                            rel="{!! $feature->getEntityId() !!}">{!! $feature->description !!}</textarea>
+                            rel="{!! $feature->getEntityId() !!}">{{ $feature->description }}</textarea>
                     </span>
                     <span id="count_{!! $feature->getEntityId() !!}"></span>
                 </div>

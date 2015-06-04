@@ -89,9 +89,9 @@ export default class ProjectSelector {
         });
     }
     _textareaCount() {
-        $('textarea[maxlength]').keyup(function(){
+        $("textarea[maxlength]").keyup(function(){
             var $this = $(this);
-            var limit = parseInt($this.attr('maxlength'));
+            var limit = parseInt($this.attr("maxlength"));
             var text = $this.val();
             var chars = text.length;
             var userId = $this.attr("rel");

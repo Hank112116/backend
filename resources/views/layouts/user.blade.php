@@ -1,6 +1,6 @@
 @if($user)
     <a href="{!! $user->textFrontLink() !!}" target="_blank">
-        {!! $user->textFullName() !!}
+        {{ $user->textFullName() }}
     </a>
 @else
     N/A

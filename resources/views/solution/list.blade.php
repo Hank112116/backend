@@ -53,7 +53,7 @@
 
                 <td class="table--name">
                     <a href="{!! $solution->textFrontLink() !!}" target="_blank">
-                        {!! $solution->textTitle() !!}
+                        {{ $solution->textTitle() }}
                     </a>
                 </td>
 
@@ -67,11 +67,11 @@
 
                 <td>
                     <a href="{!! $solution->user->textFrontLink() !!}" target="_blank">
-                        {!! $solution->user->textFullName() !!}
+                        {{ $solution->user->textFullName() }}
                     </a>
                 </td>
 
-                <td>{!! $solution->user->country !!}<br/>{!! $solution->user->city !!}</td>
+                <td>{{ $solution->user->country }}<br/>{{ $solution->user->city }}</td>
 
                 <td>
                     {!! $solution->textStatus() !!}

@@ -18,20 +18,20 @@
                     <div class="col-md-7">
                         <div class="data-group group-half">
                             <span class="label">Name</span>
-                            <span class="content">{!! $user->last_name !!} {!! $user->user_name !!}</span>
+                            <span class="content">{{ $user->last_name }} {{ $user->user_name }}</span>
                         </div>
                         <div class="data-group group-half">
                             <span class="label">Company</span>
-                            <span class="content">{!! $user->company !!}</span>
+                            <span class="content">{{ $user->company }}</span>
                         </div>
                         <div class="data-group group-half">
                             <span class="label">Position</span>
-                            <span class="content">{!! $user->business_id !!}</span>
+                            <span class="content">{{ $user->business_id }}</span>
                         </div>
                         <div class="data-group group-half">
                             <span class="label">Description</span>
                             <span class="content"><textarea rows="4" cols="40" 
-                                maxlength="250" rel="{!! $user->user_id !!}">{!! $description !!}</textarea></span>
+                                maxlength="250" rel="{!! $user->user_id !!}">{{ $description }}</textarea></span>
                             <span id="count_{!! $user->user_id !!}"></span>
                         </div>
                     </div>   

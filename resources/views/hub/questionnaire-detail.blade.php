@@ -13,7 +13,7 @@
 
         @if($q->schedule)
             <a href="{!! $schedule->textFrontLink() !!}" target="_blank">
-                {!! $schedule->textTitle() !!}
+                {{ $schedule->textTitle() }}
             </a>
         @else
             This Project had been Deleted
@@ -21,7 +21,7 @@
     </h1>
 
     <div class="page-header--user">
-        by <a href="{!! $user->textFrontLink() !!}">{!! $user->textFullName() !!}</a>
+        by <a href="{!! $user->textFrontLink() !!}">{{ $user->textFullName() }}</a>
         {!! HTML::image($user->getImagePath(), '', ['class' => 'user-avatar']) !!}
         @ {!! HTML::date($q->date_added) !!}
     </div>
@@ -68,18 +68,18 @@
             <div class="clearfix">
                 <div class="data-group group-half">
                     <span class="label">Company</span>
-                    <span class="content">{!! $q->company_name !!}</span>
+                    <span class="content">{{ $q->company_name }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Team Members</span>
-                    <span class="content">{!! $q->members !!}</span>
+                    <span class="content">{{ $q->members }}</span>
                 </div>
             </div>
 
             <div class="clearfix">
                 <div class="data-group group-half">
                     <span class="label">Category</span>
-                    <span class="content">{!! $q->textCategory() !!}</span>
+                    <span class="content">{{ $q->textCategory() }}</span>
                 </div>
 
                 <div class="data-group group-half">

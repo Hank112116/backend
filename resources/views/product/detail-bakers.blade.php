@@ -12,10 +12,10 @@
     @foreach($bakers as $baker)
         <tr>
             <td>{!! $baker->transaction_id !!}</td>
-            <td>#{!! $baker->perk->perk_id !!} {!! $baker->perk->perk_title !!}</td>
+            <td>#{!! $baker->perk->perk_id !!} {{ $baker->perk->perk_title }}</td>
             <td>
                 <a href="//{!! config('app.front_domain') !!}/profile/{!! $baker->user->user_id !!}" target="_blank">
-                    {!! $baker->name !!}
+                    {{ $baker->name }}
                 </a> {{-- use the name record in transaction table , rather in user table --}}
             </td>
             <td>{!! HTML::cash($baker->preapproval_total_amount) !!}</td>

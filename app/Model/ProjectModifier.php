@@ -112,7 +112,7 @@ class ProjectModifier implements ProjectModifierInterface
         $project = $this->project->find($project_id);
         $project->fill(array_except($data, ['_token', 'perks', 'approve', 'cover']));
 
-        if ($data[ 'cover' ]) {
+        if (isset($data[ 'cover' ])) {
             $project->image = $this->image_uploader->uploadImage($data[ 'cover' ]);
         }
 

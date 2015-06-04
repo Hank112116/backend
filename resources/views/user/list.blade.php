@@ -53,12 +53,12 @@
                     <td>{!! $user->user_id !!}</td>
                     <td>
                         <a href="{!! $user->textFrontLink() !!}" target="_blank">
-                            {!! $user->textFullName() !!}</a>
+                            {{ $user->textFullName() }}</a>
                     </td>
 
                     <td>{!! $user->textType() !!}</td>
                     <td class="table--user-mail">
-                        {!! $user->email !!}
+                        {{ $user->email }}
                         @if('facebook' === $user->social)
                             <i class="fa fa-facebook-square"></i>
                         @elseif('linkedin' === $user->social)
@@ -66,10 +66,10 @@
                         @endif
                     </td>
 
-                    <td>{!! $user->country !!}<br/>{!! $user->city !!}</td>
+                    <td>{{ $user->country }}<br/>{{ $user->city }}</td>
 
                     <td class="table--width-limit">
-                        {!! $user->company  !!}<br/>
+                        {{ $user->company }}<br/>
                         <span class="table--text-light">{!! $user->business_id  !!}</span>
                     </td>
 

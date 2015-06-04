@@ -19,34 +19,34 @@
             <div class="col-md-7">
                 <div class="data-group group-half">
                     <span class="label">Name</span>
-                    <span class="content">{!! $user->last_name !!} {!! $user->user_name !!}</span>
+                    <span class="content">{{ $user->last_name }} {{ $user->user_name }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">EMail</span>
-                    <span class="content">{!! $user->email !!}</span>
+                    <span class="content">{{ $user->email }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Country</span>
-                    <span class="content">{!! $user->country !!}</span>
+                    <span class="content">{{ $user->country }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">City</span>
-                    <span class="content">{!! $user->city !!}</span>
+                    <span class="content">{{ $user->city }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Company</span>
-                    <span class="content">{!! $user->company !!}</span>
+                    <span class="content">{{ $user->company }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Position</span>
-                    <span class="content">{!! $user->business_id !!}</span>
+                    <span class="content">{{ $user->business_id }}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Description</span>
                     <span class="content">
                         <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
                             value="" maxlength="250"
-                            rel="{!! $feature->getEntityId() !!}" >{!! $feature->description !!}</textarea>
+                            rel="{!! $feature->getEntityId() !!}" >{{ $feature->description }}</textarea>
                     </span>
                     <span id="count_{!! $feature->getEntityId() !!}"></span>
                 </div>

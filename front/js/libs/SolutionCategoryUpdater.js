@@ -54,11 +54,11 @@ export default class SolutionCategoryUpdater {
 
         var $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=" + sub_id + "]");
 
-        if ($main_option.length == 0) {
+        if ($main_option.length === 0) {
             $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=0]");
         }
 
-        if ($main_option.length == 0) {
+        if ($main_option.length === 0) {
             return;
         }
 
@@ -94,7 +94,7 @@ export default class SolutionCategoryUpdater {
         var sub_id = $option.data("sub-category-id"),
             sub_text = $option.html();
 
-        if($option.length == 0) {
+        if($option.length === 0) {
             return;
         }
 

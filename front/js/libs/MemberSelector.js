@@ -11,9 +11,7 @@ export default class MemberSelector {
         }
 
         clearTimeout(this.timer);
-        this.timer = setTimeout(
-            () => this.fireSelector(user_id, callback)
-        , 2000);
+        this.timer = setTimeout(() => this.fireSelector(user_id, callback), 2000);
     }
 
     fireSelector(user_id, callback) {

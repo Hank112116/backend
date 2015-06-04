@@ -11,7 +11,7 @@
 
 @section('content')
 	<div class="page-header">
-	    <h1>{!! $user->textFullName() !!}</h1>
+	    <h1>{{ $user->textFullName() }}</h1>
 	</div>
 
 	<div class="form-container">

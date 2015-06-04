@@ -25,7 +25,7 @@
 					<td>{!! $p->project_id !!}</td>
 					<td class="table--name">
 						<a href="{!! $p->textFrontLink() !!}" target="_blank">
-							{!! $p->textTitle() !!}
+							{{ $p->textTitle() }}
 						</a>
 					</td>
 
@@ -35,13 +35,13 @@
 
 					<td>
 						<a href="{!! $p->user->textFrontLink() !!}" target="_blank">
-							{!! $p->user->textFullName() !!}
+							{{ $p->user->textFullName() }}
 						</a>
 					</td>
 					<td>
-						{!! $p->project_country !!}
+						{{ $p->project_country }}
 						<br/>
-						<span class="table--text-light">{!! $p->project_city !!}</span>
+						<span class="table--text-light">{{ $p->project_city }}</span>
 					</td>
 
 					<td>{!! $p->profile->text_status !!}</td>

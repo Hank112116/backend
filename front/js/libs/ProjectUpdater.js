@@ -49,7 +49,7 @@ export default class ProjectUpdater {
         var $input = $tags_block.find("input");
 
         $tags_block.find(".tag").each(function (index, tag) {
-            $(tag).click(function (e) {
+            $(tag).click(function () {
                 $(this).toggleClass("active");
 
                 var tags = _.map($tags_block.find(".tag.active"), function (tag) {
@@ -77,7 +77,7 @@ export default class ProjectUpdater {
         $tags_block.find(".tag").each(function (index, tag) {
             var $selected = $(tag);
 
-            $selected.click(function (e) {
+            $selected.click(function () {
                 $tags_block.find(".tag").not($selected).removeClass("active");
                 $selected.addClass("active");
 
@@ -96,7 +96,7 @@ export default class ProjectUpdater {
             }
         });
 
-        $unsure.click( (e) => {
+        $unsure.click( () => {
             $unsure.addClass("active");
             $input.val("");
         });

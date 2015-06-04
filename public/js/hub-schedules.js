@@ -32,6 +32,7 @@ $(function () {
 });
 
 },{"./libs/SweetAlert":2}],2:[function(require,module,exports){
+// jshint unused: false
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

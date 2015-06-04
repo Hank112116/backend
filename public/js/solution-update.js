@@ -151,7 +151,7 @@ var ProjectUpdater = (function () {
             var $input = $tags_block.find("input");
 
             $tags_block.find(".tag").each(function (index, tag) {
-                $(tag).click(function (e) {
+                $(tag).click(function () {
                     $(this).toggleClass("active");
 
                     var tags = _.map($tags_block.find(".tag.active"), function (tag) {
@@ -185,7 +185,7 @@ var ProjectUpdater = (function () {
             $tags_block.find(".tag").each(function (index, tag) {
                 var $selected = $(tag);
 
-                $selected.click(function (e) {
+                $selected.click(function () {
                     $tags_block.find(".tag").not($selected).removeClass("active");
                     $selected.addClass("active");
 
@@ -205,7 +205,7 @@ var ProjectUpdater = (function () {
                 }
             });
 
-            $unsure.click(function (e) {
+            $unsure.click(function () {
                 $unsure.addClass("active");
                 $input.val("");
             });
@@ -296,11 +296,11 @@ var SolutionCategoryUpdater = (function () {
 
             var $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=" + sub_id + "]");
 
-            if ($main_option.length == 0) {
+            if ($main_option.length === 0) {
                 $main_option = this.$main_options.find("[data-main-category-id=" + main_id + "][data-sub-category-id=0]");
             }
 
-            if ($main_option.length == 0) {
+            if ($main_option.length === 0) {
                 return;
             }
 
@@ -339,7 +339,7 @@ var SolutionCategoryUpdater = (function () {
             var sub_id = $option.data("sub-category-id"),
                 sub_text = $option.html();
 
-            if ($option.length == 0) {
+            if ($option.length === 0) {
                 return;
             }
 

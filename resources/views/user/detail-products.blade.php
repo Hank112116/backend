@@ -25,12 +25,12 @@
 			        <td>{!! $p->project_id !!}</td>
 			        <td>
          				<a href="{!! $p->textFrontLink() !!}" target="_blank">
-         					{!! $p->textTitle() !!}
+         					{{ $p->textTitle() }}
          				</a>
 					</td>
 			        <td>{!! $p->category? $p->category->tag_name : '' !!}</td>
-			        <td>{!! $p->project_country !!}</td>
-			        <td>{!! $p->project_city !!}</td>
+			        <td>{{ $p->project_country }}</td>
+			        <td>{{ $p->project_city }}</td>
 
 			        <td><span class='cash'>{!! HTML::cash($p->amount) !!}</span></td>
 			        <td><span class='cash'>{!! HTML::cash($p->amount_get) !!}</span></td>

@@ -1,6 +1,6 @@
 "use strict";
 
-import superagent from "superagent"
+import superagent from "superagent";
 
 $(function () {
     $("#js-add-manufacturer").click(function (event) {
@@ -14,6 +14,6 @@ $(function () {
     });
 
     $("body").on("click", ".icon-remove", function() {
-        $(this).parent().remove()
+        $(this).parent().remove();
     });
 });
