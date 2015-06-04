@@ -8,10 +8,11 @@ source $(dirname $0)/config.sh
 
 # Regular experssion for lintable files
 declare -r LINTER="linters/psr2.xml"
+declare -r LINTABLE_FILES="^app/.*.php$"
 
 cd ${REPO_ROOT}
 
-files=$(git diff --cached --name-only --diff-filter=ACM |  grep "^app" | grep ".php$")
+files=$(git diff --cached --name-only --diff-filter=ACM | egrep "${LINTABLE_FILES}")
 if [ "$files" = "" ]; then
     exit ${EX_OK}
 fi
