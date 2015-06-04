@@ -30,13 +30,13 @@
 		<div class="col-md-7 clearfix">
 			<div class="data-group">
 			  <span class="label">Name</span>
-			  <span class="content">{!! $user->textFullName() !!}</span>
+			  <span class="content">{{ $user->textFullName() }}</span>
 			</div>
 
 			<div class="data-group">
 			  <span class="label">EMail</span>
 			  <span class="content">
-				  {!! $user->email !!}
+				  {{ $user->email }}
 				  @if('facebook' === $user->social)
 					  <i class="fa fa-facebook-square"></i>
 				  @elseif('linkedin' === $user->social)
@@ -63,23 +63,23 @@
 		<div class="col-md-10 col-md-offset-1">
 			<div class="data-group">
 			  <span class="label">Country</span>
-			  <span class="content">{!! $user->country !!}</span>
+			  <span class="content">{{ $user->country }}</span>
 			</div>
 
 			<div class="data-group">
 			  <span class="label">City</span>
-			  <span class="content">{!! $user->city !!}</span>
+			  <span class="content">{{ $user->city }}</span>
 			</div>
 
 			<div class="data-group">
 			  <span class="label">Address</span>
-			  <span class="content">{!! $user->address !!}</span>
+			  <span class="content">{{ $user->address }}</span>
 			</div>
 			
 			@if (!$is_restricted)
 			<div class="data-group">
 			  <span class="label">Paypal EMail</span>
-			  <span class="content">{!! $user->paypal_mail !!}</span>
+			  <span class="content">{{ $user->paypal_mail }}</span>
 			</div>
 			@endif
 			

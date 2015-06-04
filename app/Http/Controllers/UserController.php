@@ -140,7 +140,6 @@ class UserController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($users);
         }
-
         $template = view('user.list')
             ->with([
                 'title'         => $title,

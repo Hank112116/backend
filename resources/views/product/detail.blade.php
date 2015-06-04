@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="page-header">
-    <h2>{!! $project->project_title !!}</h2>
+    <h2>{{ $project->project_title }}</h2>
    
     <div>
         <a href="{!! $project->textFrontLink() !!}" target="_blank" class="btn-mini">

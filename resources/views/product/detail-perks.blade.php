@@ -4,7 +4,7 @@
 
 	  	<div class="panel-heading clearfix">
 	  		<span class='title-id'>#{!! $perk->perk_id !!} </span>
-	  		{!! $perk->perk_title !!}
+	  		{{ $perk->perk_title }}
 	  		<span class='title-date'>Estimated Delivery at {!! $perk->perk_delivery_date !!}</span>
 	  	</div>
 

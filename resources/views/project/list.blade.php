@@ -48,7 +48,7 @@
                 <td>{!! $project->project_id !!}</td>
                 <td class="table--name">
                     <a href="{!! $project->textFrontLink() !!}" target="_blank">
-                        {!! $project->textTitle() !!}
+                        {{ $project->textTitle() }}
                     </a>
                 </td>
 
@@ -63,7 +63,7 @@
                 <td>
                     {!! $project->project_country !!}
                     <br/>
-                    <span class="table--text-light">{!! $project->project_city !!}</span>
+                    <span class="table--text-light">{{ $project->project_city }}</span>
                 </td>
 
                 <td>

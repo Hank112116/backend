@@ -23,11 +23,11 @@
 				        <td>{!! $solution->solution_id !!}</td>
 				        <td>
          					<a href="{!! $solution->textFrontLink() !!}" target="_blank">
-         						{!! $solution->textTitle() !!}</a>
+         						{{ $solution->textTitle() }}</a>
 				        </td>
 				        <td>{!! $solution->textMainCategory() !!}, {!! $solution->textSubCategory() !!}</td>
-				        <td>{!! $solution->solution_country !!}</td>
-				        <td>{!! $solution->solution_city !!}</td>
+				        <td>{{ $solution->solution_country }}</td>
+				        <td>{{ $solution->solution_city }}</td>
 				        <td>{!! $solution->textStatus() !!}</td>
 				        <td>{!! HTML::date($solution->approve_time) !!}</td>
                         <td>

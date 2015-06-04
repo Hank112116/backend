@@ -12,7 +12,7 @@
 
 @section('content')
 	<div class="page-header">
-	    <h1>{!! $project->project_title !!}</h1>
+	    <h1>{{ $project->project_title }}</h1>
         <div>
             @if($project->is_project_submitted)
                 {!! link_to_action('ProductController@showProjectUpdate', 'Project Update',

@@ -48,7 +48,7 @@
                 <td>
                     @if($t->user)
                         <a href="{!! $t->user->textFrontLink() !!}" target="_blank">
-                            {!! $t->user->textFullName() !!}
+                            {{ $t->user->textFullName() }}
                         </a>
                     @else
                         {!! $t->name !!}

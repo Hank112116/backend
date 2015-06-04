@@ -12,7 +12,7 @@
 
 @section('content')
 	<div class="page-header">
-	    <h1>{!! $solution->solution_title !!}</h1>
+	    <h1>{{ $solution->solution_title }}</h1>
 
         <div>
             @if($solution->isOngoing() and !$is_restricted)

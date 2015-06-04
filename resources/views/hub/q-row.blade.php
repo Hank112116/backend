@@ -4,7 +4,7 @@
 
     <td class="table--name" data-project-id = "{!! $q->schedule->project_id !!}">
         <a href="{!! $q->schedule->textFrontLink() !!}" target="_blank">
-            {!! $q->schedule->textTitle() !!}
+            {{ $q->schedule->textTitle() }}
         </a>
     </td>
 
@@ -15,7 +15,7 @@
     <td class="table--name">
         @if($q->user)
         <a href="{!! $q->user->textFrontLink() !!}" target="_blank">
-            {!! $q->user->textFullName() !!}
+            {{ $q->user->textFullName() }}
         </a>
         @endif
         <br/><spna class="table--text-light">{!! $q->company_name !!}</spna>

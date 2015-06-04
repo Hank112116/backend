@@ -6,7 +6,7 @@
 
     <td>
         @if($q->user)
-        <a href="{!! $q->user->textFrontLink() !!}" target="_blank">{!! $q->user->textFullName() !!}</a>
+        <a href="{!! $q->user->textFrontLink() !!}" target="_blank">{{ $q->user->textFullName() }}</a>
         @endif
     </td>
 
