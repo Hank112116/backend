@@ -135,7 +135,8 @@ class UserController extends BaseController
         }
     }
 
-    public function showUsers($users, $paginate = true, $title = ''){
+    public function showUsers($users, $paginate = true, $title = '')
+    {
         if (Input::has('csv')) {
             return $this->renderCsv($users);
         }
