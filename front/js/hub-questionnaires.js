@@ -67,7 +67,7 @@ $(function () {
         var userId = $("#userId").val();
         var PM = $("#PM").val();
         if(expert1 && expert2 && PM){
-            $("#dialog").html('<img width="150px" src="../images/loading.gif"/>');
+            $("#dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
