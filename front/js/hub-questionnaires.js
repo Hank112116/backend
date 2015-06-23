@@ -4,8 +4,8 @@ $(function () {
     //open dialog
     $( ".sendmail" ).click(function () {
         var $this = $(this);
-        $("#expert1").empty() ;
-        $("#expert2").empty();
+        $("#expert1").val("") ;
+        $("#expert2").val("");
         $("#expert1Info").empty();
         $("#expert2Info").empty();
         var projectId = $this.attr("projectId");
@@ -25,12 +25,12 @@ $(function () {
     $("#expert1").change(function () {
         var $expert1Info = $("#expert1Info");
         $expert1Info.empty();
-        $expert1Info.append('<img id="theImg" width="25px" src="../images/loading_small.gif" />');
+        $expert1Info.append('<img id="theImg" width="25px" src="/images/loading_small.gif" />');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "./get-expert",
+            url: "get-expert",
             data: { 
                 expertId: expertId
             },
@@ -43,12 +43,12 @@ $(function () {
     $("#expert2").change(function () {
         var $expert2Info = $("#expert2Info");
         $expert2Info.empty();
-        $expert2Info.append('<img id="theImg" width="25px" src="../images/loading_small.gif" />');
+        $expert2Info.append('<img id="theImg" width="25px" src="/images/loading_small.gif" />');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "./get-expert",
+            url: "get-expert",
             data: { 
                 expertId: expertId
             },

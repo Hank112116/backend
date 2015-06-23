@@ -78,7 +78,7 @@
     </td>
     <td class="table--text-left">
         @if($q->schedule->hub_note)
-            {{ $q->schedule->textNoteLevel()}} : {!! $q->schedule->hub_note !!}
+            {{ $q->schedule->textNoteLevel()}} : {{ $q->schedule->hub_note }}
         @endif
 
     </td>

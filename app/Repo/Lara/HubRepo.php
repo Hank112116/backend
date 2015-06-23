@@ -43,7 +43,7 @@ class HubRepo implements HubInterface
 
     public function allQuestionnaires()
     {
-        $allQuestionnaires = $this->questionnaire->with('schedule', 'user', "projectMailExpert")
+        $allQuestionnaires = $this->questionnaire->with('schedule', 'user', 'projectMailExpert')
             ->orderBy('questionnaire_id', 'desc')
             ->get();
         foreach ($allQuestionnaires as $questionnaire) {
@@ -118,10 +118,5 @@ class HubRepo implements HubInterface
         $managers               = array_get($data, 'managers', []);
         $schedule->hub_managers = implode(',', $managers);
         $schedule->save();
-    }
-
-    public function getMailExpert($Model)
-    {
-
     }
 }

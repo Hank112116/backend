@@ -9,13 +9,11 @@ return [
     'port'                  => '587',
     'from'                  => 'info@hwtrek.com',
     'from_name'             => 'HWTrek Info',
-    'bcc'                   => ['hit112116@hotmail.com',
+    'bcc'                   => ['vivienne.hwtrek@gmail.com',
+                                'lucas.wang@hwtrek.com',
+                                'roger.wu@hwtrek.com',
+                                'martin@hwtrek.com'
                                 ],
-    // 'bcc'                   => ['vivienne.hwtrek@gmail.com',
-    //                             'lucas.wang@hwtrek.com',
-    //                             'roger.wu@hwtrek.com',
-    //                             'martin@hwtrek.com'
-    //                             ],
     'platform_admin_email'  => 'info@hwtrek.com',
     'system_admin_email'    => 'keith.yeh@hwtrek.com',
     'develop_email'         => 'hank.chang@hwtrek.com'
