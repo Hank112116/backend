@@ -62,7 +62,7 @@
         <tr>
             <td>Expert</td>
             <td>
-                <input type="text" id="expert1" placeholder="Expert Id">            
+                <input type="number" id="expert1" placeholder="Expert Id">            
             </td>
             <td class="table--text-left">
                 <span id="expert1Info"></span>
@@ -71,7 +71,7 @@
         <tr>
             <td>Expert</td>
             <td>
-                <input type="text" id="expert2" placeholder="Expert Id">
+                <input type="number" id="expert2" placeholder="Expert Id">
             </td>
             <td class="table--text-left">
                 <span id="expert2Info"></span>
