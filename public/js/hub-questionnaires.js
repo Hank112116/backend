@@ -5,10 +5,10 @@ $(function () {
     //open dialog
     $(".sendmail").click(function () {
         var $this = $(this);
-        $("#expert1").val("");
-        $("#expert2").val("");
-        $("#expert1Info").html("");
-        $("#expert2Info").html("");
+        $("#expert1").empty();
+        $("#expert2").empty();
+        $("#expert1Info").empty();
+        $("#expert2Info").empty();
         var projectId = $this.attr("projectId");
         var projectTitle = $this.attr("projectTitle");
         var userId = $this.attr("userId");
@@ -24,8 +24,9 @@ $(function () {
     });
     //search expert info
     $("#expert1").change(function () {
-        $("#expert1Info").html("");
-        $("#expert1Info").append("<img id=\"theImg\" width=\"25px\" src=\"../images/loading_small.gif\" />");
+        var $expert1Info = $("#expert1Info");
+        $expert1Info.empty();
+        $expert1Info.append("<img id=\"theImg\" width=\"25px\" src=\"../images/loading_small.gif\" />");
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
@@ -36,13 +37,14 @@ $(function () {
             },
             dataType: "JSON",
             success: function success(feeback) {
-                $("#expert1Info").text(feeback.msg);
+                $expert1Info.text(feeback.msg);
             }
         });
     });
     $("#expert2").change(function () {
-        $("#expert2Info").html("");
-        $("#expert2Info").append("<img id=\"theImg\" width=\"25px\" src=\"../images/loading_small.gif\" />");
+        var $expert2Info = $("#expert2Info");
+        $expert2Info.empty();
+        $expert2Info.append("<img id=\"theImg\" width=\"25px\" src=\"../images/loading_small.gif\" />");
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
@@ -53,7 +55,7 @@ $(function () {
             },
             dataType: "JSON",
             success: function success(feeback) {
-                $("#expert2Info").text(feeback.msg);
+                $expert2Info.text(feeback.msg);
             }
         });
     });
@@ -65,11 +67,11 @@ $(function () {
         var projectTitle = $("#projectTitle").val();
         var userId = $("#userId").val();
         var PM = $("#PM").val();
-        if (expert1 && expert2) {
+        if (expert1 && expert2 && PM) {
             $("#dialog").html("<img id=\"theImg\" width=\"150px\" src=\"../images/loading.gif\" />");
             $.ajax({
                 type: "POST",
-                url: "../hub_email-send",
+                url: "/hub_email-send",
                 data: {
                     expert1: expert1,
                     expert2: expert2,
@@ -90,7 +92,14 @@ $(function () {
                 }
             });
         } else {
-            window.alert("Please enter expert id.");
+            var errorMsg = "";
+            if (!PM) {
+                errorMsg = errorMsg + "PM is empty! ";
+            }
+            if (!expert1 || !expert2) {
+                errorMsg = errorMsg + "Expert is empty!";
+            }
+            Notifier.showTimedMessage(errorMsg, "warning", 2);
         }
     });
 });

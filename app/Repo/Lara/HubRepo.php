@@ -73,11 +73,6 @@ class HubRepo implements HubInterface
 
     public function allSchedules()
     {
-        // $schedules = $this->schedule->with("projectMailExpert")->whereNotNull('schedule')
-        //              ->orderBy('project_id', 'desc')
-        //              ->get();
-        // dd($schedules);
-        // die();
         return $this->schedule->whereNotNull('schedule')
             ->orderBy('project_id', 'desc')
             ->get();

@@ -7,6 +7,7 @@ use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Mews\Purifier\Purifier;
 use Backend\Model\Eloquent\ProjectMailExpert;
+use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Config;
 use Input;
 use PHPMailer;
@@ -22,6 +23,7 @@ class EmailSendController extends BaseController
         AdminerInterface $adminer,
         MailTemplateInterface $mt,
         ProjectInterface $project,
+        ProjectMailExpertInterface $porjectMailExpert,
         Purifier $purifier
     ) {
         parent::__construct();
@@ -29,6 +31,7 @@ class EmailSendController extends BaseController
         $this->adminer_repo = $adminer;
         $this->project_repo = $project;
         $this->mail_repo    = $mt;
+        $this->pme_repo     = $porjectMailExpert;
         $this->purifier     = $purifier;
     }
     public function hubMailSend()
@@ -47,6 +50,7 @@ class EmailSendController extends BaseController
         $contentData["frontPM_fname"] = "WhoKnow";
         if ($projectPM) {
             $tmpArr = explode(",", $projectPM);
+            //find frontPM & backendPM
             foreach ($tmpArr as $row) {
                 if (in_array($row, $frontPM)) {
                     $adminer = $this->adminer_repo->find($row);
@@ -88,6 +92,7 @@ class EmailSendController extends BaseController
         } else {
             $contentData["expert2_tag1"] = "";
         }
+        //set email content
         $template = $this->findTemplate(EmailSend::HUB_SCHEDULE_RELEASE);
         $basicTemplate = view('email_template.hwtrek-inline');
         $title = $emailr->content_replace($template->subject, $contentData);
@@ -96,6 +101,7 @@ class EmailSendController extends BaseController
         $emailData["address"] = $user->email;
         $emailData["title"] = $title;
         $emailData["body"] = $body;
+        //send mail
         $status = $emailr->send($emailData);
 
         //save project_expert table
@@ -104,12 +110,11 @@ class EmailSendController extends BaseController
             $experts[] = $input["expert1"];
             $experts[] = $input["expert2"];
             foreach ($experts as $expert) {
-                $projectMailExpertModel = new ProjectMailExpert();
-                $projectMailExpertModel->project_id = $input["projectId"];
-                $projectMailExpertModel->expert_id = $expert;
-                $projectMailExpertModel->admin_id = Session::get("admin");
-                $projectMailExpertModel->date_send = $date;
-                $projectMailExpertModel->save();
+                $data["expert_id"]  = $expert;
+                $data["project_id"] = $input["projectId"];
+                $data["admin_id"]   = Session::get("admin");
+                $data["date_send"]  = $date;
+                $this->pme_repo->insertItem($data);
 
             }
             $res   = ['status' => 'success'];
