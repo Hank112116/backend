@@ -1,28 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/**
-  * @jsx React.DOM
-  */
-
-'use strict';
-
-var React = require('react');
-var SolutionGallery = React.createFactory(require('./solution-gallery/components/SolutionGallery.react'));
-
-var gallery_wrapper = document.getElementById('solution-gallery'),
-    galleries = gallery_wrapper.dataset.solutionGallery ? JSON.parse(gallery_wrapper.dataset.solutionGallery) : [];
-
-React.render(SolutionGallery({
-	mode: gallery_wrapper.dataset.mode,
-	cover: gallery_wrapper.dataset.solutionCover,
-	galleries: galleries }), gallery_wrapper);
-
-var OwnerSelector = React.createFactory(require('./owner-select/components/OwnerSelector.react'));
-
-var user = $('#owner-selector').data('user');
-
-React.render(OwnerSelector({ user: user }), document.getElementById('owner-selector'));
-
-},{"./owner-select/components/OwnerSelector.react":4,"./solution-gallery/components/SolutionGallery.react":7,"react":168}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -82,7 +58,7 @@ var MemberSelector = (function () {
 exports["default"] = MemberSelector;
 module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -128,7 +104,7 @@ var OwnerInput = React.createClass({ displayName: 'OwnerInput',
 
 module.exports = OwnerInput;
 
-},{"../../../js/libs/MemberSelector":2,"react":168}],4:[function(require,module,exports){
+},{"../../../js/libs/MemberSelector":1,"react":168}],3:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -163,7 +139,7 @@ var OwnerSelector = React.createClass({ displayName: 'OwnerSelector',
 
 module.exports = OwnerSelector;
 
-},{"./OwnerInput.react":3,"./OwnerWrapper.react":5,"react":168}],5:[function(require,module,exports){
+},{"./OwnerInput.react":2,"./OwnerWrapper.react":4,"react":168}],4:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -190,7 +166,7 @@ var OwnerWrapper = React.createClass({ displayName: 'OwnerWrapper',
 
 module.exports = OwnerWrapper;
 
-},{"react":168}],6:[function(require,module,exports){
+},{"react":168}],5:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -218,7 +194,7 @@ var Cover = React.createClass({ displayName: 'Cover',
 
 module.exports = Cover;
 
-},{"react":168}],7:[function(require,module,exports){
+},{"react":168}],6:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -342,7 +318,7 @@ var SolutionGallery = React.createClass({ displayName: 'SolutionGallery',
 
 module.exports = SolutionGallery;
 
-},{"../utils/ImageParser":12,"./Cover.react":6,"./Thumb.react":8,"react":168}],8:[function(require,module,exports){
+},{"../utils/ImageParser":11,"./Cover.react":5,"./Thumb.react":7,"react":168}],7:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -429,7 +405,7 @@ var Thumb = React.createClass({ displayName: 'Thumb',
 
 module.exports = Thumb;
 
-},{"../utils/ImageParser":12,"./ThumbChoose.react":9,"./ThumbDelete.react":10,"./ThumbDescription.react":11,"react":168}],9:[function(require,module,exports){
+},{"../utils/ImageParser":11,"./ThumbChoose.react":8,"./ThumbDelete.react":9,"./ThumbDescription.react":10,"react":168}],8:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -452,7 +428,7 @@ var ThumbChoose = React.createClass({ displayName: 'ThumbChoose',
 
 module.exports = ThumbChoose;
 
-},{"react":168}],10:[function(require,module,exports){
+},{"react":168}],9:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -477,7 +453,7 @@ var ThumbDelete = React.createClass({ displayName: 'ThumbDelete',
 
 module.exports = ThumbDelete;
 
-},{"react":168}],11:[function(require,module,exports){
+},{"react":168}],10:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -525,7 +501,7 @@ var ThumbDescription = React.createClass({ displayName: 'ThumbDescription',
 
 module.exports = ThumbDescription;
 
-},{"react":168}],12:[function(require,module,exports){
+},{"react":168}],11:[function(require,module,exports){
 'use strict';
 
 var ImageParser = {
@@ -555,7 +531,31 @@ var ImageParser = {
 
 module.exports = ImageParser;
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+/**
+  * @jsx React.DOM
+  */
+
+'use strict';
+
+var React = require('react');
+var SolutionGallery = React.createFactory(require('./solution-gallery/components/SolutionGallery.react'));
+
+var gallery_wrapper = document.getElementById('solution-gallery'),
+    galleries = gallery_wrapper.dataset.solutionGallery ? JSON.parse(gallery_wrapper.dataset.solutionGallery) : [];
+
+React.render(SolutionGallery({
+	mode: gallery_wrapper.dataset.mode,
+	cover: gallery_wrapper.dataset.solutionCover,
+	galleries: galleries }), gallery_wrapper);
+
+var OwnerSelector = React.createFactory(require('./owner-select/components/OwnerSelector.react'));
+
+var user = $('#owner-selector').data('user');
+
+React.render(OwnerSelector({ user: user }), document.getElementById('owner-selector'));
+
+},{"./owner-select/components/OwnerSelector.react":3,"./solution-gallery/components/SolutionGallery.react":6,"react":168}],13:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -20365,4 +20365,4 @@ module.exports = warning;
 },{"./emptyFunction":127,"_process":13}],168:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":41}]},{},[1]);
+},{"./lib/React":41}]},{},[12]);

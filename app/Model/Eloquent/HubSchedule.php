@@ -19,12 +19,24 @@ class HubSchedule extends Project
     public static $unguarded = true;
     public $tasks = [];
     public $tasks_sum = 0;
-
+    public static $options = [
+        'notelevel'            => [
+            0 => 'Not graded', 1 => 'Grade A', 2 => 'Grade B',
+            3 => 'Grade C ', 4 => 'Grade D',
+        ],
+    ];
+    public function projectMailExpert()
+    {
+        return $this->hasMany(ProjectMailExpert::class, 'project_id', 'project_id');
+    }
     public function textFrontEditLink()
     {
         return "//" . config('app.front_domain') . "/hub/manage-schedule-panel/{$this->project_id}/admin-edit";
     }
-
+    public function textNoteLevel()
+    {
+         return static::$options['notelevel'][$this->hub_note_level];
+    }
     public function getOriginVersion()
     {
         $row = DB::table('pms_schedule_version')

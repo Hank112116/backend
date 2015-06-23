@@ -1,19 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/**
- * @jsx React.DOM
- */
-
-'use strict';
-
-var React = require('react');
-var Inbox = React.createFactory(require('./inbox/components/Inbox.react'));
-var InboxServerActions = require('./inbox/actions/InboxServerActions');
-
-InboxServerActions.boot();
-
-React.render(Inbox(null), document.getElementById('inbox'));
-
-},{"./inbox/actions/InboxServerActions":14,"./inbox/components/Inbox.react":16,"react":193}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -54,7 +39,8 @@ var Moment = (function () {
 exports["default"] = Moment;
 module.exports = exports["default"];
 
-},{"moment-timezone":36}],3:[function(require,module,exports){
+},{"moment-timezone":36}],2:[function(require,module,exports){
+// jshint unused: false
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -76,7 +62,7 @@ function alert(param) {
     }, param.handleOnConfirm);
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":12}],4:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":11}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -108,7 +94,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -241,7 +227,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],6:[function(require,module,exports){
+},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -414,7 +400,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -495,7 +481,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":6,"./handle-swal-dom":8}],8:[function(require,module,exports){
+},{"./handle-dom":5,"./handle-swal-dom":7}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -648,7 +634,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":4,"./handle-dom":6,"./injected-html":9,"./utils":11}],9:[function(require,module,exports){
+},{"./default-params":3,"./handle-dom":5,"./injected-html":8,"./utils":10}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -689,7 +675,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -909,7 +895,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],11:[function(require,module,exports){
+},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],10:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -984,7 +970,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1254,7 +1240,22 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":4,"./modules/handle-click":5,"./modules/handle-dom":6,"./modules/handle-key":7,"./modules/handle-swal-dom":8,"./modules/set-params":10,"./modules/utils":11}],13:[function(require,module,exports){
+},{"./modules/default-params":3,"./modules/handle-click":4,"./modules/handle-dom":5,"./modules/handle-key":6,"./modules/handle-swal-dom":7,"./modules/set-params":9,"./modules/utils":10}],12:[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+
+'use strict';
+
+var React = require('react');
+var Inbox = React.createFactory(require('./inbox/components/Inbox.react'));
+var InboxServerActions = require('./inbox/actions/InboxServerActions');
+
+InboxServerActions.boot();
+
+React.render(Inbox(null), document.getElementById('inbox'));
+
+},{"./inbox/actions/InboxServerActions":14,"./inbox/components/Inbox.react":16,"react":193}],13:[function(require,module,exports){
 'use strict';
 
 var AppDispatcher = require('../dispatchers/AppDispatcher');
@@ -1343,7 +1344,7 @@ var Delete = React.createClass({ displayName: 'Delete',
 
 module.exports = Delete;
 
-},{"../../../js/libs/SweetAlert":3,"react":193}],16:[function(require,module,exports){
+},{"../../../js/libs/SweetAlert":2,"react":193}],16:[function(require,module,exports){
 /**
  * @jsx React.DOM
  */
@@ -1582,7 +1583,7 @@ var Thread = React.createClass({ displayName: 'Thread',
 
 module.exports = Thread;
 
-},{"../../../js/libs/Moment":2,"../actions/InboxActions":13,"./Delete.react":15,"./Receiver.react":18,"./Sender.react":21,"react":193}],23:[function(require,module,exports){
+},{"../../../js/libs/Moment":1,"../actions/InboxActions":13,"./Delete.react":15,"./Receiver.react":18,"./Sender.react":21,"react":193}],23:[function(require,module,exports){
 /**
  * @jsx React.DOM
  */
@@ -1650,7 +1651,7 @@ var Threads = React.createClass({ displayName: 'Threads',
 
 module.exports = Threads;
 
-},{"../../../js/libs/Moment":2,"./Thread.react":22,"react":193}],24:[function(require,module,exports){
+},{"../../../js/libs/Moment":1,"./Thread.react":22,"react":193}],24:[function(require,module,exports){
 /**
  * @jsx React.DOM
  */
@@ -1693,7 +1694,7 @@ var Topics = React.createClass({ displayName: 'Topics',
 
 module.exports = Topics;
 
-},{"../../../js/libs/Moment":2,"../actions/InboxActions":13,"./Delete.react":15,"./Receiver.react":18,"./Sender.react":21,"./Threads.react":23,"react":193}],25:[function(require,module,exports){
+},{"../../../js/libs/Moment":1,"../actions/InboxActions":13,"./Delete.react":15,"./Receiver.react":18,"./Sender.react":21,"./Threads.react":23,"react":193}],25:[function(require,module,exports){
 'use strict';
 
 var keyMirror = require('react/lib/keyMirror');
@@ -40069,4 +40070,4 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}]},{},[1]);
+},{}]},{},[12]);

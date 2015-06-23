@@ -17,6 +17,7 @@ module.exports = [
     'landing-project-selector.js',
     'landing-hello.js',
     'hub-schedules.js',
+    'hub-questionnaires.js',
     'test.js',
     'landing-expert.js'
 ];

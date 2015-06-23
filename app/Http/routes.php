@@ -151,6 +151,8 @@ Route::group(['before' => 'backend.hub'], function () {
     Route::get('hub/questionnaires/approve/{project_id}', 'HubController@approveSchedule');
 
     Route::post('hub/update-schedule-manager/{id}', 'HubController@updateScheduleManager');
+    Route::post('hub/update-project-note', 'HubController@updateProjectNote');
+    Route::post('hub/get-expert', 'HubController@getExpert');
 });
 
 // Landing
@@ -196,6 +198,7 @@ Route::group(['before' => 'backend.login'], function () {
 });
 
 Route::post('/upload-editor-image', 'ImageUploadController@index');
+Route::post('/hub_email-send', 'EmailSendController@hubMailSend');
 
 get('add-a-log', function () {
     Log::info("Hello World");

@@ -1,18 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/**
-  * @jsx React.DOM
-  */
-
-'use strict';
-
-var React = require('react');
-var OwnerSelector = React.createFactory(require('./owner-select/components/OwnerSelector.react'));
-
-var user = $('#owner-selector').data('user');
-
-React.render(OwnerSelector({ user: user }), document.getElementById('owner-selector'));
-
-},{"./owner-select/components/OwnerSelector.react":4,"react":161}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -72,7 +58,21 @@ var MemberSelector = (function () {
 exports["default"] = MemberSelector;
 module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
+/**
+  * @jsx React.DOM
+  */
+
+'use strict';
+
+var React = require('react');
+var OwnerSelector = React.createFactory(require('./owner-select/components/OwnerSelector.react'));
+
+var user = $('#owner-selector').data('user');
+
+React.render(OwnerSelector({ user: user }), document.getElementById('owner-selector'));
+
+},{"./owner-select/components/OwnerSelector.react":4,"react":161}],3:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -118,7 +118,7 @@ var OwnerInput = React.createClass({ displayName: 'OwnerInput',
 
 module.exports = OwnerInput;
 
-},{"../../../js/libs/MemberSelector":2,"react":161}],4:[function(require,module,exports){
+},{"../../../js/libs/MemberSelector":1,"react":161}],4:[function(require,module,exports){
 /**
   * @jsx React.DOM
   */
@@ -19990,4 +19990,4 @@ module.exports = warning;
 },{"./emptyFunction":120,"_process":6}],161:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":34}]},{},[1]);
+},{"./lib/React":34}]},{},[2]);

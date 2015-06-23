@@ -1,5 +1,7 @@
 @extends('layouts.master')
-
+@section('jqui')
+    @include('layouts.jqui')
+@stop
 @section('css')
     @cssLoader('hub-schedules')
 @stop
@@ -27,21 +29,41 @@
                 <th>#</th>
                 <th class="table--name">Project</th>
                 <th>User</th>
+                <th>Note</th>
                 <th></th>
+                <th>Approve & Versions</th>
             </tr>
 
             @foreach($schedules as $s)
             <tr>
                 <td>{!! $s->project_id !!}</td>
                 <td class="table--name">
-                    <a href="{!! $s->textFrontLink() !!}" target="_blank">{!! $s->project_title !!}</a>
+                    <a href="{!! $s->textFrontLink() !!}" target="_blank">{{ $s->project_title }}</a>
                 </td>
                 <td>
                     @if($s->user)
-                    <a href="{!! $s->user->textFrontLink() !!}" target="_blank">{!! $s->user->textFullName() !!}</a>
+                    <a href="{!! $s->user->textFrontLink() !!}" target="_blank">{{ $s->user->textFullName() }}</a>
                     @endif
                 </td>
                 <td>
+                    @if($s->hub_note)
+                    <a href="javascript:void(0)"
+                                class="note" rel="{!! $s->project_id !!}" note="{!! $s->hub_note !!}" level="{!! $s->hub_note_level !!}">
+                    {{ $s->textNoteLevel() }} : {{ $s->hub_note }}
+                    </a>
+                    @else
+                    <div class="process-btns">
+                        <a href="javascript:void(0)"
+                                class="btn-mini btn-danger note" rel="{!! $s->project_id !!}" note="{!! $s->hub_note !!}" level="{!! $s->hub_note_level !!}">
+                                <i class="fa fa-pencil fa-fw"></i>NOTE</a>
+                    </div>
+                    @endif
+
+                </td>
+                <td>
+                    
+                </td>
+                <td class="table-solid">
                     @if($s->isDeleted())
                         <a href="" class="btn btn-primary btn-disabled" disabled>This project was deleted</a>
                     @else
@@ -78,7 +100,19 @@
 
     </div>
 </div>
-
+<div id="dialog" class="ui-widget" title="Edit Note" style="display:none">
+    <p>Note:</p>
+    <select id="level">
+        <option value="0">Not graded</option>
+        <option value="1">Grade A</option>
+        <option value="2">Grade B</option>
+        <option value="3">Grade C</option>
+        <option value="4">Grade D</option>
+    </select>
+    <textarea id="note" rows="4" cols="50"></textarea>
+    <button id="edit_note">Edit Note</button>
+    <input type="hidden" id="note_project_id" value="">
+</div>
 @stop
 
 

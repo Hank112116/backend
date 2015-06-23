@@ -7,7 +7,7 @@
     <meta name="env"    content="{!! App::environment() !!}">
     <meta name="token"  content="{!! Session::token() !!}">
 
-    <meta name="noty-msg"  content = "{!! Session::get('noty.msg') !!}">
+    <meta name="noty-msg"  content = "{{ Session::get('noty.msg') }}">
     <meta name="noty-type" content = "{!! Session::get('noty.type') !!}">
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -17,6 +17,7 @@
     @yield('css')
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    @yield('jqui')
 </head>
 
 <body>

@@ -1,11 +1,14 @@
 @extends('layouts.master')
 @include('layouts.macro')
-
+@section('jqui')
+    @include('layouts.jqui')
+@stop
 @section('css')
     @cssLoader('hub-questionnaires')
 @stop
 
 @section('js')
+    @jsLoader('hub-questionnaires')
 @stop
 
 @section('content')
@@ -36,8 +39,10 @@
                 <th class="table--text-right">Estimate Quantity</th>
                 <th>Shipout Date</th>
                 <th>Submit Date</th>
+                <th>Status</th>
                 <th>Approved</th>
                 <th>PM</th>
+                <th>Note</th>
                 <th></th>
             </tr>
 
@@ -52,7 +57,34 @@
 
     </div>
 </div>
+<div id="dialog" class="ui-widget" title="Send mail" style="display:none">
+    <table class="table table-striped">
+        <tr>
+            <td>Expert</td>
+            <td>
+                <input type="text" id="expert1" placeholder="Expert Id">            
+            </td>
+            <td class="table--text-left">
+                <span id="expert1Info"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Expert</td>
+            <td>
+                <input type="text" id="expert2" placeholder="Expert Id">
+            </td>
+            <td class="table--text-left">
+                <span id="expert2Info"></span>
+            </td>
+        </tr>
 
+    </table>
+    <input type="hidden" id="projectId">
+    <input type="hidden" id="projectTitle">
+    <input type="hidden" id="userId">
+    <input type="hidden" id="PM">
+    <button id="sendMail">SendMail</button>
+</div>
 @include('layouts.paginate', ['collection' => $questionnaires, 'per_page' => isset($per_page)? $per_page : ''])
 
 
