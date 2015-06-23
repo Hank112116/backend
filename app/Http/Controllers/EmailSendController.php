@@ -65,6 +65,10 @@ class EmailSendController extends BaseController
                 }
             }
         }
+        if ($contentData["frontPM_fname"] == "WhoKnow") {
+            $res   = ['status' => 'fail', "msg" => "Not found frontPM!"];
+            return Response::json($res);
+        }
         //set mail content
         $contentData["project_24char_title"] = $input["projectTitle"];
         $contentData["owner_fname"] = $user->user_name;

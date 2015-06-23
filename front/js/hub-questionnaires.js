@@ -25,12 +25,12 @@ $(function () {
     $("#expert1").change(function () {
         var $expert1Info = $("#expert1Info");
         $expert1Info.empty();
-        $expert1Info.append('<img id="theImg" width="25px" src="/images/loading_small.gif" />');
+        $expert1Info.append('<i class="fa fa-refresh fa-spin"></i>');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "get-expert",
+            url: "./get-expert",
             data: { 
                 expertId: expertId
             },
@@ -43,12 +43,12 @@ $(function () {
     $("#expert2").change(function () {
         var $expert2Info = $("#expert2Info");
         $expert2Info.empty();
-        $expert2Info.append('<img id="theImg" width="25px" src="/images/loading_small.gif" />');
+        $expert2Info.append('<i class="fa fa-refresh fa-spin"></i>');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "get-expert",
+            url: "./get-expert",
             data: { 
                 expertId: expertId
             },
@@ -67,7 +67,7 @@ $(function () {
         var userId = $("#userId").val();
         var PM = $("#PM").val();
         if(expert1 && expert2 && PM){
-            $("#dialog").html('<img id="theImg" width="150px" src="../images/loading.gif" />');
+            $("#dialog").html('<img width="150px" src="../images/loading.gif"/>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
@@ -83,6 +83,7 @@ $(function () {
                 success: function success(feeback) {
                     if (feeback.status === "fail") {
                         Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        location.reload();
                         return;
                     }
                     $( "#dialog" ).dialog( "close" );

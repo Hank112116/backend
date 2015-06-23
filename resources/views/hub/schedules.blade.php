@@ -54,7 +54,7 @@
                     @else
                     <div class="process-btns">
                         <a href="javascript:void(0)"
-                                class="btn-mini btn-danger note" rel="{!! $s->project_id !!}" note="{!! $s->hub_note !!}" level="{!! $s->hub_note_level !!}">
+                                class="btn-mini btn-danger note" rel="{!! $s->project_id !!}" note="{{ $s->hub_note }}" level="{!! $s->hub_note_level !!}">
                                 <i class="fa fa-pencil fa-fw"></i>NOTE</a>
                     </div>
                     @endif
