@@ -33,8 +33,6 @@ $(function () {
     });
 
     $(".note").click(function () {
-        $("#note").text();
-        $("#note_project_id").val();
         var $this = $(this);
         var projectId = $this.attr("rel");
         var note = $this.attr("note");
