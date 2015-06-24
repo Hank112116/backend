@@ -237,7 +237,7 @@
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>
             <div class="col-md-9">
-                {!! Form::textarea('user_about', $user->user_about,
+                {!! Form::textarea('user_about', Purifier::clean($user->user_about),
                     ['placeholder' => 'Biography', 'class'=>'js-editor', 'id'=>'biography']) !!}
             </div>
         </div>
