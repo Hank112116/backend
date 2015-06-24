@@ -7,6 +7,8 @@ var _libsSweetAlert = require("./libs/SweetAlert");
 
 var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
+require("./libs/MailSchedule.js");
+
 $(function () {
     $(".js-approve").click(function (e) {
         e.preventDefault();
@@ -40,7 +42,7 @@ $(function () {
         $("#note").text(note);
         $("#level").val(level);
         $("#note_project_id").val(projectId);
-        $("#dialog").dialog({
+        $("#note_dialog").dialog({
             height: 270,
             width: 500
         });
@@ -64,7 +66,7 @@ $(function () {
                     Notifier.showTimedMessage(feeback.msg, "warning", 2);
                     return;
                 }
-                $("#dialog").dialog("close");
+                $("#note_dialog").dialog("close");
                 Notifier.showTimedMessage("Update successful", "information", 2);
                 location.reload();
             }
@@ -72,7 +74,115 @@ $(function () {
     });
 });
 
-},{"./libs/SweetAlert":2}],2:[function(require,module,exports){
+},{"./libs/MailSchedule.js":2,"./libs/SweetAlert":3}],2:[function(require,module,exports){
+/* jshint quotmark: false */
+"use strict";
+
+$(function () {
+    //open dialog
+    $(".sendmail").click(function () {
+        var $this = $(this);
+        $("#expert1").val("");
+        $("#expert2").val("");
+        $("#expert1Info").empty();
+        $("#expert2Info").empty();
+        var projectId = $this.attr("projectId");
+        var projectTitle = $this.attr("projectTitle");
+        var userId = $this.attr("userId");
+        var PM = $this.attr("PM");
+        $("#projectId").val(projectId);
+        $("#projectTitle").val(projectTitle);
+        $("#userId").val(userId);
+        $("#PM").val(PM);
+        $("#dialog").dialog({
+            height: 270,
+            width: 600
+        });
+    });
+    //search expert info
+    $("#expert1").change(function () {
+        var $expert1Info = $("#expert1Info");
+        $expert1Info.empty();
+        $expert1Info.append("<i class=\"fa fa-refresh fa-spin\"></i>");
+        var $this = $(this);
+        var expertId = $this.val();
+        $.ajax({
+            type: "POST",
+            url: "./get-expert",
+            data: {
+                expertId: expertId
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                $expert1Info.text(feeback.msg);
+            }
+        });
+    });
+    $("#expert2").change(function () {
+        var $expert2Info = $("#expert2Info");
+        $expert2Info.empty();
+        $expert2Info.append("<i class=\"fa fa-refresh fa-spin\"></i>");
+        var $this = $(this);
+        var expertId = $this.val();
+        $.ajax({
+            type: "POST",
+            url: "./get-expert",
+            data: {
+                expertId: expertId
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                $expert2Info.text(feeback.msg);
+            }
+        });
+    });
+    //send mail
+    $("#sendMail").click(function () {
+        var expert1 = $("#expert1").val();
+        var expert2 = $("#expert2").val();
+        var projectId = $("#projectId").val();
+        var projectTitle = $("#projectTitle").val();
+        var userId = $("#userId").val();
+        var PM = $("#PM").val();
+        if (expert1 && expert2 && PM) {
+            $("#dialog").html("<i class=\"fa fa-refresh fa-spin\" style=\"font-size: 150px;\"></i>");
+            $.ajax({
+                type: "POST",
+                url: "/hub_email-send",
+                data: {
+                    expert1: expert1,
+                    expert2: expert2,
+                    projectId: projectId,
+                    projectTitle: projectTitle,
+                    userId: userId,
+                    PM: PM
+                },
+                dataType: "JSON",
+                success: function success(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        location.reload();
+                        return;
+                    }
+                    $("#dialog").dialog("close");
+                    Notifier.showTimedMessage("Send mail successful", "information", 2);
+                    location.reload();
+                }
+            });
+        } else {
+            var errorMsg = "";
+            if (!PM) {
+                errorMsg = errorMsg + "PM is empty! ";
+            }
+            if (!expert1 || !expert2) {
+                errorMsg = errorMsg + "Expert is empty!";
+            }
+            Notifier.showTimedMessage(errorMsg, "warning", 2);
+        }
+    });
+});
+
+},{}],3:[function(require,module,exports){
 // jshint unused: false
 "use strict";
 
@@ -95,7 +205,7 @@ function alert(param) {
     }, param.handleOnConfirm);
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":11}],3:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":12}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -127,7 +237,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -260,7 +370,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],5:[function(require,module,exports){
+},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -433,7 +543,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -514,7 +624,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7}],7:[function(require,module,exports){
+},{"./handle-dom":6,"./handle-swal-dom":8}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -667,7 +777,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":3,"./handle-dom":5,"./injected-html":8,"./utils":10}],8:[function(require,module,exports){
+},{"./default-params":4,"./handle-dom":6,"./injected-html":9,"./utils":11}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -708,7 +818,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -928,7 +1038,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],10:[function(require,module,exports){
+},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],11:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1003,7 +1113,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1273,4 +1383,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":3,"./modules/handle-click":4,"./modules/handle-dom":5,"./modules/handle-key":6,"./modules/handle-swal-dom":7,"./modules/set-params":9,"./modules/utils":10}]},{},[1]);
+},{"./modules/default-params":4,"./modules/handle-click":5,"./modules/handle-dom":6,"./modules/handle-key":7,"./modules/handle-swal-dom":8,"./modules/set-params":10,"./modules/utils":11}]},{},[1]);

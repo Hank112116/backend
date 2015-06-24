@@ -73,9 +73,35 @@ class HubRepo implements HubInterface
 
     public function allSchedules()
     {
-        return $this->schedule->whereNotNull('schedule')
+        $allSchedules = $this->schedule->with('projectMailExpert')->whereNotNull('schedule')
             ->orderBy('project_id', 'desc')
             ->get();
+        foreach ($allSchedules as $schedule) {
+            $experts = [];
+            $dateSend = false;
+            $adminName = false;
+            $i = 0;
+            foreach ($schedule->projectMailExpert as $projectMailExpert) {
+                $admin = $this->admin->find($projectMailExpert->admin_id);
+                $user = $this->user->find($projectMailExpert->expert_id);
+                $projectMailExpert->admin_name = $admin->name;
+                $experts[$i]["id"] = $projectMailExpert->expert_id;
+                $experts[$i]["link"] = $user->textFrontLink();
+                $adminName = $admin->name;
+                $dt = Carbon::parse($projectMailExpert->date_send);
+                $dateSend = $dt->year."-".$dt->month."-".$dt->day;
+                $i++;
+            }
+            if (isset($dateSend) && isset($adminName)) {
+                $schedule->mail_send_time    = $dateSend;
+                $schedule->mail_send_admin   = $adminName;
+                $schedule->mail_send_experts = $experts;
+            }
+        }
+        return $allSchedules;
+        // return $this->schedule->with('projectMailExpert')->whereNotNull('schedule')
+        //     ->orderBy('project_id', 'desc')
+        //     ->get();
     }
 
     public function approveSchedule(HubSchedule $schedule)
