@@ -124,6 +124,14 @@ class HubQuestionnaire extends \Eloquent
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+    public function projectMailExpert()
+    {
+        return $this->hasMany(ProjectMailExpert::class, 'project_id', 'project_id');
+    }
 
     private function explodeAttr($arr = '')
     {

@@ -5,10 +5,14 @@ namespace Backend\Http\Controllers;
 use Backend\Repo\RepoInterfaces\HubInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
+use Backend\Repo\RepoInterfaces\ProjectInterface;
+use Mews\Purifier\Purifier;
 use Config;
 use Input;
 use Noty;
 use Redirect;
+use Response;
+use Carbon;
 
 class HubController extends BaseController
 {
@@ -18,13 +22,17 @@ class HubController extends BaseController
     public function __construct(
         HubInterface $hub,
         UserInterface $user,
-        AdminerInterface $adminer
+        AdminerInterface $adminer,
+        ProjectInterface $project,
+        Purifier $purifier
     ) {
         parent::__construct();
 
         $this->hub_repo     = $hub;
         $this->user_repo    = $user;
         $this->adminer_repo = $adminer;
+        $this->project_repo = $project;
+        $this->purifier     = $purifier;
     }
 
     /**
@@ -101,8 +109,8 @@ class HubController extends BaseController
     {
         $schedule = $this->hub_repo->findSchedule($id);
         $this->hub_repo->updateScheduleManagers($schedule, Input::all());
-
-        Noty::success("Project [{$schedule->project_title}] managers is updated");
+        $projectTitle = $this->purifier->clean($schedule->project_title);
+        Noty::success("Project [{$projectTitle}] managers is updated");
 
         return Redirect::action('HubController@indexQuestionnaire');
     }
@@ -122,5 +130,37 @@ class HubController extends BaseController
         Noty::success("Project [{$schedule->project_title}] is approved");
 
         return Redirect::action('HubController@indexSchedule');
+    }
+    /**
+     * @param $projectId $note
+     * @return mixed
+     */
+    public function updateProjectNote()
+    {
+        $input = Input::all();
+        $data["hub_note"] = $input["note"];
+        $data["hub_note_level"] = $input["level"];
+        if ($this->project_repo->updateNote($input["projectId"], $data)) {
+            $res   = ['status' => 'success'];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+        }
+        return Response::json($res);
+    }
+    /**
+     * @param $expertId
+     * @return mixed
+     */
+    public function getExpert()
+    {
+        $input = Input::all();
+        $expert = $this->user_repo->findExpert($input["expertId"]);
+
+        if (sizeof($expert) >0) {
+            $res   = ['msg' => "{$expert[0]->user_name} ({$expert[0]->company})"];
+        } else {
+            $res   = ['msg' => 'no expert'];
+        }
+        return Response::json($res);
     }
 }

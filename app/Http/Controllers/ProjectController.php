@@ -23,7 +23,6 @@ class ProjectController extends BaseController
     public function showList()
     {
         $projects = $this->project_repo->byPage($this->page, $this->per_page);
-
         return $this->showProjects($projects);
     }
 
@@ -71,7 +70,6 @@ class ProjectController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($projects);
         }
-        
         return view('project.list')
             ->with([
                 'title'         => $title ?: 'projects',

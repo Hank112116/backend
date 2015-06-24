@@ -1,37 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var _libsMoment = require("./libs/Moment");
-
-var _libsMoment2 = _interopRequireDefault(_libsMoment);
-
-var _modulesDatePicker = require("./modules/date-picker");
-
-var datePicker = _interopRequireWildcard(_modulesDatePicker);
-
-var _modulesSearchList = require("./modules/search-list");
-
-var searchList = _interopRequireWildcard(_modulesSearchList);
-
-window.Moment = _libsMoment2["default"];
-
-$(function () {
-    datePicker.init();
-    searchList.init();
-
-    $("[data-ago]").each(function (index, block) {
-        var $self = $(block);
-        $self.html(_libsMoment2["default"].ago($self.data("ago")));
-    });
-});
-
-},{"./libs/Moment":2,"./modules/date-picker":3,"./modules/search-list":4}],2:[function(require,module,exports){
-"use strict";
-
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
@@ -70,7 +39,38 @@ var Moment = (function () {
 exports["default"] = Moment;
 module.exports = exports["default"];
 
-},{"moment-timezone":6}],3:[function(require,module,exports){
+},{"moment-timezone":6}],2:[function(require,module,exports){
+"use strict";
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _libsMoment = require("./libs/Moment");
+
+var _libsMoment2 = _interopRequireDefault(_libsMoment);
+
+var _modulesDatePicker = require("./modules/date-picker");
+
+var datePicker = _interopRequireWildcard(_modulesDatePicker);
+
+var _modulesSearchList = require("./modules/search-list");
+
+var searchList = _interopRequireWildcard(_modulesSearchList);
+
+window.Moment = _libsMoment2["default"];
+
+$(function () {
+    datePicker.init();
+    searchList.init();
+
+    $("[data-ago]").each(function (index, block) {
+        var $self = $(block);
+        $self.html(_libsMoment2["default"].ago($self.data("ago")));
+    });
+});
+
+},{"./libs/Moment":1,"./modules/date-picker":3,"./modules/search-list":4}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4234,4 +4234,4 @@ moment.tz.load(require('./data/packed/latest.json'));
     return _moment;
 
 }));
-},{}]},{},[1]);
+},{}]},{},[2]);

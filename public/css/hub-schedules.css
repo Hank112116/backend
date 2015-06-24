@@ -6083,11 +6083,17 @@ body.stop-scrolling {
 
 /* line 4, ../../front/sass/hub-schedules.scss */
 .page-header--notice {
-  font-size: 1.3em;
   color: #f4c37d;
+  font-size: 1.3em;
 }
 
-/* line 10, ../../front/sass/hub-schedules.scss */
-.process-btns .btn-mini, .version-btns .btn-mini {
+/* line 11, ../../front/sass/hub-schedules.scss */
+.process-btns .btn-mini,
+.version-btns .btn-mini {
   min-width: 8em;
+}
+
+/* line 16, ../../front/sass/hub-schedules.scss */
+.table-solid {
+  border-left: 2px solid;
 }
