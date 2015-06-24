@@ -64,8 +64,8 @@ class EmailSend
     private $mailSetting;
     public function send($data)
     {
-
-        $this->mailSetting = config('email');
+        $env = env('APP_ENV');
+        $this->mailSetting = config("email.{$env}");
         $this->mailer      = new PHPMailer();
 
         $this->mailer->isSMTP();
@@ -87,7 +87,7 @@ class EmailSend
             $this->mailer->addCC($data["cc"]);
         }
         if (isset($data["bcc"])) {
-            foreach($data["bcc"] as $row){
+            foreach ($data["bcc"] as $row) {
                 $this->mailer->addBCC($row);
             }
         }

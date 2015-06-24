@@ -36,12 +36,18 @@ class EmailSendController extends BaseController
     }
     public function hubMailSend()
     {
+        $env = env('APP_ENV');
+        $emailConfig = Config::get("email.{$env}");
         //PM user_id
-        $frontPM = [12,13,14,16];
-        $backPM  = [2,3,7,8];
+        $frontPM = $emailConfig['frontPM'];
+        $backPM  = $emailConfig['backendPM'];
         $input   = Input::all();
         $expert1 = $this->user_repo->findExpert($input["expert1"]);
         $expert2 = $this->user_repo->findExpert($input["expert2"]);
+        if (sizeof($expert1) <= 0 || sizeof($expert2) <= 0) {
+            $res   = ['status' => 'fail', "msg" => "Error expert id!"];
+            return Response::json($res);
+        }
         $user    = $this->user_repo->find($input["userId"]);
         $project = $this->project_repo->find($input["projectId"]);
         $emailr  = new EmailSend;
@@ -60,7 +66,7 @@ class EmailSendController extends BaseController
                 }
                 if (in_array($row, $backPM)) {
                     $adminer = $this->adminer_repo->find($row);
-                    $emailData["bcc"] = Config::get('email.bcc');
+                    $emailData["bcc"] = $emailConfig["bcc"];
                     array_push($emailData["bcc"], $adminer->email);
                 }
             }
