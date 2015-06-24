@@ -1,35 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
-
-var _libsFormUtility = require("./libs/FormUtility");
-
-var FormUtility = _interopRequireWildcard(_libsFormUtility);
-
-var _modulesIcheck = require("./modules/icheck");
-
-var icheck = _interopRequireWildcard(_modulesIcheck);
-
-var _libsProjectUpdater = require("./libs/ProjectUpdater");
-
-var _libsProjectUpdater2 = _interopRequireDefault(_libsProjectUpdater);
-
-$(function () {
-    icheck.initRadio();
-
-    FormUtility.locationSelector($("#country"));
-    FormUtility.locationSelector($("#city"));
-
-    FormUtility.editor();
-    new _libsProjectUpdater2["default"]().initSelectTag($("[data-select-tags=expertises]"));
-});
-
-},{"./libs/FormUtility":2,"./libs/ProjectUpdater":3,"./modules/icheck":4}],2:[function(require,module,exports){
-"use strict";
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -96,7 +67,7 @@ function editor() {
     });
 }
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -236,7 +207,7 @@ var ProjectUpdater = (function () {
 exports["default"] = ProjectUpdater;
 module.exports = exports["default"];
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -257,4 +228,33 @@ function initRadio() {
     });
 }
 
-},{}]},{},[1]);
+},{}],4:[function(require,module,exports){
+"use strict";
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+var _libsFormUtility = require("./libs/FormUtility");
+
+var FormUtility = _interopRequireWildcard(_libsFormUtility);
+
+var _modulesIcheck = require("./modules/icheck");
+
+var icheck = _interopRequireWildcard(_modulesIcheck);
+
+var _libsProjectUpdater = require("./libs/ProjectUpdater");
+
+var _libsProjectUpdater2 = _interopRequireDefault(_libsProjectUpdater);
+
+$(function () {
+    icheck.initRadio();
+
+    FormUtility.locationSelector($("#country"));
+    FormUtility.locationSelector($("#city"));
+
+    FormUtility.editor();
+    new _libsProjectUpdater2["default"]().initSelectTag($("[data-select-tags=expertises]"));
+});
+
+},{"./libs/FormUtility":1,"./libs/ProjectUpdater":2,"./modules/icheck":3}]},{},[4]);

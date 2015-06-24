@@ -137,7 +137,8 @@ var Cropper = React.createClass({ displayName: 'Cropper',
 		this.setState({
 			image: DataUrlGenerator.imageObjToDataUrl(this.state.image_obj, spot),
 			container_top: spot.top,
-			container_left: spot.left });
+			container_left: spot.left
+		});
 	},
 
 	getInitialState: function getInitialState() {
@@ -269,7 +270,8 @@ var ResetImageData = {
 		return {
 			width: width,
 			left: mouse.x,
-			top: mouse.y - (height_rationed - height) };
+			top: mouse.y - (height_rationed - height)
+		};
 	},
 
 	getNorthEestSpot: function getNorthEestSpot(container, mouse) {
@@ -296,7 +298,8 @@ var ResetImageData = {
 		return {
 			width: mouse.x - container.left,
 			left: container.left,
-			top: container.top };
+			top: container.top
+		};
 	}
 };
 

@@ -107,7 +107,7 @@
 			<div class="panel panel-default">
 			  <div class="panel-heading">Biography</div>
 			  <div class="panel-body">
-			    {!! $user->user_about !!}
+			    {!! Purifier::clean($user->user_about) !!}
 			  </div>
 			</div>			
 		</div>

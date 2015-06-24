@@ -235,4 +235,12 @@ class ProjectRepo implements ProjectInterface
     {
         $this->project_modifier->toSubmittedPublicProject($project_id);
     }
+    public function updateNote($project_id, $data)
+    {
+        $model = new Project();
+        $project = $model->find($project_id);
+        $project->hub_note = $data["hub_note"];
+        $project->hub_note_level = $data["hub_note_level"];
+        return $project->save();
+    }
 }

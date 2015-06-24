@@ -111,7 +111,7 @@
 		<!-- Description -->
 		@include('modules.detail-panel', [
 			'column_title' => 'Solution description & specifications',
-			'column_content' => $solution->description
+			'column_content' => Purifier::clean($solution->description)
 		])
 		<!-- End Description -->
 

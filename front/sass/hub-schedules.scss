@@ -2,12 +2,17 @@
 @import "modules/list-table";
 
 .page-header--notice {
-  font-size: 1.3em;
   color: lighten($brand-warning, 10%);
+  font-size: 1.3em;
 }
 
-.process-btns, .version-btns {
+.process-btns, 
+.version-btns {
   .btn-mini {
     min-width: 8em;
   }
+}
+
+.table-solid {
+  border-left: 2px solid;
 }

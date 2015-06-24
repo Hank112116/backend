@@ -32,6 +32,7 @@ class AuthController extends BaseController
         $user =  Auth::user();
 
         Session::put('cert', $user->role->cert);
+        Session::put('admin', $user->id);
         Noty::success('Welcome, ' . $user->name . ". Login success");
 
         return redirect('/user/all');

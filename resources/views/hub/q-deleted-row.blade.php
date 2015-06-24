@@ -13,9 +13,15 @@
     <td class="table--text-right"></td>
     <td>{{-- Deleted Schedule ship_date --}}</td>
     <td>{{-- Deleted Schedule date_added --}}</td>
+    <td>
+        @if(isset($q->schedule->profile->text_status))
+        {!! $q->schedule->profile->text_status !!}
+        @endif
+    </td>
+    <td>{{-- Deleted Schedule --}}</td>
+    <td>{{-- Deleted Schedule --}}</td>
+    <td>{{-- Deleted Schedule --}}</td>
 
-    <td>{{-- Deleted Schedule --}}</td>
-    <td>{{-- Deleted Schedule --}}</td>
 
     <td>
         <a class="btn-mini" href="{!! action('HubController@showQuestionnaireDetail', $q->questionnaire_id) !!}">
