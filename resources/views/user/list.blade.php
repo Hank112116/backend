@@ -70,7 +70,7 @@
 
                     <td class="table--width-limit">
                         {{ $user->company }}<br/>
-                        <span class="table--text-light">{!! $user->business_id  !!}</span>
+                        <span class="table--text-light">{{ $user->business_id  }}</span>
                     </td>
 
                     <td>
