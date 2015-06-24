@@ -1,16 +1,9 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
-require("./libs/MailSchedule.js");
-
-},{"./libs/MailSchedule.js":2}],2:[function(require,module,exports){
 /* jshint quotmark: false */
-"use strict";
-
 $(function () {
     //open dialog
-    $(".sendmail").click(function () {
+    $( ".sendmail" ).click(function () {
         var $this = $(this);
-        $("#expert1").val("");
+        $("#expert1").val("") ;
         $("#expert2").val("");
         $("#expert1Info").empty();
         $("#expert2Info").empty();
@@ -31,13 +24,13 @@ $(function () {
     $("#expert1").change(function () {
         var $expert1Info = $("#expert1Info");
         $expert1Info.empty();
-        $expert1Info.append("<i class=\"fa fa-refresh fa-spin\"></i>");
+        $expert1Info.append('<i class="fa fa-refresh fa-spin"></i>');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
             type: "POST",
             url: "./get-expert",
-            data: {
+            data: { 
                 expertId: expertId
             },
             dataType: "JSON",
@@ -49,13 +42,13 @@ $(function () {
     $("#expert2").change(function () {
         var $expert2Info = $("#expert2Info");
         $expert2Info.empty();
-        $expert2Info.append("<i class=\"fa fa-refresh fa-spin\"></i>");
+        $expert2Info.append('<i class="fa fa-refresh fa-spin"></i>');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
             type: "POST",
             url: "./get-expert",
-            data: {
+            data: { 
                 expertId: expertId
             },
             dataType: "JSON",
@@ -65,21 +58,21 @@ $(function () {
         });
     });
     //send mail
-    $("#sendMail").click(function () {
+    $("#sendMail").click(function(){
         var expert1 = $("#expert1").val();
         var expert2 = $("#expert2").val();
         var projectId = $("#projectId").val();
         var projectTitle = $("#projectTitle").val();
         var userId = $("#userId").val();
         var PM = $("#PM").val();
-        if (expert1 && expert2 && PM) {
-            $("#dialog").html("<i class=\"fa fa-refresh fa-spin\" style=\"font-size: 150px;\"></i>");
+        if(expert1 && expert2 && PM){
+            $("#dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
-                data: {
-                    expert1: expert1,
-                    expert2: expert2,
+                data: { 
+                    expert1:  expert1,
+                    expert2:  expert2,
                     projectId: projectId,
                     projectTitle: projectTitle,
                     userId: userId,
@@ -92,22 +85,21 @@ $(function () {
                         location.reload();
                         return;
                     }
-                    $("#dialog").dialog("close");
+                    $( "#dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Send mail successful", "information", 2);
                     location.reload();
                 }
             });
-        } else {
+        }else{
             var errorMsg = "";
-            if (!PM) {
+            if(!PM){
                 errorMsg = errorMsg + "PM is empty! ";
             }
-            if (!expert1 || !expert2) {
+            if(!expert1 || !expert2){
                 errorMsg = errorMsg + "Expert is empty!";
             }
             Notifier.showTimedMessage(errorMsg, "warning", 2);
         }
     });
-});
 
-},{}]},{},[1]);
+});
