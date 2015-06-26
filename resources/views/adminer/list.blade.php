@@ -31,7 +31,7 @@
                 <th>Name</th>
                 <th>EMail</th>
                 <th>Role</th>
-                <th>HwTrek</th>
+                <th>HWTrek</th>
                 <th></th>
             </tr>
 
