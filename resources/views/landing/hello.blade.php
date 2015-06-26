@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader('landing-hello')
+    <link rel="stylesheet" href="/css/landing-hello.css">
 @stop
 
 @section('js')
-    @jsLoader('landing-hello')
+    <script src='/js/landing-hello.js'></script>
 @stop
 
 @section('content')

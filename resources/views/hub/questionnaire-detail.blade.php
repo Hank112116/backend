@@ -2,7 +2,7 @@
 @include('layouts.macro')
 
 @section('css')
-    @cssLoader('questionnaire-detail')
+    <link rel="stylesheet" href="/css/questionnaire-detail.css">
 @stop
 
 @section('content')

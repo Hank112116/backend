@@ -4,11 +4,11 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    @cssLoader('hub-questionnaires')
+    <link rel="stylesheet" href="/css/hub-questionnaires.css">
 @stop
 
 @section('js')
-    @jsLoader('hub-questionnaires')
+    <script src='/js/hub-questionnaires.js'></script>
 @stop
 
 @section('content')

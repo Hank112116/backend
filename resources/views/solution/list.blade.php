@@ -2,11 +2,11 @@
 @include('layouts.macro')
 
 @section('css')
-    @cssLoader('solution-list')
+    <link rel="stylesheet" href="/css/solution-list.css">
 @stop
 
 @section('js')
-    @jsLoader('list')
+    <script src='/js/list.js'></script>
 @stop
 
 @section('content')

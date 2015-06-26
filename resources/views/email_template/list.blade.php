@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader('mail-template-list')
+    <link rel="stylesheet" href="/css/mail-template-list.css">
 @stop
 
 @section('content')

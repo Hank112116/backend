@@ -2,7 +2,7 @@
 @include('layouts.macro')
 
 @section('css')
-	@cssLoader('product-detail')
+    <link rel="stylesheet" href="/css/product-detail.css">
 @stop
 
 @section('content')
@@ -15,7 +15,7 @@
             <i class="fa fa-eye"></i> Project Page
         </a>
 
-        {{
+        {!!
             link_to_action('ProductController@showProjectUpdate', 'EDIT',
                 $project->project_id, ['class' => 'btn-mini'])
         !!}

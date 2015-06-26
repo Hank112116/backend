@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader("user-update")
+    <link rel="stylesheet" href="/css/user-update.css">
 @stop
 
 @section('js')
     <script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en'></script>
-    @jsLoader("user-update")
+    <script src='/js/user-update.js'></script>
 @stop
 
 @section('content')

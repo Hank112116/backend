@@ -58,7 +58,7 @@ class SolutionRepo implements SolutionInterface
 
     public function isWaitApproveOngoing($solution_id)
     {
-        $duplicate_ids = $this->duplicate->waitApproveSolutionIds();
+        $duplicate_ids = $this->duplicate->waitApproveSolutionIds()->toArray();
 
         return in_array($solution_id, $duplicate_ids);
     }
@@ -150,8 +150,8 @@ class SolutionRepo implements SolutionInterface
 
     public function configApprove($solutions)
     {
-        $drafts     = $this->waitApproveSolutionIds();
-        $ongoings   = $this->duplicate->waitApproveSolutionIds();
+        $drafts     = $this->waitApproveSolutionIds()->toArray();
+        $ongoings   = $this->duplicate->waitApproveSolutionIds()->toArray();
         $duplicates = $this->duplicate->waitApproveSolutions();
 
         foreach ($solutions as $solution) {
@@ -191,8 +191,8 @@ class SolutionRepo implements SolutionInterface
     public function waitApproveDraftAndOngoingIds()
     {
         return array_merge(
-            $this->waitApproveSolutionIds(),
-            $this->duplicate->waitApproveSolutionIds()
+            $this->waitApproveSolutionIds()->toArray(),
+            $this->duplicate->waitApproveSolutionIds()->toArray()
         );
     }
 

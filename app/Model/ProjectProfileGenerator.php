@@ -8,7 +8,7 @@ use Backend\Repo\RepoInterfaces\DuplicateProductInterface;
 class ProjectProfileGenerator implements ProjectProfileGeneratorInterface
 {
     private $duplicate_repo;
-    private $wait_approve_ongoing_ids = null;
+    private $wait_approve_ongoing_ids = [null];
 
     public function __construct(DuplicateProductInterface $duplicate)
     {
@@ -32,7 +32,6 @@ class ProjectProfileGenerator implements ProjectProfileGeneratorInterface
         if (is_null($this->wait_approve_ongoing_ids)) {
             $this->wait_approve_ongoing_ids = $this->duplicate_repo->waitApproveProjectIds();
         }
-
         return in_array($project->project_id, $this->wait_approve_ongoing_ids);
     }
 }

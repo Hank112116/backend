@@ -14,7 +14,7 @@ class PerkRepo implements PerkInterface
     public function byProjectId($project_id)
     {
         $perks = $this->perk->where('project_id', $project_id)->get();
-        $editable_perk_ids = $this->editablePerkIds();
+        $editable_perk_ids = $this->editablePerkIds()->toArray();
 
         foreach ($perks as $perk) {
             $perk->setIsEditable(in_array($perk->perk_id, $editable_perk_ids));

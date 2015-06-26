@@ -3,6 +3,7 @@
 namespace Backend\Model\Eloquent;
 
 use Config;
+use UrlFilter;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class User extends Eloquent
@@ -107,7 +108,8 @@ class User extends Eloquent
 
     public function textFrontLink()
     {
-        return "//" . Config::get('app.front_domain') . "/profile/{$this->user_id}";
+        $name = UrlFilter::filter("{$this->user_name}-{$this->last_name}");
+        return "//" . Config::get('app.front_domain') . "/profile/{$name}.{$this->user_id}";
     }
 
     public function getIndustryArray()

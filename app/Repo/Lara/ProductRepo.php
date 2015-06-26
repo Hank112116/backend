@@ -168,7 +168,7 @@ class ProductRepo implements ProductInterface
 
     public function isWaitApproveOngoing($id)
     {
-        return in_array($id, $this->duplicate_repo->waitApproveProjectIds());
+        return in_array($id, $this->duplicate_repo->waitApproveProjectIds()->toArray());
     }
 
     public function hasWaitApproveProject()
@@ -179,8 +179,8 @@ class ProductRepo implements ProductInterface
     private function waitApproveDraftAndOngoingIds()
     {
         return array_merge(
-            $this->waitApproveProjectIds(),
-            $this->duplicate_repo->waitApproveProjectIds()
+            $this->waitApproveProjectIds()->toArray(),
+            $this->duplicate_repo->waitApproveProjectIds()->toArray()
         );
     }
 

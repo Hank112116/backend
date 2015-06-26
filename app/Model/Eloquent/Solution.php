@@ -7,6 +7,7 @@ use Backend\Model\ModelTrait\ProjectTagTrait;
 use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use UrlFilter;
 
 class Solution extends Eloquent
 {
@@ -237,7 +238,8 @@ class Solution extends Eloquent
 
     public function textFrontLink()
     {
-        return "//" . Config::get('app.front_domain') . "/solution/{$this->solution_id}";
+        $name = UrlFilter::filter($this->textTitle());
+        return "//" . Config::get('app.front_domain') . "/solution/{$name}.{$this->solution_id}";
     }
 
     public function textMainCategory()

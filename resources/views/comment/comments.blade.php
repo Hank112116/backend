@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-    @cssLoader('comments')
+    <link rel="stylesheet" href="/css/comments.css">    
 @stop
 
 @section('js')

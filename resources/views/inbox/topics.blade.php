@@ -2,7 +2,7 @@
 @include('layouts.macro')
 
 @section('css')
-    @cssLoader('inbox')
+    <link rel="stylesheet" href="/css/inbox.css">
 @stop
 
 @section('js')

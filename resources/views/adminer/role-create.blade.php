@@ -4,10 +4,6 @@
 <link rel="stylesheet" href="/css/adminer-update.css">
 @stop
 
-@section('js')
-<script src="/js/adminer-role-update.js"></script>
-@stop
-
 @section('content')
 <div class="page-header">
     <h1>Edit Role</h1>
@@ -22,7 +18,7 @@
         <label for="name" class="col-md-3">Name</label>
         <div class="col-md-5">
             {!! Form::text('name', '',
-                ['placeholder' => 'Enter Name', 'class'=>'form-control', 'id' => 'name'])}}
+                ['placeholder' => 'Enter Name', 'class'=>'form-control', 'id' => 'name']) !!}
         </div>
         <div class="col-md-5 error">{!! $errors->first('name') !!}</div>
     </div>

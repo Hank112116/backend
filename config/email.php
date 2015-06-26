@@ -10,12 +10,10 @@ return [
         'port'                  => '587',
         'from'                  => 'info@hwtrek.com',
         'from_name'             => 'HWTrek Info',
-        'bcc'                   => ['hit112116@hotmail.com'],
+        'bcc'                   => ['vivienne.hwtrek@gmail.com'],
         'platform_admin_email'  => 'info@hwtrek.com',
         'system_admin_email'    => 'keith.yeh@hwtrek.com',
-        'develop_email'         => 'hank.chang@hwtrek.com',
-        'frontPM'               => [9],
-        'backendPM'             => [8]
+        'develop_email'         => 'hank.chang@hwtrek.com'
     ],
     'stage'       => [
         'user_name'             => env('SES_KEY'),
@@ -30,9 +28,7 @@ return [
         'bcc'                   => ['vivienne.hwtrek@gmail.com'],
         'platform_admin_email'  => 'info@hwtrek.com',
         'system_admin_email'    => 'keith.yeh@hwtrek.com',
-        'develop_email'         => 'hank.chang@hwtrek.com',
-        'frontPM'               => [12],
-        'backendPM'             => [13]
+        'develop_email'         => 'hank.chang@hwtrek.com'
     ],
     'producation' => [
         'user_name'             => env('SES_KEY'),
@@ -51,8 +47,6 @@ return [
                                     ],
         'platform_admin_email'  => 'info@hwtrek.com',
         'system_admin_email'    => 'keith.yeh@hwtrek.com',
-        'develop_email'         => 'hank.chang@hwtrek.com',
-        'frontPM'               => [12,13,14,16],
-        'backendPM'             => [2,3,7,8]
+        'develop_email'         => 'hank.chang@hwtrek.com'
     ]
 ];

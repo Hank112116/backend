@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-    @cssLoader("adminer-update")
+    <link rel="stylesheet" href="/css/adminer-update.css">
 @stop
 
 @section('content')

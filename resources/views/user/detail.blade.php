@@ -6,7 +6,7 @@
 @stop
 
 @section('js')
-  <script src='/js/user-detail.js'></script>
+	<script src='/js/user-detail.js'></script>
 @stop
 
 @section('content')
