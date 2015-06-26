@@ -42,10 +42,10 @@ class EmailSendController extends BaseController
         $frontPM = [];
         $backPM  = [];
         foreach ($this->adminer_repo->findFrontManager()->toArray() as $row) {
-            array_push($frontPM, $row['id']);
+            $frontPM[] = $row['id'];
         }
         foreach ($this->adminer_repo->findBackManager()->toArray() as $row) {
-            array_push($backPM, $row['id']);
+            $backPM[] = $row['id'];
         }
         $input   = Input::all();
         $expert1 = $this->user_repo->findExpert($input["expert1"]);
