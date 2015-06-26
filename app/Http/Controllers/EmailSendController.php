@@ -39,8 +39,14 @@ class EmailSendController extends BaseController
         $env = env('APP_ENV');
         $emailConfig = Config::get("email.{$env}");
         //PM user_id
-        $frontPM = $emailConfig['frontPM'];
-        $backPM  = $emailConfig['backendPM'];
+        $frontPM = [];
+        $backPM  = [];
+        foreach ($this->adminer_repo->findFrontManager()->toArray() as $row) {
+            $frontPM[] = $row['id'];
+        }
+        foreach ($this->adminer_repo->findBackManager()->toArray() as $row) {
+            $backPM[] = $row['id'];
+        }
         $input   = Input::all();
         $expert1 = $this->user_repo->findExpert($input["expert1"]);
         $expert2 = $this->user_repo->findExpert($input["expert2"]);

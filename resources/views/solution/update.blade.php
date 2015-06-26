@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
 @section('css')
-    @cssLoader('solution-update')
+    <link rel="stylesheet" href="/css/solution-update.css">
 @stop
 
 @section('js')
     <script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en'></script>
     <script type="text/javascript" src="/react/solution-update.js"></script>
-    @jsLoader('solution-update')
+    <script src='/js/solution-update.js'></script>
 @stop
 
 @section('content')

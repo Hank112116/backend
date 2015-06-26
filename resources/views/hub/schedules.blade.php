@@ -3,11 +3,11 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    @cssLoader('hub-schedules')
+    <link rel="stylesheet" href="/css/hub-schedules.css">
 @stop
 
 @section('js')
-    @jsLoader('hub-schedules')
+    <script src='/js/hub-schedules.js'></script>
 @stop
 
 @section('content')
@@ -155,6 +155,7 @@
     <p>Note:</p>
     <select id="level">
         <option value="0">Not graded</option>
+        <option value="5">Pending</option>
         <option value="1">Grade A</option>
         <option value="2">Grade B</option>
         <option value="3">Grade C</option>

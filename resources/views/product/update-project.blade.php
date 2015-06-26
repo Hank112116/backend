@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader('project-update')
+    <link rel="stylesheet" href="/css/project-update.css">
 @stop
 
 @section('js')
-    @jsLoader('project-only-update')
+    <script src='/js/project-only-update.js'></script>
 @stop
 
 @section('content')
@@ -14,7 +14,7 @@
 	</div>
 
     <div id="origin" class="active form-container">
-	   {{
+	   {!!
 	        Form::open([
                 'action'    => ['ProductController@updateProject', $project->project_id],
 			    'method'    => 'POST',

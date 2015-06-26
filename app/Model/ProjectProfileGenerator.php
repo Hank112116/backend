@@ -30,9 +30,8 @@ class ProjectProfileGenerator implements ProjectProfileGeneratorInterface
     public function isWaitApproveOngoing($project)
     {
         if (is_null($this->wait_approve_ongoing_ids)) {
-            $this->wait_approve_ongoing_ids = $this->duplicate_repo->waitApproveProjectIds();
+            $this->wait_approve_ongoing_ids = $this->duplicate_repo->waitApproveProjectIds()->toArray();
         }
-
         return in_array($project->project_id, $this->wait_approve_ongoing_ids);
     }
 }

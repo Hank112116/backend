@@ -8,6 +8,9 @@ use Backend\Repo\RepoInterfaces\RoleInterface;
 
 class AdminerRepo implements AdminerInterface
 {
+    const TYPE_FRONTEND_MANAGER = 4;
+    const TYPE_BACKEND_MANAGER  = 5;
+
     private $error;
     private $rules = [
         'name'     => 'required',
@@ -34,6 +37,14 @@ class AdminerRepo implements AdminerInterface
     public function find($id)
     {
         return $this->adminer->with(['role', 'user'])->find($id);
+    }
+    public function findFrontManager()
+    {
+        return $this->adminer->with(['role'])->where('role_id', static::TYPE_FRONTEND_MANAGER)->get();
+    }
+    public function findBackManager()
+    {
+        return $this->adminer->with(['role'])->where('role_id', static::TYPE_BACKEND_MANAGER)->get();
     }
 
     public function validCreate($input)

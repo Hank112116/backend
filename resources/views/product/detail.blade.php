@@ -2,7 +2,7 @@
 @include('layouts.macro')
 
 @section('css')
-	@cssLoader('product-detail')
+    <link rel="stylesheet" href="/css/product-detail.css">
 @stop
 
 @section('content')

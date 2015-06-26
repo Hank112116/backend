@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-@cssLoader('adminer-list')
+    <link rel="stylesheet" href="/css/adminer-list.css">
 @stop
 
 @section('js')
-@jsLoader('adminer-list')
+    <script src='/js/adminer-list.js'></script>
 @stop
 
 @section('content')
@@ -15,6 +15,8 @@
     <div class='header-output'>
         {!! link_to_action('AdminerController@showCreate',
         'New Member', '',['class' => 'btn-mini header-output-link']) !!}
+        {!! link_to_action('AdminerController@showRoleCreate',
+        'New Role', '',['class' => 'btn-mini header-output-link']) !!}
     </div>
 
     @include('layouts.get-csv')

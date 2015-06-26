@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-    @cssLoader("engineer-index")
+    <link rel="stylesheet" href="/css/engineer-index.css">
     <style>
         .bug-reporter-wrapper {
             padding-top: 100px;
