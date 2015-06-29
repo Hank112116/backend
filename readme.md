@@ -14,12 +14,9 @@
 
 
 # 本地開發安裝
-
-    git clone http://172.16.1.82/hwtrek/backendvagrant.git
-    cd backendvagrant
-    git clone http://172.16.1.82/hwtrek/backend.git apps/backend
-    cp apps/backend/.env.dev.example .env
-    composer install
-    npm install
-    vagrant up
-
+    
+    cd web-service
+    git clone http://gitlab.hwtrek.com/HWTrek/backend.git backend
+    cd backend
+    sh deployment/build-development.sh
+    

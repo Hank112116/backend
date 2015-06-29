@@ -6,6 +6,9 @@
 
 class EmailSend
 {
+    //content tile
+    const PROJECT_24CHAR_TITLE               = 'project_24char_title';
+    const CHAR24                             = 24;
     //email template
     const WELCOME_EMAIL_CREATOR              = 1;
     const WELCOME_EMAIL_EXPERT               = 2;
@@ -108,7 +111,18 @@ class EmailSend
     {
         $replace_arr['break'] = '<br>';
         foreach ($replace_arr as $key => $value) {
-            $content = str_replace('{' . $key . '}', $value, $content);
+            if ($key == self::PROJECT_24CHAR_TITLE) {
+                if (mb_strlen($value) > self::CHAR24) {
+                    $value = mb_substr($value, 0, self::CHAR24);
+                    $value .= '...';
+                } else {
+                    $value = mb_substr($value, 0, self::CHAR24);
+                }
+                $content = str_replace('{' . $key . '}', $value, $content);
+            } else {
+                $content = str_replace('{' . $key . '}', $value, $content);
+            }
+            
         }
 
         return $content;

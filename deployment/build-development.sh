@@ -13,3 +13,11 @@ cd ${REPO_ROOT}
 # Update git hooks
 sh ${REPO_ROOT}/deployment/update-hooks.sh
 
+# Update environment config
+cp .env.dev.example .env
+
+# composer install
+composer install
+
+# npm install
+npm install
