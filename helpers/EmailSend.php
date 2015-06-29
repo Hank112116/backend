@@ -113,4 +113,40 @@ class EmailSend
 
         return $content;
     }
+    /**
+     * Convert raw data to plaintext brief with char limit
+     * This will remove all html tags and attributes in $raw_data
+     * And slice its length <= $char_limit
+     * Add '...' at the end if needed
+     *
+     * @param string $raw_data String of raw data which may contains html tag
+     * @param int $char_limit (Optional) Default 200
+     * @return string XSS cleaned
+     */
+    public function convert_to_brief($raw_data, $char_limit = 200)
+    {
+        // Remove html tags and attributes from $raw_data
+        $sf_data = htmlspecialchars_decode(
+            htmlentities(
+                html_entity_decode(
+                    strip_tags($raw_data)
+                ),
+                ENT_QUOTES
+            )
+        );
+
+        // Extract first limit chars
+        $brief = mb_substr(
+            $sf_data,
+            0,
+            $char_limit
+        );
+
+        // Add '...' in the end of string if strlen($sf_data) > $char_limit
+        if (mb_strlen($sf_data) > $char_limit) {
+            $brief .= '...';
+        }
+
+        return $brief;
+    }
 }

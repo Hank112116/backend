@@ -111,6 +111,7 @@ class EmailSendController extends BaseController
         //set email content
         $template = $this->findTemplate(EmailSend::HUB_SCHEDULE_RELEASE);
         $basicTemplate = view('email_template.hwtrek-inline');
+        $contentData["project_24char_title"] = $emailr->convert_to_brief($contentData["project_24char_title"], 24);
         $title = $emailr->content_replace($template->subject, $contentData);
         $contentData["content"] = $emailr->content_replace($template->message, $contentData);
         $body = $emailr->content_replace($basicTemplate, $contentData);
