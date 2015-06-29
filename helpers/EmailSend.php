@@ -6,9 +6,6 @@
 
 class EmailSend
 {
-    //content tile
-    const PROJECT_24CHAR_TITLE               = 'project_24char_title';
-    const CHAR24                             = 24;
     //email template
     const WELCOME_EMAIL_CREATOR              = 1;
     const WELCOME_EMAIL_EXPERT               = 2;
@@ -111,20 +108,45 @@ class EmailSend
     {
         $replace_arr['break'] = '<br>';
         foreach ($replace_arr as $key => $value) {
-            if ($key == self::PROJECT_24CHAR_TITLE) {
-                if (mb_strlen($value) > self::CHAR24) {
-                    $value = mb_substr($value, 0, self::CHAR24);
-                    $value .= '...';
-                } else {
-                    $value = mb_substr($value, 0, self::CHAR24);
-                }
-                $content = str_replace('{' . $key . '}', $value, $content);
-            } else {
-                $content = str_replace('{' . $key . '}', $value, $content);
-            }
-            
+            $content = str_replace('{' . $key . '}', $value, $content);
         }
 
         return $content;
+    }
+    /**
+     * Convert raw data to plaintext brief with char limit
+     * This will remove all html tags and attributes in $raw_data
+     * And slice its length <= $char_limit
+     * Add '...' at the end if needed
+     *
+     * @param string $raw_data String of raw data which may contains html tag
+     * @param int $char_limit (Optional) Default 200
+     * @return string XSS cleaned
+     */
+    public function convert_to_brief($raw_data, $char_limit = 200)
+    {
+        // Remove html tags and attributes from $raw_data
+        $sf_data = htmlspecialchars_decode(
+            htmlentities(
+                html_entity_decode(
+                    strip_tags($raw_data)
+                ),
+                ENT_QUOTES
+            )
+        );
+
+        // Extract first limit chars
+        $brief = mb_substr(
+            $sf_data,
+            0,
+            $char_limit
+        );
+
+        // Add '...' in the end of string if strlen($sf_data) > $char_limit
+        if (mb_strlen($sf_data) > $char_limit) {
+            $brief .= '...';
+        }
+
+        return $brief;
     }
 }
