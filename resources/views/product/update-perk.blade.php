@@ -75,7 +75,7 @@
 	    <div class="input-group">
             <span class="input-group-addon">Limited quantity</span>
             <input class="form-control" name='perks[{!! $perk->perk_id !!}][perk_total]' 
-            	value="{!! $perk->perk_total == -1 ? '' : $perk->perk_total !!}">
+            	value="{!! $perk->perk_total == -1 ? '' : $perk->perk_total !!}" required>
         </div>
 
         <div class='perk-edit-warning'>

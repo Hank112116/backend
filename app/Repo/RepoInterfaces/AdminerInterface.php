@@ -20,4 +20,8 @@ interface AdminerInterface
     public function deleteAdminer($adminer);
 
     public function toOutputArray($adminers);
+
+    public function findFrontManager();
+
+    public function findBackManager();
 }

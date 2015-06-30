@@ -8,7 +8,7 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "laravel/framework": "~5.0.28",
+    "laravel/framework": "~5.1",
     "illuminate/html": "~5.0",
     "aws/aws-sdk-php": "~2.7",
     "rmccue/requests": ">=1.0",

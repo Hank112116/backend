@@ -75,7 +75,7 @@
 
     <!-- Front Member -->
     <div class="form-group">
-        <label for="member" class="col-md-3">HwTrek Member</label>
+        <label for="member" class="col-md-3">HWTrek Member</label>
 
         @if($adminer->user)
             <div id="owner-selector" class="col-md-5" data-user = '{!! $adminer->user->toBasicJson() !!}'></div>

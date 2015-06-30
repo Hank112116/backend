@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-@cssLoader('home')
+    <link rel="stylesheet" href="/css/home.css">
 @stop
 
 @section('content')

@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader('landing-expert')
+    <link rel="stylesheet" href="/css/landing-expert.css">
 @stop
 
 @section('js')
-    @jsLoader('landing-project-selector')
+    <script src='/js/landing-project-selector.js'></script>
 @stop
 
 @section('content')

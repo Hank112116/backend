@@ -22,7 +22,7 @@ class HubSchedule extends Project
     public static $options = [
         'notelevel'            => [
             0 => 'Not graded', 1 => 'Grade A', 2 => 'Grade B',
-            3 => 'Grade C ', 4 => 'Grade D',
+            3 => 'Grade C ', 4 => 'Grade D', 5 => 'Pending'
         ],
     ];
     public function projectMailExpert()

@@ -4,11 +4,11 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-	@cssLoader('landing-expert')
+    <link rel="stylesheet" href="/css/landing-expert.css">
 @stop
 
 @section('js')
-    @jsLoader('landing-expert')
+    <script src='/js/landing-expert.js'></script>
 @stop
 @section('content')
 

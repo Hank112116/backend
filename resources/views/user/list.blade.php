@@ -2,11 +2,11 @@
 @include('layouts.macro')
 
 @section('css')
-@cssLoader('user-list')
+    <link rel="stylesheet" href="/css/user-list.css">
 @stop
 
 @section('js')
-@jsLoader('list')
+    <script src='/js/list.js'></script>
 @stop
 
 @section('content')
@@ -70,7 +70,7 @@
 
                     <td class="table--width-limit">
                         {{ $user->company }}<br/>
-                        <span class="table--text-light">{!! $user->business_id  !!}</span>
+                        <span class="table--text-light">{{ $user->business_id  }}</span>
                     </td>
 
                     <td>

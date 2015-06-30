@@ -21,24 +21,5 @@ class ConfigServiceProvider extends ServiceProvider
             //
         ]);
 
-
-        Blade::extend(function ($view, $compiler) {
-            $pattern = $compiler->createMatcher('cssLoader');
-            return preg_replace(
-                $pattern,
-                '$1<?php echo \'<link rel="stylesheet" href="/css/\' . ($2)  . \'.css">\' ?>',
-                $view
-            );
-        });
-
-        Blade::extend(function ($view, $compiler) {
-            $pattern = $compiler->createMatcher('jsLoader');
-            return preg_replace(
-                $pattern,
-                '$1<?php echo \'<script src="/js/\' . ($2)  . \'.js"></script>\' ?>',
-                $view
-            );
-        });
-
     }
 }

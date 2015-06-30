@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('css')
-	@cssLoader("user-update")
+    <link rel="stylesheet" href="/css/user-update.css">
 @stop
 
 @section('js')
     <script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en'></script>
-    @jsLoader("user-update")
+    <script src='/js/user-update.js'></script>
 @stop
 
 @section('content')
@@ -237,7 +237,7 @@
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>
             <div class="col-md-9">
-                {!! Form::textarea('user_about', $user->user_about,
+                {!! Form::textarea('user_about', Purifier::clean($user->user_about),
                     ['placeholder' => 'Biography', 'class'=>'js-editor', 'id'=>'biography']) !!}
             </div>
         </div>

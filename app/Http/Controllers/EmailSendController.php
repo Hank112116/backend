@@ -39,8 +39,14 @@ class EmailSendController extends BaseController
         $env = env('APP_ENV');
         $emailConfig = Config::get("email.{$env}");
         //PM user_id
-        $frontPM = $emailConfig['frontPM'];
-        $backPM  = $emailConfig['backendPM'];
+        $frontPM = [];
+        $backPM  = [];
+        foreach ($this->adminer_repo->findFrontManager()->toArray() as $row) {
+            $frontPM[] = $row['id'];
+        }
+        foreach ($this->adminer_repo->findBackManager()->toArray() as $row) {
+            $backPM[] = $row['id'];
+        }
         $input   = Input::all();
         $expert1 = $this->user_repo->findExpert($input["expert1"]);
         $expert2 = $this->user_repo->findExpert($input["expert2"]);
@@ -105,6 +111,7 @@ class EmailSendController extends BaseController
         //set email content
         $template = $this->findTemplate(EmailSend::HUB_SCHEDULE_RELEASE);
         $basicTemplate = view('email_template.hwtrek-inline');
+        $contentData["project_24char_title"] = $emailr->convert_to_brief($contentData["project_24char_title"], 24);
         $title = $emailr->content_replace($template->subject, $contentData);
         $contentData["content"] = $emailr->content_replace($template->message, $contentData);
         $body = $emailr->content_replace($basicTemplate, $contentData);

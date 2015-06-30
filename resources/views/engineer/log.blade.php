@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-    @cssLoader("engineer-index")
+    <link rel="stylesheet" href="/css/engineer-index.css">
 @stop
 
 @section('js')
-    @jsLoader("engineer-index")
+    <script src='/js/engineer-index.js'></script>
 @stop
 
 @section('content')

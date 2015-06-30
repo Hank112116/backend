@@ -3,11 +3,11 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    @cssLoader('hub-schedules')
+    <link rel="stylesheet" href="/css/hub-schedules.css">
 @stop
 
 @section('js')
-    @jsLoader('hub-schedules')
+    <script src='/js/hub-schedules.js'></script>
 @stop
 
 @section('content')
@@ -30,6 +30,8 @@
                 <th class="table--name">Project</th>
                 <th>User</th>
                 <th>Note</th>
+                <th>Approve</th>
+                <th>PM</th>
                 <th></th>
                 <th>Approve & Versions</th>
             </tr>
@@ -60,8 +62,57 @@
                     @endif
 
                 </td>
+                <td class="table--name">
+                @if($s->hub_approve)
+                    @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($s->date_added)))
+                        @if(!$s->mail_send_time)
+                            @if(!$s->hub_managers)
+                            <a class="btn-mini btn-danger sendmail" href="javascript:void(0)" projectId="{{ $s->project_id }}"
+                                projectTitle="{{ $s->textTitle() }}" userId="{{ $s->user_id }}" PM="">
+                            @else
+                            <a class="btn-mini btn-danger sendmail" href="javascript:void(0)" projectId="{{ $s->project_id }}"
+                                projectTitle="{{ $s->textTitle() }}" userId="{{ $s->user_id }}" PM="{!! $s->hub_managers !!}">
+                            @endif
+                                <i class="fa fa-envelope fa-fw"></i> SEND
+                            </a>
+                        @else
+                            @foreach ($s->mail_send_experts as $expert)
+                                <p class="hub-manages">
+                                    e:<a href="{!! $expert["link"] !!}" target="_blank">
+                                    {!! $expert["id"] !!}
+                                    </a>
+                                </p>
+                            @endforeach
+                                <spna class="table--text-light">
+                                    {{$s->mail_send_time}}<br>
+                                    by {{ $s->mail_send_admin }}
+                                </span>
+                        @endif
+                    @else
+                        <spna class="table--text-center"><i class="fa fa-check"></i></span>
+                    @endif
+                @endif
+                </td>
                 <td>
-                    
+                <td>
+                    @if(!$s->hub_managers)
+                        <p class="hub-manages">
+                            <i class="fa fa-fw fa-exclamation-triangle"></i> No PM
+                        </p>
+                    @else
+                        @foreach($s->getHubManagerNames() as $manager)
+                        <p class="hub-manages">
+                            <i class="fa fa-user fa-fw"></i> {!! $manager !!}
+                        </p>
+                        @endforeach
+
+                        @foreach($s->getDeletedHubManagerNames() as $manager)
+                        <p class="hub-manages">
+                            <i class="fa fa-flash fa-fw"></i> {!! $manager !!}
+                        </p>
+                        @endforeach
+                    @endif
+                </td>
                 </td>
                 <td class="table-solid">
                     @if($s->isDeleted())
@@ -100,10 +151,11 @@
 
     </div>
 </div>
-<div id="dialog" class="ui-widget" title="Edit Note" style="display:none">
+<div id="note_dialog" class="ui-widget" title="Edit Note" style="display:none">
     <p>Note:</p>
     <select id="level">
         <option value="0">Not graded</option>
+        <option value="5">Pending</option>
         <option value="1">Grade A</option>
         <option value="2">Grade B</option>
         <option value="3">Grade C</option>
@@ -113,6 +165,7 @@
     <button id="edit_note">Edit Note</button>
     <input type="hidden" id="note_project_id" value="">
 </div>
+@include('hub.mail-dialog')
 @stop
 
 
