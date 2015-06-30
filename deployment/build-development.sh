@@ -16,6 +16,9 @@ sh ${REPO_ROOT}/deployment/update-hooks.sh
 # Update environment config
 cp .env.dev.example .env
 
+# Create bootstrap/cache Directory
+mkdir bootstrap/cache
+
 # composer install
 composer install
 
