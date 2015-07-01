@@ -226,9 +226,11 @@ class UserRepo implements UserInterface
         $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
 
         $tag_ids    = $user->expertises ? explode(',', $user->expertises) : [];
-        $user->tags = implode(',', $this->expertise->getDisplayTags($tag_ids)->toArray());
-
-
+        $tags = $this->expertise->getDisplayTags($tag_ids);
+        if ($tags) {
+            $user->tags = implode(',', $tags->toArray());
+        }
+        
         $user->save();
     }
 

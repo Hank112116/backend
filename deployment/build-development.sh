@@ -13,6 +13,12 @@ cd ${REPO_ROOT}
 # Update git hooks
 sh ${REPO_ROOT}/deployment/update-hooks.sh
 
+# Fetch master branch
+git fetch origin master:master
+
+# Initial git flow
+git flow init -d
+
 # Update environment config
 cp .env.dev.example .env
 
