@@ -30,7 +30,7 @@ return [
         'system_admin_email'    => 'keith.yeh@hwtrek.com',
         'develop_email'         => 'hank.chang@hwtrek.com'
     ],
-    'producation' => [
+    'production' => [
         'user_name'             => env('SES_KEY'),
         'password'              => env('SES_SECRET'),
         'host'                  => env('SES_HOST'),
