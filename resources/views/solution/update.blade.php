@@ -28,8 +28,7 @@
                     </a>
                 @endif
             @endif
-
-            @if ($solution->isWaitApprove() and (!$solution->is_manager_approved or Auth::user()->isAdmin()))
+            @if ($solution->isWaitApprove() and (!$solution->is_manager_approved or Auth::user()->isAdmin() or Auth::user()->isManagerHead()))
             <a href="{!! action('SolutionController@approve', $solution->solution_id) !!}"
                 class="btn-mini btn-flat-green">
                 <i class="fa fa-shield fa-fw"></i> Approve

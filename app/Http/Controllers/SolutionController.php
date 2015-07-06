@@ -86,8 +86,7 @@ class SolutionController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($solutions);
         }
-
-        $has_wait_approve = Auth::user()->isManager() ?
+        $has_wait_approve = Auth::user()->isBackendPM() ?
             $this->solution_repo->hasWaitManagerApproveSolution() :
             $this->solution_repo->hasWaitApproveSolution();
 
@@ -178,7 +177,7 @@ class SolutionController extends BaseController
 
     public function approve($solution_id)
     {
-        $this->solution_repo->approve($solution_id, Auth::user()->isManager());
+        $this->solution_repo->approve($solution_id, Auth::user()->isBackendPM());
         Noty::successLang('solution.approve');
 
         return Redirect::action('SolutionController@showDetail', $solution_id);
@@ -194,7 +193,7 @@ class SolutionController extends BaseController
 
     public function approveEdition($solution_id)
     {
-        $this->solution_repo->duplicateRepo()->approve($solution_id, Auth::user()->isManager());
+        $this->solution_repo->duplicateRepo()->approve($solution_id, Auth::user()->isBackendPM());
         Noty::successLang('solution.approve');
 
         return Redirect::action('SolutionController@showDetail', $solution_id);

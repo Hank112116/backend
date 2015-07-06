@@ -33,6 +33,14 @@ class Role extends Eloquent
     {
         return $this->name == 'manager';
     }
+    public function isFrontendPM()
+    {
+        return $this->name == 'Frontend PM';
+    }
+    public function isBackendPM()
+    {
+        return $this->name == 'Backend PM';
+    }
 
     public function getCertsArr()
     {
