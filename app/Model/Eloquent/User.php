@@ -109,7 +109,7 @@ class User extends Eloquent
     public function textFrontLink()
     {
         $name = UrlFilter::filter("{$this->user_name}-{$this->last_name}");
-        return "https://" . Config::get('app.front_domain') . "/profile/{$name}.{$this->user_id}";
+        return 'https://' . Config::get('app.front_domain') . "/profile/{$name}.{$this->user_id}";
     }
     public function getIndustryArray()
     {
