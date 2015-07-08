@@ -51,5 +51,14 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
+$app->configureMonologUsing(function($monolog) {
+    $syslog = new \Monolog\Handler\SyslogUdpHandler(config('syslog.host'), config('syslog.port'));
+    $formatter = new \Monolog\Formatter\JsonFormatter('%channel%.%level_name%: %message% %extra%');
+    $processor = new \Monolog\Processor\TagProcessor(['backend_laravel_log']);
+    $syslog->setFormatter($formatter);
+    $monolog->pushProcessor($processor);
+    $monolog->pushHandler($syslog);
+
+});
 
 return $app;
