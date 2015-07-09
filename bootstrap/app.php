@@ -51,13 +51,33 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
+
+//see:http://monolog-api.richardjh.org/namespace-Monolog.html
 $app->configureMonologUsing(function($monolog) {
-    $syslog = new \Monolog\Handler\SyslogUdpHandler(config('syslog.host'), config('syslog.port'));
+    //error log to syslog server
+    $syslog = new \Monolog\Handler\SyslogUdpHandler(
+            config('syslog.host'),
+            config('syslog.port')
+        );
     $formatter = new \Monolog\Formatter\JsonFormatter('%channel%.%level_name%: %message% %extra%');
     $processor = new \Monolog\Processor\TagProcessor(['backend_laravel_log']);
     $syslog->setFormatter($formatter);
     $monolog->pushProcessor($processor);
     $monolog->pushHandler($syslog);
+
+    //error log to slack
+    $env = env('APP_ENV');
+    if( $env != 'local') {
+        $slackHandler = new \Monolog\Handler\SlackHandler(
+                    config('syslog.slack_token'),
+                    config('syslog.slack_channel'),
+                    config("syslog.{$env}.slack_username"),
+                    'true',
+                    config("syslog.{$env}.slack_icon"),
+                    $monolog::ERROR
+                );
+        $monolog->pushHandler($slackHandler);
+    }
 
 });
 
