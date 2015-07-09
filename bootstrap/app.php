@@ -65,20 +65,16 @@ $app->configureMonologUsing(function($monolog) {
     $monolog->pushProcessor($processor);
     $monolog->pushHandler($syslog);
 
-    //error log to slack
+    //error log to mail
     $env = env('APP_ENV');
     if( $env != 'local') {
-        $slackHandler = new \Monolog\Handler\SlackHandler(
-                    config('syslog.slack_token'),
-                    config('syslog.slack_channel'),
-                    config("syslog.{$env}.slack_username"),
-                    'true',
-                    config("syslog.{$env}.slack_icon"),
-                    $monolog::ERROR
-                );
-        $monolog->pushHandler($slackHandler);
+        $mailerHandler = new \Monolog\Handler\NativeMailerHandler(
+                    config("syslog.{$env}.email_to"),
+                    config("syslog.{$env}.email_title"),
+                    config("syslog.{$env}.email_from")
+            );
+        $monolog->pushHandler($mailerHandler);
     }
-
 });
 
 return $app;
