@@ -330,8 +330,10 @@ class SolutionRepo implements SolutionInterface
         } else {
             $this->solution_modifier->toProgram($solution_id, $is_manager);
             $feature = $this->feature->where('block_data', $solution_id)->where('block_type', 'solution')->first();
-            $feature->block_type = 'program';
-            $feature->save();
+            if ($feature) {
+                $feature->block_type = 'program';
+                $feature->save();
+            }
         }
     }
     public function toSolution($solution_id, $is_manager)
@@ -341,8 +343,10 @@ class SolutionRepo implements SolutionInterface
         } else {
             $this->solution_modifier->toSolution($solution_id, $is_manager);
             $feature = $this->feature->where('block_data', $solution_id)->where('block_type', 'program')->first();
-            $feature->block_type = 'solution';
-            $feature->save();
+            if ($feature) {
+                $feature->block_type = 'solution';
+                $feature->save();
+            }
         }
     }
 
