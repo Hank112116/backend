@@ -100,6 +100,7 @@ class RepoServiceProvider extends ServiceProvider
             function ($app) {
                 return new Lara\SolutionRepo(
                     new \Backend\Model\Eloquent\Solution(),
+                    new \Backend\Model\Eloquent\Feature(),
                     $app->make('Backend\Repo\RepoInterfaces\DuplicateSolutionInterface'),
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
                     $app->make('Backend\Model\ModelInterfaces\SolutionModifierInterface'),
