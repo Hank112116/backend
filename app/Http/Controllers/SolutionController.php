@@ -212,17 +212,35 @@ class SolutionController extends BaseController
     //change solution type to program (solution table:is_program)
     public function toProgram()
     {
-        $solution_id = Input::get('solution_id');
-        $this->solution_repo->toProgram($solution_id, Auth::user()->isBackendPM());
-        $res   = ['status' => 'success'];
+        if(Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()){
+            $solution_id = Input::get('solution_id');
+            $solution = $this->solution_repo->find($solution_id);
+            if(count($solution) > 0){
+                $this->solution_repo->toProgram($solution_id, Auth::user()->isBackendPM());
+                $res   = ['status' => 'success'];
+            }else{
+                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+            }
+        }else{
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
         return Response::json($res);
     }
     //change solution type to program (solution table:is_program)
     public function toSolution()
     {
-        $solution_id = Input::get('solution_id');
-        $this->solution_repo->toSolution($solution_id, Auth::user()->isBackendPM());
-        $res   = ['status' => 'success'];
+        if(Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()){
+            $solution_id = Input::get('solution_id');
+            $solution = $this->solution_repo->find($solution_id);
+            if(count($solution) > 0){
+                $this->solution_repo->toSolution($solution_id, Auth::user()->isBackendPM());
+                $res   = ['status' => 'success'];
+            }else{
+                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+            }
+        }else{
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
         return Response::json($res);
     }
 

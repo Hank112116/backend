@@ -204,9 +204,11 @@ class SolutionModifier implements SolutionModifierInterface
     private function updateSolution($solution_id, $data)
     {
         $solution = $this->solution->find($solution_id);
-        $solution->fill($data);
-        $solution->update_time = Carbon::now();
-        $solution->save();
+        if ($solution) {
+            $solution->fill($data);
+            $solution->update_time = Carbon::now();
+            $solution->save();
+        }
     }
 
     private function updateImageGalleries($solution, $data)
