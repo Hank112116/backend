@@ -51,6 +51,22 @@ class SolutionRepo implements SolutionInterface
         return $this->solution->find($id);
     }
 
+    public function findSolution($id)
+    {
+        return $this->solution
+                    ->where('solution_id', $id)
+                    ->querySolution()
+                    ->first();
+    }
+
+    public function findProgram($id)
+    {
+        return $this->solution
+                    ->where('solution_id', $id)
+                    ->queryProgram()
+                    ->first();
+    }
+
     public function findDuplicate($id)
     {
         return $this->duplicate->find($id);
@@ -110,6 +126,30 @@ class SolutionRepo implements SolutionInterface
     {
         return $this->solution
             ->queryDeleted()
+            ->orderBy('solution_id', 'desc')
+            ->get();
+    }
+
+    public function program()
+    {
+        return $this->solution
+            ->queryProgram()
+            ->orderBy('solution_id', 'desc')
+            ->get();
+    }
+
+    public function pendingProgram()
+    {
+        return $this->solution
+            ->queryPendingProgram()
+            ->orderBy('solution_id', 'desc')
+            ->get();
+    }
+
+    public function pendingSolution()
+    {
+        return $this->solution
+            ->queryPendingSolution()
             ->orderBy('solution_id', 'desc')
             ->get();
     }
@@ -209,6 +249,30 @@ class SolutionRepo implements SolutionInterface
         return $solutions->count() > 0;
     }
 
+    public function hasProgram()
+    {
+        $solutions = $this->solution
+                    ->queryProgram()
+                    ->get();
+        return $solutions->count() > 0;
+    }
+
+    public function hasPendingSolution()
+    {
+        $solutions = $this->solution
+                    ->QueryPendingSolution()
+                    ->get();
+        return $solutions->count() > 0;
+    }
+
+    public function hasPendingProgram()
+    {
+        $solutions = $this->solution
+                    ->QueryPendingProgram()
+                    ->get();
+        return $solutions->count() > 0;
+    }
+
     private function filterWaitManagerApproveSolutions(Collection $solutions)
     {
         return $solutions->filter(
@@ -254,6 +318,22 @@ class SolutionRepo implements SolutionInterface
             $this->solution_modifier->managerApprove($solution_id, $is_manager);
         } else {
             $this->solution_modifier->approve($solution_id, $is_manager);
+        }
+    }
+    public function toProgram($solution_id, $is_manager)
+    {
+        if ($is_manager) {
+            $this->solution_modifier->managerToProgram($solution_id, $is_manager);
+        } else {
+            $this->solution_modifier->toProgram($solution_id, $is_manager);
+        }
+    }
+    public function toSolution($solution_id, $is_manager)
+    {
+        if ($is_manager) {
+            $this->solution_modifier->managerToSolution($solution_id, $is_manager);
+        } else {
+            $this->solution_modifier->toSolution($solution_id, $is_manager);
         }
     }
 

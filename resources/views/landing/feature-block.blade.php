@@ -17,6 +17,9 @@
         @elseif ($feature->isSolution())
             @include('landing.feature-solution', ['solution' => $feature->entity])
 
+        @elseif ($feature->isProgram())
+            @include('landing.feature-program', ['program' => $feature->entity])
+
         @endif    
     </div>
 </div>

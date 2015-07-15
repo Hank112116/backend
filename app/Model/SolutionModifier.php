@@ -96,6 +96,49 @@ class SolutionModifier implements SolutionModifierInterface
         $this->updateSolution($solution_id, $setter);
     }
 
+    public function managerToProgram($solution_id)
+    {
+        $setter = [
+            'is_program' => 0,
+            'is_manager_approved_program' => 1,
+            'is_manager_approved_solution' => 0,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function toProgram($solution_id)
+    {
+        $setter = [
+            'is_program' => 1,
+            'is_manager_approved_program' => 0,
+            'is_manager_approved_solution' => 0,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function managerToSolution($solution_id)
+    {
+        $setter = [
+            'is_program' => 0,
+            'is_manager_approved_program' => 0,
+            'is_manager_approved_solution' => 1,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function toSolution($solution_id)
+    {
+        $setter = [
+            'is_program' => 0,
+            'is_manager_approved_program' => 0,
+            'is_manager_approved_solution' => 0,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
     public function reject($solution_id)
     {
         $setter = array_merge(
