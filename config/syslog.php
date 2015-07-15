@@ -11,9 +11,7 @@ return [
                             'email_title'    => 'Stage backend php error',
                             'email_from'     => 'StageBackend@hwtrek.com',
                             'email_to'       => [
-                                                    'hank.chang@hwtrek.com',
-                                                    'keith.yeh@hwtrek.com',
-                                                    'vivienne.liao@hwtrek.com'
+                                                    'hank.chang@hwtrek.com'
                                                 ]
     ],
     'production'    => [
