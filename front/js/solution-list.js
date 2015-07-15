@@ -62,7 +62,7 @@ $(function () {
                 Notifier.showTimedMessage("Update successful", "information", 2);
                 location.reload();
             }
-        })
+        });
     }
 
 });
