@@ -2,6 +2,7 @@
 
 use ImageUp;
 use Backend\Model\Eloquent\Solution;
+use Backend\Model\Eloquent\Feature;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\DuplicateSolutionInterface;
@@ -20,6 +21,7 @@ class SolutionRepo implements SolutionInterface
 
     public function __construct(
         Solution $solution,
+        Feature $feature,
         DuplicateSolutionInterface $duplicate,
         UserInterface $user,
         SolutionModifierInterface $solution_modifier,
@@ -39,6 +41,7 @@ class SolutionRepo implements SolutionInterface
         $this->category       = $category;
         $this->certification  = $certification;
         $this->image_uploader = $uploader;
+        $this->feature        = $feature;
     }
 
     public function duplicateRepo()
@@ -326,6 +329,9 @@ class SolutionRepo implements SolutionInterface
             $this->solution_modifier->managerToProgram($solution_id, $is_manager);
         } else {
             $this->solution_modifier->toProgram($solution_id, $is_manager);
+            $feature = $this->feature->where('block_data', $solution_id)->where('block_type', 'solution')->first();
+            $feature->block_type = 'program';
+            $feature->save();
         }
     }
     public function toSolution($solution_id, $is_manager)
@@ -334,6 +340,9 @@ class SolutionRepo implements SolutionInterface
             $this->solution_modifier->managerToSolution($solution_id, $is_manager);
         } else {
             $this->solution_modifier->toSolution($solution_id, $is_manager);
+            $feature = $this->feature->where('block_data', $solution_id)->where('block_type', 'program')->first();
+            $feature->block_type = 'solution';
+            $feature->save();
         }
     }
 
