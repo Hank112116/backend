@@ -19,7 +19,8 @@ module.exports = [
     'hub-schedules.js',
     'hub-questionnaires.js',
     'test.js',
-    'landing-expert.js'
+    'landing-expert.js',
+    'solution-list.js'
 ];
 
 

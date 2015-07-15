@@ -96,6 +96,49 @@ class SolutionModifier implements SolutionModifierInterface
         $this->updateSolution($solution_id, $setter);
     }
 
+    public function managerToProgram($solution_id)
+    {
+        $setter = [
+            'is_program' => 0,
+            'is_manager_upgrade_to_program' => 1,
+            'is_manager_downgrade_to_solution' => 0,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function toProgram($solution_id)
+    {
+        $setter = [
+            'is_program' => 1,
+            'is_manager_upgrade_to_program' => 0,
+            'is_manager_downgrade_to_solution' => 0,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function managerToSolution($solution_id)
+    {
+        $setter = [
+            'is_program' => 0,
+            'is_manager_upgrade_to_program' => 0,
+            'is_manager_downgrade_to_solution' => 1,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function toSolution($solution_id)
+    {
+        $setter = [
+            'is_program' => 0,
+            'is_manager_upgrade_to_program' => 0,
+            'is_manager_downgrade_to_solution' => 0,
+        ];
+
+        $this->updateSolution($solution_id, $setter);
+    }
     public function reject($solution_id)
     {
         $setter = array_merge(
@@ -161,9 +204,11 @@ class SolutionModifier implements SolutionModifierInterface
     private function updateSolution($solution_id, $data)
     {
         $solution = $this->solution->find($solution_id);
-        $solution->fill($data);
-        $solution->update_time = Carbon::now();
-        $solution->save();
+        if ($solution) {
+            $solution->fill($data);
+            $solution->update_time = Carbon::now();
+            $solution->save();
+        }
     }
 
     private function updateImageGalleries($solution, $data)

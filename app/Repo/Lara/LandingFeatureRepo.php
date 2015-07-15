@@ -3,12 +3,12 @@
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Model\Eloquent\Feature;
 use Backend\Model\Eloquent\Project;
-use Backend\Model\Eloquent\Solution;
+use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 
 class LandingFeatureRepo implements LandingFeatureInterface
 {
-    public function __construct(Feature $feature, Project $project, Solution $solution, UserInterface $user)
+    public function __construct(Feature $feature, Project $project, SolutionInterface $solution, UserInterface $user)
     {
         $this->feature =  $feature;
         $this->project = $project;
@@ -31,7 +31,6 @@ class LandingFeatureRepo implements LandingFeatureInterface
         $feature->block_type = $type;
         $feature->block_data = $id;
         $feature->entity = $this->entityByType($id, $type);
-
         return $feature;
     }
 
@@ -44,7 +43,11 @@ class LandingFeatureRepo implements LandingFeatureInterface
                 break;
 
             case 'solution':
-                $entity = $this->solution->find($id);
+                $entity = $this->solution->findSolution($id);
+                break;
+
+            case 'program':
+                $entity = $this->solution->findProgram($id);
                 break;
 
             case 'expert':

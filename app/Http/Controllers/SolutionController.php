@@ -57,6 +57,27 @@ class SolutionController extends BaseController
         return $this->showSolutions($solutions, $paginate = false, $title = 'deleted solutions');
     }
 
+    public function showProgram()
+    {
+        $solutions = $this->solution_repo->program();
+
+        return $this->showSolutions($solutions, $paginate = false);
+    }
+
+    public function showPendingProgram()
+    {
+        $solutions = $this->solution_repo->pendingProgram();
+
+        return $this->showSolutions($solutions, $paginate = false);
+    }
+
+    public function showPendingSolution()
+    {
+        $solutions = $this->solution_repo->pendingSolution();
+
+        return $this->showSolutions($solutions, $paginate = false);
+    }
+
     public function showSearch($search_by)
     {
         switch ($search_by) {
@@ -90,13 +111,19 @@ class SolutionController extends BaseController
             $this->solution_repo->hasWaitManagerApproveSolution() :
             $this->solution_repo->hasWaitApproveSolution();
 
-        return view('solution.list')->with([
-            'title'                      => $title ?: 'solutions',
-            'per_page'                   => $paginate? $this->per_page : '',
-            'is_restricted'              => $this->is_restricted_adminer,
+        $has_program = $this->solution_repo->hasProgram();
+        $has_pending_up_program = $this->solution_repo->hasPendingProgram();
+        $has_pending_change_solution = $this->solution_repo->hasPendingSolution();
 
-            'solutions'                  => $solutions,
-            'has_wait_approve_solutions' => $has_wait_approve,
+        return view('solution.list')->with([
+            'title'                        => $title ?: 'solutions',
+            'per_page'                     => $paginate? $this->per_page : '',
+            'is_restricted'                => $this->is_restricted_adminer,
+            'solutions'                    => $solutions,
+            'has_wait_approve_solutions'   => $has_wait_approve,
+            'has_program'                  => $has_program,
+            'has_pending_up_program'       => $has_pending_up_program,
+            'has_pending_change_solution'  => $has_pending_change_solution
         ]);
     }
 
@@ -181,6 +208,40 @@ class SolutionController extends BaseController
         Noty::successLang('solution.approve');
 
         return Redirect::action('SolutionController@showDetail', $solution_id);
+    }
+    //change solution type to program (solution table:is_program)
+    public function toProgram()
+    {
+        if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
+            $solution_id = Input::get('solution_id');
+            $solution = $this->solution_repo->find($solution_id);
+            if (count($solution) > 0) {
+                $this->solution_repo->toProgram($solution_id, Auth::user()->isBackendPM());
+                $res   = ['status' => 'success'];
+            } else {
+                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+            }
+        } else {
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
+        return Response::json($res);
+    }
+    //change solution type to program (solution table:is_program)
+    public function toSolution()
+    {
+        if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
+            $solution_id = Input::get('solution_id');
+            $solution = $this->solution_repo->find($solution_id);
+            if (count($solution) > 0) {
+                $this->solution_repo->toSolution($solution_id, Auth::user()->isBackendPM());
+                $res   = ['status' => 'success'];
+            } else {
+                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+            }
+        } else {
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
+        return Response::json($res);
     }
 
     public function reject($solution_id)

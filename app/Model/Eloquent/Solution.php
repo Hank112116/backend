@@ -22,7 +22,13 @@ class Solution extends Eloquent
     // 'customer_portfolio' column json attributes
     const COMPANY_NAME = 'companyName';
     const COMPANY_URL = 'companyUrl';
+    const TYPE_SOLUTION = 0;
+    const TYPE_PROGRAM = 1;
 
+    private static $types = [
+        self::TYPE_SOLUTION => 'Solution',
+        self::TYPE_PROGRAM  => 'Program',
+    ];
     protected $table = 'solution';
     protected $primaryKey = 'solution_id';
 
@@ -60,6 +66,26 @@ class Solution extends Eloquent
         'solution_draft'      => '1',
         'active'              => '0',
         'previously_approved' => '1'
+    ];
+    public $is_solution_status = [
+        'is_program'                       => '0',
+        'is_manager_upgrade_to_program'    => '0',
+        'is_manager_downgrade_to_solution' => '0'
+    ];
+    public $is_program_status = [
+        'is_program'                       => '1',
+        'is_manager_upgrade_to_program'    => '0',
+        'is_manager_downgrade_to_solution' => '0'
+    ];
+    public $is_pending_solution_status = [
+        'is_program'                       => '0',
+        'is_manager_upgrade_to_program'    => '0',
+        'is_manager_downgrade_to_solution' => '1'
+    ];
+    public $is_pending_program_status = [
+        'is_program'                       => '0',
+        'is_manager_upgrade_to_program'    => '1',
+        'is_manager_downgrade_to_solution' => '0'
     ];
 
     public $after_submitted_status = ['solution_draft' => '1'];
@@ -125,6 +151,51 @@ class Solution extends Eloquent
         return $query->where('is_deleted', 1);
     }
 
+    /**
+     * Query Solution
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQuerySolution(Builder $query)
+    {
+        return $query->where('is_program', 0)
+                     ->where('is_manager_upgrade_to_program', 0)
+                     ->where('is_manager_downgrade_to_solution', 0);
+    }
+    /**
+     * Query Program
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryProgram(Builder $query)
+    {
+        return $query->where('is_program', 1)
+                     ->where('is_manager_upgrade_to_program', 0)
+                     ->where('is_manager_downgrade_to_solution', 0);
+    }
+    /**
+     * Query Pending Solution
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryPendingSolution(Builder $query)
+    {
+        return $query->where('is_program', 0)
+                     ->where('is_manager_upgrade_to_program', 0)
+                     ->where('is_manager_downgrade_to_solution', 1);
+    }
+    /**
+     * Query Pending Program
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryPendingProgram(Builder $query)
+    {
+        return $query->where('is_program', 0)
+                     ->where('is_manager_upgrade_to_program', 1)
+                     ->where('is_manager_downgrade_to_solution', 0);
+    }
+
     public function isDraft()
     {
         return $this->isStatus($this->draft_status);
@@ -150,6 +221,27 @@ class Solution extends Eloquent
         return $this->isOnShelf() or $this->isOffShelf();
     }
 
+    public function isSolution()
+    {
+        return $this->isStatus($this->is_solution_status);
+    }
+
+    public function isProgram()
+    {
+        return $this->isStatus($this->is_program_status);
+    }
+
+    public function isPendingSolution()
+    {
+        return $this->isStatus($this->is_pending_solution_status);
+    }
+    
+    public function isPendingProgram()
+    {
+        return $this->isStatus($this->is_pending_program_status);
+    }
+    
+    
     private function isStatus($status)
     {
         foreach ($status as $key => $status_flag) {
@@ -258,6 +350,25 @@ class Solution extends Eloquent
         }
 
         return $this->category->textSubCategory($this->solution_type, $this->solution_detail);
+    }
+    public function textType()
+    {
+        switch (true) {
+            case $this->isSolution():
+                return 'Solution';
+
+            case $this->isProgram():
+                return 'Program';
+
+            case $this->isPendingSolution():
+                return 'Pending Solution';
+
+            case $this->isPendingProgram():
+                return 'Pending Program';
+            default:
+                return 'N/A';
+        }
+
     }
 
     public function galleries()

@@ -117,6 +117,9 @@ Route::group(['before' => 'backend.solution'], function () {
     Route::get('solution/drafts', 'SolutionController@showDraftSolutions');
     Route::get('solution/wait-approve', 'SolutionController@showWaitApproveSolutions');
     Route::get('solution/deleted', 'SolutionController@showDeletedSolutions');
+    Route::get('solution/program', 'SolutionController@showProgram');
+    Route::get('solution/pending-solution', 'SolutionController@showPendingSolution');
+    Route::get('solution/pending-program', 'SolutionController@showPendingProgram');
 
     Route::get('solution/search/{by}', 'SolutionController@showSearch');
     Route::get('solution/detail/{id}', 'SolutionController@showDetail');
@@ -140,6 +143,9 @@ Route::group(['before' => 'backend.solution'], function () {
 
     Route::post('solution/update/{id}', 'SolutionController@update');
     Route::post('solution/update-ongoing/{id}', 'SolutionController@updateOngoing');
+    Route::post('solution/to-program', 'SolutionController@toProgram');
+    Route::post('solution/to-solution', 'SolutionController@toSolution');
+
 });
 
 // Hub
