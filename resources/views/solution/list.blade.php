@@ -128,12 +128,12 @@
                     @endif
 
                     @if(Auth::user()->isAdmin() || Auth::user()->isManagerHead())
-                        @if($solution->is_manager_approved_program)
+                        @if($solution->isPendingProgram())
                             <a href="javascript:void(0)" title="Upgrade Solution to Program" class="btn-mini btn-danger approve_pending_program" rel="{!! $solution->solution_id !!}">
                                 <i class="fa fa-long-arrow-up"></i> Up
                             </a>
                         @endif
-                        @if($solution->is_manager_approved_solution)
+                        @if($solution->isPendingSolution())
                             <a href="javascript:void(0)" title="Change Program to Solution" class="btn-mini btn-danger approve_pending_solution" rel="{!! $solution->solution_id !!}">
                                 <i class="fa fa-long-arrow-down"></i> Down
                             </a>

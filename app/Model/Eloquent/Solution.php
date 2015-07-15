@@ -68,24 +68,24 @@ class Solution extends Eloquent
         'previously_approved' => '1'
     ];
     public $is_solution_status = [
-        'is_program'                   => '0',
-        'is_manager_approved_program'  => '0',
-        'is_manager_approved_solution' => '0'
+        'is_program'                       => '0',
+        'is_manager_upgrade_to_program'    => '0',
+        'is_manager_downgrade_to_solution' => '0'
     ];
     public $is_program_status = [
-        'is_program'                   => '1',
-        'is_manager_approved_program'  => '0',
-        'is_manager_approved_solution' => '0'
+        'is_program'                       => '1',
+        'is_manager_upgrade_to_program'    => '0',
+        'is_manager_downgrade_to_solution' => '0'
     ];
     public $is_pending_solution_status = [
-        'is_program'                   => '0',
-        'is_manager_approved_program'  => '0',
-        'is_manager_approved_solution' => '1'
+        'is_program'                       => '0',
+        'is_manager_upgrade_to_program'    => '0',
+        'is_manager_downgrade_to_solution' => '1'
     ];
     public $is_pending_program_status = [
-        'is_program'                   => '0',
-        'is_manager_approved_program'  => '1',
-        'is_manager_approved_solution' => '0'
+        'is_program'                       => '0',
+        'is_manager_upgrade_to_program'    => '1',
+        'is_manager_downgrade_to_solution' => '0'
     ];
 
     public $after_submitted_status = ['solution_draft' => '1'];
@@ -159,8 +159,8 @@ class Solution extends Eloquent
     public function scopeQuerySolution(Builder $query)
     {
         return $query->where('is_program', 0)
-                     ->where('is_manager_approved_program', 0)
-                     ->where('is_manager_approved_solution', 0);
+                     ->where('is_manager_upgrade_to_program', 0)
+                     ->where('is_manager_downgrade_to_solution', 0);
     }
     /**
      * Query Program
@@ -170,8 +170,8 @@ class Solution extends Eloquent
     public function scopeQueryProgram(Builder $query)
     {
         return $query->where('is_program', 1)
-                     ->where('is_manager_approved_program', 0)
-                     ->where('is_manager_approved_solution', 0);
+                     ->where('is_manager_upgrade_to_program', 0)
+                     ->where('is_manager_downgrade_to_solution', 0);
     }
     /**
      * Query Pending Solution
@@ -181,8 +181,8 @@ class Solution extends Eloquent
     public function scopeQueryPendingSolution(Builder $query)
     {
         return $query->where('is_program', 0)
-                     ->where('is_manager_approved_program', 0)
-                     ->where('is_manager_approved_solution', 1);
+                     ->where('is_manager_upgrade_to_program', 0)
+                     ->where('is_manager_downgrade_to_solution', 1);
     }
     /**
      * Query Pending Program
@@ -192,8 +192,8 @@ class Solution extends Eloquent
     public function scopeQueryPendingProgram(Builder $query)
     {
         return $query->where('is_program', 0)
-                     ->where('is_manager_approved_program', 1)
-                     ->where('is_manager_approved_solution', 0);
+                     ->where('is_manager_upgrade_to_program', 1)
+                     ->where('is_manager_downgrade_to_solution', 0);
     }
 
     public function isDraft()

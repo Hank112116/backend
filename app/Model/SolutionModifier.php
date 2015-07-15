@@ -100,8 +100,8 @@ class SolutionModifier implements SolutionModifierInterface
     {
         $setter = [
             'is_program' => 0,
-            'is_manager_approved_program' => 1,
-            'is_manager_approved_solution' => 0,
+            'is_manager_upgrade_to_program' => 1,
+            'is_manager_downgrade_to_solution' => 0,
         ];
 
         $this->updateSolution($solution_id, $setter);
@@ -111,8 +111,8 @@ class SolutionModifier implements SolutionModifierInterface
     {
         $setter = [
             'is_program' => 1,
-            'is_manager_approved_program' => 0,
-            'is_manager_approved_solution' => 0,
+            'is_manager_upgrade_to_program' => 0,
+            'is_manager_downgrade_to_solution' => 0,
         ];
 
         $this->updateSolution($solution_id, $setter);
@@ -122,8 +122,8 @@ class SolutionModifier implements SolutionModifierInterface
     {
         $setter = [
             'is_program' => 0,
-            'is_manager_approved_program' => 0,
-            'is_manager_approved_solution' => 1,
+            'is_manager_upgrade_to_program' => 0,
+            'is_manager_downgrade_to_solution' => 1,
         ];
 
         $this->updateSolution($solution_id, $setter);
@@ -133,8 +133,8 @@ class SolutionModifier implements SolutionModifierInterface
     {
         $setter = [
             'is_program' => 0,
-            'is_manager_approved_program' => 0,
-            'is_manager_approved_solution' => 0,
+            'is_manager_upgrade_to_program' => 0,
+            'is_manager_downgrade_to_solution' => 0,
         ];
 
         $this->updateSolution($solution_id, $setter);
