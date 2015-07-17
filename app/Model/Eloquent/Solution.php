@@ -159,7 +159,6 @@ class Solution extends Eloquent
     public function scopeQuerySolution(Builder $query)
     {
         return $query->where('is_program', 0)
-                     ->where('is_manager_upgrade_to_program', 0)
                      ->where('is_manager_downgrade_to_solution', 0);
     }
     /**
@@ -170,8 +169,7 @@ class Solution extends Eloquent
     public function scopeQueryProgram(Builder $query)
     {
         return $query->where('is_program', 1)
-                     ->where('is_manager_upgrade_to_program', 0)
-                     ->where('is_manager_downgrade_to_solution', 0);
+                     ->where('is_manager_upgrade_to_program', 0);
     }
     /**
      * Query Pending Solution
