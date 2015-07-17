@@ -78,7 +78,7 @@ class Solution extends Eloquent
         'is_manager_downgrade_to_solution' => '0'
     ];
     public $is_pending_solution_status = [
-        'is_program'                       => '0',
+        'is_program'                       => '1',
         'is_manager_upgrade_to_program'    => '0',
         'is_manager_downgrade_to_solution' => '1'
     ];

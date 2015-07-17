@@ -98,44 +98,28 @@ class SolutionModifier implements SolutionModifierInterface
 
     public function managerToProgram($solution_id)
     {
-        $setter = [
-            'is_program' => 0,
-            'is_manager_upgrade_to_program' => 1,
-            'is_manager_downgrade_to_solution' => 0,
-        ];
+        $setter = $this->solution->is_pending_program_status;
 
         $this->updateSolution($solution_id, $setter);
     }
 
     public function toProgram($solution_id)
     {
-        $setter = [
-            'is_program' => 1,
-            'is_manager_upgrade_to_program' => 0,
-            'is_manager_downgrade_to_solution' => 0,
-        ];
+        $setter = $this->solution->is_program_status;
 
         $this->updateSolution($solution_id, $setter);
     }
 
     public function managerToSolution($solution_id)
     {
-        $setter = [
-            'is_program' => 0,
-            'is_manager_upgrade_to_program' => 0,
-            'is_manager_downgrade_to_solution' => 1,
-        ];
+        $setter = $this->solution->is_pending_solution_status;
 
         $this->updateSolution($solution_id, $setter);
     }
 
     public function toSolution($solution_id)
     {
-        $setter = [
-            'is_program' => 0,
-            'is_manager_upgrade_to_program' => 0,
-            'is_manager_downgrade_to_solution' => 0,
-        ];
+        $setter = $this->solution->is_solution_status;
 
         $this->updateSolution($solution_id, $setter);
     }
