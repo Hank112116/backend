@@ -8,6 +8,7 @@ use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\DuplicateSolutionInterface;
 use Backend\Model\ModelInterfaces\SolutionModifierInterface;
 use Backend\Model\ModelInterfaces\ProjectTagBuilderInterface;
+use Backend\Model\ModelInterfaces\FeatureModifierInterface;
 use Backend\Model\Plain\SolutionCategory;
 use Backend\Model\Plain\SolutionCertification;
 use Illuminate\Support\Collection;
@@ -21,11 +22,11 @@ class SolutionRepo implements SolutionInterface
 
     public function __construct(
         Solution $solution,
-        Feature $feature,
         DuplicateSolutionInterface $duplicate,
         UserInterface $user,
         SolutionModifierInterface $solution_modifier,
         ProjectTagBuilderInterface $project_tag_builder,
+        FeatureModifierInterface $feature_modify,
         SolutionCategory $category,
         SolutionCertification $certification,
         ImageUp $uploader
@@ -41,7 +42,7 @@ class SolutionRepo implements SolutionInterface
         $this->category       = $category;
         $this->certification  = $certification;
         $this->image_uploader = $uploader;
-        $this->feature        = $feature;
+        $this->feature        = $feature_modify;
     }
 
     public function duplicateRepo()
@@ -329,11 +330,10 @@ class SolutionRepo implements SolutionInterface
             $this->solution_modifier->managerToProgram($solution_id, $is_manager);
         } else {
             $this->solution_modifier->toProgram($solution_id, $is_manager);
-            $feature = $this->feature->where('block_data', $solution_id)->where('block_type', 'solution')->first();
-            if ($feature) {
-                $feature->block_type = 'program';
-                $feature->save();
-            }
+            $featureDate['block_data']    = $solution_id;
+            $featureDate['block_type']    = 'solution';
+            $featureDate['to_block_type'] = 'program';
+            $this->feature->updateType($featureDate);
         }
     }
     public function toSolution($solution_id, $is_manager)
@@ -342,11 +342,10 @@ class SolutionRepo implements SolutionInterface
             $this->solution_modifier->managerToSolution($solution_id, $is_manager);
         } else {
             $this->solution_modifier->toSolution($solution_id, $is_manager);
-            $feature = $this->feature->where('block_data', $solution_id)->where('block_type', 'program')->first();
-            if ($feature) {
-                $feature->block_type = 'solution';
-                $feature->save();
-            }
+            $featureDate['block_data']    = $solution_id;
+            $featureDate['block_type']    = 'program';
+            $featureDate['to_block_type'] = 'solution';
+            $this->feature->updateType($featureDate);
         }
     }
 
