@@ -52,4 +52,29 @@ $app->singleton(
 |
 */
 
+//see:http://monolog-api.richardjh.org/namespace-Monolog.html
+$app->configureMonologUsing(function($monolog) {
+    //error log to syslog server
+    $syslog = new \Monolog\Handler\SyslogUdpHandler(
+            config('syslog.host'),
+            config('syslog.port')
+        );
+    $formatter = new \Monolog\Formatter\JsonFormatter('%channel%.%level_name%: %message% %extra%');
+    $processor = new \Monolog\Processor\TagProcessor(['backend_laravel_log']);
+    $syslog->setFormatter($formatter);
+    $monolog->pushProcessor($processor);
+    $monolog->pushHandler($syslog);
+
+    //error log to mail
+    $env = env('APP_ENV');
+    if( $env != 'local') {
+        $mailerHandler = new \Monolog\Handler\NativeMailerHandler(
+                    config("syslog.{$env}.email_to"),
+                    config("syslog.{$env}.email_title"),
+                    config("syslog.{$env}.email_from")
+            );
+        $monolog->pushHandler($mailerHandler);
+    }
+});
+
 return $app;

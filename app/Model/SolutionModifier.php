@@ -96,6 +96,33 @@ class SolutionModifier implements SolutionModifierInterface
         $this->updateSolution($solution_id, $setter);
     }
 
+    public function managerToProgram($solution_id)
+    {
+        $setter = $this->solution->is_pending_program_status;
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function toProgram($solution_id)
+    {
+        $setter = $this->solution->is_program_status;
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function managerToSolution($solution_id)
+    {
+        $setter = $this->solution->is_pending_solution_status;
+
+        $this->updateSolution($solution_id, $setter);
+    }
+
+    public function toSolution($solution_id)
+    {
+        $setter = $this->solution->is_solution_status;
+
+        $this->updateSolution($solution_id, $setter);
+    }
     public function reject($solution_id)
     {
         $setter = array_merge(
@@ -161,9 +188,11 @@ class SolutionModifier implements SolutionModifierInterface
     private function updateSolution($solution_id, $data)
     {
         $solution = $this->solution->find($solution_id);
-        $solution->fill($data);
-        $solution->update_time = Carbon::now();
-        $solution->save();
+        if ($solution) {
+            $solution->fill($data);
+            $solution->update_time = Carbon::now();
+            $solution->save();
+        }
     }
 
     private function updateImageGalleries($solution, $data)

@@ -7,6 +7,7 @@
 
 @section('js')
     <script src='/js/list.js'></script>
+    <script src='/js/solution-list.js'></script>
 @stop
 
 @section('content')
@@ -37,6 +38,7 @@
             <tr>
                 <th>#</th>
                 <th class='table--name'>Title</th>
+                <th>Type</th>
                 <th>Category</th>
                 <th class='table--name'>User</th>
                 <th>Country<br/>City</th>
@@ -56,7 +58,20 @@
                         {{ $solution->textTitle() }}
                     </a>
                 </td>
-
+                <td>
+                    {!! $solution->textType() !!} <br/>
+                    @if(Auth::user()->isBackendPM() || Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                        @if($solution->isSolution())                     
+                             <span class="solution-sub-category">
+                                <input type="checkbox"  class="approve_program" rel="{!! $solution->solution_id !!}"> To Program
+                            </span>  
+                        @elseif($solution->isProgram())
+                            <span class="solution-sub-category">
+                                <input type="checkbox"  class="approve_solution" rel="{!! $solution->solution_id !!}"> To Solution
+                            </span>           
+                        @endif
+                    @endif
+                </td>
                 <td>
                     {!! $solution->textMainCategory() !!} <br/>
 
@@ -81,6 +96,7 @@
                 </td>
 
                 <td>{!! HTML::date($solution->approve_time) !!}</td>
+
                 <td>{!! HTML::time($solution->update_time) !!}</td>
 
                 <td>
@@ -104,12 +120,24 @@
                                 Edit & Approve <i class="fa fa-copy"></i>
                             </a>
                         @endif
-
                     @else
 
                         {!! link_to_action( 'SolutionController@showUpdate', 'EDIT',
                         $solution->solution_id, ['class' => 'btn-mini']) !!}
 
+                    @endif
+
+                    @if(Auth::user()->isAdmin() || Auth::user()->isManagerHead())
+                        @if($solution->isPendingProgram())
+                            <a href="javascript:void(0)" title="Upgrade Solution to Program" class="btn-mini btn-danger approve_pending_program" rel="{!! $solution->solution_id !!}">
+                                <i class="fa fa-long-arrow-up"></i> Up
+                            </a>
+                        @endif
+                        @if($solution->isPendingSolution())
+                            <a href="javascript:void(0)" title="Change Program to Solution" class="btn-mini btn-danger approve_pending_solution" rel="{!! $solution->solution_id !!}">
+                                <i class="fa fa-long-arrow-down"></i> Down
+                            </a>
+                        @endif
                     @endif
                 </td>
             </tr>

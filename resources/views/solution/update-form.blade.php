@@ -99,7 +99,7 @@
     <label for="solution_summary" class="col-md-3">Summary</label>
     <div class="col-md-5">
         <textarea id="solution_summary" name="solution_summary"
-                  maxlength="150" class="form-control" rows="5">{!! $solution->solution_summary !!}</textarea>
+                  maxlength="150" class="form-control" rows="5">{!! Purifier::clean($solution->solution_summary) !!}</textarea>
     </div>
 </div>
 <!-- End Summary -->
@@ -109,7 +109,7 @@
 <div class="form-group">
     <label for="description" class="col-md-3">Solution description & specifications</label>
     <div class="col-md-9">
-        <textarea id="description" class='js-editor' name="description">{!! $solution->description !!}</textarea>
+        <textarea id="description" class='js-editor' name="description">{!! Purifier::clean($solution->description) !!}</textarea>
     </div>
 </div>
 <!-- End Description -->
@@ -211,9 +211,8 @@
 <div class="form-group">
     <label for="application_compatibility" class="col-md-3">Solution Applications / Compatibility</label>
     <div class="col-md-9">
-        <textarea id="application_compatibility" class='js-editor' name="solution_application_compatibility">{!!
-        $solution->solution_application_compatibility
-        !!}</textarea>
+        <textarea id="application_compatibility" class='js-editor' name="solution_application_compatibility">
+        {!! Purifier::clean($solution->solution_application_compatibility) !!}</textarea>
     </div>
 </div>
 <!-- End Application Compatibility -->

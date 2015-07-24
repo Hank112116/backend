@@ -2,11 +2,13 @@
 
 use ImageUp;
 use Backend\Model\Eloquent\Solution;
+use Backend\Model\Eloquent\Feature;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\DuplicateSolutionInterface;
 use Backend\Model\ModelInterfaces\SolutionModifierInterface;
 use Backend\Model\ModelInterfaces\ProjectTagBuilderInterface;
+use Backend\Model\ModelInterfaces\FeatureModifierInterface;
 use Backend\Model\Plain\SolutionCategory;
 use Backend\Model\Plain\SolutionCertification;
 use Illuminate\Support\Collection;
@@ -24,6 +26,7 @@ class SolutionRepo implements SolutionInterface
         UserInterface $user,
         SolutionModifierInterface $solution_modifier,
         ProjectTagBuilderInterface $project_tag_builder,
+        FeatureModifierInterface $feature_modify,
         SolutionCategory $category,
         SolutionCertification $certification,
         ImageUp $uploader
@@ -39,6 +42,7 @@ class SolutionRepo implements SolutionInterface
         $this->category       = $category;
         $this->certification  = $certification;
         $this->image_uploader = $uploader;
+        $this->feature        = $feature_modify;
     }
 
     public function duplicateRepo()
@@ -49,6 +53,22 @@ class SolutionRepo implements SolutionInterface
     public function find($id)
     {
         return $this->solution->find($id);
+    }
+
+    public function findSolution($id)
+    {
+        return $this->solution
+                    ->where('solution_id', $id)
+                    ->querySolution()
+                    ->first();
+    }
+
+    public function findProgram($id)
+    {
+        return $this->solution
+                    ->where('solution_id', $id)
+                    ->queryProgram()
+                    ->first();
     }
 
     public function findDuplicate($id)
@@ -110,6 +130,30 @@ class SolutionRepo implements SolutionInterface
     {
         return $this->solution
             ->queryDeleted()
+            ->orderBy('solution_id', 'desc')
+            ->get();
+    }
+
+    public function program()
+    {
+        return $this->solution
+            ->queryProgram()
+            ->orderBy('solution_id', 'desc')
+            ->get();
+    }
+
+    public function pendingProgram()
+    {
+        return $this->solution
+            ->queryPendingProgram()
+            ->orderBy('solution_id', 'desc')
+            ->get();
+    }
+
+    public function pendingSolution()
+    {
+        return $this->solution
+            ->queryPendingSolution()
             ->orderBy('solution_id', 'desc')
             ->get();
     }
@@ -209,6 +253,30 @@ class SolutionRepo implements SolutionInterface
         return $solutions->count() > 0;
     }
 
+    public function hasProgram()
+    {
+        $solutions = $this->solution
+                    ->queryProgram()
+                    ->get();
+        return $solutions->count() > 0;
+    }
+
+    public function hasPendingSolution()
+    {
+        $solutions = $this->solution
+                    ->QueryPendingSolution()
+                    ->get();
+        return $solutions->count() > 0;
+    }
+
+    public function hasPendingProgram()
+    {
+        $solutions = $this->solution
+                    ->QueryPendingProgram()
+                    ->get();
+        return $solutions->count() > 0;
+    }
+
     private function filterWaitManagerApproveSolutions(Collection $solutions)
     {
         return $solutions->filter(
@@ -254,6 +322,30 @@ class SolutionRepo implements SolutionInterface
             $this->solution_modifier->managerApprove($solution_id, $is_manager);
         } else {
             $this->solution_modifier->approve($solution_id, $is_manager);
+        }
+    }
+    public function toProgram($solution_id, $is_manager)
+    {
+        if ($is_manager) {
+            $this->solution_modifier->managerToProgram($solution_id, $is_manager);
+        } else {
+            $this->solution_modifier->toProgram($solution_id, $is_manager);
+            $featureDate['block_data']    = $solution_id;
+            $featureDate['block_type']    = 'solution';
+            $featureDate['to_block_type'] = 'program';
+            $this->feature->updateType($featureDate);
+        }
+    }
+    public function toSolution($solution_id, $is_manager)
+    {
+        if ($is_manager) {
+            $this->solution_modifier->managerToSolution($solution_id, $is_manager);
+        } else {
+            $this->solution_modifier->toSolution($solution_id, $is_manager);
+            $featureDate['block_data']    = $solution_id;
+            $featureDate['block_type']    = 'program';
+            $featureDate['to_block_type'] = 'solution';
+            $this->feature->updateType($featureDate);
         }
     }
 

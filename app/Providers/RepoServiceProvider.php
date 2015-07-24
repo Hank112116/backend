@@ -104,6 +104,7 @@ class RepoServiceProvider extends ServiceProvider
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
                     $app->make('Backend\Model\ModelInterfaces\SolutionModifierInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
+                    $app->make('Backend\Model\ModelInterfaces\FeatureModifierInterface'),
                     new SolutionCategory(),
                     new SolutionCertification(),
                     new \ImageUp()

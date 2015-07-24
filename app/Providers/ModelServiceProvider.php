@@ -5,6 +5,7 @@ use Backend\Model\ProjectModifier;
 use Backend\Model\ProjectProfileGenerator;
 use Backend\Model\ProjectTagBuilder;
 use Backend\Model\SolutionModifier;
+use Backend\Model\FeatureModifier;
 use Illuminate\Support\ServiceProvider;
 
 class ModelServiceProvider extends ServiceProvider
@@ -48,6 +49,14 @@ class ModelServiceProvider extends ServiceProvider
                     new \Backend\Model\Eloquent\Solution(),
                     new \Backend\Model\Eloquent\DuplicateSolution(),
                     new \ImageUp()
+                );
+            }
+        );
+        $this->app->bind(
+            'Backend\Model\ModelInterfaces\FeatureModifierInterface',
+            function ($app) {
+                return new FeatureModifier(
+                    new \Backend\Model\Eloquent\Feature()
                 );
             }
         );

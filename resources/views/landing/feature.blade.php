@@ -17,7 +17,7 @@
     <div class="row search-bar">
 
         @foreach ($types as $type) 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 {!! Form::open(['action' => ['LandingController@findFeatureEntity', $type], 
                                'method' => 'POST', 'class' => 'js-search-form']) !!}
 

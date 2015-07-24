@@ -47,8 +47,8 @@ class LandingController extends BaseController
     public function findFeatureEntity($type)
     {
         $id = Input::get('id');
-
-        if (!$feature = $this->feature->byEntityIdType($id, $type)) {
+        $feature = $this->feature->byEntityIdType($id, $type);
+        if (!$feature->entity) {
             $res = [
                 'status' => 'fail',
                 'msg'    => "There is no {$type} with id {$id}"

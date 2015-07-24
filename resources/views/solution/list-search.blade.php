@@ -29,12 +29,33 @@
         {!! link_to_action("SolutionController@showDeletedSolutions", 'Deleted Solutions', '', ["class"=>"btn btn-mini btn-primary"]) !!}
     @endif
 
+    @if($has_program)
+        {!! link_to_action("SolutionController@showProgram", 'Program', '',
+            ["class"=>"btn btn-mini btn-primary"] ) !!}
+    @else   
+        <a href="#" class="btn btn-mini btn-primary" disabled="disabled">Program</a>
+    @endif
+
     @if($has_wait_approve_solutions)
         {!! link_to_action("SolutionController@showWaitApproveSolutions", 'Approve Pending Solutions', '',
             ["class"=>"btn btn-mini btn-warning"] ) !!}
     @else   
         <a href="#" class="btn btn-mini btn-warning" disabled="disabled">Approve Pending Solutions</a>
     @endif
+    @if($has_pending_up_program)
+        {!! link_to_action("SolutionController@showPendingProgram", 'Pending Programs', '',
+            ["class"=>"btn btn-mini btn-warning"] ) !!}
+    @else   
+        <a href="#" class="btn btn-mini btn-warning" disabled="disabled">Pending Programs</a>
+    @endif
+    @if($has_pending_change_solution)
+        {!! link_to_action("SolutionController@showPendingSolution", 'Pending Solutions', '',
+            ["class"=>"btn btn-mini btn-warning"] ) !!}
+    @else   
+        <a href="#" class="btn btn-mini btn-warning" disabled="disabled">Pending Solutions</a>
+    @endif
+
+
     </div>
 </div>
 

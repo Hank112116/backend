@@ -19,7 +19,7 @@ class Feature extends Eloquent
     public $timestamps = false;
     public static $unguarded = true;
 
-    private static $types = ['project', 'expert', 'solution'];
+    private static $types = ['project', 'expert', 'solution', 'program'];
 
     public function getEntityId()
     {
@@ -30,6 +30,8 @@ class Feature extends Eloquent
                 return "solution_{$this->block_data}";
             case 'expert':
                 return "expert_{$this->block_data}";
+            case 'program':
+                return "program_{$this->block_data}";
         }
     }
 
@@ -51,5 +53,9 @@ class Feature extends Eloquent
     public function isSolution()
     {
         return $this->block_type == 'solution';
+    }
+    public function isProgram()
+    {
+        return $this->block_type == 'program';
     }
 }

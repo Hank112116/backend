@@ -174,7 +174,7 @@
 		<!-- Application Compatibility -->
 		@include('modules.detail-panel', [
 			'column_title' => 'Solution Applications / Compatibility',
-			'column_content' => $solution->solution_application_compatibility
+			'column_content' => Purifier::clean($solution->solution_application_compatibility)
 		])
 		<!-- End Application Compatibility -->
 
