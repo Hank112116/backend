@@ -80,6 +80,30 @@ $(function () {
             }
         });
     });
+    //cancel pending solution type to program checkbox
+    $(document).on("ifChecked", ".cancel_solution", function (e) {
+        e.preventDefault();
+        var solution_id = $(this).attr("rel");
+        SweetAlert.alert({
+            title: "Cancel Pending Solution to Program?",
+            confirmButton: "Yes, Cancel!",
+            handleOnConfirm: function handleOnConfirm() {
+                return post_date(solution_id, "./cancel-pending-solution");
+            }
+        });
+    });
+    //cancel pending program type to solution checkbox
+    $(document).on("ifChecked", ".cancel_program", function (e) {
+        e.preventDefault();
+        var solution_id = $(this).attr("rel");
+        SweetAlert.alert({
+            title: "Cancel Pending Program to Solution?",
+            confirmButton: "Yes, Cancel!",
+            handleOnConfirm: function handleOnConfirm() {
+                return post_date(solution_id, "./cancel-pending-program");
+            }
+        });
+    });
     function post_date(solution_id, url) {
         $.ajax({
             type: "POST",

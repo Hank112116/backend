@@ -145,6 +145,8 @@ Route::group(['before' => 'backend.solution'], function () {
     Route::post('solution/update-ongoing/{id}', 'SolutionController@updateOngoing');
     Route::post('solution/to-program', 'SolutionController@toProgram');
     Route::post('solution/to-solution', 'SolutionController@toSolution');
+    Route::post('solution/cancel-pending-program', 'SolutionController@cancelPendingProgram');
+    Route::post('solution/cancel-pending-solution', 'SolutionController@cancelPendingSolution');
 
 });
 
