@@ -64,11 +64,19 @@
                         @if($solution->isSolution())                     
                              <span class="solution-sub-category">
                                 <input type="checkbox"  class="approve_program" rel="{!! $solution->solution_id !!}"> To Program
-                            </span>  
+                            </span>
                         @elseif($solution->isProgram())
                             <span class="solution-sub-category">
                                 <input type="checkbox"  class="approve_solution" rel="{!! $solution->solution_id !!}"> To Solution
-                            </span>           
+                            </span>
+                        @elseif($solution->isPendingSolution())
+                            <span class="solution-sub-category">
+                                <input type="checkbox"  class="cancel_solution" rel="{!! $solution->solution_id !!}"> Cancel
+                            </span>
+                        @elseif($solution->isPendingProgram())
+                            <span class="solution-sub-category">
+                                <input type="checkbox"  class="cancel_program" rel="{!! $solution->solution_id !!}"> Cancel
+                            </span>
                         @endif
                     @endif
                 </td>

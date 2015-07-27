@@ -243,6 +243,40 @@ class SolutionController extends BaseController
         }
         return Response::json($res);
     }
+    //cancel penging solution to program
+    public function cancelPendingSolution()
+    {
+        if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
+            $solution_id = Input::get('solution_id');
+            $solution = $this->solution_repo->find($solution_id);
+            if (count($solution) > 0) {
+                $this->solution_repo->toProgram($solution_id, false);
+                $res   = ['status' => 'success'];
+            } else {
+                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+            }
+        } else {
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
+        return Response::json($res);
+    }
+    //cancel penfing program to solution
+    public function cancelPendingProgram()
+    {
+        if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
+            $solution_id = Input::get('solution_id');
+            $solution = $this->solution_repo->find($solution_id);
+            if (count($solution) > 0) {
+                $this->solution_repo->toSolution($solution_id, false);
+                $res   = ['status' => 'success'];
+            } else {
+                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+            }
+        } else {
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
+        return Response::json($res);
+    }
 
     public function reject($solution_id)
     {
