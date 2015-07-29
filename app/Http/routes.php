@@ -166,9 +166,6 @@ Route::group(['before' => 'backend.hub'], function () {
 // Landing
 Route::group(['before' => 'backend.landing'], function () {
     Route::get('landing/feature', 'LandingController@showFeature');
-    Route::get('landing/manufacturer', 'LandingController@showManufacturer');
-    Route::get('landing/get-new-manufacturer', 'LandingController@getNewManufacturer');
-    Route::get('landing/refer', 'LandingController@showReferenceProject');
     Route::get('landing/hello', 'LandingController@showHello');
     Route::get('landing/expert', 'LandingController@showExpert');
 
@@ -178,7 +175,6 @@ Route::group(['before' => 'backend.landing'], function () {
     Route::post('landing/find-refer-project', 'LandingController@findReferenceProject');
     Route::post('landing/update-feature', 'LandingController@updateFeature');
     Route::post('landing/update-refer', 'LandingController@updateReferenceProject');
-    Route::post('landing/update-manufacturer', 'LandingController@updateManufacturer');
     Route::post('landing/update-hello-redirect', 'LandingController@updateHelloRedirect');
     Route::post('landing/find-expert/{tyep}', 'LandingController@findExpertEntity');
     Route::post('landing/update-expert', 'LandingController@updateExpert');

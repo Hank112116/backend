@@ -99,7 +99,7 @@
     <label for="solution_summary" class="col-md-3">Summary</label>
     <div class="col-md-5">
         <textarea id="solution_summary" name="solution_summary"
-                  maxlength="150" class="form-control" rows="5">{!! Purifier::clean($solution->solution_summary) !!}</textarea>
+                  maxlength="150" class="form-control" rows="5">{{ $solution->solution_summary }}</textarea>
     </div>
 </div>
 <!-- End Summary -->
