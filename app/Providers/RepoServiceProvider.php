@@ -140,16 +140,6 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\LandingManufacturerInterface',
-            'Backend\Repo\Lara\LandingManufacturerRepo'
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\LandingReferProjectInterface',
-            'Backend\Repo\Lara\LandingReferProjectRepo'
-        );
-
-        $this->app->bind(
             'Backend\Repo\RepoInterfaces\HubInterface',
             'Backend\Repo\Lara\HubRepo'
         );

@@ -92,17 +92,6 @@
                                 <i class="fa fa-tag fa-fw"></i> Feature
                             </a>
                         </li>
-                        
-                        <li>
-                            <a href="{!! action('LandingController@showReferenceProject') !!}">
-                                <i class="fa fa-tag fa-fw"></i> Connected thru HWTrek
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{!! action('LandingController@showManufacturer') !!}">
-                                <i class="fa fa-tag fa-fw"></i> Manufacturer
-                            </a>
-                        </li>
                         <li>
                             <a href="{!! action('LandingController@showHello') !!}">
                                 <i class="fa fa-tag fa-fw"></i> Hello

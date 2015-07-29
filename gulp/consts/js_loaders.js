@@ -13,7 +13,6 @@ module.exports = [
     'user-detail.js',
     'solution-detail.js',
     'mail-template-detail.js',
-    'landing-manufacturer.js',
     'landing-project-selector.js',
     'landing-hello.js',
     'hub-schedules.js',

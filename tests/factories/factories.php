@@ -85,14 +85,3 @@ $factory(Eloquent\MailTemplate::class, [
     'message' => $faker->paragraph,
     'active'  => 1,
 ]);
-
-$factory(Eloquent\ReferenceProject::class, [
-    'project_id'        => $faker->numerify("###"),
-    'url_project_title' => $faker->numerify("project_###"),
-    'order'             => $faker->randomDigit,
-]);
-
-$factory(Eloquent\Manufacturer::class, [
-    'name'        => $faker->sentence,
-    'description' => $faker->paragraph,
-]);

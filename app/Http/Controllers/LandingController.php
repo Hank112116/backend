@@ -4,8 +4,6 @@ namespace Backend\Http\Controllers;
 
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingExpertInterface;
-use Backend\Repo\RepoInterfaces\LandingManufacturerInterface;
-use Backend\Repo\RepoInterfaces\LandingReferProjectInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
 use Guzzle\Log\LogAdapterInterface;
 use Illuminate\Http\Request;
@@ -22,13 +20,9 @@ class LandingController extends BaseController
 
     public function __construct(
         LandingFeatureInterface $feature,
-        LandingManufacturerInterface $manufacturer,
-        LandingReferProjectInterface $refer,
         LandingExpertInterface $expert
     ) {
         $this->feature = $feature;
-        $this->manu    = $manufacturer;
-        $this->refer   = $refer;
         $this->expert  = $expert;
     }
 
@@ -69,64 +63,6 @@ class LandingController extends BaseController
         Noty::success('Update features successful');
 
         return Redirect::action('LandingController@showFeature');
-    }
-
-    public function showManufacturer()
-    {
-        return view('landing.manufacturer')
-            ->with('manufacturers', $this->manu->all());
-    }
-
-    public function updateManufacturer()
-    {
-        $this->manu->reset(Input::all());
-        Noty::success('Update manufacturers successful');
-
-        return Redirect::action('LandingController@showManufacturer');
-    }
-
-    public function getNewManufacturer()
-    {
-        return view('landing.manufacturer-block')
-            ->with('manufacturer', $this->manu->dummy());
-    }
-
-    public function showReferenceProject()
-    {
-        return view('landing.refer')
-            ->with('refers', $this->refer->all());
-    }
-
-    public function findReferenceProject()
-    {
-        $id = Input::get('id');
-
-        if (!$entity = $this->refer->byProjectId($id)) {
-            $res = [
-                'status' => 'fail',
-                'msg'    => "There is no project with id {$id}"
-            ];
-        } else {
-            $block = view('landing.refer-block')
-                ->with('refer', $entity)
-                ->with('project', $entity->project)
-                ->render();
-
-            $res = [
-                'status'    => 'success',
-                'new_block' => $block
-            ];
-        }
-
-        return Response::json($res);
-    }
-
-    public function updateReferenceProject()
-    {
-        $this->refer->reset(Input::get('refer', []));
-        Noty::success('Update refers successful');
-
-        return Redirect::action('LandingController@showReferenceProject');
     }
 
     public function updateHelloRedirect(Request $request, LogAccessHelloInterface $repo)
