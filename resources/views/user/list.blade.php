@@ -31,7 +31,9 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Type</th>
-                <th class="table--user-mail">EMail</th>
+                @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                    <th class="table--user-mail">EMail</th>
+                @endif
                 <th>Country<br/>City</th>
                 <th class="table--width-limit">
                     Company<br/>
@@ -57,6 +59,7 @@
                     </td>
 
                     <td>{!! $user->textType() !!}</td>
+                    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                     <td class="table--user-mail">
                         {{ $user->email }}
                         @if('facebook' === $user->social)
@@ -65,7 +68,7 @@
                             <i class="fa fa-linkedin-square"></i>
                         @endif
                     </td>
-
+                    @endif
                     <td>{{ $user->country }}<br/>{{ $user->city }}</td>
 
                     <td class="table--width-limit">
