@@ -131,7 +131,7 @@ class EmailSend
                 html_entity_decode(
                     strip_tags($raw_data)
                 ),
-                ENT_QUOTES
+                ENT_NOQUOTES
             )
         );
 

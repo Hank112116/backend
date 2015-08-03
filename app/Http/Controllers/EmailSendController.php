@@ -36,6 +36,10 @@ class EmailSendController extends BaseController
     }
     public function hubMailSend()
     {
+        if (empty(Session::get("admin"))) {
+            $res   = ['status' => 'fail', "msg" => "Permissions denied"];
+            return Response::json($res);
+        }
         $env = env('APP_ENV');
         $emailConfig = Config::get("email.{$env}");
         //PM user_id
