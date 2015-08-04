@@ -7,6 +7,7 @@
 
 @section('js')
     <script src='/js/list.js'></script>
+    <script src='/js/user-list.js'></script>
 @stop
 
 @section('content')
@@ -30,6 +31,9 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                @if(Auth::user()->isAdmin())
+                <th>Internal PM</th>
+                @endif
                 <th>Type</th>
                 @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                     <th class="table--user-mail">EMail</th>
@@ -57,6 +61,19 @@
                         <a href="{!! $user->textFrontLink() !!}" target="_blank">
                             {{ $user->textFullName() }}</a>
                     </td>
+                    @if(Auth::user()->isAdmin())
+                    <td>{!! $user->textHWTrekPM() !!}<br>
+                        @if(!$user->isHWTrekPM())
+                             <span class="user-sub-category">
+                                <input type="checkbox"  class="change_pm" rel="{!! $user->user_id !!}"> To PM
+                            </span>
+                        @else
+                            <span class="user-sub-category">
+                                <input type="checkbox"  class="change_user" rel="{!! $user->user_id !!}"> To User
+                            </span>
+                        @endif
+                    </td>
+                    @endif
 
                     <td>{!! $user->textType() !!}</td>
                     @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())

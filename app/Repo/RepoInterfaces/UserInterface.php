@@ -30,6 +30,8 @@ interface UserInterface
 
     public function toOutputArray($users);
 
+    public function changeHWTrekPM($user_id, $is_hwtrek_pm);
+
     //    public function valid();
     //    public function error();
     //    public function update();

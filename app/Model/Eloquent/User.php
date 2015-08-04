@@ -111,6 +111,15 @@ class User extends Eloquent
         $name = UrlFilter::filter("{$this->user_name}-{$this->last_name}");
         return 'https://' . Config::get('app.front_domain') . "/profile/{$name}.{$this->user_id}";
     }
+
+    public function textHWTrekPM()
+    {
+        if (!$this->isHWTrekPM()) {
+            return false;
+        }
+        return 'HWTrek PM';
+    }
+
     public function getIndustryArray()
     {
         return Industry::parseToArray($this->user_category_id);
@@ -177,6 +186,11 @@ class User extends Eloquent
     public function isToBeExpert()
     {
         return $this->is_sign_up_as_expert;
+    }
+
+    public function isHWTrekPM()
+    {
+        return $this->is_hwtrek_pm;
     }
 
     public function hasExpertiseTag($tag_id)
