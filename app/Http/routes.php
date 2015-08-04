@@ -43,6 +43,7 @@ Route::group(['before' => 'backend.user'], function () {
     Route::get('user/comments/professions/private/{comment_id}', 'CommentController@togglePrivate');
 
     Route::post('user/update/{id}', 'UserController@update');
+    Route::post('user/change-hwtrek-pm-type', 'UserController@changeHWTrekPM');
 });
 
 // Inbox

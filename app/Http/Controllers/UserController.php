@@ -18,6 +18,8 @@ use Input;
 use Lang;
 use Noty;
 use Redirect;
+use Auth;
+use Response;
 
 class UserController extends BaseController
 {
@@ -245,5 +247,23 @@ class UserController extends BaseController
     public function searchUser($user_id)
     {
         return $this->user_api->basicColumns($user_id);
+    }
+
+    public function changeHWTrekPM()
+    {
+        if (Auth::user()->isAdmin()) {
+            $user_id      = Input::get('user_id');
+            $is_hwtrek_pm = Input::get('is_hwtrek_pm');
+            $user = $this->user_repo->find($user_id);
+            if (count($user) > 0) {
+                $this->user_repo->changeHWTrekPM($user_id, $is_hwtrek_pm);
+                $res   = ['status' => 'success'];
+            } else {
+                $res   = ['status' => 'fail', 'msg'=>'Not found user id!'];
+            }
+        } else {
+            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+        }
+        return Response::json($res);
     }
 }
