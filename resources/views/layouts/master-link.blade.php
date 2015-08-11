@@ -27,10 +27,29 @@
 
                 @if(Auth::user()->isShowLink('user'))
                 <li>
-                    <a href="{!! action('UserController@showList') !!}">
+                    <a href="#">
                         <i class="fa fa-users fa-fw"></i>
                         Members
+                        <span class="fa arrow"></span>
                     </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{!! action('UserController@showList') !!}">
+                                <i class="fa fa-tag fa-fw"></i>
+                                Members
+                            </a>
+                        </li>
+                    </ul>
+                    @if(true)
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{!! action('ReportController@showRegistrationReport') !!}">
+                                <i class="fa fa-tag fa-fw"></i>
+                                Registration Summary
+                            </a>
+                        </li>
+                    </ul>
+                    @endif
                 </li>
                 @endif
 
