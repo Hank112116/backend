@@ -156,16 +156,16 @@ var Cropper = React.createClass({ displayName: 'Cropper',
 			top: this.state.container_top,
 			left: this.state.container_left
 		},
-		    resize_container_classes = 'resize-container ' + (this.state.is_resizing ? 'active' : '');
+		    resize_container_classes = "resize-container " + (this.state.is_resizing ? 'active' : '');
 
-		return React.DOM.div({ className: 'component',
-			ref: 'component',
+		return React.DOM.div({ className: "component",
+			ref: "component",
 			onMouseDown: this.handleStartResize,
 			onMouseMove: this.handleResize,
 			onMouseUp: this.handleEndResize,
-			onDoubleClick: this.handleCrop }, React.DOM.div({ className: 'overlay', ref: 'overlay' }, React.DOM.div({ className: 'overlay-inner' })), React.DOM.div({ className: resize_container_classes,
-			ref: 'container',
-			style: position }, ResizeSpot({ point: 'nw', onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: 'ne', onSwitchResizeSpot: this.handleSwitchResizeSpot }), React.DOM.img({ className: 'resize-image', src: this.state.image }), ResizeSpot({ point: 'sw', onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: 'se', onSwitchResizeSpot: this.handleSwitchResizeSpot })));
+			onDoubleClick: this.handleCrop }, React.DOM.div({ className: "overlay", ref: "overlay" }, React.DOM.div({ className: "overlay-inner" })), React.DOM.div({ className: resize_container_classes,
+			ref: "container",
+			style: position }, ResizeSpot({ point: "nw", onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: "ne", onSwitchResizeSpot: this.handleSwitchResizeSpot }), React.DOM.img({ className: "resize-image", src: this.state.image }), ResizeSpot({ point: "sw", onSwitchResizeSpot: this.handleSwitchResizeSpot }), ResizeSpot({ point: "se", onSwitchResizeSpot: this.handleSwitchResizeSpot })));
 	}
 });
 
@@ -183,7 +183,7 @@ var React = require('react');
 var ResizeSpot = React.createClass({ displayName: 'ResizeSpot',
 
 	render: function render() {
-		var classes = 'resize-handle resize-handle-' + this.props.point;
+		var classes = "resize-handle resize-handle-" + this.props.point;
 
 		return React.DOM.span({ className: classes,
 			onMouseOver: this.props.onSwitchResizeSpot.bind(null, this.props.point) });
@@ -223,7 +223,7 @@ var DataUrlGenerator = {
       cv.getContext('2d').drawImage(image_obj, clip_opt.x, clip_opt.y, clip_opt.width, clip_opt.height, image_opt.x, image_opt.y, image_opt.width, image_opt.height);
     }
 
-    return cv.toDataURL('image/png');
+    return cv.toDataURL("image/png");
   }
 };
 

@@ -153,7 +153,7 @@ class SolutionModifier implements SolutionModifierInterface
         $setter = array_only($data, self::$ongoing_update_columns);
         $setter = array_merge(
             $setter,
-            $this->updateImageGalleries($duplicate->image_gallery, $duplicate->image, $data)
+            $this->updateImageGalleries($duplicate, $data)
         );
 
         $duplicate->fill($setter);

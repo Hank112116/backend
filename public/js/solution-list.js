@@ -366,7 +366,7 @@ var getTopMargin = function getTopMargin(elem) {
 
   var height = elem.clientHeight,
       padding;
-  if (typeof getComputedStyle !== 'undefined') {
+  if (typeof getComputedStyle !== "undefined") {
     // IE 8
     padding = parseInt(getComputedStyle(elem).getPropertyValue('padding-top'), 10);
   } else {
@@ -750,11 +750,11 @@ var _handleSwalDom = require('./handle-swal-dom');
 
 var _handleDom = require('./handle-dom');
 
-var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
-
 /*
  * Set type, text and actions on modal
  */
+var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
+
 var setParameters = function setParameters(params) {
   var modal = (0, _handleSwalDom.getModal)();
 
@@ -945,8 +945,8 @@ var setParameters = function setParameters(params) {
   } else if (typeof params.animation === 'string') {
     modal.setAttribute('data-animation', params.animation); // Custom animation
   } else {
-    modal.setAttribute('data-animation', 'pop');
-  }
+      modal.setAttribute('data-animation', 'pop');
+    }
 
   /*
    * Timer

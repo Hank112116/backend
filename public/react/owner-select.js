@@ -110,7 +110,7 @@ var OwnerInput = React.createClass({ displayName: 'OwnerInput',
 	},
 
 	render: function render() {
-		return React.DOM.input({ type: 'text', id: 'member', name: 'user_id', ref: 'user',
+		return React.DOM.input({ type: "text", id: "member", name: "user_id", ref: "user",
 			value: this.state.user_id,
 			onChange: this.switchOwner });
 	}
@@ -174,7 +174,7 @@ var OwnerWrapper = React.createClass({ displayName: 'OwnerWrapper',
 			backgroundImage: 'url(' + user.image + ')'
 		};
 
-		return React.DOM.div({ className: 'owner-wrapper' }, React.DOM.div({ className: 'owner-image-wrapper', style: bg }), React.DOM.div({ className: 'owner-info-wrapper' }, React.DOM.div(null, React.DOM.a({ href: user.link, target: '_blank' }, user.full_name), React.DOM.br(null), user.is_expert ? 'Expert' : 'Creator'), React.DOM.div({ className: user.is_expert ? '' : 'hide' }, user.position, '  at  ', user.company)));
+		return React.DOM.div({ className: "owner-wrapper" }, React.DOM.div({ className: "owner-image-wrapper", style: bg }), React.DOM.div({ className: "owner-info-wrapper" }, React.DOM.div(null, React.DOM.a({ href: user.link, target: "_blank" }, user.full_name), React.DOM.br(null), user.is_expert ? 'Expert' : 'Creator'), React.DOM.div({ className: user.is_expert ? '' : 'hide' }, user.position, "  at  ", user.company)));
 	}
 });
 

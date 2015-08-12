@@ -8,13 +8,15 @@
 var React = require('react');
 var SolutionGallery = React.createFactory(require('./solution-gallery/components/SolutionGallery.react'));
 
-var gallery_wrapper = document.getElementById('solution-gallery'),
-    galleries = gallery_wrapper.dataset.solutionGallery ? JSON.parse(gallery_wrapper.dataset.solutionGallery) : [];
+var gallery_wrapper = document.getElementById('solution-gallery');
+if (gallery_wrapper !== null) {
+	var galleries = gallery_wrapper.dataset.solutionGallery ? JSON.parse(gallery_wrapper.dataset.solutionGallery) : [];
 
-React.render(SolutionGallery({
-	mode: gallery_wrapper.dataset.mode,
-	cover: gallery_wrapper.dataset.solutionCover,
-	galleries: galleries }), gallery_wrapper);
+	React.render(SolutionGallery({
+		mode: gallery_wrapper.dataset.mode,
+		cover: gallery_wrapper.dataset.solutionCover,
+		galleries: galleries }), gallery_wrapper);
+}
 
 },{"./solution-gallery/components/SolutionGallery.react":3,"react":164}],2:[function(require,module,exports){
 /**
@@ -38,7 +40,7 @@ var Cover = React.createClass({ displayName: 'Cover',
 
 		var bg = this.props.cover ? { backgroundImage: 'url(' + this.props.cover.replace('/thumb/', '/orig/') + ')' } : {};
 
-		return React.DOM.div({ className: 'solution-cover', style: bg });
+		return React.DOM.div({ className: "solution-cover", style: bg });
 	}
 });
 
@@ -199,10 +201,10 @@ var Thumb = React.createClass({ displayName: 'Thumb',
 			return null;
 		}
 
-		return React.DOM.input({ type: 'file',
-			ref: 'uploader',
+		return React.DOM.input({ type: "file",
+			ref: "uploader",
 			name: this.props.thumb.key,
-			className: 'solution-image-upload',
+			className: "solution-image-upload",
 			onChange: this.handleChangeImage });
 	},
 
@@ -211,7 +213,7 @@ var Thumb = React.createClass({ displayName: 'Thumb',
 			return null;
 		}
 
-		return React.DOM.input({ type: 'hidden', name: 'cover', value: this.props.thumb.key, readOnly: true });
+		return React.DOM.input({ type: "hidden", name: "cover", value: this.props.thumb.key, readOnly: true });
 	},
 
 	handleHoverImage: function handleHoverImage() {
@@ -243,9 +245,9 @@ var Thumb = React.createClass({ displayName: 'Thumb',
 			return null;
 		}
 
-		return React.DOM.div({ className: 'solution-thumb-wrapper' }, ThumbChoose({
+		return React.DOM.div({ className: "solution-thumb-wrapper" }, ThumbChoose({
 			thumb: this.props.thumb,
-			handleChooseCover: this.props.handleChooseCover }), React.DOM.div({ className: 'solution-thumb',
+			handleChooseCover: this.props.handleChooseCover }), React.DOM.div({ className: "solution-thumb",
 			style: bg,
 			onMouseOver: this.handleHoverImage }, this.genThumbInput()), ThumbDescription({
 			is_display: this.props.is_display,
@@ -272,7 +274,7 @@ var ThumbChoose = React.createClass({ displayName: 'ThumbChoose',
 	render: function render() {
 		var switchClass = 'onoffswitch-label' + (this.props.thumb.is_cover ? ' active' : '');
 
-		return React.DOM.div({ className: 'solution-thumb-choose' }, React.DOM.div({ className: 'onoffswitch' }, React.DOM.label({ className: switchClass, onClick: this.handleClick }, React.DOM.span({ className: 'onoffswitch-inner' }), React.DOM.span({ className: 'onoffswitch-switch' }))));
+		return React.DOM.div({ className: "solution-thumb-choose" }, React.DOM.div({ className: "onoffswitch" }, React.DOM.label({ className: switchClass, onClick: this.handleClick }, React.DOM.span({ className: "onoffswitch-inner" }), React.DOM.span({ className: "onoffswitch-switch" }))));
 	}
 });
 
@@ -297,7 +299,7 @@ var ThumbDelete = React.createClass({ displayName: 'ThumbDelete',
 		    switchClass = 'solution-thumb-delete' + (this.props.thumb.is_deleted ? ' active' : ''),
 		    value = this.props.thumb.is_deleted ? '1' : '0';
 
-		return React.DOM.div({ className: switchClass, onClick: this.handleClick }, React.DOM.i({ className: 'fa fa-times' }), React.DOM.input({ type: 'hidden', name: thumb_delete_name, value: value }));
+		return React.DOM.div({ className: switchClass, onClick: this.handleClick }, React.DOM.i({ className: "fa fa-times" }), React.DOM.input({ type: "hidden", name: thumb_delete_name, value: value }));
 	}
 });
 
@@ -337,11 +339,11 @@ var ThumbDescription = React.createClass({ displayName: 'ThumbDescription',
 		var thumb_desc_name = 'thumb_desc_' + this.props.thumb.index;
 
 		if (this.props.is_display) {
-			return React.DOM.div({ className: 'solution-thumb-content readonly' }, React.DOM.div({ className: 'content-readonly' }, this.state.description));
+			return React.DOM.div({ className: "solution-thumb-content readonly" }, React.DOM.div({ className: "content-readonly" }, this.state.description));
 		}
 
-		return React.DOM.div({ className: 'solution-thumb-content' }, React.DOM.textarea({
-			ref: 'desc',
+		return React.DOM.div({ className: "solution-thumb-content" }, React.DOM.textarea({
+			ref: "desc",
 			name: thumb_desc_name,
 			value: this.state.description,
 			onChange: this.handleChangeDescription,
