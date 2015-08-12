@@ -40,7 +40,7 @@
                             </a>
                         </li>
                     </ul>
-                    @if(true)
+                    @if(Auth::user()->isShowLink('report'))
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="{!! action('ReportController@showRegistrationReport') !!}">

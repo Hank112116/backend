@@ -31,6 +31,9 @@ class User extends Eloquent
     const TYPE_CREATOR = 0;
     const TYPE_EXPERT = 1;
 
+    const NOT_HWTREK_PM =   0;
+    const IS_HWTREK_PM  =   1;
+
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
         self::TYPE_EXPERT  => 'Expert',
@@ -62,7 +65,22 @@ class User extends Eloquent
     {
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
-
+    public function scopeExpert($query)
+    {
+        return $query
+            ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
+            ->where('user_type', '=', self::TYPE_EXPERT);
+    }
+    public function scopeCreator($query)
+    {
+        return $query
+            ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
+            ->where('user_type', '=', self::TYPE_CREATOR);
+    }
+    public function scopePM($query)
+    {
+        return $query->where('is_hwtrek_pm', '=', self::IS_HWTREK_PM);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

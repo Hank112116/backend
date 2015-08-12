@@ -2,37 +2,58 @@
 
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Model\Eloquent\User;
+use Carbon\Carbon;
 
 class ReportRepo implements ReportInterface
 {
-    /***
-     * @param $days How many days in interval from now
-     * @return array Array that the first element is the start of interval, and the second element is the end of interval.
-     */
-    private function getTimeIntervalArray($days)
-    {
-        $start = new \DateTime('now');
-        $start->modify('-'.$days.' days');
-        $end = new \DateTime('now');
-        return array($start,$end);
+    private $user;
+
+    public function __construct(
+        User $user
+    ) {
+        $this->user=$user;
     }
     /***
-     * To get users' user_id, name, company, user_type, date_added who registered in last 7 days
-     * @return users who registered in last 7 days
-     ***/
-    public function getRegisters()
+     * @param $dstart The day of start
+     * @param $dend The day of end
+     * @return array Array that the first element is the start of interval, and the second element is the end of interval.
+     */
+    private function getTimeIntervalArray($dstart, $dend)
     {
-        $columns=array(
-            'user_id',
-            'user_name',
-            'last_name',
-            'company',
-            'user_type',
-            'date_added'
-        );
+        $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
+        $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
+        return array($dstart, $dend);
+    }
 
-        $users=User::whereBetween('date_added', $this->getTimeIntervalArray(7))
-                    ->get($columns);
-        return $users;
+    /**
+     * @param $condition The condition of registers' report
+     * @param $perpage How many data per page
+     * @return Collection User who is under the condition
+     */
+    public function getRegisters($condition, $perpage = 15)
+    {
+        $filter=$this->user;
+
+        if (isset($condition['dstart'])&&isset($condition['dend'])&&$condition['dstart']!=''&&$condition['dend']!='') {
+            $filter = $filter->whereBetween('date_added', $this->getTimeIntervalArray($condition['dstart'], $condition['dend']));
+        }
+
+        if (!isset($condition['filter'])) {
+            $condition['filter']='all';
+        }
+
+        if ($condition['filter']=='expert') {
+            $filter=$filter->expert();
+        }
+        if ($condition['filter']=='creator') {
+            $filter=$filter->creator();
+        }
+        if ($condition['filter']=='pm') {
+            $filter=$filter->PM();
+        }
+
+        $filter=$filter->paginate($perpage);
+
+        return $filter;
     }
 }

@@ -2,5 +2,5 @@
 
 interface ReportInterface
 {
-    public function getRegisters();
+    public function getRegisters($condition);
 }
