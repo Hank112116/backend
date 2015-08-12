@@ -7,7 +7,7 @@
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _superagent = require('superagent');
+var _superagent = require("superagent");
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
@@ -42,8 +42,8 @@ var Editor = React.createClass({ displayName: 'Editor',
     },
 
     render: function render() {
-        return React.DOM.textarea({ id: 'message', name: 'message', ref: 'editor',
-            className: 'form-control', rows: '20',
+        return React.DOM.textarea({ id: "message", name: "message", ref: "editor",
+            className: "form-control", rows: "20",
             value: this.state.message,
             onChange: this.handleChange });
     }
@@ -60,7 +60,7 @@ module.exports = Editor;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _superagent = require('superagent');
+var _superagent = require("superagent");
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
@@ -100,9 +100,9 @@ var Main = React.createClass({ displayName: 'Main',
     },
 
     render: function render() {
-        var show_preview_classes = 'show-preview ' + (this.state.show ? 'active' : '');
+        var show_preview_classes = "show-preview " + (this.state.show ? 'active' : '');
 
-        return React.DOM.div(null, React.DOM.div({ className: show_preview_classes, onClick: this.switchShowPreview }, React.DOM.i({ className: 'fa fa-eye' })), Editor({
+        return React.DOM.div(null, React.DOM.div({ className: show_preview_classes, onClick: this.switchShowPreview }, React.DOM.i({ className: "fa fa-eye" })), Editor({
             message: this.props.message,
             onChangeEdition: this.onChangeEdition }), Preview({ show: this.state.show, render: this.state.render, template: this.state.template }));
     }
@@ -129,7 +129,7 @@ var Preview = React.createClass({ displayName: 'Preview',
 
         var content = this.props.template.replace('{content}', render);
 
-        return React.DOM.div({ className: 'preview-message',
+        return React.DOM.div({ className: "preview-message",
             dangerouslySetInnerHTML: { __html: content } });
     }
 });
@@ -20436,7 +20436,7 @@ function Request(method, url) {
     new_err.response = res;
     new_err.status = res.status;
 
-    self.callback(err || new_err, res);
+    self.callback(new_err, res);
   });
 }
 
@@ -20909,7 +20909,8 @@ Request.prototype.end = function(fn){
   // body
   if ('GET' != this.method && 'HEAD' != this.method && 'string' != typeof data && !isHost(data)) {
     // serialize stuff
-    var serialize = request.serialize[this.getHeader('Content-Type')];
+    var contentType = this.getHeader('Content-Type');
+    var serialize = request.serialize[contentType ? contentType.split(';')[0] : ''];
     if (serialize) data = serialize(data);
   }
 
@@ -20924,6 +20925,20 @@ Request.prototype.end = function(fn){
   xhr.send(data);
   return this;
 };
+
+/**
+ * Faux promise support
+ *
+ * @param {Function} fulfill
+ * @param {Function} reject
+ * @return {Request}
+ */
+
+Request.prototype.then = function (fulfill, reject) {
+  return this.end(function(err, res) {
+    err ? reject(err) : fulfill(res);
+  });
+}
 
 /**
  * Expose `Request`.

@@ -41,7 +41,7 @@ var BugReporter = React.createClass({ displayName: 'BugReporter',
 		}
 
 		var report = this.state.report.replace(/\n/gi, '<br/>');
-		return React.DOM.div({ className: 'bug-report', dangerouslySetInnerHTML: { __html: report } });
+		return React.DOM.div({ className: "bug-report", dangerouslySetInnerHTML: { __html: report } });
 	},
 
 	handleChange: function handleChange(event) {
@@ -57,8 +57,8 @@ var BugReporter = React.createClass({ displayName: 'BugReporter',
 	},
 
 	render: function render() {
-		return React.DOM.div(null, Switcher({ onSwitch: this['switch'], on: this.state.on }), React.DOM.textarea({ className: 'bug-content',
-			ref: 'bug',
+		return React.DOM.div(null, Switcher({ onSwitch: this['switch'], on: this.state.on }), React.DOM.textarea({ className: "bug-content",
+			ref: "bug",
 			value: this.state.bug,
 			onChange: this.handleChange }), this.genReport());
 	}
@@ -79,7 +79,7 @@ var Switcher = React.createClass({ displayName: 'Switcher',
 	render: function render() {
 		var switchClass = 'onoffswitch-label' + (this.props.on ? ' active' : '');
 
-		return React.DOM.div({ className: 'onoffswitch' }, React.DOM.label({ className: switchClass, onClick: this.props.onSwitch }, React.DOM.span({ className: 'onoffswitch-inner' }), React.DOM.span({ className: 'onoffswitch-switch' })));
+		return React.DOM.div({ className: "onoffswitch" }, React.DOM.label({ className: switchClass, onClick: this.props.onSwitch }, React.DOM.span({ className: "onoffswitch-inner" }), React.DOM.span({ className: "onoffswitch-switch" })));
 	}
 });
 

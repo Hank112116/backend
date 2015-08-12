@@ -181,7 +181,7 @@ function init() {
          this._setupEl();
       } // attempt to setup elements
       catch (e) {
-         ENV.on(win, 'load', ENV.bind(this._setupEl, this));
+         ENV.on(win, 'load', ENV.bind(this._setupEl, this)); // dom wasn't ready, wait till ready
       }
    };
 
@@ -347,6 +347,5 @@ function init() {
    };
    return new Humane();
 });
-// dom wasn't ready, wait till ready
 
 },{}]},{},[1]);

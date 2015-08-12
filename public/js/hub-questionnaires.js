@@ -31,7 +31,7 @@ $(function () {
     $("#expert1").change(function () {
         var $expert1Info = $("#expert1Info");
         $expert1Info.empty();
-        $expert1Info.append("<i class=\"fa fa-refresh fa-spin\"></i>");
+        $expert1Info.append('<i class="fa fa-refresh fa-spin"></i>');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
@@ -49,7 +49,7 @@ $(function () {
     $("#expert2").change(function () {
         var $expert2Info = $("#expert2Info");
         $expert2Info.empty();
-        $expert2Info.append("<i class=\"fa fa-refresh fa-spin\"></i>");
+        $expert2Info.append('<i class="fa fa-refresh fa-spin"></i>');
         var $this = $(this);
         var expertId = $this.val();
         $.ajax({
@@ -73,7 +73,7 @@ $(function () {
         var userId = $("#userId").val();
         var PM = $("#PM").val();
         if (expert1 && expert2 && PM) {
-            $("#dialog").html("<i class=\"fa fa-refresh fa-spin\" style=\"font-size: 150px;\"></i>");
+            $("#dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
