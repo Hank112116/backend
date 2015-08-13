@@ -14,8 +14,8 @@ class ReportRepo implements ReportInterface
         $this->user=$user;
     }
     /***
-     * @param $dstart The day of start
-     * @param $dend The day of end
+     * @param string $dstart    The day of start
+     * @param string $dend      The day of end
      * @return array Array that the first element is the start of interval, and the second element is the end of interval.
      */
     private function getTimeIntervalArray($dstart, $dend)
@@ -26,8 +26,8 @@ class ReportRepo implements ReportInterface
     }
 
     /**
-     * @param $condition The condition of registers' report
-     * @param $perpage How many data per page
+     * @param array $condition  The condition of registers' report
+     * @param int   $perpage    How many data per page
      * @return Collection User who is under the condition
      */
     public function getRegisters($condition, $perpage = 15)
@@ -45,7 +45,6 @@ class ReportRepo implements ReportInterface
         if ($condition['filter']=='pm') {
             $filter=$filter->PM();
         }
-
         $filter=$filter->paginate($perpage);
 
         return $filter;
