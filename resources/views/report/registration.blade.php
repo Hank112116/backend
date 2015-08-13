@@ -45,6 +45,7 @@
                 {!! $range !!}
                 {!! Form::hidden('range',Input::get('range')) !!}
             @endif
+            (Total {!! $users->total() !!} users.)
             @if(!$is_restricted)
                 <div class="radio">
                     <label>
