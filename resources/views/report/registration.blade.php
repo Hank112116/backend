@@ -14,7 +14,7 @@
         <h1>{{ isset($title) ?$title: 'Registration Report' }}</h1>
     </div>
 
-    <div class="text-center">
+    <div class="row text-center search-bar">
         {{--<div class="col-md-12">--}}
         {!! Form::open(['action' => ['ReportController@showRegistrationReport', 'date'], 'method' => 'GET', 'class' => 'form-inline']) !!}
         <div class="form-group has-feedback">

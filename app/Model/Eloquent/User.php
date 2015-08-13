@@ -28,8 +28,8 @@ class User extends Eloquent
         self::ROLE_ADMIN   => 'Admin'
     ];
 
-    const TYPE_CREATOR = 0;
-    const TYPE_EXPERT = 1;
+    const TYPE_CREATOR = '0';
+    const TYPE_EXPERT = '1';
 
     const NOT_HWTREK_PM = false;
     const IS_HWTREK_PM  = true;
