@@ -31,8 +31,8 @@ class User extends Eloquent
     const TYPE_CREATOR = 0;
     const TYPE_EXPERT = 1;
 
-    const NOT_HWTREK_PM =   0;
-    const IS_HWTREK_PM  =   1;
+    const NOT_HWTREK_PM = false;
+    const IS_HWTREK_PM  = true;
 
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
@@ -194,6 +194,11 @@ class User extends Eloquent
         }
 
         return '';
+    }
+
+    public function isCreator()
+    {
+        return $this->user_type == static::TYPE_CREATOR;
     }
 
     public function isExpert()

@@ -108,20 +108,8 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->textFullName() }}</a>
                         </td>
-                        @if(Auth::user()->isAdmin())
-                            <td>{!! $user->textHWTrekPM() !!}<br>
-                                @if(!$user->isHWTrekPM())
-                                    <span class="user-sub-category">
-                                        {!! $user->textType() !!}
-
-                                        {{--<a class="change_pm" href="#" rel="{!! $user->user_id !!}"> To PM </a>--}}
-                                    </span>
-                                @else
-                                    <span class="user-sub-category">
-                                        {{--<a class="change_user" href="#" rel="{!! $user->user_id !!}"> To User </a>--}}
-                                    </span>
-                                @endif
-                            </td>
+                        @if(Auth::user()->isAdmin()&&Input::get('filter')!=='expert'&&Input::get('filter')!=='creator')
+                            <td>{!! $user->textHWTrekPM() !!}</td>
                         @else
                             <td>{!! $user->textType() !!}</td>
                         @endif

@@ -43,7 +43,7 @@
                     @if(Auth::user()->isShowLink('report'))
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="{!! action('ReportController@showRegistrationReport') !!}">
+                            <a href="{!! action('ReportController@showRegistrationReport', ['range' => 7]) !!}">
                                 <i class="fa fa-tag fa-fw"></i>
                                 Registration Summary
                             </a>
