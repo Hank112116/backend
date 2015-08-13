@@ -59,11 +59,6 @@
                 </div>
                 <div class="radio">
                     <label>
-                        {!! Form::radio('filter', 'pm', Input::get('filter')=='pm' ) !!} Show Internal PM
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
                         {!! Form::radio('filter', 'all', Input::get('filter')=='all'||Input::get('filter')==null ) !!} Show All
                     </label>
                 </div>
@@ -109,8 +104,8 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->textFullName() }}</a>
                         </td>
-                        @if(Auth::user()->isAdmin()&&Input::get('filter')!=='expert'&&Input::get('filter')!=='creator')
-                            <td>{!! $user->textHWTrekPM() !!}</td>
+                        @if(!$is_restricted&&$user->isHWTrekPM())
+                            <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
                             <td>{!! $user->textType() !!}</td>
                         @endif

@@ -64,9 +64,6 @@ class ReportController extends BaseController
         if ($filter === 'creator') {
             $users = $this->user_repo->filterCreator($users);
         }
-        if ($filter === 'pm') {
-            $users = $this->user_repo->filterPM($users);
-        }
 
         $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
         $template = view('report.registration')
