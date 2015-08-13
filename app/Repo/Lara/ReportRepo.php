@@ -34,13 +34,7 @@ class ReportRepo implements ReportInterface
     {
         $filter=$this->user;
 
-        if (isset($condition['dstart'])&&isset($condition['dend'])&&$condition['dstart']!=''&&$condition['dend']!='') {
-            $filter = $filter->whereBetween('date_added', $this->getTimeIntervalArray($condition['dstart'], $condition['dend']));
-        }
-
-        if (!isset($condition['filter'])) {
-            $condition['filter']='all';
-        }
+        $filter = $filter->whereBetween('date_added', $this->getTimeIntervalArray($condition['dstart'], $condition['dend']));
 
         if ($condition['filter']=='expert') {
             $filter=$filter->expert();

@@ -18,49 +18,63 @@
         {{--<div class="col-md-12">--}}
         {!! Form::open(['action' => ['ReportController@showRegistrationReport', 'date'], 'method' => 'GET', 'class' => 'form-inline']) !!}
         <div class="form-group has-feedback">
-            {!! Form::text('dstart', Input::get('dstart'),
-                ['placeholder'=>"Search From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
-            {!! Form::text('dend', Input::get('dend'),
-                ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
-            <div class="radio">
-                <label>
-                    {!! Form::radio('filter', 'creator', Input::get('filter')=='creator' ) !!} Show Creator
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    {!! Form::radio('filter', 'expert', Input::get('filter')=='expert' ) !!} Show Expert
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    {!! Form::radio('filter', 'pm', Input::get('filter')=='pm' ) !!} Show Internal PM
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    {!! Form::radio('filter', 'all', Input::get('filter')=='all'||Input::get('filter')==null ) !!} Show All
-                </label>
-            </div>
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Time range
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li>
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last 7 days', ['range' => 7,'filter' => Input::get('filter')], null) !!}
+                </li>
+                <li>
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last 14 days', ['range' => 14,'filter' => Input::get('filter')], null) !!}
+                </li>
+                <li>
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last 30 days', ['range' => 30,'filter' => Input::get('filter')], null) !!}
+                </li>
+                <li>
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Custom', [
+                    'dstart' => \Carbon\Carbon::parse(Input::get('range',7).' days ago')->toDateString(),
+                    'dend'   => \Carbon\Carbon::now()->toDateString()],null) !!}
+                </li>
+            </ul>
+            @if(!isset($range))
+                {!! Form::text('dstart', Input::get('dstart'),
+                    ['placeholder'=>"Search From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
+                {!! Form::text('dend', Input::get('dend'),
+                    ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
+            @else
+                {!! $range !!}
+                {!! Form::hidden('range',Input::get('range')) !!}
+            @endif
+            @if(!$is_restricted)
+                <div class="radio">
+                    <label>
+                        {!! Form::radio('filter', 'creator', Input::get('filter')=='creator' ) !!} Show Creator
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        {!! Form::radio('filter', 'expert', Input::get('filter')=='expert' ) !!} Show Expert
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        {!! Form::radio('filter', 'pm', Input::get('filter')=='pm' ) !!} Show Internal PM
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        {!! Form::radio('filter', 'all', Input::get('filter')=='all'||Input::get('filter')==null ) !!} Show All
+                    </label>
+                </div>
+            @endif
         </div>
-        {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}
+        @if(!$is_restricted||!isset($range))
+            {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}
+        @endif
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last week',
-        ['dstart' => \Carbon\Carbon::parse('last week')->toDateString(),
-         'dend'   => \Carbon\Carbon::now()->toDateString()
-        ],null) !!}
-    <br>
-    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last month',
-        ['dstart' => \Carbon\Carbon::parse('last month')->toDateString(),
-         'dend'   => \Carbon\Carbon::now()->toDateString()
-        ],null) !!}
-    <br>
-    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last year',
-        ['dstart' => \Carbon\Carbon::parse('last year')->toDateString(),
-         'dend'   => \Carbon\Carbon::now()->toDateString()
-        ],null) !!}
+
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped">
