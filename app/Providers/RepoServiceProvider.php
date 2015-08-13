@@ -151,10 +151,6 @@ class RepoServiceProvider extends ServiceProvider
 
         $this->app->bind('Backend\Repo\RepoInterfaces\CommentInterface', 'Backend\Repo\Lara\CommentRepo');
 
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\ReportInterface',
-            'Backend\Repo\Lara\ReportRepo'
-        );
 
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\LogAccessHelloInterface',
