@@ -62,19 +62,18 @@ class User extends Eloquent
     {
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
-    public function scopeExpert($query)
+
+    public function scopeQueryExperts($query)
     {
-        return $query
-            ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
-            ->where('user_type', '=', self::TYPE_EXPERT);
+        return $query->where('user_type', '=', self::TYPE_EXPERT);
     }
-    public function scopeCreator($query)
+
+    public function scopeQueryCreators($query)
     {
-        return $query
-            ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
-            ->where('user_type', '=', self::TYPE_CREATOR);
+        return $query->where('user_type', '=', self::TYPE_CREATOR);
     }
-    public function scopePM($query)
+
+    public function scopeQueryPM($query)
     {
         return $query->where('is_hwtrek_pm', true);
     }
@@ -239,9 +238,5 @@ class User extends Eloquent
     public function toBasicJson()
     {
         return json_encode($this->toBasicArray());
-    }
-    public function get100items()
-    {
-        echo 123;
     }
 }

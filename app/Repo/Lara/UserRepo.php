@@ -66,6 +66,7 @@ class UserRepo implements UserInterface
 
     public function experts($page = 1, $limit = 20)
     {
+        $this->setPaginateTotal($this->user->queryExperts()->count());
         $users = $this->modelBuilder($this->user, $page, $limit)
             ->where('user_type', User::TYPE_EXPERT)
             ->get();
@@ -75,10 +76,12 @@ class UserRepo implements UserInterface
 
     public function findExpert($id)
     {
-        return $this->user->where("user_id", $id)->where("user_type", User::TYPE_EXPERT)->get();
+        return $this->user->where('user_id', $id)->where('user_type', User::TYPE_EXPERT)->get();
     }
+
     public function creators($page = 1, $limit = 20)
     {
+        $this->setPaginateTotal($this->user->queryCreators()->count());
         $users = $this->modelBuilder($this->user, $page, $limit)
             ->where('user_type', User::TYPE_CREATOR)
             ->get();
