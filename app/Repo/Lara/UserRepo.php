@@ -112,6 +112,11 @@ class UserRepo implements UserInterface
         return $this->getPaginateContainer($this->user, $page, $limit, $users);
     }
 
+    public function byCollectionPage($collection, $page = 1, $per_page = 20)
+    {
+        return $this->getPaginateFromCollection($collection, $page, $per_page);
+    }
+
     public function byId($id = '')
     {
         return $this->user->where('user_id', $id)->get();
@@ -187,6 +192,24 @@ class UserRepo implements UserInterface
         );
     }
 
+    public function filterCreator(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isCreator();
+            }
+        );
+    }
+
+    public function filterPM(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isHWTrekPM();
+            }
+        );
+    }
+
     public function validUpdate($id, $data)
     {
         $user = $this->user->find($id);
@@ -230,7 +253,7 @@ class UserRepo implements UserInterface
         if ($tags) {
             $user->tags = implode(',', $tags->toArray());
         }
-        
+
         $user->save();
     }
 

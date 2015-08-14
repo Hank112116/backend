@@ -28,8 +28,8 @@ class User extends Eloquent
         self::ROLE_ADMIN   => 'Admin'
     ];
 
-    const TYPE_CREATOR = 0;
-    const TYPE_EXPERT = 1;
+    const TYPE_CREATOR = '0';
+    const TYPE_EXPERT = '1';
 
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
@@ -62,7 +62,22 @@ class User extends Eloquent
     {
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
-
+    public function scopeExpert($query)
+    {
+        return $query
+            ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
+            ->where('user_type', '=', self::TYPE_EXPERT);
+    }
+    public function scopeCreator($query)
+    {
+        return $query
+            ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
+            ->where('user_type', '=', self::TYPE_CREATOR);
+    }
+    public function scopePM($query)
+    {
+        return $query->where('is_hwtrek_pm', true);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -178,9 +193,14 @@ class User extends Eloquent
         return '';
     }
 
+    public function isCreator()
+    {
+        return $this->user_type == self::TYPE_CREATOR;
+    }
+
     public function isExpert()
     {
-        return $this->user_type == static::TYPE_EXPERT;
+        return $this->user_type == self::TYPE_EXPERT;
     }
 
     public function isToBeExpert()

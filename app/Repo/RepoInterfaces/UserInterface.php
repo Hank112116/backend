@@ -9,6 +9,7 @@ interface UserInterface
     public function all();
 
     public function byPage($page, $per_page);
+    public function byCollectionPage($collection, $page, $per_page);
     public function experts();
     public function creators();
     public function toBeExpertMembers();
@@ -27,6 +28,8 @@ interface UserInterface
 
     public function dummy();
     public function filterExperts(Collection $users);
+    public function filterCreator(Collection $users);
+    public function filterPM(Collection $users);
 
     public function toOutputArray($users);
 

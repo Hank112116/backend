@@ -195,6 +195,10 @@ Route::group(['before' => 'backend.mail'], function () {
     Route::post('mail/update/{id}', 'MailTemplateController@update');
 });
 
+// Report
+Route::group(['before' => 'backend.report'], function () {
+    Route::get('report/registion', 'ReportController@showRegistrationReport');
+});
 
 // Engineer
 Route::group(['before' => 'backend.login'], function () {
