@@ -65,12 +65,12 @@ class User extends Eloquent
 
     public function scopeQueryExperts($query)
     {
-        return $query->where('user_type', '=', self::TYPE_EXPERT);
+        return $query->where('user_type', self::TYPE_EXPERT);
     }
 
     public function scopeQueryCreators($query)
     {
-        return $query->where('user_type', '=', self::TYPE_CREATOR);
+        return $query->where('user_type', self::TYPE_CREATOR);
     }
 
     public function scopeQueryPM($query)
