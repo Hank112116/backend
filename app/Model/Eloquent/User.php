@@ -3,6 +3,7 @@
 namespace Backend\Model\Eloquent;
 
 use Config;
+use Illuminate\Support\Facades\DB;
 use UrlFilter;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
@@ -191,6 +192,30 @@ class User extends Eloquent
         }
 
         return '';
+    }
+
+    public function comments()
+    {
+//        $pms_temp_comment=DB::table('pms_temp_comments');
+        return $this->hasMany(Comment::class);
+    }
+
+    public function pmsTempComments()
+    {
+
+
+        return $this->hasMany(PmsTempComment::class);
+    }
+
+    public function sendCommentCount()
+    {
+
+        return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commmentCount')->groupBy('user_id');
+    }
+
+    public function receiveCommentCount()
+    {
+        return $this->hasOne(Comment::class, 'profession_id', 'user_id')->selectRaw('profession_id, count(*) as commentCount')->groupBy('profession_id');
     }
 
     public function isCreator()

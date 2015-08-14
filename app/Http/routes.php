@@ -198,6 +198,7 @@ Route::group(['before' => 'backend.mail'], function () {
 // Report
 Route::group(['before' => 'backend.report'], function () {
     Route::get('report/registion', 'ReportController@showRegistrationReport');
+    Route::get('report/comment', 'ReportController@showCommentReport');
 });
 
 // Engineer

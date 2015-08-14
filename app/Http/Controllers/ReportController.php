@@ -6,6 +6,7 @@ use Backend\Http\Requests;
 use Backend\Http\Controllers\Controller;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Support\Facades\DB;
 use Noty;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,31 @@ class ReportController extends BaseController
 
     }
 
+    public function showCommentReport()
+    {
+        $auth = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
+
+        $range = null;
+        if (Input::get('dstart') != null && Input::get('dend') != null) {
+            $dstart = Input::get('dstart');
+            $dend = Input::get('dend');
+        } else {
+            $dstart = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
+            $dend = Carbon::now()->toDateString();
+            $range = 'Comment in last ' . Input::get('range', 7) . ' days.';
+        }
+//        DB::enableQueryLog();
+        $users = $this->user_repo->withCommentCountsByDate($dstart, $dend)->get();
+        $template = view('report.comment')
+            ->with([
+                'title' => 'Comment Summary',
+                'users' => $users,
+                'range' => $range,
+                'is_restricted' => !$auth,
+            ]);
+//        dd(DB::getQueryLog());
+        return $template;
+    }
     /**
      * To show the register in the given time interval.
      *

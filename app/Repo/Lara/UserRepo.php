@@ -210,6 +210,22 @@ class UserRepo implements UserInterface
         );
     }
 
+    public function withCommentCountsByDate($dstart, $dend)
+    {
+
+        $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
+        $dend = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
+
+        return $this->user->with([
+            'sendCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'receiveCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            }
+        ]);
+    }
+
     public function validUpdate($id, $data)
     {
         $user = $this->user->find($id);
