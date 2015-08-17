@@ -29,20 +29,25 @@ class ReportController extends BaseController
     }
 
     /**
+     * @return Validator The validator for date range and custom interval
+     */
+    private function makeValidator()
+    {
+        return Validator::make(Input::all(), [
+            'range'     => 'numeric|required_without_all:dstart,dend',
+            'dstart'    => 'date|required_with:dend',
+            'dend'      => 'date|required_with:dstart',
+        ]);
+
+    }
+
+    /**
      * Get time interval from Input(range, dstart,and dend) and set $this->range, $this->dstart, $this->dend
      * @return mixed
      */
     private function getTimeInterval()
     {
-        $validator = Validator::make(Input::all(), [
-            'range'     => 'numeric|required_without_all:dstart,dend',
-            'dstart'    => 'date|required_with:dend',
-            'dend'      => 'date|required_with:dstart',
-        ]);
-        if ($validator->fails()) {
-            Noty::warn('The input parameter is wrong');
-            return Redirect::back();
-        }
+        $this->validator=$this->makeValidator();
         $this->range = null;
         if (Input::get('dstart') != null && Input::get('dend') != null) {
             $this->dstart   = Input::get('dstart');
@@ -65,6 +70,10 @@ class ReportController extends BaseController
     public function showCommentReport()
     {
 
+        if (isset($this->validator) && $this->validator->fails()) {
+            Noty::warn('The input parameter is wrong');
+            return Redirect::back();
+        }
 
         $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend)->get();
         if ($this->filter === 'expert') {
@@ -94,6 +103,10 @@ class ReportController extends BaseController
      */
     public function showRegistrationReport()
     {
+        if (isset($this->validator) && $this->validator->fails()) {
+            Noty::warn('The input parameter is wrong');
+            return Redirect::back();
+        }
 
         $users = $this->user_repo->byDateRange($this->dstart, $this->dend);
 
