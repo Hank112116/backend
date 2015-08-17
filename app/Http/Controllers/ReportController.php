@@ -5,8 +5,6 @@ namespace Backend\Http\Controllers;
 use Backend\Http\Requests;
 use Backend\Http\Controllers\Controller;
 use Backend\Repo\RepoInterfaces\UserInterface;
-use Backend\Repo\RepoTrait\PaginateTrait;
-use Illuminate\Support\Facades\DB;
 use Noty;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -22,54 +20,20 @@ class ReportController extends BaseController
         UserInterface $user_repo
     ) {
         parent::__construct();
+        $this->auth     = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
         $this->user_repo    = $user_repo;
         $this->page         = Input::get('page', 1);
         $this->per_page     = Input::get('pp', 15);
-
+        $this->getTimeInterval();
+        $this->getFilter();
     }
 
-    public function showCommentReport()
-    {
-        $auth = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
-
-        $range = null;
-        if (Input::get('dstart') != null && Input::get('dend') != null) {
-            $dstart = Input::get('dstart');
-            $dend = Input::get('dend');
-        } else {
-            $dstart = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
-            $dend = Carbon::now()->toDateString();
-            $range = 'Comment in last ' . Input::get('range', 7) . ' days.';
-        }
-        $filter = $auth ? Input::get('filter', 'all') : 'expert';
-        $users = $this->user_repo->withCommentCountsByDate($dstart, $dend)->get();
-        if ($filter === 'expert') {
-            $users = $this->user_repo->filterExperts($users);
-        }
-        if ($filter === 'creator') {
-            $users = $this->user_repo->filterCreator($users);
-        }
-        if ($filter === 'pm') {
-            $users = $this->user_repo->filterPM($users);
-        }
-        $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
-        $template = view('report.comment')
-            ->with([
-                'title' => 'Comment Summary',
-                'users' => $users,
-                'range' => $range,
-                'is_restricted' => !$auth,
-            ]);
-        return $template;
-    }
     /**
-     * To show the register in the given time interval.
-     *
-     * @return view Registration Summary view
+     * Get time interval from Input(range, dstart,and dend) and set $this->range, $this->dstart, $this->dend
+     * @return mixed
      */
-    public function showRegistrationReport()
+    private function getTimeInterval()
     {
-        $auth = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
         $validator = Validator::make(Input::all(), [
             'range'     => 'numeric|required_without_all:dstart,dend',
             'dstart'    => 'date|required_with:dend',
@@ -79,24 +43,64 @@ class ReportController extends BaseController
             Noty::warn('The input parameter is wrong');
             return Redirect::back();
         }
-        $range = null;
+        $this->range = null;
         if (Input::get('dstart') != null && Input::get('dend') != null) {
-            $dstart = Input::get('dstart');
-            $dend   = Input::get('dend');
+            $this->dstart   = Input::get('dstart');
+            $this->dend     = Input::get('dend');
         } else {
-            $dstart = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
-            $dend   = Carbon::now()->toDateString();
-            $range  = 'Register in last ' . Input::get('range', 7) . ' days.';
+            $this->dstart   = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
+            $this->dend     = Carbon::now()->toDateString();
+            $this->range    = 'Comment in last ' . Input::get('range', 7) . ' days.';
         }
+    }
 
-        $filter = $auth ? Input::get('filter', 'all') : 'expert';
+    /**
+     * Get the filter from Input['filter'] and set $this->filter
+     */
+    private function getFilter()
+    {
+        $this->filter   = $this->auth ? Input::get('filter', 'all') : 'expert';
+    }
 
-        $users = $this->user_repo->byDateRange($dstart, $dend);
+    public function showCommentReport()
+    {
 
-        if ($filter === 'expert') {
+
+        $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend)->get();
+        if ($this->filter === 'expert') {
             $users = $this->user_repo->filterExperts($users);
         }
-        if ($filter === 'creator') {
+        if ($this->filter === 'creator') {
+            $users = $this->user_repo->filterCreator($users);
+        }
+        if ($this->filter === 'pm') {
+            $users = $this->user_repo->filterPM($users);
+        }
+        $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
+        $template = view('report.comment')
+            ->with([
+                'title' => 'Comment Summary',
+                'users' => $users,
+                'range' => $this->range,
+                'is_restricted' => !$this->auth,
+            ]);
+        return $template;
+    }
+
+    /**
+     * To show the register in the given time interval.
+     *
+     * @return view Registration Summary view
+     */
+    public function showRegistrationReport()
+    {
+
+        $users = $this->user_repo->byDateRange($this->dstart, $this->dend);
+
+        if ($this->filter === 'expert') {
+            $users = $this->user_repo->filterExperts($users);
+        }
+        if ($this->filter === 'creator') {
             $users = $this->user_repo->filterCreator($users);
         }
 
@@ -105,8 +109,8 @@ class ReportController extends BaseController
             ->with([
                 'title' => 'Registration Summary',
                 'users' => $users,
-                'range' => $range,
-                'is_restricted' => !$auth,
+                'range' => $this->range,
+                'is_restricted' => !$this->auth,
             ]);
 
         return $template;
