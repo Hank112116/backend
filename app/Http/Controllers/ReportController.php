@@ -4,8 +4,9 @@ namespace Backend\Http\Controllers;
 
 use Backend\Http\Requests;
 use Backend\Http\Controllers\Controller;
-use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
+use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Support\Facades\DB;
 use Noty;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +19,12 @@ class ReportController extends BaseController
     protected $cert = "report";
 
     public function __construct(
-        UserInterface $user_repo,
-        ReportInterface $report_repo
+        UserInterface $user_repo
     ) {
         parent::__construct();
         $this->user_repo    = $user_repo;
         $this->page         = Input::get('page', 1);
         $this->per_page     = Input::get('pp', 15);
-        $this->report_repo  = $report_repo;
 
     }
 
@@ -42,18 +41,26 @@ class ReportController extends BaseController
             $dend = Carbon::now()->toDateString();
             $range = 'Comment in last ' . Input::get('range', 7) . ' days.';
         }
-        echo $this->report_repo->getCommentReport($dstart, $dend)->toSql();
-        dd($this->report_repo->getCommentReport($dstart, $dend)->get());
-//        DB::enableQueryLog();
-//        $users = $this->user_repo->withCommentCountsByDate($dstart, $dend)->get();
-//        $template = view('report.comment')
-//            ->with([
-//                'title' => 'Comment Summary',
-//                'users' => $users,
-//                'range' => $range,
-//                'is_restricted' => !$auth,
-//            ]);
-//        dd(DB::getQueryLog());
+        $filter = $auth ? Input::get('filter', 'all') : 'expert';
+        $users = $this->user_repo->withCommentCountsByDate($dstart, $dend)->get();
+        if ($filter === 'expert') {
+            $users = $this->user_repo->filterExperts($users);
+        }
+        if ($filter === 'creator') {
+            $users = $this->user_repo->filterCreator($users);
+        }
+        if ($filter === 'pm') {
+            $users = $this->user_repo->filterPM($users);
+        }
+        $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
+        $template = view('report.comment')
+            ->with([
+                'title' => 'Comment Summary',
+                'users' => $users,
+                'range' => $range,
+                'is_restricted' => !$auth,
+            ]);
+        return $template;
     }
     /**
      * To show the register in the given time interval.

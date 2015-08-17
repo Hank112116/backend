@@ -149,11 +149,6 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\Lara\ProjectMailExpertRepo'
         );
 
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\ReportInterface',
-            'Backend\Repo\Lara\ReportRepo'
-        );
-
         $this->app->bind('Backend\Repo\RepoInterfaces\CommentInterface', 'Backend\Repo\Lara\CommentRepo');
 
 

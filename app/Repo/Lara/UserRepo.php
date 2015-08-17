@@ -220,9 +220,17 @@ class UserRepo implements UserInterface
             'sendCommentCount' => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
+            'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
             'receiveCommentCount' => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
-            }
+            },
+            'receiveHubCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+
+
         ]);
     }
 

@@ -194,28 +194,55 @@ class User extends Eloquent
         return '';
     }
 
-    public function comments()
-    {
-//        $pms_temp_comment=DB::table('pms_temp_comments');
-        return $this->hasMany(Comment::class);
-    }
-
-    public function pmsTempComments()
-    {
-
-
-        return $this->hasMany(PmsTempComment::class);
-    }
-
     public function sendCommentCount()
     {
-
-        return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commmentCount')->groupBy('user_id');
+        return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
     public function receiveCommentCount()
     {
         return $this->hasOne(Comment::class, 'profession_id', 'user_id')->selectRaw('profession_id, count(*) as commentCount')->groupBy('profession_id');
+    }
+
+    public function sendHubCommentCount()
+    {
+        return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+    }
+
+    public function receiveHubCommentCount()
+    {
+        return $this->hasOne(PmsTempComment::class, 'profession_id', 'user_id')->selectRaw('profession_id, count(*) as commentCount')->groupBy('profession_id');
+    }
+
+    public function getSendCommentCountAttribute()
+    {
+        if (!array_key_exists('sendCommentCount', $this->relations)) {
+            $this->load('sendCommentCount');
+        }
+        if (!array_key_exists('sendHubCommentCount', $this->relations)) {
+            $this->load('sendHubCommentCount');
+        }
+        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = ($commentCount) ? $commentCount->commentCount: 0;
+        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
+        return $commentCount+$hubCommentCount;
+    }
+
+
+    public function getReceiveCommentCountAttribute()
+    {
+        if (!array_key_exists('receiveCommentCount', $this->relations)) {
+            $this->load('receiveCommentCount');
+        }
+        if (!array_key_exists('receiveHubCommentCount', $this->relations)) {
+            $this->load('receiveHubCommentCount');
+        }
+        $commentCount    = $this->getRelation('receiveCommentCount');
+        $commentCount    = ($commentCount) ? $commentCount->commentCount: 0;
+        $hubCommentCount = $this->getRelation('receiveHubCommentCount');
+        $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
+        return $commentCount+$hubCommentCount;
     }
 
     public function isCreator()

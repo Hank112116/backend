@@ -59,6 +59,11 @@
                 </div>
                 <div class="radio">
                     <label>
+                        {!! Form::radio('filter', 'pm', Input::get('filter')=='pm') !!} Show InternalPM
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
                         {!! Form::radio('filter', 'all', Input::get('filter')=='all'||Input::get('filter')==null ) !!} Show All
                     </label>
                 </div>
@@ -72,6 +77,7 @@
     </div>
 
     <div class="row">
+        <div class="col-md-3"></div>
         <div class="col-md-6">
             <table class="table table-striped">
                 <tr>
@@ -88,23 +94,24 @@
                         <td>{!! $user->user_id !!}</td>
                         <td>
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
-                                {{ $user->textFullName() }}</a>
+                                {{ $user->fullName }}</a>
                         </td>
                         @if(!$is_restricted&&$user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
                             <td>{!! $user->textType() !!}</td>
                         @endif
-                        <td>{!! isset($user->sendCommentCount)?$user->sendCommentCount->commmentCount:'0' !!}</td>
-                        <td>{!! isset($user->receiveCommentCount)?$user->receiveCommentCount->commentCount:'0' !!}</td>
-                        <td></td>
+                        <td>{!! $user->sendCommentCount !!}</td>
+                        <td>{!! $user->receiveCommentCount !!}</td>
+                        <td>{!! $user->sendCommentCount + $user->receiveCommentCount !!}</td>
                     </tr>
                 @endforeach
             </table>
         </div>
+        <div class="col-md-3"></div>
     </div>
     <div class="text-center">
-        {{--{!! $users->appends(Input::all())->render() !!}--}}
+        {!! $users->appends(Input::all())->render() !!}
     </div>
 
 @stop

@@ -1,7 +1,9 @@
 <?php
 namespace Backend\Model\Eloquent;
 
-class Comment extends Eloquent
+use Illuminate\Database\Eloquent\Model as Eloquent;
+
+class PmsTempComment extends Eloquent
 {
 
     protected $table = 'pms_temp_comments';

@@ -174,11 +174,16 @@
                                 Project Comments
                             </a>
                         </li>
-
                         <li>
                             <a href="{!! action('CommentController@showSolution') !!}">
                                 <i class="fa fa-comment-o fa-fw"></i>
                                 Solution Comments
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{!! action('ReportController@showCommentReport', ['range'=>7]) !!}">
+                                <i class="fa fa-comment-o fa-fw"></i>
+                                Comments Summary
                             </a>
                         </li>
                     </ul>
