@@ -49,7 +49,7 @@
             @if(!$is_restricted)
                 {!! Form::select('filter',[
                     'all'     => 'Show All',
-                    'pm'      => 'Internal PM',
+                    'pm'      => 'Show Internal PM',
                     'expert'  => 'Show Expert',
                     'creator' => 'Show Creator',
                 ],Input::get('filter'),['class'=>'form-control']) !!}
@@ -71,8 +71,6 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
-                    <th>Sent</th>
-                    <th>Received</th>
                     <th>Total</th>
                 </tr>
 
@@ -89,8 +87,6 @@
                             <td>{!! $user->textType() !!}</td>
                         @endif
                         <td>{!! $user->sendCommentCount !!}</td>
-                        <td>{!! $user->receiveCommentCount !!}</td>
-                        <td>{!! $user->sendCommentCount + $user->receiveCommentCount !!}</td>
                     </tr>
                 @endforeach
             </table>

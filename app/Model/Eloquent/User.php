@@ -262,7 +262,8 @@ class User extends Eloquent
 
     public function isHWTrekPM()
     {
-        return $this->is_hwtrek_pm;
+
+        return in_array($this->user_id, [6 , 126, 128, 1036, 1322, 1545, 2488, 2508, 2569, 2960, 3157]);
     }
 
     public function hasExpertiseTag($tag_id)
