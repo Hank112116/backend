@@ -62,6 +62,7 @@
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
+    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total()>1?'results':'result' !!}</h4></div>
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
