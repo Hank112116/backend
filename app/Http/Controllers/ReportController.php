@@ -23,7 +23,7 @@ class ReportController extends BaseController
         $this->auth     = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
         $this->user_repo    = $user_repo;
         $this->page         = Input::get('page', 1);
-        $this->per_page     = Input::get('pp', 15);
+        $this->per_page     = Input::get('pp', 50);
         $this->searchName   = Input::get('name');
         $this->getTimeInterval();
         $this->getFilter();
