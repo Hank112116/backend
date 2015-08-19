@@ -56,7 +56,7 @@ class ReportController extends BaseController
         } else {
             $this->dstart   = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
             $this->dend     = Carbon::now()->toDateString();
-            $this->range    = 'Comment in last ' . Input::get('range', 7) . ' days.';
+            $this->range    = Input::get('range', 7);
         }
     }
 
@@ -77,7 +77,7 @@ class ReportController extends BaseController
         }
 
         $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend);
-        if (isset($this->searchName)) {
+        if (isset($this->searchName)&&$this->searchName!='') {
             $users = $users->byName($this->searchName);
         } else {
             $users = $users->get();

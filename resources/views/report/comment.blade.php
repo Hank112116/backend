@@ -18,7 +18,7 @@
         {{--<div class="col-md-12">--}}
         {!! Form::open(['action' => ['ReportController@showCommentReport', 'date'], 'method' => 'GET', 'class' => 'form-inline']) !!}
         <div class="form-group has-feedback">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Time range
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{!! isset($range)?"Comment in last $range days":'Custom' !!}
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li>
@@ -42,34 +42,17 @@
                 {!! Form::text('dend', Input::get('dend'),
                     ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
             @else
-                {!! $range !!}
                 {!! Form::hidden('range',Input::get('range')) !!}
             @endif
         </div>
         <div class="form-group has-feedback">
             @if(!$is_restricted)
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'creator', Input::get('filter')=='creator' ) !!} Show Creator
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'expert', Input::get('filter')=='expert' ) !!} Show Expert
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'pm', Input::get('filter')=='pm') !!} Show InternalPM
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'all', Input::get('filter')=='all'||Input::get('filter')==null ) !!} Show All
-                    </label>
-                </div>
+                {!! Form::select('filter',[
+                    'all'     => 'Show All',
+                    'expert'  => 'Show Expert',
+                    'creator' => 'Show Creator',
+                ],Input::get('filter'),['class'=>'form-control']) !!}
             @endif
-            <br>
             {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
         </div>
         @if(!$is_restricted||!isset($range))
@@ -78,7 +61,6 @@
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">

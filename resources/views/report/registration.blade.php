@@ -18,17 +18,17 @@
         {{--<div class="col-md-12">--}}
         {!! Form::open(['action' => ['ReportController@showRegistrationReport', 'date'], 'method' => 'GET', 'class' => 'form-inline']) !!}
         <div class="form-group has-feedback">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Time range
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{!! isset($range)?"Registered in last $range days":'Custom' !!}
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li>
-                    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last 7 days', ['range' => 7,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 7 days', ['range' => 7,'filter' => Input::get('filter')], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last 14 days', ['range' => 14,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 14 days', ['range' => 14,'filter' => Input::get('filter')], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showRegistrationReport', 'Register in last 30 days', ['range' => 30,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 30 days', ['range' => 30,'filter' => Input::get('filter')], null) !!}
                 </li>
                 <li>
                     {!! link_to_action('ReportController@showRegistrationReport', 'Custom', [
@@ -42,26 +42,15 @@
                 {!! Form::text('dend', Input::get('dend'),
                     ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
             @else
-                {!! $range !!}
+
                 {!! Form::hidden('range',Input::get('range')) !!}
             @endif
-            (Total {!! $users->total() !!} {!! $users->total()>1?'users':'user' !!}.)
             @if(!$is_restricted)
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'creator', Input::get('filter')=='creator' ) !!} Show Creator
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'expert', Input::get('filter')=='expert' ) !!} Show Expert
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        {!! Form::radio('filter', 'all', Input::get('filter')=='all'||Input::get('filter')==null ) !!} Show All
-                    </label>
-                </div>
+                {!! Form::select('filter',[
+                    'all'     => 'Show All',
+                    'expert'  => 'Show Expert',
+                    'creator' => 'Show Creator',
+                ],Input::get('filter'),['class'=>'form-control']) !!}
             @endif
         </div>
         @if(!$is_restricted||!isset($range))
@@ -70,7 +59,7 @@
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-
+    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total()>1?'results':'result' !!}</h4></div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped">
