@@ -33,7 +33,8 @@
                 <li>
                     {!! link_to_action('ReportController@showRegistrationReport', 'Custom', [
                     'dstart' => \Carbon\Carbon::parse(Input::get('range',7).' days ago')->toDateString(),
-                    'dend'   => \Carbon\Carbon::now()->toDateString()],null) !!}
+                    'dend'   => \Carbon\Carbon::now()->toDateString(),
+                    'filter' => Input::get('filter')],null) !!}
                 </li>
             </ul>
             @if(!isset($range))

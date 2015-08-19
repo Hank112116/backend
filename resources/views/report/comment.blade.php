@@ -22,18 +22,19 @@
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 7 days', ['range' => 7,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 7 days', ['range' => 7,'filter' => Input::get('filter'), 'name' => Input::get('name') ], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 14 days', ['range' => 14,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 14 days', ['range' => 14,'filter' => Input::get('filter'), 'name' => Input::get('name') ], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 30 days', ['range' => 30,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 30 days', ['range' => 30,'filter' => Input::get('filter'), 'name' => Input::get('name') ], null) !!}
                 </li>
                 <li>
                     {!! link_to_action('ReportController@showCommentReport', 'Custom', [
                     'dstart' => \Carbon\Carbon::parse(Input::get('range',7).' days ago')->toDateString(),
-                    'dend'   => \Carbon\Carbon::now()->toDateString()],null) !!}
+                    'dend'   => \Carbon\Carbon::now()->toDateString(),
+                    'filter' => Input::get('filter'), 'name' => Input::get('name') ],null) !!}
                 </li>
             </ul>
             @if(!isset($range))

@@ -35,7 +35,7 @@ class ReportController extends BaseController
     private function makeValidator()
     {
         return Validator::make(Input::all(), [
-            'range'     => 'numeric|required_without_all:dstart,dend',
+            'range'     => 'integer|min:1|required_without_all:dstart,dend',
             'dstart'    => 'date|required_with:dend',
             'dend'      => 'date|required_with:dstart',
         ]);
@@ -48,15 +48,17 @@ class ReportController extends BaseController
      */
     private function getTimeInterval()
     {
-        $this->validator=$this->makeValidator();
+        $this->validator = $this->makeValidator();
         $this->range = null;
-        if (Input::get('dstart') != null && Input::get('dend') != null) {
-            $this->dstart   = Input::get('dstart');
-            $this->dend     = Input::get('dend');
-        } else {
-            $this->dstart   = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
-            $this->dend     = Carbon::now()->toDateString();
-            $this->range    = Input::get('range', 7);
+        if (!$this->validator->fails()) {
+            if (Input::get('dstart') != null && Input::get('dend') != null) {
+                $this->dstart = Input::get('dstart');
+                $this->dend = Input::get('dend');
+            } else {
+                $this->dstart = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
+                $this->dend = Carbon::now()->toDateString();
+                $this->range = Input::get('range', 7);
+            }
         }
     }
 
