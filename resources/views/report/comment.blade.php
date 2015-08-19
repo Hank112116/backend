@@ -45,7 +45,8 @@
                 {!! $range !!}
                 {!! Form::hidden('range',Input::get('range')) !!}
             @endif
-
+        </div>
+        <div class="form-group has-feedback">
             @if(!$is_restricted)
                 <div class="radio">
                     <label>
@@ -68,6 +69,8 @@
                     </label>
                 </div>
             @endif
+            <br>
+            {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
         </div>
         @if(!$is_restricted||!isset($range))
             {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}

@@ -40,6 +40,11 @@ class UserRepo implements UserInterface
         return new User();
     }
 
+    public function get()
+    {
+        return $this->user->get();
+    }
+
     public function find($id)
     {
         return $this->user->find($id);
@@ -214,9 +219,9 @@ class UserRepo implements UserInterface
     {
 
         $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
-        $dend = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
+        $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
-        return $this->user->with([
+        $this->user = $this->user->with([
             'sendCommentCount' => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
@@ -232,6 +237,7 @@ class UserRepo implements UserInterface
 
 
         ]);
+        return $this;
     }
 
     public function validUpdate($id, $data)

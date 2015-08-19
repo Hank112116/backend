@@ -24,6 +24,7 @@ class ReportController extends BaseController
         $this->user_repo    = $user_repo;
         $this->page         = Input::get('page', 1);
         $this->per_page     = Input::get('pp', 15);
+        $this->searchName   = Input::get('name');
         $this->getTimeInterval();
         $this->getFilter();
     }
@@ -75,7 +76,12 @@ class ReportController extends BaseController
             return Redirect::back();
         }
 
-        $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend)->get();
+        $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend);
+        if (isset($this->searchName)) {
+            $users = $users->byName($this->searchName);
+        } else {
+            $users = $users->get();
+        }
         if ($this->filter === 'expert') {
             $users = $this->user_repo->filterExperts($users);
         }
