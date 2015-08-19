@@ -49,6 +49,7 @@
             @if(!$is_restricted)
                 {!! Form::select('filter',[
                     'all'     => 'Show All',
+                    'pm'      => 'Internal PM',
                     'expert'  => 'Show Expert',
                     'creator' => 'Show Creator',
                 ],Input::get('filter'),['class'=>'form-control']) !!}
