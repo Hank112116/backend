@@ -54,13 +54,13 @@
                 ],Input::get('filter'),['class'=>'form-control']) !!}
             @endif
         </div>
-        @if($is_super_admin||!isset($range))
+        @if($is_super_admin || !isset($range))
             {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}
         @endif
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total()>1?'results':'result' !!}</h4></div>
+    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}</h4></div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped">
@@ -94,10 +94,10 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->textFullName() }}</a>
                         </td>
-                        @if($is_super_admin&&$user->isHWTrekPM())
+                        @if($is_super_admin && $user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
-                            <td>{!! ($user->isToBeExpert()&&$user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                            <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
                         @endif
 
 

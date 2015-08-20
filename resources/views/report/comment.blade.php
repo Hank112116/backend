@@ -43,7 +43,7 @@
                 {!! Form::text('dend', Input::get('dend'),
                     ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
             @else
-                {!! Form::hidden('range',Input::get('range')) !!}
+                {!! Form::hidden('range', Input::get('range')) !!}
             @endif
         </div>
         <div class="form-group has-feedback">
@@ -53,17 +53,17 @@
                     'pm'      => 'Show Internal PM',
                     'expert'  => 'Show Expert',
                     'creator' => 'Show Creator',
-                ],Input::get('filter'),['class'=>'form-control']) !!}
+                ], Input::get('filter'), ['class'=>'form-control']) !!}
             @endif
             {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
         </div>
         @if($is_super_admin||!isset($range))
-            {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}
+            {!! Form::submit('Go!', $attributes=["class"=>"btn btn-default js-btn-search", "type"=>"button"]) !!}
         @endif
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total()>1?'results':'result' !!}</h4></div>
+    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}</h4></div>
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
@@ -82,7 +82,7 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->fullName }}</a>
                         </td>
-                        @if($is_super_admin&&$user->isHWTrekPM())
+                        @if($is_super_admin && $user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
                             <td>{!! $user->textType() !!}</td>
