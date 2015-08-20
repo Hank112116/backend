@@ -11,7 +11,7 @@
 
 @section('content')
     <div class="page-header">
-        <h1>{{ isset($title) ?$title: 'Registration Report' }}</h1>
+        <h1>{{ $title or 'Registration Report' }}</h1>
     </div>
 
     <div class="row text-center search-bar">
@@ -46,7 +46,7 @@
 
                 {!! Form::hidden('range',Input::get('range')) !!}
             @endif
-            @if(!$is_restricted)
+            @if($is_super_admin)
                 {!! Form::select('filter',[
                     'all'     => 'Show All',
                     'expert'  => 'Show Expert',
@@ -54,7 +54,7 @@
                 ],Input::get('filter'),['class'=>'form-control']) !!}
             @endif
         </div>
-        @if(!$is_restricted||!isset($range))
+        @if($is_super_admin||!isset($range))
             {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}
         @endif
         {!! Form::close() !!}
@@ -78,7 +78,7 @@
                     </th>
                     <th>
                         Registed On
-                        @if(!$is_restricted)
+                        @if($is_super_admin)
                             <br/><span class="table--text-light">Signup Ip</span>
                         @endif
                     </th>
@@ -94,7 +94,7 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->textFullName() }}</a>
                         </td>
-                        @if(!$is_restricted&&$user->isHWTrekPM())
+                        @if($is_super_admin&&$user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
                             <td>{!! ($user->isToBeExpert()&&$user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
@@ -120,7 +120,7 @@
 
                         <td>
                             <span data-time="{!! $user->date_added !!}">{!! HTML::date($user->date_added) !!}</span>
-                            @if(!$is_restricted)
+                            @if($is_super_admin)
                                 <br/><span class="table--text-light">{!! $user->signup_ip !!}</span>
                             @endif
                         </td>
@@ -133,7 +133,7 @@
                                     'UserController@showDetail', 'DETAIL',
                                     $user->user_id, ['class' => 'btn-mini']) !!}
 
-                            @if(!$is_restricted and !$user->isExpert() and $user->isToBeExpert())
+                            @if($is_super_admin and !$user->isExpert() and $user->isToBeExpert())
                                 {!! link_to_action(
                                         'UserController@showUpdate', 'EDIT & To-Expert',
                                         $user->user_id, ['class' => 'btn-mini btn-danger']) !!}

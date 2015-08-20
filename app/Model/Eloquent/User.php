@@ -63,22 +63,26 @@ class User extends Eloquent
     {
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
+
     public function scopeExpert($query)
     {
         return $query
             ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
             ->where('user_type', '=', self::TYPE_EXPERT);
     }
+
     public function scopeCreator($query)
     {
         return $query
             ->where('is_hwtrek_pm', '!=', self::IS_HWTREK_PM)
             ->where('user_type', '=', self::TYPE_CREATOR);
     }
+
     public function scopePM($query)
     {
         return $query->where('is_hwtrek_pm', true);
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -213,10 +217,10 @@ class User extends Eloquent
             $this->load('sendHubCommentCount');
         }
         $commentCount    = $this->getRelation('sendCommentCount');
-        $commentCount    = ($commentCount) ? $commentCount->commentCount: 0;
+        $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
         $hubCommentCount = $this->getRelation('sendHubCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
-        return $commentCount+$hubCommentCount;
+        return $commentCount + $hubCommentCount;
     }
 
     public function isCreator()
@@ -237,7 +241,7 @@ class User extends Eloquent
     public function isHWTrekPM()
     {
 
-        return in_array($this->user_id, [6 , 126, 128, 1036, 1322, 1545, 2488, 2508, 2569, 2960, 3157]);
+        return in_array($this->user_id, [ 6, 126, 128, 1036, 1322, 1545, 2488, 2508, 2569, 2960, 3157 ]);
     }
 
     public function hasExpertiseTag($tag_id)

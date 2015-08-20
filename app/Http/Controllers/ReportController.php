@@ -15,16 +15,24 @@ use Illuminate\Support\Facades\Validator;
 class ReportController extends BaseController
 {
     protected $cert = "report";
+    protected $page;
+    protected $per_page;
+    private $auth;
+    private $user_repo;
+    private $search_name;
+    private $range;
+    private $validator;
+    private $filter;
 
     public function __construct(
         UserInterface $user_repo
     ) {
         parent::__construct();
-        $this->auth     = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
-        $this->user_repo    = $user_repo;
-        $this->page         = Input::get('page', 1);
-        $this->per_page     = Input::get('pp', 50);
-        $this->searchName   = Input::get('name');
+        $this->auth        = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
+        $this->user_repo   = $user_repo;
+        $this->page        = Input::get('page', 1);
+        $this->per_page    = Input::get('pp', 50);
+        $this->search_name = Input::get('name');
         $this->getTimeInterval();
         $this->getFilter();
     }
@@ -35,29 +43,30 @@ class ReportController extends BaseController
     private function makeValidator()
     {
         return Validator::make(Input::all(), [
-            'range'     => 'integer|min:1|required_without_all:dstart,dend',
-            'dstart'    => 'date|required_with:dend',
-            'dend'      => 'date|required_with:dstart',
+            'range'  => 'integer|min:1|required_without_all:dstart,dend',
+            'dstart' => 'date|required_with:dend',
+            'dend'   => 'date|required_with:dstart',
         ]);
 
     }
 
     /**
      * Get time interval from Input(range, dstart,and dend) and set $this->range, $this->dstart, $this->dend
+     *
      * @return mixed
      */
     private function getTimeInterval()
     {
         $this->validator = $this->makeValidator();
-        $this->range = null;
+        $this->range     = null;
         if (!$this->validator->fails()) {
             if (Input::get('dstart') != null && Input::get('dend') != null) {
                 $this->dstart = Input::get('dstart');
-                $this->dend = Input::get('dend');
+                $this->dend   = Input::get('dend');
             } else {
                 $this->dstart = Carbon::parse(Input::get('range', 7) . ' days ago')->toDateString();
-                $this->dend = Carbon::now()->toDateString();
-                $this->range = Input::get('range', 7);
+                $this->dend   = Carbon::now()->toDateString();
+                $this->range  = Input::get('range', 7);
             }
         }
     }
@@ -67,7 +76,7 @@ class ReportController extends BaseController
      */
     private function getFilter()
     {
-        $this->filter   = $this->auth ? Input::get('filter', 'all') : 'expert';
+        $this->filter = $this->auth ? Input::get('filter', 'all') : 'expert';
     }
 
     public function showCommentReport()
@@ -79,8 +88,8 @@ class ReportController extends BaseController
         }
 
         $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend);
-        if (isset($this->searchName)&&$this->searchName!='') {
-            $users = $users->byName($this->searchName);
+        if (isset($this->search_name) && $this->search_name != '') {
+            $users = $users->byName($this->search_name);
         } else {
             $users = $users->get();
         }
@@ -93,13 +102,13 @@ class ReportController extends BaseController
         if ($this->filter === 'pm') {
             $users = $this->user_repo->filterPM($users);
         }
-        $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
+        $users    = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
         $template = view('report.comment')
             ->with([
-                'title' => 'Comment Summary',
-                'users' => $users,
-                'range' => $this->range,
-                'is_restricted' => !$this->auth,
+                'title'          => 'Comment Summary',
+                'users'          => $users,
+                'range'          => $this->range,
+                'is_super_admin' => $this->auth,
             ]);
         return $template;
     }
@@ -125,13 +134,13 @@ class ReportController extends BaseController
             $users = $this->user_repo->filterCreatorWithoutToBeExperts($users);
         }
 
-        $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
+        $users    = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
         $template = view('report.registration')
             ->with([
-                'title' => 'Registration Summary',
-                'users' => $users,
-                'range' => $this->range,
-                'is_restricted' => !$this->auth,
+                'title'          => 'Registration Summary',
+                'users'          => $users,
+                'range'          => $this->range,
+                'is_super_admin' => $this->auth,
             ]);
 
         return $template;

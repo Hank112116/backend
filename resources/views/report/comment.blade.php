@@ -11,7 +11,7 @@
 
 @section('content')
     <div class="page-header">
-        <h1>{{ isset($title) ?$title: 'Comment Summary' }}</h1>
+        <h1>{{ $title or 'Comment Summary' }}</h1>
     </div>
 
     <div class="row text-center search-bar">
@@ -47,7 +47,7 @@
             @endif
         </div>
         <div class="form-group has-feedback">
-            @if(!$is_restricted)
+            @if($is_super_admin)
                 {!! Form::select('filter',[
                     'all'     => 'Show All',
                     'pm'      => 'Show Internal PM',
@@ -57,7 +57,7 @@
             @endif
             {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
         </div>
-        @if(!$is_restricted||!isset($range))
+        @if($is_super_admin||!isset($range))
             {!! Form::submit('Go!',$attributes=["class"=>"btn btn-default js-btn-search","type"=>"button"]) !!}
         @endif
         {!! Form::close() !!}
@@ -82,7 +82,7 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->fullName }}</a>
                         </td>
-                        @if(!$is_restricted&&$user->isHWTrekPM())
+                        @if($is_super_admin&&$user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
                             <td>{!! $user->textType() !!}</td>

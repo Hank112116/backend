@@ -82,6 +82,7 @@ class UserRepo implements UserInterface
     {
         return $this->user->where("user_id", $id)->where("user_type", User::TYPE_EXPERT)->get();
     }
+
     public function creators($page = 1, $limit = 20)
     {
         $users = $this->modelBuilder($this->user, $page, $limit)
@@ -183,7 +184,7 @@ class UserRepo implements UserInterface
         $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
-        return $this->user->whereBetween('date_added', [$dstart, $dend])
+        return $this->user->whereBetween('date_added', [ $dstart, $dend ])
             ->orderBy('user_id', 'desc')
             ->get();
     }
@@ -192,7 +193,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isExpert()||$user->isToBeExpert();
+                return $user->isExpert() || $user->isToBeExpert();
             }
         );
     }
@@ -201,7 +202,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isCreator()&&!$user->isToBeExpert();
+                return $user->isCreator() && !$user->isToBeExpert();
             }
         );
     }
@@ -240,7 +241,7 @@ class UserRepo implements UserInterface
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
         $this->user = $this->user->with([
-            'sendCommentCount' => function ($q) use ($dstart, $dend) {
+            'sendCommentCount'    => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
             'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
