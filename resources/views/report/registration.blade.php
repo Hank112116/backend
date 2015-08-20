@@ -97,7 +97,7 @@
                         @if(!$is_restricted&&$user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
-                            <td>{!! $user->textType() !!}</td>
+                            <td>{!! ($user->isToBeExpert()&&$user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
                         @endif
 
 

@@ -188,6 +188,24 @@ class UserRepo implements UserInterface
             ->get();
     }
 
+    public function filterExpertsWithToBeExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isExpert()||$user->isToBeExpert();
+            }
+        );
+    }
+
+    public function filterCreatorWithoutToBeExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isCreator()&&!$user->isToBeExpert();
+            }
+        );
+    }
+
     public function filterExperts(Collection $users)
     {
         return $users->filter(

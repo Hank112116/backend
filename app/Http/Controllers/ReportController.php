@@ -119,10 +119,10 @@ class ReportController extends BaseController
         $users = $this->user_repo->byDateRange($this->dstart, $this->dend);
 
         if ($this->filter === 'expert') {
-            $users = $this->user_repo->filterExperts($users);
+            $users = $this->user_repo->filterExpertsWithToBeExperts($users);
         }
         if ($this->filter === 'creator') {
-            $users = $this->user_repo->filterCreator($users);
+            $users = $this->user_repo->filterCreatorWithoutToBeExperts($users);
         }
 
         $users = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
