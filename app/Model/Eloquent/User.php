@@ -3,7 +3,6 @@
 namespace Backend\Model\Eloquent;
 
 use Config;
-use Illuminate\Support\Facades\DB;
 use UrlFilter;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
