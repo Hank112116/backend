@@ -57,7 +57,7 @@
             @endif
             {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
         </div>
-        @if($is_super_admin||!isset($range))
+        @if($is_super_admin || !isset($range))
             {!! Form::submit('Go!', $attributes=["class"=>"btn btn-default js-btn-search", "type"=>"button"]) !!}
         @endif
         {!! Form::close() !!}
