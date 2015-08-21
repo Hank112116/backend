@@ -101,7 +101,7 @@
                         @endif
 
 
-                        @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                        @if($is_super_admin)
                             <td class="table--user-mail">
                                 {{ $user->email }}
                                 @if('facebook' === $user->social)
