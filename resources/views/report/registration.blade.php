@@ -68,7 +68,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
-                    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                    @if($is_super_admin)
                         <th class="table--user-mail">EMail</th>
                     @endif
                     <th>Country<br/>City</th>
