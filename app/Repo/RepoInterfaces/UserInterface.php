@@ -27,6 +27,8 @@ interface UserInterface
     public function update($id, $data);
 
     public function dummy();
+    public function filterExpertsWithToBeExperts(Collection $users);
+    public function filterCreatorWithoutToBeExperts(Collection $users);
     public function filterExperts(Collection $users);
     public function filterCreator(Collection $users);
     public function filterPM(Collection $users);

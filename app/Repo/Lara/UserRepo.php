@@ -40,6 +40,11 @@ class UserRepo implements UserInterface
         return new User();
     }
 
+    public function get()
+    {
+        return $this->user->get();
+    }
+
     public function find($id)
     {
         return $this->user->find($id);
@@ -181,9 +186,27 @@ class UserRepo implements UserInterface
         $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
-        return $this->user->whereBetween('date_added', [$dstart, $dend])
+        return $this->user->whereBetween('date_added', [ $dstart, $dend ])
             ->orderBy('user_id', 'desc')
             ->get();
+    }
+
+    public function filterExpertsWithToBeExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isExpert() || $user->isToBeExpert();
+            }
+        );
+    }
+
+    public function filterCreatorWithoutToBeExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isCreator() && !$user->isToBeExpert();
+            }
+        );
     }
 
     public function filterExperts(Collection $users)
@@ -211,6 +234,24 @@ class UserRepo implements UserInterface
                 return $user->isHWTrekPM();
             }
         );
+    }
+
+    public function withCommentCountsByDate($dstart, $dend)
+    {
+
+        $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
+        $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
+
+        $this->user = $this->user->with([
+            'sendCommentCount'    => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+
+        ]);
+        return $this;
     }
 
     public function validUpdate($id, $data)

@@ -63,6 +63,7 @@ class User extends Eloquent
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
 
+
     public function scopeQueryExperts($query)
     {
         return $query->where('user_type', self::TYPE_EXPERT);
@@ -77,6 +78,7 @@ class User extends Eloquent
     {
         return $query->where('is_hwtrek_pm', true);
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -192,6 +194,31 @@ class User extends Eloquent
         return '';
     }
 
+    public function sendCommentCount()
+    {
+        return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+    }
+
+    public function sendHubCommentCount()
+    {
+        return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+    }
+
+    public function getSendCommentCountAttribute()
+    {
+        if (!array_key_exists('sendCommentCount', $this->relations)) {
+            $this->load('sendCommentCount');
+        }
+        if (!array_key_exists('sendHubCommentCount', $this->relations)) {
+            $this->load('sendHubCommentCount');
+        }
+        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
+        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount;
+    }
+
     public function isCreator()
     {
         return $this->user_type == self::TYPE_CREATOR;
@@ -209,7 +236,8 @@ class User extends Eloquent
 
     public function isHWTrekPM()
     {
-        return $this->is_hwtrek_pm;
+
+        return in_array($this->user_id, [ 6, 126, 128, 1036, 1322, 1545, 2488, 2508, 2569, 2960, 3157 ]);
     }
 
     public function hasExpertiseTag($tag_id)
