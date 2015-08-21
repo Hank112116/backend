@@ -96,23 +96,15 @@ class AuthController extends BaseController
     {
         return $this->routeFilter($type = 'report');
     }
-    
+
     public function reportRegistrationFilter()
     {
-        $isReportFull = $this->routeFilter($type = 'report_full');
-        if ($isReportFull !== null) {
-            return $this->routeFilter($type = 'report_registration');
-        }
-        return;
+        return $this->routeFilter($type = [ 'report_full', 'registration_report' ]);
     }
 
     public function reportCommentFilter()
     {
-        $isReportFull = $this->routeFilter($type = 'report_full');
-        if ($isReportFull !== null) {
-            return $this->routeFilter($type = 'report_comment');
-        }
-        return;
+        return $this->routeFilter($type = [ 'report_full', 'comment_report' ]);
     }
 
     private function routeFilter($type)
