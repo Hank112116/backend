@@ -25,6 +25,34 @@
                 </li>
                 @endif
 
+                @if(Auth::user()->isShowLink('report'))
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-line-chart fa-fw"></i>
+                            Report
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('registration_report'))
+                                <li>
+                                    <a href="{!! action('ReportController@showRegistrationReport', ['range' => 7]) !!}">
+                                        <i class="fa fa-users fa-fw"></i>
+                                        Registration Summary
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('comment_report'))
+                                <li>
+                                    <a href="{!! action('ReportController@showCommentReport', ['range'=>7]) !!}">
+                                        <i class="fa fa-comment-o fa-fw"></i>
+                                        Comments Summary
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
+
                 @if(Auth::user()->isShowLink('user'))
                 <li>
                     <a href="{!! action('UserController@showList') !!}">
@@ -169,34 +197,6 @@
                         <i class="fa fa-inbox fa-fw"></i>
                         Inbox
                     </a>
-                </li>
-                @endif
-
-                @if(Auth::user()->isShowLink('report'))
-                <li>
-                    <a href="#">
-                        <i class="fa fa-line-chart fa-fw"></i>
-                        Report
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('registration_report'))
-                        <li>
-                            <a href="{!! action('ReportController@showRegistrationReport', ['range' => 7]) !!}">
-                                <i class="fa fa-users fa-fw"></i>
-                                Registration Summary
-                            </a>
-                        </li>
-                        @endif
-                        @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('comment_report'))
-                        <li>
-                            <a href="{!! action('ReportController@showCommentReport', ['range'=>7]) !!}">
-                                <i class="fa fa-comment-o fa-fw"></i>
-                                Comments Summary
-                            </a>
-                        </li>
-                        @endif
-                    </ul>
                 </li>
                 @endif
 

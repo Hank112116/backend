@@ -20,6 +20,7 @@ class ReportController extends BaseController
     private $auth;
     private $user_repo;
     private $search_name;
+    private $search_id;
     private $range;
     private $validator;
     private $filter;
@@ -33,8 +34,8 @@ class ReportController extends BaseController
         $this->page        = Input::get('page', 1);
         $this->per_page    = Input::get('pp', 50);
         $this->search_name = Input::get('name');
+        $this->search_id   = Input::get('id');
         $this->getTimeInterval();
-        $this->getFilter();
     }
 
     /**
@@ -76,23 +77,29 @@ class ReportController extends BaseController
      */
     private function getFilter()
     {
-        $this->filter = $this->auth ? Input::get('filter', 'all') : 'expert';
     }
 
     public function showCommentReport()
     {
+        $this->filter = Input::get('filter', 'all');
 
         if (isset($this->validator) && $this->validator->fails()) {
             Noty::warn('The input parameter is wrong');
             return Redirect::back();
         }
 
-        $users = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend);
+        $isSearch = false;
+        $users    = $this->user_repo->withCommentCountsByDate($this->dstart, $this->dend);
         if (isset($this->search_name) && $this->search_name != '') {
-            $users = $users->byName($this->search_name);
+            $users    = $users->byName($this->search_name);
+            $isSearch = true;
+        } elseif (isset($this->search_id) && $this->search_id != '') {
+            $users    = $users->byId($this->search_id);
+            $isSearch = true;
         } else {
             $users = $users->get();
         }
+
         if ($this->filter === 'expert') {
             $users = $this->user_repo->filterExperts($users);
         }
@@ -102,6 +109,11 @@ class ReportController extends BaseController
         if ($this->filter === 'pm') {
             $users = $this->user_repo->filterPM($users);
         }
+
+        if (!$isSearch) {
+            $users = $this->user_repo->filterCommentCountNotZero($users);
+        }
+        $users    = $users->sortByDesc('sendCommentCount');
         $users    = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
         $template = view('report.comment')
             ->with([
@@ -120,6 +132,8 @@ class ReportController extends BaseController
      */
     public function showRegistrationReport()
     {
+        $this->filter = $this->auth ? Input::get('filter', 'all') : 'expert';
+
         if (isset($this->validator) && $this->validator->fails()) {
             Noty::warn('The input parameter is wrong');
             return Redirect::back();
