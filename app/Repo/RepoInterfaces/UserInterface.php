@@ -4,7 +4,6 @@ use Illuminate\Support\Collection;
 
 interface UserInterface
 {
-    public function get();
     public function find($id);
     public function findExpert($id);
     public function all();
@@ -34,7 +33,10 @@ interface UserInterface
     public function filterCreator(Collection $users);
     public function filterPM(Collection $users);
 
-    public function withCommentCountsByDate($dstart, $dend);
+    public function getCommentCountsByDate($dstart, $dend);
+    public function getCommentCountsByDateById($dstart, $dend, $id);
+    public function getCommentCountsByDateByName($dstart, $dend, $name);
+
     public function filterCommentCountNotZero(Collection $userWithComment);
 
     public function toOutputArray($users);

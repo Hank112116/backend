@@ -40,11 +40,6 @@ class UserRepo implements UserInterface
         return new User();
     }
 
-    public function get()
-    {
-        return $this->user->get();
-    }
-
     public function find($id)
     {
         return $this->user->find($id);
@@ -236,9 +231,29 @@ class UserRepo implements UserInterface
         );
     }
 
-    public function withCommentCountsByDate($dstart, $dend)
+    public function getCommentCountsByDateById($dstart, $dend, $id)
     {
+        return $this
+            ->withCommentCountsByDate($dstart, $dend)
+            ->byId($id);
+    }
 
+    public function getCommentCountsByDateByName($dstart, $dend, $name)
+    {
+        return $this
+            ->withCommentCountsByDate($dstart, $dend)
+            ->byName($name);
+    }
+
+    public function getCommentCountsByDate($dstart, $dend)
+    {
+        return $this
+            ->withCommentCountsByDate($dstart, $dend)
+            ->user->get();
+    }
+
+    private function withCommentCountsByDate($dstart, $dend)
+    {
         $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
