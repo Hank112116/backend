@@ -22,19 +22,19 @@
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 7 days', ['range' => 7,'filter' => Input::get('filter'), 'name' => Input::get('name') ], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 7 days', ['range' => 7,'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id')  ], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 14 days', ['range' => 14,'filter' => Input::get('filter'), 'name' => Input::get('name') ], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 14 days', ['range' => 14,'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id') ], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 30 days', ['range' => 30,'filter' => Input::get('filter'), 'name' => Input::get('name') ], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 30 days', ['range' => 30,'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id')  ], null) !!}
                 </li>
                 <li>
                     {!! link_to_action('ReportController@showCommentReport', 'Custom', [
                     'dstart' => \Carbon\Carbon::parse(Input::get('range',7).' days ago')->toDateString(),
                     'dend'   => \Carbon\Carbon::now()->toDateString(),
-                    'filter' => Input::get('filter'), 'name' => Input::get('name') ],null) !!}
+                    'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id')  ],null) !!}
                 </li>
             </ul>
             @if(!isset($range))
@@ -47,21 +47,25 @@
             @endif
         </div>
         <div class="form-group has-feedback">
-            @if($is_super_admin)
-                {!! Form::select('filter',[
-                    'all'     => 'Show All',
-                    'pm'      => 'Show Internal PM',
-                    'expert'  => 'Show Expert',
-                    'creator' => 'Show Creator',
-                ], Input::get('filter'), ['class'=>'form-control']) !!}
-            @endif
-            {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
+            {!! Form::select('filter',[
+                'all'     => 'Show All',
+                'pm'      => 'Show Internal PM',
+                'expert'  => 'Show Expert',
+                'creator' => 'Show Creator',
+            ], Input::get('filter'), ['class'=>'form-control']) !!}
+            {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'id'=>'search-name', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-id").value=""']) !!}
+            {!! Form::text('id', Input::get('id'), ['placeholder'=>"Search by user ID", 'id'=>'search-id', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-name").value=""']) !!}
         </div>
         {!! Form::submit('Go!', $attributes=["class"=>"btn btn-default js-btn-search", "type"=>"button"]) !!}
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}</h4></div>
+    <div class="row text-center">
+        <h4>
+            {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}
+            {!! $users->sum('sendCommentCount') !!} {!! $users->sum('sendCommentCount') > 1 ? 'comments' : 'comment' !!}
+        </h4>
+    </div>
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">

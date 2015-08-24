@@ -33,6 +33,12 @@ interface UserInterface
     public function filterCreator(Collection $users);
     public function filterPM(Collection $users);
 
+    public function getCommentCountsByDate($dstart, $dend);
+    public function getCommentCountsByDateById($dstart, $dend, $id);
+    public function getCommentCountsByDateByName($dstart, $dend, $name);
+
+    public function filterCommentCountNotZero(Collection $userWithComment);
+
     public function toOutputArray($users);
 
     public function changeHWTrekPM($user_id, $is_hwtrek_pm);

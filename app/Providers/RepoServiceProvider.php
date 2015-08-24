@@ -31,6 +31,11 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            'Backend\Repo\RepoInterfaces\ReportInterface',
+            'Backend\Repo\Lara\ReportRepo'
+        );
+
+        $this->app->bind(
             'Backend\Repo\RepoInterfaces\InboxInterface',
             'Backend\Repo\Lara\InboxRepo'
         );
