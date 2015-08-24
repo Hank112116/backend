@@ -72,13 +72,6 @@ class ReportController extends BaseController
         }
     }
 
-    /**
-     * Get the filter from Input['filter'] and set $this->filter
-     */
-    private function getFilter()
-    {
-    }
-
     public function showCommentReport()
     {
         $this->filter = Input::get('filter', 'all');
