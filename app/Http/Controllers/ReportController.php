@@ -113,7 +113,11 @@ class ReportController extends BaseController
         if (!$isSearch) {
             $users = $this->user_repo->filterCommentCountNotZero($users);
         }
-        $users    = $users->sortByDesc('sendCommentCount');
+
+        $users    = $users->sort(function ($user1, $user2) {
+            return $user2->sendCommentCount - $user1->sendCommentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id
+        });
+
         $users    = $this->user_repo->byCollectionPage($users, $this->page, $this->per_page);
         $template = view('report.comment')
             ->with([
