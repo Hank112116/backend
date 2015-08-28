@@ -204,7 +204,8 @@ class User extends Eloquent
         return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
-    public function getSendCommentCountAttribute()
+    //Use to get comment count which is be filtered or not be filtered
+    public function getCommentCountAttribute()
     {
         if (!array_key_exists('sendCommentCount', $this->relations)) {
             $this->load('sendCommentCount');
@@ -212,6 +213,19 @@ class User extends Eloquent
         if (!array_key_exists('sendHubCommentCount', $this->relations)) {
             $this->load('sendHubCommentCount');
         }
+        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
+        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount;
+    }
+
+    //Use to get total comment count from user register.
+    public function getTotalCommentCountAttribute()
+    {
+        //Reload relation to ignore where condition
+        $this->load('sendCommentCount');
+        $this->load('sendHubCommentCount');
         $commentCount    = $this->getRelation('sendCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
         $hubCommentCount = $this->getRelation('sendHubCommentCount');
