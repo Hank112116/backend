@@ -13,6 +13,7 @@ return [
         'Solution'  => ['solution' => 'Solution Full', 'solution_restricted' => 'Solution Limited'],
         'Hub'       => ['hub_full' => 'Hub Full', 'hub_restricted' => 'Hub Limited', 'schedule_manager' => 'Schedule Manager'],
         'Marketing' => ['marketing_full' => 'Marketing Full' , 'marketing_expert_list' => 'Home Expert List'],
+        'Report'    => ['report_full' => 'Report Full', 'registration_report' => 'Registration Report', 'comment_report' => 'Comment Report'],
         'Other'     => ['email_template' => 'EMails Full', 'front_page' => 'Marketing' ],
     ],
     'default_admin'   => [

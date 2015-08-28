@@ -19,7 +19,8 @@ module.exports = [
     'hub-questionnaires.js',
     'test.js',
     'landing-expert.js',
-    'solution-list.js'
+    'solution-list.js',
+    'user-list.js'
 ];
 
 

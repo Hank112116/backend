@@ -9,6 +9,7 @@ interface UserInterface
     public function all();
 
     public function byPage($page, $per_page);
+    public function byCollectionPage($collection, $page, $per_page);
     public function experts();
     public function creators();
     public function toBeExpertMembers();
@@ -26,9 +27,21 @@ interface UserInterface
     public function update($id, $data);
 
     public function dummy();
+    public function filterExpertsWithToBeExperts(Collection $users);
+    public function filterCreatorWithoutToBeExperts(Collection $users);
     public function filterExperts(Collection $users);
+    public function filterCreator(Collection $users);
+    public function filterPM(Collection $users);
+
+    public function getCommentCountsByDate($dstart, $dend);
+    public function getCommentCountsByDateById($dstart, $dend, $id);
+    public function getCommentCountsByDateByName($dstart, $dend, $name);
+
+    public function filterCommentCountNotZero(Collection $userWithComment);
 
     public function toOutputArray($users);
+
+    public function changeHWTrekPM($user_id, $is_hwtrek_pm);
 
     //    public function valid();
     //    public function error();

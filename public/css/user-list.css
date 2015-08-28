@@ -6171,6 +6171,84 @@ body.stop-scrolling {
   border-top-right-radius: 3px;
 }
 
+/* iCheck plugin Minimal skin, blue
+----------------------------------- */
+/* line 3, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue,
+.iradio_minimal-blue {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  background: url("/images/vendor/icheck/blue.png") no-repeat;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* line 16, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue {
+  background-position: 0 0;
+}
+
+/* line 19, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.hover {
+  background-position: -20px 0;
+}
+
+/* line 22, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.checked {
+  background-position: -40px 0;
+}
+
+/* line 25, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.disabled {
+  background-position: -60px 0;
+  cursor: default;
+}
+
+/* line 29, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.checked.disabled {
+  background-position: -80px 0;
+}
+
+/* line 33, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue {
+  background-position: -100px 0;
+}
+
+/* line 36, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.hover {
+  background-position: -120px 0;
+}
+
+/* line 39, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.checked {
+  background-position: -140px 0;
+}
+
+/* line 42, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.disabled {
+  background-position: -160px 0;
+  cursor: default;
+}
+
+/* line 46, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.checked.disabled {
+  background-position: -180px 0;
+}
+
+/* Retina support */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3 / 2), only screen and (min-device-pixel-ratio: 1.5) {
+  /* line 55, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+  .icheckbox_minimal-blue,
+  .iradio_minimal-blue {
+    background-image: url("/images/vendor/icheck/blue@2x.png");
+    -webkit-background-size: 200px 20px;
+    background-size: 200px 20px;
+  }
+}
 /*!
  * Datepicker for Bootstrap
  *
@@ -6857,13 +6935,13 @@ body {
   text-align: right;
 }
 
-/* line 9, ../../front/sass/user-list.scss */
+/* line 10, ../../front/sass/user-list.scss */
 .pagination-container {
   text-align: center;
 }
 
-/* line 13, ../../front/sass/user-list.scss */
+/* line 14, ../../front/sass/user-list.scss */
 .search-bar-btns {
-  margin-left: 0em;
   margin-bottom: 1em;
+  margin-left: 0;
 }

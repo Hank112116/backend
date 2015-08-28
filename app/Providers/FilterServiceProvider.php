@@ -21,5 +21,8 @@ class FilterServiceProvider extends ServiceProvider
         Route::filter('backend.hub', "{$controller}@hubFilter");
         Route::filter('backend.landing', "{$controller}@landingFilter");
         Route::filter('backend.mail', "{$controller}@mailFilter");
+        Route::filter('backend.report', "{$controller}@reportFilter");
+        Route::filter('backend.reportRegistration', "{$controller}@reportRegistrationFilter");
+        Route::filter('backend.reportComment', "{$controller}@reportCommentFilter");
     }
 }

@@ -90,6 +90,11 @@ class Comment extends Eloquent
             }]);
     }
 
+    public function scopeQueryDate(Builder $query, $dstart, $dend)
+    {
+        return $query->whereBetween('date_added', [ $dstart, $dend ]);
+    }
+
     public function getImageUrlsAttribute()
     {
         if (!$this->images) {

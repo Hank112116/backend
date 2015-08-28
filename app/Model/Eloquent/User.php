@@ -28,8 +28,8 @@ class User extends Eloquent
         self::ROLE_ADMIN   => 'Admin'
     ];
 
-    const TYPE_CREATOR = 0;
-    const TYPE_EXPERT = 1;
+    const TYPE_CREATOR = '0';
+    const TYPE_EXPERT = '1';
 
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
@@ -61,6 +61,22 @@ class User extends Eloquent
     public function solutions()
     {
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
+    }
+
+
+    public function scopeQueryExperts($query)
+    {
+        return $query->where('user_type', self::TYPE_EXPERT);
+    }
+
+    public function scopeQueryCreators($query)
+    {
+        return $query->where('user_type', self::TYPE_CREATOR);
+    }
+
+    public function scopeQueryPM($query)
+    {
+        return $query->where('is_hwtrek_pm', true);
     }
 
     /**
@@ -111,6 +127,15 @@ class User extends Eloquent
         $name = UrlFilter::filter("{$this->user_name}-{$this->last_name}");
         return 'https://' . Config::get('app.front_domain') . "/profile/{$name}.{$this->user_id}";
     }
+
+    public function textHWTrekPM()
+    {
+        if (!$this->isHWTrekPM()) {
+            return false;
+        }
+        return 'HWTrek PM';
+    }
+
     public function getIndustryArray()
     {
         return Industry::parseToArray($this->user_category_id);
@@ -169,14 +194,50 @@ class User extends Eloquent
         return '';
     }
 
+    public function sendCommentCount()
+    {
+        return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+    }
+
+    public function sendHubCommentCount()
+    {
+        return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+    }
+
+    public function getSendCommentCountAttribute()
+    {
+        if (!array_key_exists('sendCommentCount', $this->relations)) {
+            $this->load('sendCommentCount');
+        }
+        if (!array_key_exists('sendHubCommentCount', $this->relations)) {
+            $this->load('sendHubCommentCount');
+        }
+        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
+        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount;
+    }
+
+    public function isCreator()
+    {
+        return $this->user_type == self::TYPE_CREATOR;
+    }
+
     public function isExpert()
     {
-        return $this->user_type == static::TYPE_EXPERT;
+        return $this->user_type == self::TYPE_EXPERT;
     }
 
     public function isToBeExpert()
     {
         return $this->is_sign_up_as_expert;
+    }
+
+    public function isHWTrekPM()
+    {
+
+        return in_array($this->user_id, [ 6, 126, 128, 1036, 1322, 1545, 2488, 2508, 2569, 2960, 3157 ]);
     }
 
     public function hasExpertiseTag($tag_id)
@@ -205,9 +266,5 @@ class User extends Eloquent
     public function toBasicJson()
     {
         return json_encode($this->toBasicArray());
-    }
-    public function get100items()
-    {
-        echo 123;
     }
 }

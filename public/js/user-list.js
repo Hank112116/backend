@@ -31,85 +31,38 @@ var _libsSweetAlert = require("./libs/SweetAlert");
 var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
 $(function () {
-    //change solution type to program alert button
-    $(".approve_pending_program").click(function (e) {
+    //change user type to pm checkbox
+    $(document).on("ifChecked", ".change_pm", function (e) {
         e.preventDefault();
-        var solution_id = $(this).attr("rel");
+        var user_id = $(this).attr("rel");
         SweetAlert.alert({
-            title: "Upgrade Solution to Program?",
-            confirmButton: "Yes, Approve!",
+            title: "Change User to HWTrek PM?",
+            confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "./to-program");
-            }
-        });
-        return false;
-    });
-    $(".approve_pending_solution").click(function (e) {
-        e.preventDefault();
-        var solution_id = $(this).attr("rel");
-        SweetAlert.alert({
-            title: "Change Program to Solution?",
-            confirmButton: "Yes, Approve!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "./to-solution");
-            }
-        });
-        return false;
-    });
-    //change solution type to program checkbox
-    $(document).on("ifChecked", ".approve_program", function (e) {
-        e.preventDefault();
-        var solution_id = $(this).attr("rel");
-        SweetAlert.alert({
-            title: "Upgrade Solution to Program?",
-            confirmButton: "Yes, Approve!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "./to-program");
+                return post_date(user_id, "./change-hwtrek-pm-type", 1);
             }
         });
     });
-    //change solution type to solution checkbox
-    $(document).on("ifChecked", ".approve_solution", function (e) {
+    //change user type to user checkbox
+    $(document).on("ifChecked", ".change_user", function (e) {
         e.preventDefault();
-        var solution_id = $(this).attr("rel");
+        var user_id = $(this).attr("rel");
         SweetAlert.alert({
-            title: "Change Program to Solution?",
-            confirmButton: "Yes, Approve!",
+            title: "Change HWTrek PM to User?",
+            confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "./to-solution");
+                return post_date(user_id, "./change-hwtrek-pm-type", 0);
             }
         });
     });
-    //cancel pending solution type to program checkbox
-    $(document).on("ifChecked", ".cancel_solution", function (e) {
-        e.preventDefault();
-        var solution_id = $(this).attr("rel");
-        SweetAlert.alert({
-            title: "Cancel Pending Solution to Program?",
-            confirmButton: "Yes, Cancel!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "./cancel-pending-solution");
-            }
-        });
-    });
-    //cancel pending program type to solution checkbox
-    $(document).on("ifChecked", ".cancel_program", function (e) {
-        e.preventDefault();
-        var solution_id = $(this).attr("rel");
-        SweetAlert.alert({
-            title: "Cancel Pending Program to Solution?",
-            confirmButton: "Yes, Cancel!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "./cancel-pending-program");
-            }
-        });
-    });
-    function post_date(solution_id, url) {
+
+    function post_date(user_id, url, is_hwtrek_pm) {
         $.ajax({
             type: "POST",
             url: url,
             data: {
-                solution_id: solution_id
+                user_id: user_id,
+                is_hwtrek_pm: is_hwtrek_pm
             },
             dataType: "JSON",
             success: function success(feeback) {

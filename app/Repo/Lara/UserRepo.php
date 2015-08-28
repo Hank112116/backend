@@ -66,6 +66,7 @@ class UserRepo implements UserInterface
 
     public function experts($page = 1, $limit = 20)
     {
+        $this->setPaginateTotal($this->user->queryExperts()->count());
         $users = $this->modelBuilder($this->user, $page, $limit)
             ->where('user_type', User::TYPE_EXPERT)
             ->get();
@@ -75,10 +76,12 @@ class UserRepo implements UserInterface
 
     public function findExpert($id)
     {
-        return $this->user->where("user_id", $id)->where("user_type", User::TYPE_EXPERT)->get();
+        return $this->user->where('user_id', $id)->where('user_type', User::TYPE_EXPERT)->get();
     }
+
     public function creators($page = 1, $limit = 20)
     {
+        $this->setPaginateTotal($this->user->queryCreators()->count());
         $users = $this->modelBuilder($this->user, $page, $limit)
             ->where('user_type', User::TYPE_CREATOR)
             ->get();
@@ -110,6 +113,11 @@ class UserRepo implements UserInterface
     {
         $users = $this->modelBuilder($this->user, $page, $limit)->get();
         return $this->getPaginateContainer($this->user, $page, $limit, $users);
+    }
+
+    public function byCollectionPage($collection, $page = 1, $per_page = 20)
+    {
+        return $this->getPaginateFromCollection($collection, $page, $per_page);
     }
 
     public function byId($id = '')
@@ -173,9 +181,27 @@ class UserRepo implements UserInterface
         $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
-        return $this->user->whereBetween('date_added', [$dstart, $dend])
+        return $this->user->whereBetween('date_added', [ $dstart, $dend ])
             ->orderBy('user_id', 'desc')
             ->get();
+    }
+
+    public function filterExpertsWithToBeExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isExpert() || $user->isToBeExpert();
+            }
+        );
+    }
+
+    public function filterCreatorWithoutToBeExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isCreator() && !$user->isToBeExpert();
+            }
+        );
     }
 
     public function filterExperts(Collection $users)
@@ -183,6 +209,71 @@ class UserRepo implements UserInterface
         return $users->filter(
             function (User $user) {
                 return $user->isExpert();
+            }
+        );
+    }
+
+    public function filterCreator(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isCreator();
+            }
+        );
+    }
+
+    public function filterPM(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isHWTrekPM();
+            }
+        );
+    }
+
+    public function getCommentCountsByDateById($dstart, $dend, $id)
+    {
+        return $this
+            ->withCommentCountsByDate($dstart, $dend)
+            ->byId($id);
+    }
+
+    public function getCommentCountsByDateByName($dstart, $dend, $name)
+    {
+        return $this
+            ->withCommentCountsByDate($dstart, $dend)
+            ->byName($name);
+    }
+
+    public function getCommentCountsByDate($dstart, $dend)
+    {
+        return $this
+            ->withCommentCountsByDate($dstart, $dend)
+            ->user->get();
+    }
+
+    private function withCommentCountsByDate($dstart, $dend)
+    {
+        $dstart = $dstart ? Carbon::parse($dstart) : Carbon::now()->startOfMonth();
+        $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
+
+        $this->user = $this->user->with([
+            'sendCommentCount'    => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+
+        ]);
+        return $this;
+    }
+
+    public function filterCommentCountNotZero(Collection $userWithComment)
+    {
+        return $userWithComment->filter(
+            function (User $user) {
+                return $user->sendCommentCount != 0;
             }
         );
     }
@@ -230,7 +321,14 @@ class UserRepo implements UserInterface
         if ($tags) {
             $user->tags = implode(',', $tags->toArray());
         }
-        
+
+        $user->save();
+    }
+
+    public function changeHWTrekPM($id, $is_hwtrek_pm)
+    {
+        $user = $this->user->find($id);
+        $user->is_hwtrek_pm = $is_hwtrek_pm;
         $user->save();
     }
 

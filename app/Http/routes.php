@@ -43,6 +43,7 @@ Route::group(['before' => 'backend.user'], function () {
     Route::get('user/comments/professions/private/{comment_id}', 'CommentController@togglePrivate');
 
     Route::post('user/update/{id}', 'UserController@update');
+    Route::post('user/change-hwtrek-pm-type', 'UserController@changeHWTrekPM');
 });
 
 // Inbox
@@ -192,6 +193,14 @@ Route::group(['before' => 'backend.mail'], function () {
 
     Route::post('mail/create', 'MailTemplateController@create');
     Route::post('mail/update/{id}', 'MailTemplateController@update');
+});
+
+// Report
+Route::group([ 'before' => 'backend.reportRegistration' ], function () {
+    Route::get('report/registration', 'ReportController@showRegistrationReport');
+});
+Route::group([ 'before' => 'backend.reportComment' ], function () {
+    Route::get('report/comment', 'ReportController@showCommentReport');
 });
 
 

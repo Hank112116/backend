@@ -1,5 +1,6 @@
 @import "common";
 @import "vendor/bootstrap/pagination";
+@import "vendor/fronteed/icheck/blue";
 @import "vendor/bootstrap-sass-datepicker/datepicker";
 @import "modules/page-header-with-btn";
 @import "modules/list-search";
@@ -7,11 +8,10 @@
 
 
 .pagination-container {
-	text-align : center;
+  text-align: center;
 }
 
 .search-bar-btns {
-	margin-left: 0em;
-	margin-bottom: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
 }
-

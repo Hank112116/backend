@@ -126,14 +126,7 @@ class EmailSend
     public function convert_to_brief($raw_data, $char_limit = 200)
     {
         // Remove html tags and attributes from $raw_data
-        $sf_data = htmlspecialchars_decode(
-            htmlentities(
-                html_entity_decode(
-                    strip_tags($raw_data)
-                ),
-                ENT_QUOTES
-            )
-        );
+        $sf_data =  strip_tags(Purifier::clean($raw_data));
 
         // Extract first limit chars
         $brief = mb_substr(
