@@ -52,7 +52,7 @@ $(function () {
         var level = $("#level").val();
         $.ajax({
             type: "POST",
-            url: "./update-project-note",
+            url: "/hub/update-project-note",
             data: {
                 projectId: projectId,
                 note: note,
@@ -106,7 +106,7 @@ $(function () {
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "./get-expert",
+            url: "/hub/get-expert",
             data: {
                 expertId: expertId
             },
@@ -124,7 +124,7 @@ $(function () {
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "./get-expert",
+            url: "/hub/get-expert",
             data: {
                 expertId: expertId
             },
