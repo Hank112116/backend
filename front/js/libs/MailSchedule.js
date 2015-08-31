@@ -29,7 +29,7 @@ $(function () {
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "./get-expert",
+            url: "/hub/get-expert",
             data: { 
                 expertId: expertId
             },
@@ -47,7 +47,7 @@ $(function () {
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "./get-expert",
+            url: "/hub/get-expert",
             data: { 
                 expertId: expertId
             },

@@ -93,7 +93,7 @@ Expert.prototype.btnSubmit = function(){
         });
         $.ajax({
             type: "POST",
-            url: "./update-expert",
+            url: "/landing/update-expert",
             data: { 
                 user: user,
                 description: description
