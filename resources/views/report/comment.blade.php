@@ -63,7 +63,7 @@
     <div class="row text-center">
         <h4>
             {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}
-            {!! $users->sum('sendCommentCount') !!} {!! $users->sum('sendCommentCount') > 1 ? 'comments' : 'comment' !!}
+            {!! $users->commentSum !!} {!! $users->commentSum > 1 ? 'comments' : 'comment' !!}
         </h4>
     </div>
     <div class="row">
@@ -74,6 +74,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
+                    <th>{!! isset($range)? "Last $range days":"Custom interval" !!}</th>
                     <th>Total</th>
                 </tr>
 
@@ -87,9 +88,10 @@
                         @if($is_super_admin && $user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
-                            <td>{!! $user->textType() !!}</td>
+                            <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
                         @endif
-                        <td>{!! $user->sendCommentCount !!}</td>
+                        <td>{!! $user->commentCount !!}</td>
+                        <td>{!! $user->totalCommentCount !!}</td>
                     </tr>
                 @endforeach
             </table>

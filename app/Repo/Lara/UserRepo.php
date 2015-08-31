@@ -264,7 +264,9 @@ class UserRepo implements UserInterface
             'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
-
+            'inboxCount'          => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('date_added', [ $dstart, $dend ]);
+            },
         ]);
         return $this;
     }
@@ -273,7 +275,7 @@ class UserRepo implements UserInterface
     {
         return $userWithComment->filter(
             function (User $user) {
-                return $user->sendCommentCount != 0;
+                return $user->commentCount != 0;
             }
         );
     }
