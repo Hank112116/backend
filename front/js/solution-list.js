@@ -9,7 +9,7 @@ $(function () {
            title: "Upgrade Solution to Program?",
            confirmButton: "Yes, Approve!",
            handleOnConfirm: () => 
-              post_date(solution_id , "/solution/to-program")
+              post_data(solution_id , "/solution/to-program")
         });
         return false;
     });
@@ -20,7 +20,7 @@ $(function () {
            title: "Change Program to Solution?",
            confirmButton: "Yes, Approve!",
            handleOnConfirm: () => 
-              post_date(solution_id, "/solution/to-solution")
+              post_data(solution_id, "/solution/to-solution")
         });
         return false;
     });
@@ -32,7 +32,7 @@ $(function () {
             title: "Upgrade Solution to Program?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: () =>
-                post_date(solution_id, "/solution/to-program")
+                post_data(solution_id, "/solution/to-program")
         });
     });
     //change solution type to solution checkbox
@@ -43,7 +43,7 @@ $(function () {
             title: "Change Program to Solution?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: () =>
-                post_date(solution_id, "/solution/to-solution")
+                post_data(solution_id, "/solution/to-solution")
         });
     });
     //cancel pending solution type to program checkbox
@@ -54,7 +54,7 @@ $(function () {
             title: "Cancel Pending Solution to Program?",
             confirmButton: "Yes, Cancel!",
             handleOnConfirm: () =>
-                post_date(solution_id, "/solution/cancel-pending-solution")
+                post_data(solution_id, "/solution/cancel-pending-solution")
         });
     });
     //cancel pending program type to solution checkbox
@@ -65,10 +65,10 @@ $(function () {
             title: "Cancel Pending Program to Solution?",
             confirmButton: "Yes, Cancel!",
             handleOnConfirm: () =>
-                post_date(solution_id, "/solution/cancel-pending-program")
+                post_data(solution_id, "/solution/cancel-pending-program")
         });
     });
-    function post_date(solution_id, url){
+    function post_data(solution_id, url){
         $.ajax({
             type: "POST",
             url: url,

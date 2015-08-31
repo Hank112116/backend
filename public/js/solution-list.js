@@ -39,7 +39,7 @@ $(function () {
             title: "Upgrade Solution to Program?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "/solution/to-program");
+                return post_data(solution_id, "/solution/to-program");
             }
         });
         return false;
@@ -51,7 +51,7 @@ $(function () {
             title: "Change Program to Solution?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "/solution/to-solution");
+                return post_data(solution_id, "/solution/to-solution");
             }
         });
         return false;
@@ -64,7 +64,7 @@ $(function () {
             title: "Upgrade Solution to Program?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "/solution/to-program");
+                return post_data(solution_id, "/solution/to-program");
             }
         });
     });
@@ -76,7 +76,7 @@ $(function () {
             title: "Change Program to Solution?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "/solution/to-solution");
+                return post_data(solution_id, "/solution/to-solution");
             }
         });
     });
@@ -88,7 +88,7 @@ $(function () {
             title: "Cancel Pending Solution to Program?",
             confirmButton: "Yes, Cancel!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "/solution/cancel-pending-solution");
+                return post_data(solution_id, "/solution/cancel-pending-solution");
             }
         });
     });
@@ -100,11 +100,11 @@ $(function () {
             title: "Cancel Pending Program to Solution?",
             confirmButton: "Yes, Cancel!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(solution_id, "/solution/cancel-pending-program");
+                return post_data(solution_id, "/solution/cancel-pending-program");
             }
         });
     });
-    function post_date(solution_id, url) {
+    function post_data(solution_id, url) {
         $.ajax({
             type: "POST",
             url: url,

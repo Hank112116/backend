@@ -9,7 +9,7 @@ $(function () {
             title: "Change User to HWTrek PM?",
             confirmButton: "Yes!",
             handleOnConfirm: () =>
-                post_date(user_id, "/user/change-hwtrek-pm-type", 1)
+                post_data(user_id, "/user/change-hwtrek-pm-type", 1)
         });
     });
     //change user type to user checkbox
@@ -20,11 +20,11 @@ $(function () {
             title: "Change HWTrek PM to User?",
             confirmButton: "Yes!",
             handleOnConfirm: () =>
-                post_date(user_id, "/user/change-hwtrek-pm-type", 0)
+                post_data(user_id, "/user/change-hwtrek-pm-type", 0)
         });
     });
 
-    function post_date(user_id, url, is_hwtrek_pm){
+    function post_data(user_id, url, is_hwtrek_pm){
         $.ajax({
             type: "POST",
             url: url,

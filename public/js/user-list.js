@@ -39,7 +39,7 @@ $(function () {
             title: "Change User to HWTrek PM?",
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(user_id, "/user/change-hwtrek-pm-type", 1);
+                return post_data(user_id, "/user/change-hwtrek-pm-type", 1);
             }
         });
     });
@@ -51,12 +51,12 @@ $(function () {
             title: "Change HWTrek PM to User?",
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_date(user_id, "/user/change-hwtrek-pm-type", 0);
+                return post_data(user_id, "/user/change-hwtrek-pm-type", 0);
             }
         });
     });
 
-    function post_date(user_id, url, is_hwtrek_pm) {
+    function post_data(user_id, url, is_hwtrek_pm) {
         $.ajax({
             type: "POST",
             url: url,
