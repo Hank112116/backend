@@ -43,7 +43,7 @@ $(function () {
         var level = $("#level").val();
         $.ajax({
             type: "POST",
-            url: "./update-project-note",
+            url: "/hub/update-project-note",
             data: { 
                 projectId: projectId,
                 note:  note,
