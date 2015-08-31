@@ -64,7 +64,11 @@ class ReportRepo implements ReportInterface
             return $user2->commentCount - $user1->commentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id
         });
 
-        $users = $this->user_repo->byCollectionPage($users, $page, $per_page);
+        //In order to get comment sum correctly, we should get sum before pagination.
+        $commentSum        = $users->sum('commentCount');
+        $users             = $this->user_repo->byCollectionPage($users, $page, $per_page);
+        $users->commentSum = $commentSum;
+
         return $users;
     }
 

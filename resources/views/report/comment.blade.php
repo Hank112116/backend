@@ -63,7 +63,7 @@
     <div class="row text-center">
         <h4>
             {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}
-            {!! $users->sum('commentCount') !!} {!! $users->sum('commentCount') > 1 ? 'comments' : 'comment' !!}
+            {!! $users->commentSum !!} {!! $users->commentSum > 1 ? 'comments' : 'comment' !!}
         </h4>
     </div>
     <div class="row">
