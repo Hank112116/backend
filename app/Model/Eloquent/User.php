@@ -204,6 +204,11 @@ class User extends Eloquent
         return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
+    public function inboxCount()
+    {
+        return $this->hasOne(Inbox::class, 'sender_id')->selectRaw('sender_id, count(*) as inboxCount')->groupBy('sender_id');
+    }
+
     //Use to get comment count which is be filtered or not be filtered
     public function getCommentCountAttribute()
     {
@@ -213,11 +218,17 @@ class User extends Eloquent
         if (!array_key_exists('sendHubCommentCount', $this->relations)) {
             $this->load('sendHubCommentCount');
         }
+        if (!array_key_exists('inboxCount', $this->relations)) {
+            $this->load('inboxCount');
+        }
+
         $commentCount    = $this->getRelation('sendCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
         $hubCommentCount = $this->getRelation('sendHubCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
-        return $commentCount + $hubCommentCount;
+        $inboxCount      = $this->getRelation('inboxCount');
+        $inboxCount      = ($inboxCount) ? $inboxCount->inboxCount : 0;
+        return $commentCount + $hubCommentCount + $inboxCount;
     }
 
     //Use to get total comment count from user register.
@@ -226,11 +237,15 @@ class User extends Eloquent
         //Reload relation to ignore where condition
         $this->load('sendCommentCount');
         $this->load('sendHubCommentCount');
+        $this->load('inboxCount');
+
         $commentCount    = $this->getRelation('sendCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
         $hubCommentCount = $this->getRelation('sendHubCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
-        return $commentCount + $hubCommentCount;
+        $inboxCount      = $this->getRelation('inboxCount');
+        $inboxCount      = ($inboxCount) ? $inboxCount->inboxCount : 0;
+        return $commentCount + $hubCommentCount + $inboxCount;
     }
 
     public function isCreator()
