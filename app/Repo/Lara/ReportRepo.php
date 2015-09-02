@@ -32,16 +32,12 @@ class ReportRepo implements ReportInterface
 
     public function getCommentReport($filter, $input, $page, $per_page)
     {
-        $isSearch  = false;
         $timeRange = $this->getTimeInterval($input);
-
 
         if (isset($input['name']) && $input['name'] != '') {
             $users    = $this->user_repo->getCommentCountsByDateByName($timeRange[0], $timeRange[1], $input['name']);
-            $isSearch = true;
         } elseif (isset($input['id']) && $input['id'] != '') {
             $users    = $this->user_repo->getCommentCountsByDateById($timeRange[0], $timeRange[1], $input['id']);
-            $isSearch = true;
         } else {
             $users = $this->user_repo->getCommentCountsByDate($timeRange[0], $timeRange[1]);
         }
@@ -56,9 +52,6 @@ class ReportRepo implements ReportInterface
             $users = $this->user_repo->filterPM($users);
         }
 
-        if (!$isSearch) {
-            $users = $this->user_repo->filterCommentCountNotZero($users);
-        }
 
         $users = $users->sort(function ($user1, $user2) {
             return $user2->commentCount - $user1->commentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id

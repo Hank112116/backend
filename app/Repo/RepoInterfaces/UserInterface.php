@@ -37,8 +37,6 @@ interface UserInterface
     public function getCommentCountsByDateById($dstart, $dend, $id);
     public function getCommentCountsByDateByName($dstart, $dend, $name);
 
-    public function filterCommentCountNotZero(Collection $userWithComment);
-
     public function toOutputArray($users);
 
     public function changeHWTrekPM($user_id, $is_hwtrek_pm);

@@ -271,15 +271,6 @@ class UserRepo implements UserInterface
         return $this;
     }
 
-    public function filterCommentCountNotZero(Collection $userWithComment)
-    {
-        return $userWithComment->filter(
-            function (User $user) {
-                return $user->commentCount != 0;
-            }
-        );
-    }
-
     public function validUpdate($id, $data)
     {
         $user = $this->user->find($id);
