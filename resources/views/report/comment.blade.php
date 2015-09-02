@@ -74,8 +74,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
-                    <th>{!! isset($range)? "Last $range days":"Custom interval" !!}</th>
-                    <th>Total</th>
+                    <th>{!! isset($range)? "Last $range days comment":"Custom interval comment" !!}</th>
                 </tr>
 
                 @foreach($users as $user)
@@ -90,8 +89,7 @@
                         @else
                             <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
                         @endif
-                        <td>{!! $user->commentCount !!}</td>
-                        <td>{!! $user->totalCommentCount !!}</td>
+                        <td><span style="font-size:1.3em">{!! $user->commentCount !!}</span> <span> of total {!! $user->totalCommentCount !!}.</span></td>
                     </tr>
                 @endforeach
             </table>
