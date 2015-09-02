@@ -67,8 +67,7 @@
         </h4>
     </div>
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <table class="table table-striped">
                 <tr>
                     <th>#</th>
@@ -94,7 +93,6 @@
                 @endforeach
             </table>
         </div>
-        <div class="col-md-3"></div>
     </div>
     <div class="text-center">
         {!! $users->appends(Input::all())->render() !!}
