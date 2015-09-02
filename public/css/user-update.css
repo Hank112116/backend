@@ -2489,7 +2489,7 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.42857;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #ddd;
 }
 /* line 35, ../../front/sass/vendor/bootstrap/_tables.scss */
@@ -5180,7 +5180,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b6b6b6;
+  background-color: #b7b7b7;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {

@@ -2489,7 +2489,7 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.42857;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #ddd;
 }
 /* line 35, ../../front/sass/vendor/bootstrap/_tables.scss */
@@ -5180,7 +5180,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b6b6b6;
+  background-color: #b7b7b7;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {
@@ -6280,20 +6280,20 @@ body.stop-scrolling {
   transition: max-height 1s;
 }
 
-/* line 104, ../../front/sass/pages/comment/_main.scss */
+/* line 103, ../../front/sass/pages/comment/_main.scss */
 .comment-content:hover,
 .comment-thread-content:hover {
   max-height: 200em;
 }
 
-/* line 109, ../../front/sass/pages/comment/_main.scss */
+/* line 108, ../../front/sass/pages/comment/_main.scss */
 .comment-threads {
   width: 650px;
   margin-top: 20px;
   margin-left: 99px;
 }
 
-/* line 115, ../../front/sass/pages/comment/_main.scss */
+/* line 114, ../../front/sass/pages/comment/_main.scss */
 .comment-threads-info {
   text-align: right;
   color: #fff;
@@ -6305,14 +6305,14 @@ body.stop-scrolling {
   cursor: pointer;
 }
 
-/* line 126, ../../front/sass/pages/comment/_main.scss */
+/* line 125, ../../front/sass/pages/comment/_main.scss */
 .comment-threads-info-count,
 .comment-threads-info-latest {
   display: inline-block;
   font-size: 10px;
   margin-right: 40px;
 }
-/* line 132, ../../front/sass/pages/comment/_main.scss */
+/* line 131, ../../front/sass/pages/comment/_main.scss */
 .comment-threads-info-count .comment-threads-info-value,
 .comment-threads-info-latest .comment-threads-info-value {
   padding: 0 5px;
@@ -6320,14 +6320,14 @@ body.stop-scrolling {
   font-weight: lighter;
 }
 
-/* line 139, ../../front/sass/pages/comment/_main.scss */
+/* line 138, ../../front/sass/pages/comment/_main.scss */
 .comment-threads-info-expand {
   display: inline-block;
   font-size: 1.2em;
   padding: 0 10px;
 }
 
-/* line 145, ../../front/sass/pages/comment/_main.scss */
+/* line 144, ../../front/sass/pages/comment/_main.scss */
 .comment-thread {
   position: relative;
   margin-bottom: 40px;
@@ -6336,7 +6336,7 @@ body.stop-scrolling {
   border-radius: 5px;
 }
 
-/* line 153, ../../front/sass/pages/comment/_main.scss */
+/* line 152, ../../front/sass/pages/comment/_main.scss */
 .comment-publisher, .comment-thread-publisher {
   position: absolute;
   top: -20px;
@@ -6346,17 +6346,17 @@ body.stop-scrolling {
   border-radius: 22px;
 }
 
-/* line 162, ../../front/sass/pages/comment/_main.scss */
+/* line 161, ../../front/sass/pages/comment/_main.scss */
 .comment-publisher {
   padding: 0px 50px 0px 0px;
 }
 
-/* line 167, ../../front/sass/pages/comment/_main.scss */
+/* line 166, ../../front/sass/pages/comment/_main.scss */
 .comment-thread-publisher {
   padding: 0px 15px 0px 0px;
 }
 
-/* line 172, ../../front/sass/pages/comment/_main.scss */
+/* line 171, ../../front/sass/pages/comment/_main.scss */
 .comment-private-lock, .comment-private-unlock {
   position: absolute;
   right: 0px;
@@ -6366,30 +6366,30 @@ body.stop-scrolling {
   cursor: pointer;
 }
 
-/* line 184, ../../front/sass/pages/comment/_main.scss */
+/* line 183, ../../front/sass/pages/comment/_main.scss */
 .comment-private-lock {
   color: #C6E5D9;
 }
 
-/* line 189, ../../front/sass/pages/comment/_main.scss */
+/* line 188, ../../front/sass/pages/comment/_main.scss */
 .comment-private-unlock {
   color: #FFC6A5;
 }
 
-/* line 194, ../../front/sass/pages/comment/_main.scss */
+/* line 193, ../../front/sass/pages/comment/_main.scss */
 .comment-publisher-image,
 .comment-thread-publisher-image {
   float: left;
 }
 
-/* line 200, ../../front/sass/pages/comment/_main.scss */
+/* line 199, ../../front/sass/pages/comment/_main.scss */
 .comment-publisher-name,
 .comment-thread-publisher-name {
   padding-left: 45px;
   line-height: 35px;
 }
 
-/* line 206, ../../front/sass/pages/comment/_main.scss */
+/* line 205, ../../front/sass/pages/comment/_main.scss */
 .comment-image {
   display: inline-block;
   height: 80px;
@@ -6397,18 +6397,18 @@ body.stop-scrolling {
   border: 1px solid #eee;
   cursor: pointer;
 }
-/* line 213, ../../front/sass/pages/comment/_main.scss */
+/* line 212, ../../front/sass/pages/comment/_main.scss */
 .comment-image img {
   height: 100%;
 }
 
-/* line 218, ../../front/sass/pages/comment/_main.scss */
+/* line 217, ../../front/sass/pages/comment/_main.scss */
 .comment-thread-meta {
   text-align: right;
   padding: 2px 10px;
 }
 
-/* line 223, ../../front/sass/pages/comment/_main.scss */
+/* line 222, ../../front/sass/pages/comment/_main.scss */
 .comment-full-image-view {
   position: fixed;
   left: 10%;
@@ -6420,7 +6420,7 @@ body.stop-scrolling {
   background: rgba(0, 0, 0, 0.4);
 }
 
-/* line 236, ../../front/sass/pages/comment/_main.scss */
+/* line 235, ../../front/sass/pages/comment/_main.scss */
 .comment-full-image-delete {
   font-size: 2em;
   color: #fff;
