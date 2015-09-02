@@ -62,8 +62,9 @@
     </div>
     <div class="row text-center">
         <h4>
-            {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}
-            {!! $users->commentSum !!} {!! $users->commentSum > 1 ? 'comments' : 'comment' !!}
+            {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!},
+            {!! $users->senderCount !!} {!! $users->senderCount > 1 ? 'senders' : 'sender' !!}, and 
+            {!! $users->commentSum !!} {!! $users->commentSum > 1 ? 'comments' : 'comment' !!} are found.
         </h4>
     </div>
     <div class="row">
