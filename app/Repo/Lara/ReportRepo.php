@@ -47,10 +47,10 @@ class ReportRepo implements ReportInterface
         }
 
         if ($filter === 'expert') {
-            $users = $this->user_repo->filterexperts($users);
+            $users = $this->user_repo->filterExpertsWithToBeExperts($users);
         }
         if ($filter === 'creator') {
-            $users = $this->user_repo->filtercreator($users);
+            $users = $this->user_repo->filterCreatorWithoutToBeExperts($users);
         }
         if ($filter === 'pm') {
             $users = $this->user_repo->filterPM($users);
@@ -61,10 +61,14 @@ class ReportRepo implements ReportInterface
         }
 
         $users = $users->sort(function ($user1, $user2) {
-            return $user2->sendCommentCount - $user1->sendCommentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id
+            return $user2->commentCount - $user1->commentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id
         });
 
-        $users = $this->user_repo->byCollectionPage($users, $page, $per_page);
+        //In order to get comment sum correctly, we should get sum before pagination.
+        $commentSum        = $users->sum('commentCount');
+        $users             = $this->user_repo->byCollectionPage($users, $page, $per_page);
+        $users->commentSum = $commentSum;
+
         return $users;
     }
 
