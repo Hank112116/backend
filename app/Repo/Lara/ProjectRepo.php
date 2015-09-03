@@ -239,8 +239,8 @@ class ProjectRepo implements ProjectInterface
     {
         $model = new Project();
         $project = $model->find($project_id);
-        $project->hub_note = $data["hub_note"];
-        $project->hub_note_level = $data["hub_note_level"];
+        $project->hub_note = $data['hub_note'];
+        $project->hub_note_level = $data['hub_note_level'];
         return $project->save();
     }
 }
