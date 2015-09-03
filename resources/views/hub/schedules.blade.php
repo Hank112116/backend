@@ -50,7 +50,7 @@
                 <td>
                     @if(!is_null($s->hub_note))
                     <a href="javascript:void(0)"
-                                class="note" rel="{!! $s->project_id !!}" note="{!! $s->hub_note !!}" level="{!! $s->hub_note_level !!}">
+                                class="note" rel="{!! $s->project_id !!}" note="{{ $s->hub_note }}" level="{!! $s->hub_note_level !!}">
                     {{ $s->textNoteLevel() }} @if($s->hub_note != null ) : @endif {{ $s->hub_note }}
                     </a>
                     @else
