@@ -273,9 +273,11 @@ class UserRepo implements UserInterface
 
     public function validUpdate($id, $data)
     {
-        $user = $this->user->find($id);
-        if ($user->email === $data['email']) {
-            return true;
+        if (array_key_exists('email', $data)) {
+            $user = $this->user->find($id);
+            if ($user->email === $data['email']) {
+                return true;
+            }
         }
 
         $validator = Validator::make($data, $this->rule);
