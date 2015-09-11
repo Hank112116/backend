@@ -62,20 +62,19 @@
     </div>
     <div class="row text-center">
         <h4>
-            {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}
-            {!! $users->commentSum !!} {!! $users->commentSum > 1 ? 'comments' : 'comment' !!}
+            {!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!},
+            {!! $users->senderCount !!} {!! $users->senderCount > 1 ? 'senders' : 'sender' !!}, and 
+            {!! $users->commentSum !!} {!! $users->commentSum > 1 ? 'comments' : 'comment' !!} are found.
         </h4>
     </div>
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <table class="table table-striped">
                 <tr>
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
-                    <th>{!! isset($range)? "Last $range days":"Custom interval" !!}</th>
-                    <th>Total</th>
+                    <th>{!! isset($range)? "Last $range days comment":"Custom interval comment" !!}</th>
                 </tr>
 
                 @foreach($users as $user)
@@ -90,13 +89,11 @@
                         @else
                             <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
                         @endif
-                        <td>{!! $user->commentCount !!}</td>
-                        <td>{!! $user->totalCommentCount !!}</td>
+                        <td><span style="font-size:1.3em">{!! $user->commentCount !!}</span> <span> of total {!! $user->totalCommentCount !!}.</span></td>
                     </tr>
                 @endforeach
             </table>
         </div>
-        <div class="col-md-3"></div>
     </div>
     <div class="text-center">
         {!! $users->appends(Input::all())->render() !!}

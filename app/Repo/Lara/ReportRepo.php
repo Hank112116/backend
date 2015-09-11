@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Model\Eloquent\User;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Carbon;
@@ -32,16 +33,12 @@ class ReportRepo implements ReportInterface
 
     public function getCommentReport($filter, $input, $page, $per_page)
     {
-        $isSearch  = false;
         $timeRange = $this->getTimeInterval($input);
 
-
         if (isset($input['name']) && $input['name'] != '') {
-            $users    = $this->user_repo->getCommentCountsByDateByName($timeRange[0], $timeRange[1], $input['name']);
-            $isSearch = true;
+            $users = $this->user_repo->getCommentCountsByDateByName($timeRange[0], $timeRange[1], $input['name']);
         } elseif (isset($input['id']) && $input['id'] != '') {
-            $users    = $this->user_repo->getCommentCountsByDateById($timeRange[0], $timeRange[1], $input['id']);
-            $isSearch = true;
+            $users = $this->user_repo->getCommentCountsByDateById($timeRange[0], $timeRange[1], $input['id']);
         } else {
             $users = $this->user_repo->getCommentCountsByDate($timeRange[0], $timeRange[1]);
         }
@@ -56,18 +53,23 @@ class ReportRepo implements ReportInterface
             $users = $this->user_repo->filterPM($users);
         }
 
-        if (!$isSearch) {
-            $users = $this->user_repo->filterCommentCountNotZero($users);
-        }
 
         $users = $users->sort(function ($user1, $user2) {
             return $user2->commentCount - $user1->commentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id
         });
 
+        //calculate count of sender;
+        $senderCount = $users->filter(
+            function (User $user) {
+                return $user->commentCount != 0;
+            }
+        )->count();
+
         //In order to get comment sum correctly, we should get sum before pagination.
-        $commentSum        = $users->sum('commentCount');
-        $users             = $this->user_repo->byCollectionPage($users, $page, $per_page);
-        $users->commentSum = $commentSum;
+        $commentSum         = $users->sum('commentCount');
+        $users              = $this->user_repo->byCollectionPage($users, $page, $per_page);
+        $users->commentSum  = $commentSum;
+        $users->senderCount = $senderCount;
 
         return $users;
     }
