@@ -20,6 +20,7 @@ use Noty;
 use Redirect;
 use Auth;
 use Response;
+use Log;
 
 class UserController extends BaseController
 {
