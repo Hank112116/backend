@@ -10,6 +10,7 @@ use CSV;
 use Input;
 use Noty;
 use Redirect;
+use Log;
 
 class AdminerController extends BaseController
 {
@@ -33,6 +34,10 @@ class AdminerController extends BaseController
     {
         if (Input::get('csv')) {
             $output = $this->adminer_repo->toOutputArray($this->adminer_repo->all());
+
+            $log_action = 'CSV of Backend team';
+            Log::info($log_action);
+
             return $this->outputArrayToCsv($output, 'adminers');
         }
 
@@ -58,7 +63,16 @@ class AdminerController extends BaseController
 
         if ($this->adminer_repo->validCreate($data)) {
             Noty::success('Create successful');
-            $this->adminer_repo->create($data);
+            $render = $this->adminer_repo->create($data);
+
+            $log_action = 'New member';
+            $log_data   = [
+                'member' => $render['id'],
+                'name'   => $data['name'],
+                'email'  => $data['email'],
+                'role'   => $data['role_id']
+            ];
+            Log::info($log_action, $log_data);
 
             return Redirect::action('AdminerController@showList');
         } else {
@@ -111,6 +125,16 @@ class AdminerController extends BaseController
         if ($this->adminer_repo->validUpdate($id, Input::all())) {
             $this->adminer_repo->update($id, Input::all());
 
+            $data = Input::all();
+            $log_action = 'Edit member';
+            $log_data   = [
+                'member' => $id,
+                'name'   => $data['name'],
+                'email'  => $data['email'],
+                'role'   => $data['role_id']
+            ];
+            Log::info($log_action, $log_data);
+
             Noty::success('Update successful');
 
             return Redirect::action('AdminerController@showList');
@@ -129,7 +153,20 @@ class AdminerController extends BaseController
      **/
     public function roleCreate()
     {
-        $this->role_repo->create(Input::all());
+        $data = Input::all();
+
+        $render = $this->role_repo->create(Input::all());
+
+        $log_action = 'New Role';
+        $log_data   = [
+            'role'  => $render['id'],
+            'name'  => $data['name']
+        ];
+        foreach ($data['cert'] as $key => $value) {
+            $log_data['privilege'.++$key] = $value;
+        }
+        Log::info($log_action, $log_data);
+
         Noty::success('Create successful');
 
         return Redirect::action('AdminerController@showList');
@@ -141,8 +178,19 @@ class AdminerController extends BaseController
      **/
     public function roleUpdate($id)
     {
-        $this->role_repo->update($id, Input::all());
+        $data = Input::all();
+        $this->role_repo->update($id, $data);
         Noty::success('Update successful');
+
+        $log_action = 'Edit Role';
+        $log_data   = [
+            'role' => $id,
+            'name' => $data['name']
+        ];
+        foreach ($data['cert'] as $key => $value) {
+            $log_data['privilege'.++$key] = $value;
+        }
+        Log::info($log_action, $log_data);
 
         return Redirect::action('AdminerController@showList');
     }
@@ -152,6 +200,12 @@ class AdminerController extends BaseController
         $adminer = $this->adminer_repo->find($id);
         $name    = $adminer->name;
         Noty::success("Delete [{$name}] successful");
+
+        $log_action = 'Delete member';
+        $log_data   = [
+            'member' => $id
+        ];
+        Log::info($log_action, $log_data);
 
         $this->adminer_repo->deleteAdminer($adminer);
 

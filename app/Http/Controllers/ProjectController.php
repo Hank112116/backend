@@ -7,6 +7,7 @@ use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Input;
 use Noty;
 use Redirect;
+use Log;
 
 class ProjectController extends BaseController
 {
@@ -56,6 +57,16 @@ class ProjectController extends BaseController
                 $projects = new Collection();
         }
 
+        $log_action = 'Search by '.$search_by;
+        $log_data   = [
+            'id'        => Input::get('project_id') ? : null,
+            'user_name' => Input::get('name') ? : null,
+            'title'     => Input::get('title') ? : null,
+            'data'      => Input::get('dstart') ? Input::get('dstart').'~'.Input::get('dend') : null,
+            'result'    => sizeof($projects)
+        ];
+        Log::info($log_action, $log_data);
+
         if ($projects->count() == 0) {
             Noty::warnLang('common.no-search-result');
 
@@ -86,6 +97,10 @@ class ProjectController extends BaseController
         } else {
             $output = $this->project_repo->toOutputArray($projects);
         }
+
+        $csv_type   = Input::get('csv') == 'all' ? 'all' : 'this';
+        $log_action = 'CSV of Project ('.$csv_type.')';
+        Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'projects');
     }
@@ -148,6 +163,13 @@ class ProjectController extends BaseController
                 break;
         }
 
+        $log_action = 'Update status';
+        $log_data   = [
+            'project' => $project_id,
+            'status'  => $status
+        ];
+        Log::info($log_action, $log_data);
+
         Noty::successLang('common.update-success');
 
         return Redirect::action('ProjectController@showDetail', $project_id);
@@ -155,6 +177,12 @@ class ProjectController extends BaseController
 
     public function update($project_id)
     {
+        $log_action = 'Edit project';
+        $log_data   =  [
+            'project' => $project_id
+        ];
+        Log::info($log_action, $log_data);
+
         $this->project_repo->update($project_id, Input::all());
         Noty::successLang('common.update-success');
 

@@ -13,6 +13,7 @@ use Noty;
 use Redirect;
 use Response;
 use Carbon;
+use Log;
 
 class HubController extends BaseController
 {
@@ -107,10 +108,17 @@ class HubController extends BaseController
      */
     public function updateScheduleManager($id)
     {
-        $schedule = $this->hub_repo->findSchedule($id);
-        $this->hub_repo->updateScheduleManagers($schedule, Input::all());
+        $schedule     = $this->hub_repo->findSchedule($id);
+        $hub_managers = $this->hub_repo->updateScheduleManagers($schedule, Input::all());
         $projectTitle = $this->purifier->clean($schedule->project_title);
         Noty::success("Project [{$projectTitle}] managers is updated");
+
+        $log_action = 'Set schedule manager';
+        $log_data   = [
+            'schedule'     => $id,
+            'hub_managers' => $hub_managers
+        ];
+        Log::info($log_action, $log_data);
 
         return Redirect::action('HubController@indexQuestionnaire');
     }
@@ -125,7 +133,14 @@ class HubController extends BaseController
     public function approveSchedule($id)
     {
         $schedule = $this->hub_repo->findSchedule($id);
-        $this->hub_repo->approveSchedule($schedule);
+        $schedule =$this->hub_repo->approveSchedule($schedule);
+
+        $log_action = 'Approve project';
+        $log_data   = [
+            'project' => $id,
+            'approve' => $schedule->hub_approve,
+        ];
+        Log::info($log_action, $log_data);
 
         Noty::success("Project [{$schedule->project_title}] is approved");
 
@@ -145,6 +160,16 @@ class HubController extends BaseController
         } else {
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
         }
+
+        $log_action = 'Edit Note';
+        $log_data   = [
+            'project'     => $input['projectId'],
+            'note'        => $data['hub_note'],
+            'level'       => $data['hub_note_level'],
+            'edit_status' => $res['status']
+        ];
+        Log::info($log_action, $log_data);
+
         return Response::json($res);
     }
     /**

@@ -10,6 +10,7 @@ use Backend\Model\Eloquent\ProjectMailExpert;
 use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Config;
 use Input;
+use Log;
 use PHPMailer;
 use EmailSend;
 use Response;
@@ -124,6 +125,14 @@ class EmailSendController extends BaseController
         $emailData["body"] = $body;
         //send mail
         $status = $emailr->send($emailData);
+
+        $log_action = 'Send approved mail';
+        $log_data   = [
+            'title'   => $emailData['address'],
+            'content' => $emailData['title'],
+            'to'      => $emailData['body']
+        ];
+        Log::info($log_action, $log_data);
 
         //save project_expert table
         if ($status) {

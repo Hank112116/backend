@@ -141,5 +141,7 @@ class HubRepo implements HubInterface
         $managers               = array_get($data, 'managers', []);
         $schedule->hub_managers = implode(',', $managers);
         $schedule->save();
+
+        return $schedule->hub_managers;
     }
 }

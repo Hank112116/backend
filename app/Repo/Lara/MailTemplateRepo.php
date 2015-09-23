@@ -47,6 +47,12 @@ class MailTemplateRepo implements MailTemplateInterface
         $email = new MailTemplate();
         $email->fill(array_except($data, ['_token']));
         $email->save();
+        $render = [
+            'success'  => true,
+            'email_id' => $email->email_template_id,
+        ];
+
+        return $render;
     }
 
     public function update($id, $data)

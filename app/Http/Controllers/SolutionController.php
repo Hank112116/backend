@@ -11,6 +11,7 @@ use Input;
 use Noty;
 use Redirect;
 use Response;
+use Log;
 
 class SolutionController extends BaseController
 {
@@ -93,6 +94,14 @@ class SolutionController extends BaseController
                 $solutions = new Collection();
         }
 
+        $log_action = 'Search by '.$search_by;
+        $log_data   = [
+            'user_name' => Input::get('name') ? : null,
+            'title'     => Input::get('title') ? : null,
+            'result'    => sizeof($solutions)
+        ];
+        Log::info($log_action, $log_data);
+
         if ($solutions->count() == 0) {
             Noty::warnLang('common.no-search-result');
 
@@ -132,6 +141,10 @@ class SolutionController extends BaseController
         $output = $this->solution_repo->toOutputArray(
             Input::get('csv') == 'all' ? $this->solution_repo->all() : $solutions
         );
+
+        $csv_type   = Input::get('csv') == 'all' ? 'all' : 'this';
+        $log_action = 'CSV of Solution ('.$csv_type.')';
+        Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'solutions');
     }
@@ -184,6 +197,12 @@ class SolutionController extends BaseController
      **/
     public function update($solution_id)
     {
+        $log_action = 'Edit solution';
+        $log_data   = [
+            'solution' => $solution_id,
+        ];
+        Log::info($log_action, $log_data);
+
         $this->solution_repo->update($solution_id, Input::all());
         Noty::successLang('solution.admin-update');
 
@@ -204,6 +223,13 @@ class SolutionController extends BaseController
 
     public function approve($solution_id)
     {
+        $log_action = 'Approve solutions';
+        $log_data   = [
+            'solution' => $solution_id,
+            'approve'  => true
+        ];
+        Log::info($log_action, $log_data);
+
         $this->solution_repo->approve($solution_id, Auth::user()->isBackendPM());
         Noty::successLang('solution.approve');
 
@@ -280,6 +306,13 @@ class SolutionController extends BaseController
 
     public function reject($solution_id)
     {
+        $log_action = 'Reject solutions';
+        $log_data   = [
+            'solution' => $solution_id,
+            'approve'  => false
+        ];
+        Log::info($log_action, $log_data);
+
         $this->solution_repo->reject($solution_id);
         Noty::successLang('solution.reject');
 
@@ -304,6 +337,12 @@ class SolutionController extends BaseController
 
     public function onShelf($solution_id)
     {
+        $log_action = 'Solution on shelf';
+        $log_data   = [
+            'solution' => $solution_id,
+        ];
+        Log::info($log_action, $log_data);
+
         $this->solution_repo->onShelf($solution_id);
         Noty::successLang('solution.on-shelf');
 
@@ -312,6 +351,12 @@ class SolutionController extends BaseController
 
     public function offShelf($solution_id)
     {
+        $log_action = 'Solution off shelf';
+        $log_data   = [
+            'solution' => $solution_id,
+        ];
+        Log::info($log_action, $log_data);
+
         $this->solution_repo->offShelf($solution_id);
         Noty::successLang('solution.off-shelf');
 
