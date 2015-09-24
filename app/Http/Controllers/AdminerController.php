@@ -155,7 +155,7 @@ class AdminerController extends BaseController
     {
         $data = Input::all();
 
-        $render = $this->role_repo->create(Input::all());
+        $render = $this->role_repo->create($data);
 
         $log_action = 'New Role';
         $log_data   = [

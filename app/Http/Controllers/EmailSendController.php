@@ -62,6 +62,7 @@ class EmailSendController extends BaseController
         $user    = $this->user_repo->find($input["userId"]);
         $project = $this->project_repo->find($input["projectId"]);
         $emailr  = new EmailSend;
+
         //find pm
         $projectPM = $input["PM"];
         $contentData["frontPM_fname"] = "WhoKnow";
@@ -123,16 +124,17 @@ class EmailSendController extends BaseController
         $emailData["address"] = $user->email;
         $emailData["title"] = $title;
         $emailData["body"] = $body;
-        //send mail
-        $status = $emailr->send($emailData);
 
         $log_action = 'Send approved mail';
         $log_data   = [
-            'title'   => $emailData['address'],
-            'content' => $emailData['title'],
-            'to'      => $emailData['body']
+            'project' => $project->project_id,
+            'title'   => $emailData['title'],
+            'to'      => $emailData['address']
         ];
         Log::info($log_action, $log_data);
+
+        //send mail
+        $status = $emailr->send($emailData);
 
         //save project_expert table
         if ($status) {

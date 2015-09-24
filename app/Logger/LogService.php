@@ -64,18 +64,6 @@ class LogService implements LoggerInterface
         $this->logger->emergency($message, array_merge($this->getBaseContext(), $context));
     }
 
-    private function getBaseContext()
-    {
-        $base_info = [
-            'user_id'    => Auth::id(),
-            'user_agent' => Request::server('HTTP_USER_AGENT'),
-            'user_ip'    => Request::getClientIp(),
-            'referer'    => Request::server('HTTP_REFERER'),
-        ];
-
-        return $base_info;
-    }
-
     /**
      *
      * @param string $message
@@ -142,12 +130,6 @@ class LogService implements LoggerInterface
         $this->logger->info($message, array_merge($this->getBaseContext(), $context));
     }
 
-    /*
-     * return base log information
-     *
-     * @return array
-     */
-
     /**
      *
      * @param string $message
@@ -157,5 +139,22 @@ class LogService implements LoggerInterface
     public function debug($message, array $context = [])
     {
         $this->logger->debug($message, $context);
+    }
+
+    /*
+     * return base log information
+     *
+     * @return array
+     */
+    private function getBaseContext()
+    {
+        $base_info = [
+            'adminer_id' => Auth::id(),
+            'user_agent' => Request::server('HTTP_USER_AGENT'),
+            'user_ip'    => Request::getClientIp(),
+            'referer'    => Request::server('HTTP_REFERER'),
+        ];
+
+        return $base_info;
     }
 }

@@ -115,8 +115,8 @@ class HubController extends BaseController
 
         $log_action = 'Set schedule manager';
         $log_data   = [
-            'schedule'     => $id,
-            'hub_managers' => $hub_managers
+            'schedule'    => $id,
+            'adminer_ids' => $hub_managers
         ];
         Log::info($log_action, $log_data);
 
@@ -133,7 +133,7 @@ class HubController extends BaseController
     public function approveSchedule($id)
     {
         $schedule = $this->hub_repo->findSchedule($id);
-        $schedule =$this->hub_repo->approveSchedule($schedule);
+        $schedule = $this->hub_repo->approveSchedule($schedule);
 
         $log_action = 'Approve project';
         $log_data   = [
