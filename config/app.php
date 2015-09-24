@@ -149,7 +149,7 @@ return [
         'Log'       => 'Backend\Facades\Log',
         'Carbon'    => 'Carbon\Carbon',
         'Image'     => 'Intervention\Image\Facades\Image',
-        'Purifier' => 'Mews\Purifier\Facades\Purifier',
+        'Purifier'  => 'Mews\Purifier\Facades\Purifier',
     ],
 
 ];
