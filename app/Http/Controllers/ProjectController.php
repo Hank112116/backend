@@ -59,9 +59,9 @@ class ProjectController extends BaseController
 
         $log_action = 'Search by '.$search_by;
         $log_data   = [
-            'id'        => Input::get('project_id') ? : null,
-            'user_name' => Input::get('name') ? : null,
-            'title'     => Input::get('title') ? : null,
+            'id'        => Input::get('project_id'),
+            'user_name' => Input::get('name'),
+            'title'     => Input::get('title'),
             'data'      => Input::get('dstart') ? Input::get('dstart').'~'.Input::get('dend') : null,
             'result'    => sizeof($projects)
         ];

@@ -131,10 +131,10 @@ class UserController extends BaseController
 
         $log_action = 'Search by '.$search_by;
         $log_data   = [
-            'id'      => Input::get('user_id') ? : null,
-            'name'    => Input::get('name') ? : null,
-            'email'   => Input::get('email') ? : null,
-            'company' => Input::get('company') ? : null,
+            'id'      => Input::get('user_id'),
+            'name'    => Input::get('name'),
+            'email'   => Input::get('email'),
+            'company' => Input::get('company'),
             'data'    => Input::get('dstart') ? Input::get('dstart').'~'.Input::get('dend') : null,
             'result'  => sizeof($users)
         ];

@@ -96,8 +96,8 @@ class SolutionController extends BaseController
 
         $log_action = 'Search by '.$search_by;
         $log_data   = [
-            'user_name' => Input::get('name') ? : null,
-            'title'     => Input::get('title') ? : null,
+            'user_name' => Input::get('name'),
+            'title'     => Input::get('title'),
             'result'    => sizeof($solutions)
         ];
         Log::info($log_action, $log_data);
