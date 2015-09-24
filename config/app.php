@@ -129,7 +129,6 @@ return [
         'Input'     => 'Illuminate\Support\Facades\Input',
         'Inspiring' => 'Illuminate\Foundation\Inspiring',
         'Lang'      => 'Illuminate\Support\Facades\Lang',
-        'Log'       => 'Illuminate\Support\Facades\Log',
         'Mail'      => 'Illuminate\Support\Facades\Mail',
         'Password'  => 'Illuminate\Support\Facades\Password',
         'Queue'     => 'Illuminate\Support\Facades\Queue',
@@ -147,6 +146,7 @@ return [
 
         'Form'      => 'Illuminate\Html\FormFacade',
         'HTML'      => 'Illuminate\Html\HtmlFacade',
+        'Log'       => 'Backend\Facades\Log',
         'Carbon'    => 'Carbon\Carbon',
         'Image'     => 'Intervention\Image\Facades\Image',
         'Purifier' => 'Mews\Purifier\Facades\Purifier',
