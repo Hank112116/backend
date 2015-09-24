@@ -13,6 +13,8 @@ use Backend\Repo\RepoTrait\PaginateTrait;
 use Illuminate\Support\Collection;
 use Mews\Purifier\Purifier;
 
+use Log;
+
 class CommentRepo implements CommentInterface
 {
 
@@ -91,6 +93,13 @@ class CommentRepo implements CommentInterface
             ->whereIn($where_column, $ids)
             ->get();
 
+        $log_action = 'Search expert comments by '.$where;
+        $log_data   = [
+            'keyword' => $value,
+            'results' => sizeof($comments)
+        ];
+        Log::info($log_action, $log_data);
+
         return $this->processed($comments);
     }
 
@@ -123,17 +132,17 @@ class CommentRepo implements CommentInterface
 
             case self::SEARCH_BY_TITLE:
                 $ids = array_merge(
-                    $this->project_repo->byTitle($value)->lists('project_id'),
-                    $this->prodcut_repo->byTitle($value)->lists('project_id')
+                    $this->project_repo->byTitle($value)->lists('project_id')->all(),
+                    $this->prodcut_repo->byTitle($value)->lists('project_id')->all()
                 );
 
                 $where_column = 'project_id';
                 break;
 
             case self::SEARCH_BY_OWNER:
-                $ids          = array_merge(
-                    $this->project_repo->byUserName($value)->lists('project_id'),
-                    $this->prodcut_repo->byUserName($value)->lists('project_id')
+                $ids = array_merge(
+                    $this->project_repo->byUserName($value)->lists('project_id')->all(),
+                    $this->prodcut_repo->byUserName($value)->lists('project_id')->all()
                 );
                 $where_column = 'project_id';
                 break;
@@ -143,11 +152,20 @@ class CommentRepo implements CommentInterface
             return new Collection();
         }
 
-        return $this->processed($this->comment->queryEagerLoad()
+        $comments = $this->comment->queryEagerLoad()
             ->queryTopic()
             ->queryProject()
             ->whereIn($where_column, $ids)
-            ->get());
+            ->get();
+
+        $log_action = 'Search project comments by '.$where;
+        $log_data   = [
+            'keyword' => $value,
+            'results' => sizeof($comments)
+        ];
+        Log::info($log_action, $log_data);
+
+        return $this->processed($comments);
     }
 
     public function solutionTopicsByPage($page = 1, $limit = 20)
@@ -197,6 +215,13 @@ class CommentRepo implements CommentInterface
             ->querySolution()
             ->whereIn($where_column, $ids)
             ->get();
+
+        $log_action = 'Search solution comments by '.$where;
+        $log_data   = [
+            'keyword' => $value,
+            'results' => sizeof($comments)
+        ];
+        Log::info($log_action, $log_data);
 
         return $this->processed($comments);
     }
