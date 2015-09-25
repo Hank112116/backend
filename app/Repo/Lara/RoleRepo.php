@@ -32,12 +32,7 @@ class RoleRepo implements RoleInterface
         $role->cert = implode(',', $input[ 'cert' ]);
         $role->save();
 
-        $render = [
-            'success' => true,
-            'id'      => $role->id
-        ];
-
-        return $render;
+        return $role;
     }
 
     public function update($id, $input)

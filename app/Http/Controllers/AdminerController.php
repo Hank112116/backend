@@ -63,11 +63,11 @@ class AdminerController extends BaseController
 
         if ($this->adminer_repo->validCreate($data)) {
             Noty::success('Create successful');
-            $render = $this->adminer_repo->create($data);
+            $adminer = $this->adminer_repo->create($data);
 
             $log_action = 'New member';
             $log_data   = [
-                'member' => $render['id'],
+                'member' => $adminer->id,
                 'name'   => $data['name'],
                 'email'  => $data['email'],
                 'role'   => $data['role_id']
@@ -155,11 +155,11 @@ class AdminerController extends BaseController
     {
         $data = Input::all();
 
-        $render = $this->role_repo->create($data);
+        $role = $this->role_repo->create($data);
 
         $log_action = 'New Role';
         $log_data   = [
-            'role'  => $render['id'],
+            'role'  => $role->id,
             'name'  => $data['name']
         ];
         foreach ($data['cert'] as $key => $value) {

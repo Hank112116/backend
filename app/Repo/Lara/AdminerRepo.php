@@ -77,12 +77,8 @@ class AdminerRepo implements AdminerInterface
         $adminer->role()->associate($role);
 
         $adminer->save();
-        $render = [
-            'success' => true,
-            'id'      => $adminer->id
-        ];
 
-        return $render;
+        return $adminer;
     }
 
     public function validUpdate($id, $input)

@@ -8,12 +8,14 @@ use Psr\Log\LoggerInterface;
 /**
  * Facade for PSR3 LoggerInterface
  *
- * @see Psr\Log\LoggerInterface
+ * @see \Psr\Log\LoggerInterface
  */
 class Log extends Facade
 {
     /**
      * Get the registered name of the component.
+     *
+     * @method Logger getFacadeAccessor()
      *
      * @return Logger
      */

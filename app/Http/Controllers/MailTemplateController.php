@@ -62,12 +62,12 @@ class MailTemplateController extends BaseController
     {
         $data = Input::all();
 
-        $render = $this->mail_repo->create($data);
+        $email = $this->mail_repo->create($data);
         Noty::success('Create a new template successful');
 
         $log_action = 'New template';
         $log_data   = [
-            'email'   => $render['email_id'],
+            'email'   => $email->email_template_id,
             'task'    => $data['task'],
             'from'    => $data['from_address'],
             'reply'   => $data['reply_address'],
