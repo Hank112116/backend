@@ -119,10 +119,10 @@ class MailTemplateController extends BaseController
         $this->mail_repo->switchActive($id);
         $email = $this->mail_repo->find($id);
 
-        $msg = ($email->active ? "Active" : "Deactive") . " #{$email->email_template_id} successful";
+        $msg = ($email->active ? 'Active' : 'Deactive') . " #{$email->email_template_id} successful";
         Noty::success($msg);
 
-        $status     = $email->active ? "Active" : "Deactive";
+        $status     = $email->active ? 'Active' : 'Deactive';
         $log_action = $status.' email template';
         $log_data   = [
             'email'  => $id,
