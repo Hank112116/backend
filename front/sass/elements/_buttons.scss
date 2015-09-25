@@ -1,19 +1,20 @@
 %btn-base {
-  white-space: nowrap;
-  text-transform: uppercase;
-  color : #ffffff;
-  background: $btn-primary-bg;
-  border: none;
-  border-radius: 2px;
-  @include transition(background 0.5s);
+  @include transition(background .5s);
 
-  &:hover, &:focus {
+  border: 0;
+  border-radius: 2px;
+  background: $btn-primary-bg;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
     outline: none;
     background: lighten($btn-primary-border, 10%);
-    color: white;
+    color: #fff;
     text-decoration: none;
   }
-
 }
 
 .btn {
@@ -21,22 +22,22 @@
 }
 
 .btn-sassy {
-  letter-spacing: 0.2em;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  margin-bottom: 10px;
-
   @extend %btn-base;
+
+  margin-bottom: 10px;
+  padding-top: .2em;
+  padding-bottom: .2em;
+  letter-spacing: .2em;
 }
 
 .btn-mini {
-  letter-spacing: 0.1em;
-  padding: 3px 5px;
+  @extend %btn-base;
+
+  display: inline-block;
   margin-right: .5em;
   margin-bottom: 3px;
-  display: inline-block;
-
-  @extend %btn-base;
+  padding: 3px 5px;
+  letter-spacing: .1em;
 }
 
 .btn-flat-green {
@@ -53,4 +54,13 @@
 
 .btn-flat-purple:hover {
   background: lighten(#9b59b6, 15%);
+}
+
+.btn-flat-red {
+  background: #f33;
+}
+
+
+.btn-flat-red:hover {
+  background: lighten(#f33, 15%);
 }

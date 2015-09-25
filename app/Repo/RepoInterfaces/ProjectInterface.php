@@ -13,6 +13,7 @@ interface ProjectInterface
     public function byDateRange($from, $to);
 
     public function update($project_id, $data);
+    public function delete($project);
 
     public function categoryOptions();
     public function currentStageOptions();

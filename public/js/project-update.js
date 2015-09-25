@@ -223,4 +223,10 @@ $(function () {
     new _libsProjectUpdater2["default"]().bootProject();
 });
 
+$(function () {
+    $(".js-delete").click(function () {
+        return confirm("Sure to delete this project？");
+    });
+});
+
 },{"./libs/FormUtility":1,"./libs/ProjectUpdater":2}]},{},[3]);

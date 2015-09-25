@@ -662,63 +662,73 @@ th {
 
 /* line 1, ../../front/sass/elements/_buttons.scss */
 .btn-sassy, .btn-mini {
-  white-space: nowrap;
-  text-transform: uppercase;
-  color: #ffffff;
-  background: #428bca;
-  border: none;
-  border-radius: 2px;
   -webkit-transition: background 0.5s;
   transition: background 0.5s;
+  border: 0;
+  border-radius: 2px;
+  background: #428bca;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
-/* line 10, ../../front/sass/elements/_buttons.scss */
+/* line 11, ../../front/sass/elements/_buttons.scss */
 .btn-sassy:hover, .btn-mini:hover, .btn-sassy:focus, .btn-mini:focus {
   outline: none;
   background: #5697d0;
-  color: white;
+  color: #fff;
   text-decoration: none;
 }
 
-/* line 19, ../../front/sass/elements/_buttons.scss */
+/* line 20, ../../front/sass/elements/_buttons.scss */
 .btn {
   border-radius: 2px;
 }
 
-/* line 23, ../../front/sass/elements/_buttons.scss */
+/* line 24, ../../front/sass/elements/_buttons.scss */
 .btn-sassy {
-  letter-spacing: 0.2em;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
   margin-bottom: 10px;
+  padding-top: .2em;
+  padding-bottom: .2em;
+  letter-spacing: .2em;
 }
 
-/* line 32, ../../front/sass/elements/_buttons.scss */
+/* line 33, ../../front/sass/elements/_buttons.scss */
 .btn-mini {
-  letter-spacing: 0.1em;
-  padding: 3px 5px;
+  display: inline-block;
   margin-right: .5em;
   margin-bottom: 3px;
-  display: inline-block;
+  padding: 3px 5px;
+  letter-spacing: .1em;
 }
 
-/* line 42, ../../front/sass/elements/_buttons.scss */
+/* line 43, ../../front/sass/elements/_buttons.scss */
 .btn-flat-green {
   background: #1abc9c;
 }
 
-/* line 46, ../../front/sass/elements/_buttons.scss */
+/* line 47, ../../front/sass/elements/_buttons.scss */
 .btn-flat-green:hover {
   background: #3ee4c4;
 }
 
-/* line 50, ../../front/sass/elements/_buttons.scss */
+/* line 51, ../../front/sass/elements/_buttons.scss */
 .btn-flat-purple {
   background: #9b59b6;
 }
 
-/* line 54, ../../front/sass/elements/_buttons.scss */
+/* line 55, ../../front/sass/elements/_buttons.scss */
 .btn-flat-purple:hover {
   background: #bb8ecd;
+}
+
+/* line 59, ../../front/sass/elements/_buttons.scss */
+.btn-flat-red {
+  background: #f33;
+}
+
+/* line 64, ../../front/sass/elements/_buttons.scss */
+.btn-flat-red:hover {
+  background: #ff8080;
 }
 
 /* line 1, ../../front/sass/elements/_sidebar-toggle.scss */

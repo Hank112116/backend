@@ -188,4 +188,20 @@ class ProjectController extends BaseController
 
         return Redirect::action('ProjectController@showDetail', $project_id);
     }
+
+    public function delete($project_id)
+    {
+        $project = $this->project_repo->find($project_id);
+        $this->project_repo->delete($project);
+
+        Noty::success("Delete Project #{$project_id} successful");
+
+        $log_action = 'Delete project';
+        $log_data   = [
+            'project' => $project_id
+        ];
+        Log::info($log_action, $log_data);
+
+        return Redirect::action('ProjectController@showList');
+    }
 }

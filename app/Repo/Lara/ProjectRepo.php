@@ -221,6 +221,14 @@ class ProjectRepo implements ProjectInterface
         $this->project_modifier->updateProject($project_id, $data);
     }
 
+    public function delete($project)
+    {
+        $project->is_deleted   = 1;
+        $project->deleted_date = Carbon::now()->toDateTimeString();
+
+        return $project->save();
+    }
+
     public function toDraft($project_id)
     {
         $this->project_modifier->toDraftProject($project_id);
