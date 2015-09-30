@@ -35,7 +35,7 @@ class AdminerController extends BaseController
         if (Input::get('csv')) {
             $output = $this->adminer_repo->toOutputArray($this->adminer_repo->all());
 
-            $log_action = 'CSV of Backend team';
+            $log_action = 'CSV of backend team';
             Log::info($log_action);
 
             return $this->outputArrayToCsv($output, 'adminers');
@@ -65,12 +65,12 @@ class AdminerController extends BaseController
             Noty::success('Create successful');
             $adminer = $this->adminer_repo->create($data);
 
-            $log_action = 'New member';
+            $log_action = 'New member of backend team';
             $log_data   = [
-                'member' => $adminer->id,
-                'name'   => $data['name'],
-                'email'  => $data['email'],
-                'role'   => $data['role_id']
+                'backend_member' => $adminer->id,
+                'name'           => $data['name'],
+                'email'          => $data['email'],
+                'role'           => $data['role_id']
             ];
             Log::info($log_action, $log_data);
 
@@ -126,12 +126,12 @@ class AdminerController extends BaseController
             $this->adminer_repo->update($id, Input::all());
 
             $data = Input::all();
-            $log_action = 'Edit member';
+            $log_action = 'Edit member of backend team';
             $log_data   = [
-                'member' => $id,
-                'name'   => $data['name'],
-                'email'  => $data['email'],
-                'role'   => $data['role_id']
+                'backend_member' => $id,
+                'name'           => $data['name'],
+                'email'          => $data['email'],
+                'role'           => $data['role_id']
             ];
             Log::info($log_action, $log_data);
 
@@ -157,7 +157,7 @@ class AdminerController extends BaseController
 
         $role = $this->role_repo->create($data);
 
-        $log_action = 'New Role';
+        $log_action = 'New Role of backend team';
         $log_data   = [
             'role'      => $role->id,
             'name'      => $data['name'],
@@ -181,14 +181,13 @@ class AdminerController extends BaseController
         $this->role_repo->update($id, $data);
         Noty::success('Update successful');
 
-        $log_action = 'Edit Role';
+        $log_action = 'Edit Role of backend team';
         $log_data   = [
-            'role' => $id,
-            'name' => $data['name']
+            'role'      => $id,
+            'name'      => $data['name'],
+            'privilege' => $data['cert']
         ];
-        foreach ($data['cert'] as $key => $value) {
-            $log_data['privilege'.++$key] = $value;
-        }
+
         Log::info($log_action, $log_data);
 
         return Redirect::action('AdminerController@showList');
@@ -200,9 +199,9 @@ class AdminerController extends BaseController
         $name    = $adminer->name;
         Noty::success("Delete [{$name}] successful");
 
-        $log_action = 'Delete member';
+        $log_action = 'Delete member of backend team';
         $log_data   = [
-            'member' => $id
+            'backend_member' => $id
         ];
         Log::info($log_action, $log_data);
 
