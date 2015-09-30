@@ -10,28 +10,28 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <h1>{{ $user->textFullName() }}</h1>
-    </div>
+	<div class="page-header">
+	    <h1>{{ $user->textFullName() }}</h1>
+	</div>
 
-    <div class="form-container">
-        {!! Form::open([ 'action' => ['UserController@update', $user->user_id],
-                        'method' => 'POST', 'class' => 'form-horizontal', 'role' => 'form',
-                        'enctype' => 'multipart/form-data' ]) !!}
+	<div class="form-container">
+	{!! Form::open([ 'action' => ['UserController@update', $user->user_id],
+					'method' => 'POST', 'class' => 'form-horizontal', 'role' => 'form',
+					'enctype' => 'multipart/form-data' ]) !!}
 
-        <div class="form-group">
+		<div class="form-group">
 
-            <label for="user-head" class="col-md-3">Upload Image</label>
-            <div class="col-md-5">
-                {!! HTML::image($user->getImagePath(), 'thumb', ['class' => 'user-avatar']) !!}
-                <input type="file" name="head" id="user-head">
-            </div>
-            <div class="col-md-5"></div>
-        </div>
+		    <label for="user-head" class="col-md-3">Upload Image</label>
+		    <div class="col-md-5">
+		       	{!! HTML::image($user->getImagePath(), 'thumb', ['class' => 'user-avatar']) !!}
+		        <input type="file" name="head" id="user-head">
+		    </div>
+		    <div class="col-md-5"></div>
+		</div>
 
         @if (!$is_restricted)
 
-                <!-- Active -->
+        <!-- Active -->
         <div class="form-group">
             <label for="verify" class="col-md-3">
                 EMail Verify<br/>
@@ -75,8 +75,8 @@
             <label for="role" class="col-md-3">
                 Type
                 @if($user->isToBeExpert())
-                    <br/>
-                    <span class="color-info">
+                <br/>
+                <span class="color-info">
                     <i class="fa fa-exclamation-triangle fa-fw"></i>
                     Pending to be expert
                 </span>
@@ -141,50 +141,50 @@
             </div>
             <div class="col-md-5"></div>
         </div>
-
+        
         @if (!$is_restricted)
-            {{--
-            <div class="form-group">
-                <label for="role" class="col-md-3">Role</label>
-                <div class="col-md-5">
-                    {!! Form::radio('user_role', '0', $user->user_role==0, ["id"=>"user_role_0"]) !!}
-                    <label for="user_role_0" class='iradio-lable'>Member</label>
+        {{--
+        <div class="form-group">
+            <label for="role" class="col-md-3">Role</label>
+            <div class="col-md-5">                
+                {!! Form::radio('user_role', '0', $user->user_role==0, ["id"=>"user_role_0"]) !!}
+                <label for="user_role_0" class='iradio-lable'>Member</label>
+                
+                {!! Form::radio('user_role', '1', $user->user_role==1, ["id"=>"user_role_1"]) !!}
+                <label for="user_role_1" class='iradio-lable'>Manager</label>
 
-                    {!! Form::radio('user_role', '1', $user->user_role==1, ["id"=>"user_role_1"]) !!}
-                    <label for="user_role_1" class='iradio-lable'>Manager</label>
-
-                    {!! Form::radio('user_role', '2', $user->user_role==2, ["id"=>"user_role_2"]) !!}
-                    <label for="user_role_2" class='iradio-lable'>Admin</label>
-                </div>
-                <div class="col-md-5"></div>
+                {!! Form::radio('user_role', '2', $user->user_role==2, ["id"=>"user_role_2"]) !!}
+                <label for="user_role_2" class='iradio-lable'>Admin</label>
             </div>
-            --}}
+            <div class="col-md-5"></div>
+        </div>
+        --}}
 
-            <div class="form-group">
-                <label for="country" class="col-md-3">Address</label>
-                <div class="col-md-5">
-                    {!! $user->address !!}
-                </div>
-                <div class="col-md-5"></div>
+        <div class="form-group">
+            <label for="country" class="col-md-3">Address</label>
+            <div class="col-md-5">
+                {!! $user->address !!}
             </div>
+            <div class="col-md-5"></div>
+        </div>
 
-            <div class="form-group">
-                <label for="country" class="col-md-3">Country</label>
-                <div class="col-md-5">
-                    {!! Form::text('country', $user->country,
-                        ['placeholder' => 'Country', 'class'=>'form-control', 'id'=>'country']) !!}
-                </div>
-                <div class="col-md-5"></div>
+        <div class="form-group">
+            <label for="country" class="col-md-3">Country</label>
+            <div class="col-md-5">
+                {!! Form::text('country', $user->country,
+                    ['placeholder' => 'Country', 'class'=>'form-control', 'id'=>'country']) !!}
             </div>
+            <div class="col-md-5"></div>
+        </div>
 
-            <div class="form-group">
-                <label for="city" class="col-md-3">City</label>
-                <div class="col-md-5">
-                    {!! Form::text('city', $user->city,
-                        ['placeholder' => 'City', 'class'=>'form-control', 'id'=>'city']) !!}
-                </div>
-                <div class="col-md-5"></div>
+        <div class="form-group">
+            <label for="city" class="col-md-3">City</label>
+            <div class="col-md-5">
+                {!! Form::text('city', $user->city,
+                    ['placeholder' => 'City', 'class'=>'form-control', 'id'=>'city']) !!}
             </div>
+            <div class="col-md-5"></div>
+        </div>
         @endif
 
         @if ($user->isExpert() or $user->isToBeExpert())
@@ -196,42 +196,42 @@
                 </div>
                 <div class="col-md-5"></div>
             </div>
-
+        
             @if (!$is_restricted)
-                <div class="form-group">
-                    <label for="company-url" class="col-md-3">Company URL</label>
-                    <div class="col-md-5">
-                        {!! Form::text('company_url', $user->company_url,
-                            ['placeholder' => 'Company URL', 'class'=>'form-control', 'id'=>'company-url']) !!}
-                    </div>
-                    <div class="col-md-5"></div>
-                </div>
-
-                <div class="form-group">
-                    <label for="personal-url" class="col-md-3">Personal URL</label>
-                    <div class="col-md-5">
-                        {!! Form::text('personal_url', $user->personal_url,
-                            ['placeholder' => 'Personal URL', 'class'=>'form-control', 'id'=>'personal-url']) !!}
-                    </div>
-                    <div class="col-md-5"></div>
-                </div>
-            @endif
-
             <div class="form-group">
-                <label for="position" class="col-md-3">Position</label>
+                <label for="company-url" class="col-md-3">Company URL</label>
                 <div class="col-md-5">
-                    {!! Form::text('business_id', $user->business_id,
-                        ['placeholder' => 'Position', 'class'=>'form-control', 'id'=>'position']) !!}
+                    {!! Form::text('company_url', $user->company_url,
+                        ['placeholder' => 'Company URL', 'class'=>'form-control', 'id'=>'company-url']) !!}
                 </div>
                 <div class="col-md-5"></div>
             </div>
 
             <div class="form-group">
-                <label for="industry" class="col-md-3">Industry</label>
-                <div class="col-md-9 industry">
-                    @include('user.update-industry')
+                <label for="personal-url" class="col-md-3">Personal URL</label>
+                <div class="col-md-5">
+                    {!! Form::text('personal_url', $user->personal_url,
+                        ['placeholder' => 'Personal URL', 'class'=>'form-control', 'id'=>'personal-url']) !!}
                 </div>
+                <div class="col-md-5"></div>
             </div>
+        @endif
+
+        <div class="form-group">
+            <label for="position" class="col-md-3">Position</label>
+            <div class="col-md-5">
+                {!! Form::text('business_id', $user->business_id,
+                    ['placeholder' => 'Position', 'class'=>'form-control', 'id'=>'position']) !!}
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="industry" class="col-md-3">Industry</label>
+            <div class="col-md-9 industry">
+                @include('user.update-industry')
+            </div>
+        </div>
         @endif
 
         <div class="form-group">
@@ -241,14 +241,14 @@
                     ['placeholder' => 'Biography', 'class'=>'js-editor', 'id'=>'biography']) !!}
             </div>
         </div>
-
+    
         @if ($user->isExpert() or $user->isToBeExpert())
-            <div class="form-group">
-                <label for="experties" class="col-md-3">Expertise Tags</label>
-                <div class="col-md-9 expertise" data-select-tags="expertises">
-                    @include('modules.update-expertise')
-                </div>
+        <div class="form-group">
+            <label for="experties" class="col-md-3">Expertise Tags</label>
+            <div class="col-md-9 expertise" data-select-tags="expertises">
+            	@include('modules.update-expertise')
             </div>
+        </div>
         @endif
 
         <div class="form-group">
@@ -256,9 +256,9 @@
             <div class="col-md-9">
                 <button class="btn-sassy btn-submit">Update</button>
             </div>
-        </div>    　
-        {!! Form::close() !!}
-    </div>
+        </div>    　    
+	{!! Form::close() !!}		
+	</div>
 
 @stop
 
