@@ -62,7 +62,8 @@ class ProjectController extends BaseController
             'id'        => Input::get('project_id'),
             'user_name' => Input::get('name'),
             'title'     => Input::get('title'),
-            'data'      => Input::get('dstart') ? Input::get('dstart').'~'.Input::get('dend') : null,
+            'dstart'    => Input::get('dstart'),
+            'dend'      => Input::get('dend'),
             'result'    => sizeof($projects)
         ];
         Log::info($log_action, $log_data);

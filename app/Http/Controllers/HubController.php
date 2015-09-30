@@ -109,14 +109,14 @@ class HubController extends BaseController
     public function updateScheduleManager($id)
     {
         $schedule     = $this->hub_repo->findSchedule($id);
-        $hub_managers = $this->hub_repo->updateScheduleManagers($schedule, Input::all());
+        $this->hub_repo->updateScheduleManagers($schedule, Input::all());
         $projectTitle = $this->purifier->clean($schedule->project_title);
         Noty::success("Project [{$projectTitle}] managers is updated");
 
         $log_action = 'Set schedule manager';
         $log_data   = [
             'schedule'    => $id,
-            'adminer_ids' => $hub_managers
+            'adminer_ids' => $schedule->hub_managers
         ];
         Log::info($log_action, $log_data);
 

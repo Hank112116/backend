@@ -135,7 +135,8 @@ class UserController extends BaseController
             'name'    => Input::get('name'),
             'email'   => Input::get('email'),
             'company' => Input::get('company'),
-            'data'    => Input::get('dstart') ? Input::get('dstart').'~'.Input::get('dend') : null,
+            'dstart'  => Input::get('dstart'),
+            'dend'    => Input::get('dend'),
             'result'  => sizeof($users)
         ];
         Log::info($log_action, $log_data);
@@ -249,15 +250,16 @@ class UserController extends BaseController
                 ->withErrors($this->user_repo->errors());
         }
 
+        $this->user_repo->update($id, $data);
+        Noty::success(Lang::get('user.update'));
+
+        $user = $this->user_repo->find($id);
         $log_action = 'Edit user';
         $log_data   = [
             'user'      => $id,
-            'is_expert' => $data['user_type']==1 ? true : false
+            'is_expert' => $user->isExpert()
         ];
         Log::info($log_action, $log_data);
-
-        $this->user_repo->update($id, $data);
-        Noty::success(Lang::get('user.update'));
 
         return Redirect::action('UserController@showDetail', $id);
     }

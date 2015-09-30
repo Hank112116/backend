@@ -159,12 +159,11 @@ class AdminerController extends BaseController
 
         $log_action = 'New Role';
         $log_data   = [
-            'role'  => $role->id,
-            'name'  => $data['name']
+            'role'      => $role->id,
+            'name'      => $data['name'],
+            'privilege' => $data['cert']
         ];
-        foreach ($data['cert'] as $key => $value) {
-            $log_data['privilege'.++$key] = $value;
-        }
+
         Log::info($log_action, $log_data);
 
         Noty::success('Create successful');
