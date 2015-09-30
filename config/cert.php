@@ -8,7 +8,7 @@
 return [
     'all'             => [
         'Adminer'   => ['adminer' => 'Adminer Full'],
-        'Member'    => ['user' => 'User Full', 'user_restricted' => 'User Limited'],
+        'Member'    => ['user' => 'User Full', 'user_restricted' => 'User Limited', 'user_edit_restricted' => 'User Edit Limited'],
         'Project'   => ['project' => 'Project Full'],
         'Solution'  => ['solution' => 'Solution Full', 'solution_restricted' => 'Solution Limited'],
         'Hub'       => ['hub_full' => 'Hub Full', 'hub_restricted' => 'Hub Limited', 'schedule_manager' => 'Schedule Manager'],

@@ -8,6 +8,7 @@ use Input;
 use Noty;
 use Session;
 use Artisan;
+use Log;
 
 class AuthController extends BaseController
 {
@@ -19,12 +20,25 @@ class AuthController extends BaseController
             'password' =>$request->get('password')
         ];
 
+        $login_status = true;
+
         if (!Auth::attempt($cert)) {
             Noty::warn('Login fail');
-            return redirect('/');
+            $login_status = false;
         }
 
-        return $this->loginSuccess();
+        $log_action = 'Log in';
+        $log_data   = [
+            'email'   => $cert['email'],
+            'success' => $login_status
+        ];
+        Log::info($log_action, $log_data);
+
+        if ($login_status) {
+            return $this->loginSuccess();
+        } else {
+            return redirect('/');
+        }
     }
 
     private function loginSuccess()

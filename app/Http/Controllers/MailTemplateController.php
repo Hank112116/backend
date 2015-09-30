@@ -6,6 +6,7 @@ use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 use Input;
 use Noty;
 use Redirect;
+use Log;
 
 class MailTemplateController extends BaseController
 {
@@ -59,8 +60,20 @@ class MailTemplateController extends BaseController
      **/
     public function create()
     {
-        $this->mail_repo->create(Input::all());
+        $data = Input::all();
+
+        $email = $this->mail_repo->create($data);
         Noty::success('Create a new template successful');
+
+        $log_action = 'New template';
+        $log_data   = [
+            'email'   => $email->email_template_id,
+            'task'    => $data['task'],
+            'from'    => $data['from_address'],
+            'reply'   => $data['reply_address'],
+            'subject' => $data['subject']
+        ];
+        Log::info($log_action, $log_data);
 
         return Redirect::action('MailTemplateController@showList');
     }
@@ -83,6 +96,12 @@ class MailTemplateController extends BaseController
      **/
     public function update($id)
     {
+        $log_action = 'Edit email template';
+        $log_data   = [
+            'email' => $id
+        ];
+        Log::info($log_action, $log_data);
+
         $this->mail_repo->update($id, Input::all());
         Noty::success('Update successful');
 
@@ -100,8 +119,16 @@ class MailTemplateController extends BaseController
         $this->mail_repo->switchActive($id);
         $email = $this->mail_repo->find($id);
 
-        $msg = ($email->active ? "Active" : "Disactive") . " #{$email->email_template_id} successful";
+        $msg = ($email->active ? 'Active' : 'Deactive') . " #{$email->email_template_id} successful";
         Noty::success($msg);
+
+        $status     = $email->active ? 'Active' : 'Deactive';
+        $log_action = $status.' email template';
+        $log_data   = [
+            'email'  => $id,
+            'status' => $status
+        ];
+        Log::info($log_action, $log_data);
 
         return Redirect::action('MailTemplateController@showList');
     }

@@ -89,6 +89,9 @@
         <a class="btn-mini" href="{!! action('HubController@showQuestionnaireDetail', $q->questionnaire_id) !!}">
             <i class="fa fa-eye fa-fw"></i> DETAIL
         </a>
+        @if($q->schedule->isDeleted())
+            <a href="" class="btn btn-primary btn-disabled" disabled>This project was deleted</a>
+        @endif
 
         @if(Auth::user()->role->isManagerHead() or $q->schedule->inHubManagers(Auth::user()->id))
             <a class="btn-mini" href="{!! $q->schedule->textFrontEditLink() !!}" target="_blank">

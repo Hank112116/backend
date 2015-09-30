@@ -67,6 +67,7 @@ Route::group(['before' => 'backend.project'], function () {
 
     Route::get('project/detail/{id}', 'ProjectController@showDetail');
     Route::get('project/update/{id}', 'ProjectController@showUpdate');
+    Route::get('project/delete/{id}', 'ProjectController@delete');
 
     Route::get('project/update-status/{status}/{project_id}', 'ProjectController@updateStatus');
 

@@ -2,12 +2,14 @@
 
 namespace Backend\Model\Eloquent;
 
-use App;
-use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use FrontLinkGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Backend\Model\ModelTrait\ProjectTagTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+use App;
+use Config;
 
 class Project extends Eloquent
 {

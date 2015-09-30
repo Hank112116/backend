@@ -7,6 +7,7 @@ use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Input;
 use Noty;
 use Redirect;
+use Log;
 
 class ProjectController extends BaseController
 {
@@ -56,6 +57,17 @@ class ProjectController extends BaseController
                 $projects = new Collection();
         }
 
+        $log_action = 'Search by '.$search_by;
+        $log_data   = [
+            'id'        => Input::get('project_id'),
+            'user_name' => Input::get('name'),
+            'title'     => Input::get('title'),
+            'dstart'    => Input::get('dstart'),
+            'dend'      => Input::get('dend'),
+            'result'    => sizeof($projects)
+        ];
+        Log::info($log_action, $log_data);
+
         if ($projects->count() == 0) {
             Noty::warnLang('common.no-search-result');
 
@@ -86,6 +98,10 @@ class ProjectController extends BaseController
         } else {
             $output = $this->project_repo->toOutputArray($projects);
         }
+
+        $csv_type   = Input::get('csv') == 'all' ? 'all' : 'this';
+        $log_action = 'CSV of Project ('.$csv_type.')';
+        Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'projects');
     }
@@ -148,6 +164,13 @@ class ProjectController extends BaseController
                 break;
         }
 
+        $log_action = 'Update status';
+        $log_data   = [
+            'project' => $project_id,
+            'status'  => $status
+        ];
+        Log::info($log_action, $log_data);
+
         Noty::successLang('common.update-success');
 
         return Redirect::action('ProjectController@showDetail', $project_id);
@@ -155,9 +178,31 @@ class ProjectController extends BaseController
 
     public function update($project_id)
     {
+        $log_action = 'Edit project';
+        $log_data   =  [
+            'project' => $project_id
+        ];
+        Log::info($log_action, $log_data);
+
         $this->project_repo->update($project_id, Input::all());
         Noty::successLang('common.update-success');
 
         return Redirect::action('ProjectController@showDetail', $project_id);
+    }
+
+    public function delete($project_id)
+    {
+        $project = $this->project_repo->find($project_id);
+        $this->project_repo->delete($project);
+
+        Noty::success("Delete Project #{$project_id} successful");
+
+        $log_action = 'Delete project';
+        $log_data   = [
+            'project' => $project_id
+        ];
+        Log::info($log_action, $log_data);
+
+        return Redirect::action('ProjectController@showList');
     }
 }

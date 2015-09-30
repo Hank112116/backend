@@ -31,6 +31,8 @@ class RoleRepo implements RoleInterface
         $role->name = $input[ 'name' ];
         $role->cert = implode(',', $input[ 'cert' ]);
         $role->save();
+
+        return $role;
     }
 
     public function update($id, $input)

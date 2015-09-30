@@ -20,6 +20,7 @@ use Noty;
 use Redirect;
 use Auth;
 use Response;
+use Log;
 
 class UserController extends BaseController
 {
@@ -128,6 +129,18 @@ class UserController extends BaseController
             $users = $this->user_repo->filterExperts($users);
         }
 
+        $log_action = 'Search by '.$search_by;
+        $log_data   = [
+            'id'      => Input::get('user_id'),
+            'name'    => Input::get('name'),
+            'email'   => Input::get('email'),
+            'company' => Input::get('company'),
+            'dstart'  => Input::get('dstart'),
+            'dend'    => Input::get('dend'),
+            'result'  => sizeof($users)
+        ];
+        Log::info($log_action, $log_data);
+
         if ($users->count() == 0) {
             Noty::warn('No result');
 
@@ -155,11 +168,16 @@ class UserController extends BaseController
 
     private function renderCsv($users)
     {
+
         if (Input::get('csv') == 'all') {
             $output = $this->user_repo->toOutputArray($this->user_repo->all());
         } else {
             $output = $this->user_repo->toOutputArray($users);
         }
+
+        $csv_type   = Input::get('csv') == 'all' ? 'all' : 'this';
+        $log_action = 'CSV of Members ('.$csv_type.')';
+        Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'users');
         //return CSV::fromArray($output)->render('users.csv');
@@ -234,6 +252,14 @@ class UserController extends BaseController
 
         $this->user_repo->update($id, $data);
         Noty::success(Lang::get('user.update'));
+
+        $user = $this->user_repo->find($id);
+        $log_action = 'Edit user';
+        $log_data   = [
+            'user'      => $id,
+            'is_expert' => $user->isExpert()
+        ];
+        Log::info($log_action, $log_data);
 
         return Redirect::action('UserController@showDetail', $id);
     }
