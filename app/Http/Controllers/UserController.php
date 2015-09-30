@@ -155,14 +155,21 @@ class UserController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($users);
         }
-        $template = view('user.list')
-            ->with([
-                'title'         => $title,
-                'users'         => $users,
-                'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
-                'is_restricted' => $this->is_restricted_adminer,
-                'is_revisable'  => $this->is_limitied_editor,
-            ]);
+
+        $data = [
+            'title'         => $title,
+            'users'         => $users,
+            'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
+        ];
+
+        if ($this->is_limitied_editor) {
+            $view = 'user.list-editor';
+        } else {
+            $view                  = 'user.list';
+            $data['is_restricted'] = $this->is_restricted_adminer;
+        }
+
+        $template = view($view)->with($data);
 
         return $paginate ? $template->with('per_page', $this->per_page) : $template;
     }
@@ -201,16 +208,23 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        return view('user.detail')->with([
-            'is_restricted'     => $this->is_restricted_adminer,
-            'is_revisable'      => $this->is_limitied_editor,
+        $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
             'user'              => $user,
             'projects'          => $this->project_repo->byUserId($user->user_id),
             'products'          => $this->product_repo->byUserId($user->user_id),
             'solutions'         => $this->solution_repo->configApprove($user->solutions)
-        ]);
+        ];
+
+        if ($this->is_limitied_editor) {
+            $view = 'user.detail-editor';
+        } else {
+            $view                  = 'user.detail';
+            $data['is_restricted'] = $this->is_restricted_adminer;
+        }
+
+        return view($view)->with($data);
     }
 
     /**
@@ -230,15 +244,22 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        return view('user.update')->with([
-            'is_restricted'     => $this->is_restricted_adminer,
-            'is_revisable'      => $this->is_limitied_editor,
+        $data = [
             'industries'        => Industry::getUpdateArray(),
             'expertise_tags'    => $this->expertise_repo->getTags(),
             'user'              => $user,
             'user_industries'   => explode(',', $user->user_category_id),
             'expertise_setting' => explode(',', $user->expertises)
-        ]);
+        ];
+
+        if ($this->is_limitied_editor) {
+            $view                 = 'user.update-editor';
+        } else {
+            $view                  = 'user.update';
+            $data['is_restricted'] = $this->is_restricted_adminer;
+        }
+
+        return view($view)->with($data);
     }
 
     public function update($id)

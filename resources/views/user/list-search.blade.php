@@ -61,7 +61,7 @@
     <div class="col-md-7">
         {!! link_to_action("UserController@showExperts", 'ALL EXPERT', '',["class"=>"btn btn-mini"]) !!}
 
-        @if(!$is_restricted)
+        @if((isset($is_restricted) and !$is_restricted))
             {!! link_to_action("UserController@showCreators",'ALL CREATOR', '',["class"=>"btn btn-mini"]) !!}
         @endif
 
@@ -73,7 +73,3 @@
     </div>
 
 </div>
-
-
-
-

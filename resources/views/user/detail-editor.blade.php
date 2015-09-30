@@ -1,0 +1,67 @@
+@extends('layouts.master')
+@include('layouts.macro')
+
+@section('css')
+<link rel="stylesheet" href="/css/user-detail.css">
+@stop
+
+@section('js')
+<script src='/js/user-detail.js'></script>
+@stop
+
+@section('content')
+
+<div class="page-header">
+    <h1>MEMBER DETAIL</h1>
+    <a href="{!! $user->textFrontLink() !!}" target="_blank" class="btn-mini">
+        <i class="fa fa-eye"></i>Front
+    </a>
+    {!! link_to_action(
+    'UserController@showUpdate', 'EDIT',
+    $user->user_id, ['class' => 'btn-mini']) !!}
+</div>
+
+<div id="user-detail">
+    <div class="row">
+        <div class="col-md-2 col-md-offset-1">
+            {!! HTML::image($user->getImagePath(), 'member-thumb', ['class' => 'user-avatar']) !!}
+        </div>
+
+        <div class="col-md-7 clearfix">
+            <div class="data-group">
+                <span class="label">Name</span>
+                <span class="content">{{ $user->textFullName() }}</span>
+            </div>
+        </div>
+    </div> 
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">Biography</div>
+                <div class="panel-body">
+                    {!! Purifier::clean($user->user_about) !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if ($user->isExpert() or $user->isToBeExpert())
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">Industry</div>
+                <div class="panel-body">
+                    @foreach($user->getIndustryArray() as $tag)
+                    <span class='tag'>{!! $tag !!}</span>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+    @include ('modules.detail-expertise', ['title' => 'Expertise tags'])
+    @endif
+</div>
+
+@stop
+
