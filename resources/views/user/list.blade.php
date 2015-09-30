@@ -18,7 +18,7 @@
         @endif
     </h1>
 
-    @if(!$is_restricted)
+    @if(!$is_restricted and !$is_revisable)
         @include('layouts.get-csv')
     @endif
 </div>
@@ -38,6 +38,7 @@
                 @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                     <th class="table--user-mail">EMail</th>
                 @endif
+                @if(!$is_revisable)
                 <th>Country<br/>City</th>
                 <th class="table--width-limit">
                     Company<br/>
@@ -51,6 +52,7 @@
                 </th>
                 <th>EMail<br/>Verify</th>
                 <th>Active</th>
+                @endif
                 <th></th>
             </tr>
 
@@ -86,6 +88,7 @@
                         @endif
                     </td>
                     @endif
+                    @if(!$is_revisable)
                     <td>{{ $user->country }}<br/>{{ $user->city }}</td>
 
                     <td class="table--width-limit">
@@ -102,13 +105,14 @@
 
                     <td>{!! $user->textEmailVerify() !!}</td>
                     <td>{!! $user->textActive() !!}</td>
+                    @endif
 
                     <td>
                         {!! link_to_action(
                                 'UserController@showDetail', 'DETAIL',
                                 $user->user_id, ['class' => 'btn-mini']) !!}
 
-                        @if(!$is_restricted and !$user->isExpert() and $user->isToBeExpert())
+                        @if(!$is_restricted and !$user->isExpert() and $user->isToBeExpert() and !$is_revisable)
                             {!! link_to_action(
                                     'UserController@showUpdate', 'EDIT & To-Expert',
                                     $user->user_id, ['class' => 'btn-mini btn-danger']) !!}

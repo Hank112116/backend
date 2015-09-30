@@ -20,6 +20,7 @@ class BaseController extends Controller
     protected $page = null;
     protected $per_page = null;
     protected $is_restricted_adminer;
+    protected $is_limitied_editor;
 
     public function __construct()
     {
@@ -38,6 +39,7 @@ class BaseController extends Controller
         }
 
         $this->is_restricted_adminer = Auth::user()->isRestricted($this->cert);
+        $this->is_limitied_editor    = Auth::user()->isLimitedEditor($this->cert);
     }
 
    /**

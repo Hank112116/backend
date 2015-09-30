@@ -39,6 +39,12 @@ class Adminer extends Eloquent implements AuthenticatableContract
         return str_contains($this->role->cert, "{$route_prefix}_restricted");
     }
 
+    public function isLimitedEditor($route_prefix)
+    {
+        // check config/cert.php for edit restricted certifications
+        return str_contains($this->role->cert, "{$route_prefix}_edit_restricted");
+    }
+
     public function isAdmin()
     {
         return $this->role->isAdmin();
@@ -58,5 +64,9 @@ class Adminer extends Eloquent implements AuthenticatableContract
     public function isBackendPM()
     {
         return $this->role->isBackendPM();
+    }
+    public function isEditor()
+    {
+        return $this->role->isEditor();
     }
 }

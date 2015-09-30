@@ -161,6 +161,7 @@ class UserController extends BaseController
                 'users'         => $users,
                 'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
                 'is_restricted' => $this->is_restricted_adminer,
+                'is_revisable'  => $this->is_limitied_editor,
             ]);
 
         return $paginate ? $template->with('per_page', $this->per_page) : $template;
@@ -202,6 +203,7 @@ class UserController extends BaseController
 
         return view('user.detail')->with([
             'is_restricted'     => $this->is_restricted_adminer,
+            'is_revisable'      => $this->is_limitied_editor,
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
             'user'              => $user,
@@ -230,6 +232,7 @@ class UserController extends BaseController
 
         return view('user.update')->with([
             'is_restricted'     => $this->is_restricted_adminer,
+            'is_revisable'      => $this->is_limitied_editor,
             'industries'        => Industry::getUpdateArray(),
             'expertise_tags'    => $this->expertise_repo->getTags(),
             'user'              => $user,

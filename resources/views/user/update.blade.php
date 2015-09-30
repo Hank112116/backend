@@ -30,73 +30,76 @@
 		</div>
 
         @if (!$is_restricted)
+            <!-- Active -->
+            @if(!$is_revisable)
+            <div class="form-group">
+                <label for="verify" class="col-md-3">
+                    EMail Verify<br/>
+                    <span class="color-info">{!! $user->textEmailVerify() !!}</span>
+                </label>
 
-        <!-- Active -->
-        <div class="form-group">
-            <label for="verify" class="col-md-3">
-                EMail Verify<br/>
-                <span class="color-info">{!! $user->textEmailVerify() !!}</span>
-            </label>
+                <div class="col-md-5">
+                    <div>
+                        {!! Form::radio('email_verify', Backend\Model\Eloquent\User::EMAIL_VERIFY, $user->verified()) !!}
+                        <label for="active_1" class='iradio-lable'>Verify</label>
+                    </div>
 
-            <div class="col-md-5">
-                <div>
-                    {!! Form::radio('email_verify', Backend\Model\Eloquent\User::EMAIL_VERIFY, $user->verified()) !!}
-                    <label for="active_1" class='iradio-lable'>Verify</label>
+                    <div>
+                        {!! Form::radio('email_verify', Backend\Model\Eloquent\User::EMAIL_VERIFY_NONE, !$user->verified()) !!}
+                        <label for="active_0" class='iradio-lable'>None</label>
+                    </div>
                 </div>
 
-                <div>
-                    {!! Form::radio('email_verify', Backend\Model\Eloquent\User::EMAIL_VERIFY_NONE, !$user->verified()) !!}
-                    <label for="active_0" class='iradio-lable'>None</label>
-                </div>
+                <div class="col-md-5"></div>
             </div>
 
-            <div class="col-md-5"></div>
-        </div>
+            <!-- Active -->
+            <div class="form-group">
+                <label for="active" class="col-md-3">Active</label>
+                <div class="col-md-5">
+                    <div>
+                        {!! Form::radio('active', '1', $user->active==1, ["id"=>"active_1"]) !!}
+                        <label for="active_1" class='iradio-lable'>Active</label>
+                    </div>
 
-        <!-- Active -->
-        <div class="form-group">
-            <label for="active" class="col-md-3">Active</label>
-            <div class="col-md-5">
-                <div>
-                    {!! Form::radio('active', '1', $user->active==1, ["id"=>"active_1"]) !!}
-                    <label for="active_1" class='iradio-lable'>Active</label>
+                    <div>
+                        {!! Form::radio('active', '0', $user->active==0, ["id"=>"active_0"]) !!}
+                        <label for="active_0" class='iradio-lable'>Suspend</label>
+                    </div>
                 </div>
-
-                <div>
-                    {!! Form::radio('active', '0', $user->active==0, ["id"=>"active_0"]) !!}
-                    <label for="active_0" class='iradio-lable'>Suspend</label>
-                </div>
+                <div class="col-md-5"></div>
             </div>
-            <div class="col-md-5"></div>
-        </div>
-
-        <!-- Expert / Customer -->
-        <div class="form-group">
-            <label for="role" class="col-md-3">
-                Type
-                @if($user->isToBeExpert())
-                <br/>
-                <span class="color-info">
+            <!-- Expert / Customer -->
+            <div class="form-group">
+                <label for="role" class="col-md-3">
+                    Type
+                    @if($user->isToBeExpert())
+                        <br/>
+                        <span class="color-info">
                     <i class="fa fa-exclamation-triangle fa-fw"></i>
                     Pending to be expert
                 </span>
-                @endif
-            </label>
+                    @endif
+                </label>
 
-            <div class="col-md-5">
-                <div>
-                    {!! Form::radio('user_type', '0', $user->user_type==0, ["id"=>"user_type_0"]) !!}
-                    <label for="user_type_0" class='iradio-lable'>Creator</label>
-                </div>
+                <div class="col-md-5">
+                    <div>
+                        {!! Form::radio('user_type', '0', $user->user_type==0, ["id"=>"user_type_0"]) !!}
+                        <label for="user_type_0" class='iradio-lable'>Creator</label>
+                    </div>
 
-                <div>
-                    {!! Form::radio('user_type', '1', $user->user_type==1, ["id"=>"user_type_1"]) !!}
-                    <label for="user_type_1" class='iradio-lable'>Expert</label>
+                    <div>
+                        {!! Form::radio('user_type', '1', $user->user_type==1, ["id"=>"user_type_1"]) !!}
+                        <label for="user_type_1" class='iradio-lable'>Expert</label>
+                    </div>
                 </div>
             </div>
-        </div>
+            @else
+            {!! Form::hidden('user_type', $user->user_type) !!}
+            @endif
         @endif
 
+        @if(!$is_revisable)
         <div class="form-group">
             <label for="email" class="col-md-3">EMail</label>
             <div class="col-md-5">
@@ -110,14 +113,15 @@
                 @endif
             </div>
             <div class="col-md-5"><span class='error'>{!! $errors->first('email') !!}</span></div>
-
         </div>
-
+        @else
+            {!! Form::hidden('email', $user->email) !!}
+        @endif
 
         <div class="form-group">
             <label for="first-name" class="col-md-3">First Name</label>
             <div class="col-md-5">
-                @if($is_restricted)
+                @if($is_restricted || $is_revisable)
                     {!! $user->user_name !!}
                 @else
                     {!! Form::text(
@@ -132,7 +136,7 @@
         <div class="form-group">
             <label for="last-name" class="col-md-3">Last Name</label>
             <div class="col-md-5">
-                @if($is_restricted)
+                @if($is_restricted || $is_revisable)
                     {!! $user->last_name !!}
                 @else
                     {!! Form::text('last_name', htmlspecialchars($user->last_name),
@@ -142,7 +146,7 @@
             <div class="col-md-5"></div>
         </div>
         
-        @if (!$is_restricted)
+        @if (!$is_restricted and !$is_revisable)
         {{--
         <div class="form-group">
             <label for="role" class="col-md-3">Role</label>
@@ -188,6 +192,7 @@
         @endif
 
         @if ($user->isExpert() or $user->isToBeExpert())
+            @if(!$is_revisable)
             <div class="form-group">
                 <label for="company" class="col-md-3">Company</label>
                 <div class="col-md-5">
@@ -196,7 +201,6 @@
                 </div>
                 <div class="col-md-5"></div>
             </div>
-        
             @if (!$is_restricted)
             <div class="form-group">
                 <label for="company-url" class="col-md-3">Company URL</label>
@@ -215,16 +219,17 @@
                 </div>
                 <div class="col-md-5"></div>
             </div>
-        @endif
+            @endif
 
-        <div class="form-group">
-            <label for="position" class="col-md-3">Position</label>
-            <div class="col-md-5">
-                {!! Form::text('business_id', $user->business_id,
-                    ['placeholder' => 'Position', 'class'=>'form-control', 'id'=>'position']) !!}
+            <div class="form-group">
+                <label for="position" class="col-md-3">Position</label>
+                <div class="col-md-5">
+                    {!! Form::text('business_id', $user->business_id,
+                        ['placeholder' => 'Position', 'class'=>'form-control', 'id'=>'position']) !!}
+                </div>
+                <div class="col-md-5"></div>
             </div>
-            <div class="col-md-5"></div>
-        </div>
+            @endif
 
         <div class="form-group">
             <label for="industry" class="col-md-3">Industry</label>
@@ -241,7 +246,7 @@
                     ['placeholder' => 'Biography', 'class'=>'js-editor', 'id'=>'biography']) !!}
             </div>
         </div>
-    
+
         @if ($user->isExpert() or $user->isToBeExpert())
         <div class="form-group">
             <label for="experties" class="col-md-3">Expertise Tags</label>
