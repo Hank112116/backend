@@ -280,8 +280,9 @@ class UserController extends BaseController
         $user = $this->user_repo->find($id);
         $log_action = 'Edit user';
         $log_data   = [
-            'user'      => $id,
-            'is_expert' => $user->isExpert()
+            'user'          => $id,
+            'modified_data' => $data,
+            'is_expert'     => $user->isExpert()
         ];
         Log::info($log_action, $log_data);
 

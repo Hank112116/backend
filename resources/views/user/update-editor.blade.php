@@ -36,7 +36,7 @@
         <div class="form-group">
             <label for="first-name" class="col-md-3">First Name</label>
             <div class="col-md-5">
-                {!! $user->user_name !!}
+                {{ $user->user_name }}
             </div>
             <div class="col-md-5"></div>
         </div>
@@ -44,7 +44,7 @@
         <div class="form-group">
             <label for="last-name" class="col-md-3">Last Name</label>
             <div class="col-md-5">
-                {!! $user->last_name !!}
+                {{ $user->last_name }}
             </div>
             <div class="col-md-5"></div>
         </div>
