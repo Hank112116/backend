@@ -264,7 +264,16 @@ class UserController extends BaseController
 
     public function update($id)
     {
-        $data = Input::all();
+        $data        = Input::all();
+        $user        = $this->user_repo->find($id);
+        $origin_data = [
+            'image'          => $user->getImagePath(),
+            'biography'      => $user->user_about,
+        ];
+        if ($user->isExpert()) {
+            $origin_data['industries']     = $user->user_category_id;
+            $origin_data['expertise_tags'] = $user->expertises;
+        }
 
         if (!$this->user_repo->validUpdate($id, $data)) {
             Noty::warn(Lang::get('user.update-fail'));
@@ -277,12 +286,11 @@ class UserController extends BaseController
         $this->user_repo->update($id, $data);
         Noty::success(Lang::get('user.update'));
 
-        $user = $this->user_repo->find($id);
         $log_action = 'Edit user';
         $log_data   = [
-            'user'          => $id,
-            'modified_data' => $data,
-            'is_expert'     => $user->isExpert()
+            'user'        => $id,
+            'origin_data' => $origin_data,
+            'is_expert'   => $user->isExpert()
         ];
         Log::info($log_action, $log_data);
 
