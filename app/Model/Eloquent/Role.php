@@ -41,6 +41,10 @@ class Role extends Eloquent
     {
         return $this->name == 'Backend PM';
     }
+    public function isEditor()
+    {
+        return $this->name == 'Editor';
+    }
 
     public function getCertsArr()
     {

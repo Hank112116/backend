@@ -155,13 +155,21 @@ class UserController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($users);
         }
-        $template = view('user.list')
-            ->with([
-                'title'         => $title,
-                'users'         => $users,
-                'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
-                'is_restricted' => $this->is_restricted_adminer,
-            ]);
+
+        $data = [
+            'title'         => $title,
+            'users'         => $users,
+            'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
+        ];
+
+        if ($this->is_limitied_editor) {
+            $view = 'user.list-editor';
+        } else {
+            $view                  = 'user.list';
+            $data['is_restricted'] = $this->is_restricted_adminer;
+        }
+
+        $template = view($view)->with($data);
 
         return $paginate ? $template->with('per_page', $this->per_page) : $template;
     }
@@ -200,15 +208,23 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        return view('user.detail')->with([
-            'is_restricted'     => $this->is_restricted_adminer,
+        $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
             'user'              => $user,
             'projects'          => $this->project_repo->byUserId($user->user_id),
             'products'          => $this->product_repo->byUserId($user->user_id),
             'solutions'         => $this->solution_repo->configApprove($user->solutions)
-        ]);
+        ];
+
+        if ($this->is_limitied_editor) {
+            $view = 'user.detail-editor';
+        } else {
+            $view                  = 'user.detail';
+            $data['is_restricted'] = $this->is_restricted_adminer;
+        }
+
+        return view($view)->with($data);
     }
 
     /**
@@ -228,19 +244,36 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        return view('user.update')->with([
-            'is_restricted'     => $this->is_restricted_adminer,
+        $data = [
             'industries'        => Industry::getUpdateArray(),
             'expertise_tags'    => $this->expertise_repo->getTags(),
             'user'              => $user,
             'user_industries'   => explode(',', $user->user_category_id),
             'expertise_setting' => explode(',', $user->expertises)
-        ]);
+        ];
+
+        if ($this->is_limitied_editor) {
+            $view                 = 'user.update-editor';
+        } else {
+            $view                  = 'user.update';
+            $data['is_restricted'] = $this->is_restricted_adminer;
+        }
+
+        return view($view)->with($data);
     }
 
     public function update($id)
     {
-        $data = Input::all();
+        $data        = Input::all();
+        $user        = $this->user_repo->find($id);
+        $origin_data = [
+            'image'          => $user->getImagePath(),
+            'biography'      => $user->user_about,
+        ];
+        if ($user->isExpert()) {
+            $origin_data['industries']     = $user->user_category_id;
+            $origin_data['expertise_tags'] = $user->expertises;
+        }
 
         if (!$this->user_repo->validUpdate($id, $data)) {
             Noty::warn(Lang::get('user.update-fail'));
@@ -253,11 +286,11 @@ class UserController extends BaseController
         $this->user_repo->update($id, $data);
         Noty::success(Lang::get('user.update'));
 
-        $user = $this->user_repo->find($id);
         $log_action = 'Edit user';
         $log_data   = [
-            'user'      => $id,
-            'is_expert' => $user->isExpert()
+            'user'        => $id,
+            'origin_data' => $origin_data,
+            'is_expert'   => $user->isExpert()
         ];
         Log::info($log_action, $log_data);
 

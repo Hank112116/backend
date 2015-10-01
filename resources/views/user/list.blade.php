@@ -56,7 +56,7 @@
 
             @foreach($users as $user)
                 <tr>
-                    <td>{!! $user->user_id !!}</td>
+                    <td>{{ $user->user_id }}</td>
                     <td>
                         <a href="{!! $user->textFrontLink() !!}" target="_blank">
                             {{ $user->textFullName() }}</a>
