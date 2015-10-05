@@ -10,9 +10,7 @@ return [
     'stage'         => [
                             'email_title'    => 'Stage backend php error',
                             'email_from'     => 'StageBackend@hwtrek.com',
-                            'email_to'       => [
-                                                    'hank.chang@hwtrek.com'
-                                                ]
+                            'email_to'       => ['hank.chang@hwtrek.com']
     ],
     'production'    => [
                             'email_title'    => 'Production backend php error',

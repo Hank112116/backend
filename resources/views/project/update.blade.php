@@ -29,6 +29,13 @@
                 class="btn-mini btn-flat-purple">
                 <i class="fa fa-unlock-alt fa-fw"></i>Change To Public( Expert-Only )
             </a>
+
+            @if(!$project->is_deleted)
+            <a href="/project/delete/{!! $project->project_id !!}"
+               class="btn-mini btn-flat-red js-delete">
+                <i class="fa fa-trash-o fa-fw"></i>Delete
+            </a>
+            @endif
         </div>
 
 	</div>

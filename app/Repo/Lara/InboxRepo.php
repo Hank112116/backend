@@ -8,6 +8,8 @@ use Backend\Repo\RepoInterfaces\InboxInterface;
 use Illuminate\Support\Collection;
 use Mews\Purifier\Purifier;
 
+use Log;
+
 class InboxRepo implements InboxInterface
 {
 
@@ -75,11 +77,19 @@ class InboxRepo implements InboxInterface
                 break;
         }
 
-        return $this->processed($this->inbox
-            ->queryEagerLoad()
+        $inboxs = $this->inbox->queryEagerLoad()
             ->queryTopic()
             ->whereIn($where_column, $ids)
-            ->get());
+            ->get();
+
+        $log_action = 'Search inbox by '.$where;
+        $log_data   = [
+            'keyword' => $value,
+            'results' => sizeof($inboxs)
+        ];
+        Log::info($log_action, $log_data);
+
+        return $this->processed($inboxs);
     }
 
     public function bySender($sender_id)

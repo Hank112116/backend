@@ -6,9 +6,11 @@ use Backend\Http\Controllers\BaseController;
 use Illuminate\Support\Collection;
 use Backend\Repo\RepoInterfaces\CommentInterface;
 use Backend\Api\ApiInterfaces\CommentApiInterface;
+
 use Input;
 use Response;
 use View;
+use Log;
 
 class CommentController extends BaseController
 {
@@ -107,6 +109,12 @@ class CommentController extends BaseController
      */
     public function delete($comment_id)
     {
+        $log_action = 'Delete comments';
+        $log_data   = [
+            'comment' => $comment_id
+        ];
+        Log::info($log_action, $log_data);
+
         return $this->comment_api->delete($comment_id);
     }
 

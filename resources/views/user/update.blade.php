@@ -73,7 +73,7 @@
         <!-- Expert / Customer -->
         <div class="form-group">
             <label for="role" class="col-md-3">
-                Type
+                Role
                 @if($user->isToBeExpert())
                 <br/>
                 <span class="color-info">
@@ -118,7 +118,7 @@
             <label for="first-name" class="col-md-3">First Name</label>
             <div class="col-md-5">
                 @if($is_restricted)
-                    {!! $user->user_name !!}
+                    {{ $user->user_name }}
                 @else
                     {!! Form::text(
                         'user_name', htmlspecialchars($user->user_name),
@@ -133,7 +133,7 @@
             <label for="last-name" class="col-md-3">Last Name</label>
             <div class="col-md-5">
                 @if($is_restricted)
-                    {!! $user->last_name !!}
+                    {{ $user->last_name }}
                 @else
                     {!! Form::text('last_name', htmlspecialchars($user->last_name),
                     ['placeholder' => 'Enter Last Name', 'class'=>'form-control', 'id'=>'last-name']) !!}
@@ -163,7 +163,7 @@
         <div class="form-group">
             <label for="country" class="col-md-3">Address</label>
             <div class="col-md-5">
-                {!! $user->address !!}
+                {{ $user->address }}
             </div>
             <div class="col-md-5"></div>
         </div>
