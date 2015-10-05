@@ -34,7 +34,7 @@
                 @if(Auth::user()->isAdmin())
                 <th>Internal PM</th>
                 @endif
-                <th>Type</th>
+                <th>Role</th>
                 @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                     <th class="table--user-mail">EMail</th>
                 @endif
@@ -75,7 +75,12 @@
                     </td>
                     @endif
 
-                    <td>{!! $user->textType() !!}</td>
+                    @if(Auth::user()->isAdmin() && $user->isHWTrekPM())
+                        <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
+                    @else
+                        <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                    @endif
+
                     @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                     <td class="table--user-mail">
                         {{ $user->email }}
