@@ -32,6 +32,22 @@
                 <span class="label">Name</span>
                 <span class="content">{{ $user->textFullName() }}</span>
             </div>
+            <div class="data-group group-half">
+                <span class="label">Role</span>
+                  <span class="content">
+                      @if($user->isToBeExpert())
+                          Pending to be Expert
+                      @elseif($user->usertype==0)
+                          Creator
+                      @elseif($user->usertype==1)
+                          Expert
+                      @endif
+                  </span>
+            </div>
+            <div class="data-group group-half">
+                <span class="label">Active</span>
+                <span class="content">{!! $user->textActive() !!} ( EMail : {!! $user->textEmailVerify() !!} )</span>
+            </div>
         </div>
     </div> 
 

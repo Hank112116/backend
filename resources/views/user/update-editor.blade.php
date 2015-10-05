@@ -30,6 +30,36 @@
         </div>
 
         <!-- Active -->
+        <div class="form-group">
+            <label for="verify" class="col-md-3">
+                EMail Verify<br/>
+            </label>
+
+            <div class="col-md-5">
+                <div>
+                    @if($user->verified())
+                    Verify
+                    @else
+                    None
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="role" class="col-md-3">
+                Type
+            </label>
+            <div class="col-md-5">
+                @if($user->isToBeExpert())
+                Pending to be Expert
+                @elseif($user->usertype==0)
+                Creator
+                @elseif($user->usertype==1)
+                Expert
+                @endif
+            </div>
+        </div>
+
         {!! Form::hidden('user_type', $user->user_type) !!}
         {!! Form::hidden('email', $user->email) !!}
 

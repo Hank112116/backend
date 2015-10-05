@@ -73,7 +73,7 @@
         <!-- Expert / Customer -->
         <div class="form-group">
             <label for="role" class="col-md-3">
-                Type
+                Role
                 @if($user->isToBeExpert())
                 <br/>
                 <span class="color-info">

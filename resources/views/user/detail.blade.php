@@ -46,8 +46,16 @@
 			</div>
 
 			<div class="data-group group-half">
-			  <span class="label">Type</span>
-			  <span class="content">{!! $user->textType() !!}</span>
+			  <span class="label">Role</span>
+			  <span class="content">
+				  @if($user->isToBeExpert())
+					  Pending to be Expert
+				  @elseif($user->usertype==0)
+					  Creator
+				  @elseif($user->usertype==1)
+					  Expert
+				  @endif
+			  </span>
 			</div>
 
 			@if (!$is_restricted)

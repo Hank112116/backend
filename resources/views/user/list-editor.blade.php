@@ -27,7 +27,9 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Type</th>
+                    <th>Role</th>
+                    <th>EMail<br/>Verify</th>
+                    <th>Active</th>
                     <th></th>
                 </tr>
 
@@ -38,7 +40,9 @@
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">
                                 {{ $user->textFullName() }}</a>
                         </td>
-                        <td>{!! $user->textType() !!}</td>
+                        <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                        <td>{!! $user->textEmailVerify() !!}</td>
+                        <td>{!! $user->textActive() !!}</td>
                         <td>
                             {!! link_to_action(
                                     'UserController@showDetail', 'DETAIL',
