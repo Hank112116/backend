@@ -308,7 +308,12 @@ class UserRepo implements UserInterface
             $user->image = $this->image_uplodaer->uploadUserImage($data['head']);
         }
 
-        $user->is_sign_up_as_expert = 0;
+        if ($user->isToBeExpert()) {
+            $user->is_sign_up_as_expert = 1;
+        } else {
+            $user->is_sign_up_as_expert = 0;
+        }
+
         $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
 
         $tag_ids    = $user->expertises ? explode(',', $user->expertises) : [];
