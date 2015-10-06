@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.5.5
+* [FIXED] fix user update error (@Sylvia)
+
 ## v1.5.4
 * [NEW] new role editor (@Sylvia)
 * [NEW] add operate log to log server (@Sylvia)

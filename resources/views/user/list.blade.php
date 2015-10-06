@@ -78,7 +78,13 @@
                     @if(Auth::user()->isAdmin() && $user->isHWTrekPM())
                         <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                     @else
-                        <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                        <td>
+                            @if($user->isToBeExpert() && $user->isCreator())
+                                <font color="red">Pending to Be Expert</font>
+                            @else
+                                {!! $user->textType() !!}
+                            @endif
+                        </td>
                     @endif
 
                     @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())

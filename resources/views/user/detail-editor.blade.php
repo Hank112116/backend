@@ -35,12 +35,10 @@
             <div class="data-group group-half">
                 <span class="label">Role</span>
                   <span class="content">
-                      @if($user->isToBeExpert())
-                          Pending to be Expert
-                      @elseif($user->usertype==0)
-                          Creator
-                      @elseif($user->usertype==1)
-                          Expert
+                      @if($user->isToBeExpert() and $user->isCreator())
+                      <font color="red">Pending to Be Expert</font>
+                      @else
+                      {!! $user->textType() !!}
                       @endif
                   </span>
             </div>
