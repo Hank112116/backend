@@ -308,7 +308,7 @@ class UserRepo implements UserInterface
             $user->image = $this->image_uplodaer->uploadUserImage($data['head']);
         }
 
-        if ($user->isToBeExpert()) {
+        if ($user->isToBeExpert() && $user->isCreator()) {
             $user->is_sign_up_as_expert = 1;
         } else {
             $user->is_sign_up_as_expert = 0;
