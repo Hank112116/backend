@@ -48,7 +48,11 @@
 			<div class="data-group group-half">
 			  <span class="label">Role</span>
 			  <span class="content">
-				   {!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">Pending to Be Expert</font>':$user->textType()  !!}
+				  @if($user->isToBeExpert() && $user->isCreator())
+				  <font color="red">Pending to Be Expert</font>
+				  @else
+				  {!! $user->textType() !!}
+				  @endif
 			  </span>
 			</div>
 

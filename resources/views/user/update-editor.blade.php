@@ -50,7 +50,11 @@
                 Type
             </label>
             <div class="col-md-5">
-                {!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">Pending to Be Expert</font>':$user->textType()  !!}
+                @if($user->isToBeExpert() && $user->isCreator())
+                <font color="red">Pending to Be Expert</font>
+                @else
+                {!! $user->textType() !!}
+                @endif
             </div>
         </div>
 
