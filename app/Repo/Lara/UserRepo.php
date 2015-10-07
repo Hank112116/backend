@@ -307,10 +307,8 @@ class UserRepo implements UserInterface
         if (null !== array_get($data, 'head', null)) {
             $user->image = $this->image_uplodaer->uploadUserImage($data['head']);
         }
-
-        if ($user->isToBeExpert() && $user->isCreator()) {
-            $user->is_sign_up_as_expert = 1;
-        } else {
+        //check input user_type exists, not exists don't change user role
+        if (array_key_exists('user_type', $data)) {
             $user->is_sign_up_as_expert = 0;
         }
 
