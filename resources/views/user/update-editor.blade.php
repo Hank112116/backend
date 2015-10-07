@@ -58,7 +58,6 @@
             </div>
         </div>
 
-        {!! Form::hidden('user_type', $user->user_type) !!}
         {!! Form::hidden('email', $user->email) !!}
 
         <div class="form-group">
