@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.5.6
+* [FIXED] fix user update error (@Hank)
+
 ## v1.5.5
 * [FIXED] fix user update error (@Sylvia)
 
