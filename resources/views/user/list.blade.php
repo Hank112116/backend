@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @include('layouts.macro')
-
+@section('jqui')
+    @include('layouts.jqui')
+@stop
 @section('css')
     <link rel="stylesheet" href="/css/user-list.css">
 @stop
@@ -79,10 +81,14 @@
                         <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                     @else
                         <td>
-                            @if($user->isToBeExpert() && $user->isCreator())
-                                <font color="red">Pending to Be Expert</font>
+                            @if($user->isToBeExpert() or $user->isApplyExpert())
+                                <font color="red">{{ $user->textType() }}</font>
                             @else
                                 {!! $user->textType() !!}
+                            @endif
+
+                            @if($user->applyExpertMessage->count() > 0)
+                                <font color="{!! $user->isApplyExpert() ? 'red' : 'black' !!}"><li style="cursor:pointer" class="fa fa-commenting-o fa-fw fa-2x" rel="{!! $user->user_id !!}"></li></font>
                             @endif
                         </td>
                     @endif
@@ -119,7 +125,7 @@
                                 'UserController@showDetail', 'DETAIL',
                                 $user->user_id, ['class' => 'btn-mini']) !!}
 
-                        @if(!$is_restricted and !$user->isExpert() and $user->isToBeExpert())
+                        @if(!$is_restricted and ($user->isApplyExpert() or $user->isToBeExpert()))
                             {!! link_to_action(
                                     'UserController@showUpdate', 'EDIT & To-Expert',
                                     $user->user_id, ['class' => 'btn-mini btn-danger']) !!}
@@ -134,7 +140,9 @@
         </table>
     </div>
 </div>
+<div id="dialog" class="ui-widget" title="Apply expert messages" style="display:none">
 
+</div>
 @include('layouts.paginate', ['collection' => $users, 'per_page' => isset($per_page)? $per_page : ''])
 
 @stop

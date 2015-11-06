@@ -161,5 +161,10 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\LogAccessHelloInterface',
             'Backend\Repo\Lara\LogAccessHelloRepo'
         );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface',
+            'Backend\Repo\Lara\ApplyExpertMessageRepo'
+        );
     }
 }

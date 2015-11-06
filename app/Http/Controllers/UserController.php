@@ -9,6 +9,7 @@ use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\ProductInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
+use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
@@ -24,7 +25,6 @@ use Log;
 
 class UserController extends BaseController
 {
-
     protected $cert = 'user';
 
     public function __construct(
@@ -33,19 +33,18 @@ class UserController extends BaseController
         ProductInterface $product,
         SolutionInterface $solution,
         ExpertiseInterface $expertise,
-        UserApiInterface $user_api
+        UserApiInterface $user_api,
+        ApplyExpertMessageInterface $apply_expert_message
     ) {
         parent::__construct();
 
-        $this->user_repo = $user;
-
-        $this->project_repo = $project;
-        $this->product_repo = $product;
-
+        $this->user_repo      = $user;
+        $this->project_repo   = $project;
+        $this->product_repo   = $product;
         $this->solution_repo  = $solution;
         $this->expertise_repo = $expertise;
-
-        $this->user_api = $user_api;
+        $this->user_api       = $user_api;
+        $this->apply_msg_repo = $apply_expert_message;
     }
 
     public function showList()
@@ -207,14 +206,14 @@ class UserController extends BaseController
 
             return Redirect::action('UserController@showList');
         }
-
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
             'user'              => $user,
             'projects'          => $this->project_repo->byUserId($user->user_id),
             'products'          => $this->product_repo->byUserId($user->user_id),
-            'solutions'         => $this->solution_repo->configApprove($user->solutions)
+            'solutions'         => $this->solution_repo->configApprove($user->solutions),
+            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id)
         ];
 
         if ($this->is_limitied_editor) {
@@ -249,7 +248,8 @@ class UserController extends BaseController
             'expertise_tags'    => $this->expertise_repo->getTags(),
             'user'              => $user,
             'user_industries'   => explode(',', $user->user_category_id),
-            'expertise_setting' => explode(',', $user->expertises)
+            'expertise_setting' => explode(',', $user->expertises),
+            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id)
         ];
 
         if ($this->is_limitied_editor) {

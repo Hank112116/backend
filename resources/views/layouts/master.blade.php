@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="Bookmark" href="/favicon.ico" type="image/x-icon" />
 
-    <link rel="stylesheet" type="text/css" href="/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     @yield('css')
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class User extends Eloquent
 {
 
-    protected $table = 'user';
+    protected $table      = 'user';
     protected $primaryKey = 'user_id';
-    protected $appends = ['image_url', 'full_name'];
+    protected $appends    = ['image_url', 'full_name'];
 
     public $timestamps = false; // not use created_at, updated_at
 
     public static $unguarded = true;
-    public static $partial = ['user_id', 'user_name', 'last_name', 'email', 'user_type', 'image'];
+    public static $partial   = ['user_id', 'user_name', 'last_name', 'email', 'user_type', 'image'];
 
-    const ROLE_MEMBER = 0;
+    const ROLE_MEMBER  = 0;
     const ROLE_MANAGER = 1;
-    const ROLE_ADMIN = 2;
+    const ROLE_ADMIN   = 2;
 
     private static $roles = [
         self::ROLE_MEMBER  => 'Member',
@@ -29,23 +29,47 @@ class User extends Eloquent
     ];
 
     const TYPE_CREATOR = '0';
-    const TYPE_EXPERT = '1';
+    const TYPE_EXPERT  = '1';
 
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
         self::TYPE_EXPERT  => 'Expert',
     ];
 
-    const EMAIL_VERIFY_NONE = 1;
-    const EMAIL_VERIFY = 2;
-    const EMAIL_VERIFY_BOUNCE = 3;
-    const EMAIL_VERIFY_COMPLAIN = 4;
+    const EMAIL_VERIFY_NONE     = '1';
+    const EMAIL_VERIFY          = '2';
+    const EMAIL_VERIFY_BOUNCE   = '3';
+    const EMAIL_VERIFY_COMPLAIN = '4';
 
     private static $email_verify_types = [
         self::EMAIL_VERIFY_NONE     => 'Not verify',
         self::EMAIL_VERIFY          => 'Verified',
         self::EMAIL_VERIFY_BOUNCE   => 'Bounce',
         self::EMAIL_VERIFY_COMPLAIN => 'Complain'
+    ];
+
+    public $is_creator_status = [
+        'user_type'             => '0',
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 0
+    ];
+
+    public $is_expert_status = [
+        'user_type'             => '1',
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 0
+    ];
+
+    public $is_pending_to_be_expert_status = [
+        'user_type'             => '0',
+        'is_sign_up_as_expert'  => 1,
+        'is_apply_to_be_expert' => 0
+    ];
+
+    public $is_apply_to_be_expert_status = [
+        'user_type'             => '0',
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 1
     ];
 
     // active in database may be ''(empty string), 1, 0
@@ -63,6 +87,10 @@ class User extends Eloquent
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
 
+    public function applyExpertMessage()
+    {
+        return $this->hasMany(ApplyExpertMessage::class)->orderBy('id', 'desc');
+    }
 
     public function scopeQueryExperts($query)
     {
@@ -105,15 +133,22 @@ class User extends Eloquent
 
     public function textType()
     {
-        if (!array_key_exists($this->user_type, static::$types)) {
+        if ($this->isStatus($this->is_creator_status)) {
+            return 'Creator';
+        } elseif ($this->isStatus($this->is_expert_status)) {
+            return 'Expert';
+        } elseif ($this->isStatus($this->is_pending_to_be_expert_status)) {
+            return 'Pending to Be Expert';
+        } elseif ($this->isStatus($this->is_apply_to_be_expert_status)) {
+            return 'Apply to Be Expert';
+        } else {
             return 'Undefine';
         }
-
-        return static::$types[$this->user_type];
     }
 
     public function textRole()
     {
+
         return static::$roles[$this->user_role];
     }
 
@@ -250,22 +285,53 @@ class User extends Eloquent
 
     public function isCreator()
     {
-        return $this->user_type == self::TYPE_CREATOR;
+        return $this->isStatus($this->is_creator_status);
     }
 
     public function isExpert()
     {
-        return $this->user_type == self::TYPE_EXPERT;
+        return $this->isStatus($this->is_expert_status);
     }
 
     public function isToBeExpert()
     {
-        return $this->is_sign_up_as_expert;
+        return $this->isStatus($this->is_pending_to_be_expert_status);
     }
 
     public function isHWTrekPM()
     {
         return $this->is_hwtrek_pm;
+    }
+
+    public function isApplyExpert()
+    {
+        return $this->isStatus($this->is_apply_to_be_expert_status);
+    }
+
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    public function isPendingExpert()
+    {
+        return $this->isToBeExpert() or $this->isApplyExpert();
+    }
+
+    public function isEmailVerify()
+    {
+        return $this->email_verify == self::EMAIL_VERIFY;
+    }
+
+    private function isStatus($status)
+    {
+        foreach ($status as $key => $status_flag) {
+            if ($this->getAttributeValue($key) != $status_flag) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function hasExpertiseTag($tag_id)

@@ -74,11 +74,11 @@
         <div class="form-group">
             <label for="role" class="col-md-3">
                 Role
-                @if($user->isToBeExpert())
+                @if($user->isToBeExpert() or $user->isApplyExpert())
                 <br/>
                 <span class="color-info">
                     <i class="fa fa-exclamation-triangle fa-fw"></i>
-                    Pending to be expert
+                    {{ $user->textType() }}
                 </span>
                 @endif
             </label>
@@ -230,6 +230,15 @@
             <label for="industry" class="col-md-3">Industry</label>
             <div class="col-md-9 industry">
                 @include('user.update-industry')
+            </div>
+        </div>
+        @endif
+
+        @if ($user->applyExpertMessage->count() > 0 && !$is_restricted)
+        <div class="form-group">
+            <label for="industry" class="col-md-3">Apply expert</label>
+            <div class="col-md-9 industry">
+                @include ('user.detail-apply-expert-msg')
             </div>
         </div>
         @endif
