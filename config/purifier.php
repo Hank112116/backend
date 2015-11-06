@@ -8,19 +8,11 @@ return [
     'cachePath' => storage_path('purifier'),
     'settings' => [
         'default' => [
-            'HTML.Doctype'             => 'XHTML 1.0 Strict',
-            'HTML.Allowed'             => 'div,b,strong,i,em,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src],h1',
-            'CSS.AllowedProperties'    => 'font,font-size,font-weight,font-style,font-family,text-decoration,padding-left,color,background-color,text-align',
+            'HTML.SafeIframe'          => true,
+            'URI.SafeIframeRegexp'     => '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/|fusion360\.autodesk\.com/models/|www\.kickstarter\.com/pages/|www\.indiegogo\.com/project/)%',
             'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty'   => true,
-        ],
-        'test' => [
-            'Attr.EnableID' => true
-        ],
-        "youtube" => [
-            "HTML.SafeIframe" => 'true',
-            "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
-        ],
+        ]
     ],
 
 ];
