@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.5.7
+* [FIXED] fix purifier clean video not show (@Hank)
+* [FIXED] fix .svg .bmp image upload error  (@Hank)
+
 ## v1.5.6
 * [FIXED] fix user update error (@Hank)
 
