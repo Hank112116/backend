@@ -115,7 +115,7 @@ class ImageUp
 
     private function valid($image)
     {
-        $rules      = ['image' => "image|max:".self::$size_limit];
+        $rules      = ['image' => "image|max:".self::$size_limit .'|mimes:jpeg,jpg,png,gif'];
         $validator  = Validator::make(['image' => $image], $rules);
         $this->error= $validator->messages()->first('image');
         return $validator->passes();
