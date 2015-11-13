@@ -58,7 +58,8 @@ class UserRepo implements UserInterface
             'solutions',
             'solutions',
             'backedProducts',
-            'backedProducts.project'
+            'backedProducts.project',
+            'applyExpertMessage'
         )->find($id);
 
         return $user;
@@ -104,7 +105,8 @@ class UserRepo implements UserInterface
     public function toBeExpertMemberIds()
     {
         return $this->user
-            ->where('is_sign_up_as_expert', '1')
+            ->orWhere('is_sign_up_as_expert', '1')
+            ->orWhere('is_apply_to_be_expert', '1')
             ->where('user_type', User::TYPE_CREATOR)
             ->lists('user_id');
     }

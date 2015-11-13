@@ -48,10 +48,10 @@
 			<div class="data-group group-half">
 			  <span class="label">Role</span>
 			  <span class="content">
-				  @if($user->isToBeExpert() && $user->isCreator())
-				  <font color="red">Pending to Be Expert</font>
+				  @if($user->isToBeExpert() or $user->isApplyExpert())
+					  <font color="red">{{ $user->textType() }}</font>
 				  @else
-				  {!! $user->textType() !!}
+					  {{ $user->textType() }}
 				  @endif
 			  </span>
 			</div>
@@ -105,6 +105,11 @@
 				</div>		
 				@endif	
 			</div>
+
+			@if ($user->applyExpertMessage->count() > 0 && !$is_restricted)
+				@include ('user.detail-apply-expert-msg')
+			@endif
+
 		</div>
 	</div>
 	
