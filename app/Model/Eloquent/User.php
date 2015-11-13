@@ -49,25 +49,25 @@ class User extends Eloquent
     ];
 
     const IS_CREATOR_STATUS = [
-        'user_type'             => '0',
+        'user_type'             => self::TYPE_CREATOR,
         'is_sign_up_as_expert'  => 0,
         'is_apply_to_be_expert' => 0
     ];
 
     const IS_EXPERT_STATUS = [
-        'user_type'             => '1',
+        'user_type'             => self::TYPE_EXPERT,
         'is_sign_up_as_expert'  => 0,
         'is_apply_to_be_expert' => 0
     ];
 
     const IS_PENDING_TO_BE_EXPERT_STATUS = [
-        'user_type'             => '0',
+        'user_type'             => self::TYPE_CREATOR,
         'is_sign_up_as_expert'  => 1,
         'is_apply_to_be_expert' => 0
     ];
 
     const IS_APPLY_TO_BE_EXPERT_STATUS = [
-        'user_type'             => '0',
+        'user_type'             => self::TYPE_CREATOR,
         'is_sign_up_as_expert'  => 0,
         'is_apply_to_be_expert' => 1
     ];
