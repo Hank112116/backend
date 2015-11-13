@@ -48,25 +48,25 @@ class User extends Eloquent
         self::EMAIL_VERIFY_COMPLAIN => 'Complain'
     ];
 
-    public $is_creator_status = [
+    const IS_CREATOR_STATUS = [
         'user_type'             => '0',
         'is_sign_up_as_expert'  => 0,
         'is_apply_to_be_expert' => 0
     ];
 
-    public $is_expert_status = [
+    const IS_EXPERT_STATUS = [
         'user_type'             => '1',
         'is_sign_up_as_expert'  => 0,
         'is_apply_to_be_expert' => 0
     ];
 
-    public $is_pending_to_be_expert_status = [
+    const IS_PENDING_TO_BE_EXPERT_STATUS = [
         'user_type'             => '0',
         'is_sign_up_as_expert'  => 1,
         'is_apply_to_be_expert' => 0
     ];
 
-    public $is_apply_to_be_expert_status = [
+    const IS_APPLY_TO_BE_EXPERT_STATUS = [
         'user_type'             => '0',
         'is_sign_up_as_expert'  => 0,
         'is_apply_to_be_expert' => 1
@@ -122,7 +122,7 @@ class User extends Eloquent
 
     public function verified()
     {
-        return $this->email_verify==self::EMAIL_VERIFY;
+        return $this->email_verify == self::EMAIL_VERIFY;
     }
 
     public function getImagePath()
@@ -133,13 +133,13 @@ class User extends Eloquent
 
     public function textType()
     {
-        if ($this->isStatus($this->is_creator_status)) {
+        if ($this->isStatus(self::IS_CREATOR_STATUS)) {
             return 'Creator';
-        } elseif ($this->isStatus($this->is_expert_status)) {
+        } elseif ($this->isStatus(self::IS_EXPERT_STATUS)) {
             return 'Expert';
-        } elseif ($this->isStatus($this->is_pending_to_be_expert_status)) {
+        } elseif ($this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
             return 'Pending to Be Expert';
-        } elseif ($this->isStatus($this->is_apply_to_be_expert_status)) {
+        } elseif ($this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
             return 'Apply to Be Expert';
         } else {
             return 'Undefine';
@@ -285,17 +285,17 @@ class User extends Eloquent
 
     public function isCreator()
     {
-        return $this->isStatus($this->is_creator_status);
+        return $this->isStatus(self::IS_CREATOR_STATUS);
     }
 
     public function isExpert()
     {
-        return $this->isStatus($this->is_expert_status);
+        return $this->isStatus(self::IS_EXPERT_STATUS);
     }
 
     public function isToBeExpert()
     {
-        return $this->isStatus($this->is_pending_to_be_expert_status);
+        return $this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS);
     }
 
     public function isHWTrekPM()
@@ -305,7 +305,7 @@ class User extends Eloquent
 
     public function isApplyExpert()
     {
-        return $this->isStatus($this->is_apply_to_be_expert_status);
+        return $this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS);
     }
 
     public function isActive()
