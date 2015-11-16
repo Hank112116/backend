@@ -39,8 +39,14 @@ class MailTemplateController extends BaseController
 
     public function showDetail($id)
     {
+        $email = $this->mail_repo->find($id);
+        if (is_null($email)) {
+            Noty::warnLang('No such mail template');
+            return Redirect::action('MailTemplateController@showList');
+        }
+
         return view('email_template.detail')
-            ->with('email', $this->mail_repo->find($id))
+            ->with('email', $email)
             ->with('template', view('email_template.hwtrek-inline')->render());
     }
 
@@ -84,8 +90,13 @@ class MailTemplateController extends BaseController
      **/
     public function showUpdate($id)
     {
+        $email = $this->mail_repo->find($id);
+        if (is_null($email)) {
+            Noty::warnLang('No such mail template');
+            return Redirect::action('MailTemplateController@showList');
+        }
         return view('email_template.update')
-            ->with('email', $this->mail_repo->find($id))
+            ->with('email', $email)
             ->with('tags', $this->mail_repo->getTags())
             ->with('template', view('email_template.hwtrek-inline')->render());
     }
