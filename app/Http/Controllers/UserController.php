@@ -198,6 +198,10 @@ class UserController extends BaseController
     public function showDetail($id)
     {
         $user = $this->user_repo->findWithDetail($id);
+        if (is_null($user)) {
+            Noty::warnLang('user.no-user');
+            return Redirect::action('UserController@showList');
+        }
 
         if ($this->is_restricted_adminer and
             !$user->isExpert()
@@ -234,6 +238,10 @@ class UserController extends BaseController
     public function showUpdate($id)
     {
         $user = $this->user_repo->find($id);
+        if (is_null($user)) {
+            Noty::warnLang('user.no-user');
+            return Redirect::action('UserController@showList');
+        }
 
         if ($this->is_restricted_adminer and
             !$user->isExpert()

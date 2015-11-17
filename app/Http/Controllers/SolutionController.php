@@ -157,6 +157,10 @@ class SolutionController extends BaseController
     public function showDetail($solution_id)
     {
         $solution = $this->solution_repo->find($solution_id);
+        if (is_null($solution)) {
+            Noty::warnLang('user.no-user');
+            return Redirect::action('SolutionController@showList');
+        }
 
         return view('solution.detail')->with([
             'is_restricted'    => $this->is_restricted_adminer,
@@ -175,6 +179,11 @@ class SolutionController extends BaseController
 
         $solution = $is_wait_approve_ongoing ?
             $this->solution_repo->findDuplicate($solution_id) : $this->solution_repo->find($solution_id);
+
+        if (is_null($solution)) {
+            Noty::warnLang('user.no-user');
+            return Redirect::action('SolutionController@showList');
+        }
 
         return view($is_wait_approve_ongoing ? 'solution.update-ongoing' : 'solution.update')
             ->with([
