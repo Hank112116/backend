@@ -7,6 +7,7 @@ class ApplyExpertMessage extends Eloquent
 {
     protected $table = 'apply_expert_message';
     protected $primaryKey = 'id';
+    public $timestamps = false;
     public static $unguarded = true;
 
     public function user()
