@@ -204,12 +204,12 @@ class SolutionModifier implements SolutionModifierInterface
             $key         = "thumb_{$i}";
             $delete_key  = "thumb_delete_{$i}";
             $content_key = "thumb_desc_{$i}";
-
-            if ($data[$delete_key] == 1 or !$this->hasGalleryImage($gallery, $i, $data, $key)) {
-                unset($gallery[$i]);
-                continue;
+            if (array_key_exists($delete_key, $data) and array_key_exists($content_key, $data)) {
+                if ($data[$delete_key] == 1 or !$this->hasGalleryImage($gallery, $i, $data, $key)) {
+                    unset($gallery[$i]);
+                    continue;
+                }
             }
-
             $image_name = array_key_exists($key, $data) ?
                 $this->image_uploader->uploadImage($data[$key]) :
                 $gallery[$i][Solution::GALLERY_FILENAME];
