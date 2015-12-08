@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.5.8
+* [FIXED] fix solution edit, array not found thumb_delete_x index key error (@Hank)
+
 ## v1.5.7
 * [FIXED] fix purifier clean video not show (@Hank)
 * [FIXED] fix .svg .bmp image upload error  (@Hank)
