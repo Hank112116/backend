@@ -162,10 +162,14 @@ class SolutionController extends BaseController
             return Redirect::action('SolutionController@showList');
         }
 
+        $image_gallery = json_decode($solution->image_gallery);
+        $image_gallery = str_replace('\n', '', json_encode($image_gallery, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_PRESERVE_ZERO_FRACTION));
+
         return view('solution.detail')->with([
             'is_restricted'    => $this->is_restricted_adminer,
             'project_tag_tree' => $this->project_repo->projectTagTree(),
             'solution'         => $solution,
+            'image_gallery'    => $image_gallery
         ]);
     }
 
@@ -185,6 +189,9 @@ class SolutionController extends BaseController
             return Redirect::action('SolutionController@showList');
         }
 
+        $image_gallery = json_decode($solution->image_gallery);
+        $image_gallery = str_replace('\n', '', json_encode($image_gallery, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_PRESERVE_ZERO_FRACTION));
+
         return view($is_wait_approve_ongoing ? 'solution.update-ongoing' : 'solution.update')
             ->with([
                 'is_restricted'            => $this->is_restricted_adminer,
@@ -197,6 +204,7 @@ class SolutionController extends BaseController
                 'project_category_options' => $this->project_repo->categoryOptions(),
 
                 'solution'                 => $solution,
+                'image_gallery'            => $image_gallery,
             ]);
     }
 
