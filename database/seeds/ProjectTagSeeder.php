@@ -35,6 +35,7 @@ class ProjectTagSeeder extends Seeder
             'nfc'                   => ProjectTag::CONNECTIVITY,
             'rfid'                  => ProjectTag::CONNECTIVITY,
             'light-communication'   => ProjectTag::CONNECTIVITY,
+            'ir'                    => ProjectTag::CONNECTIVITY,
 
             // PHYSICAL INTERFACE
             'hdmi'                  => ProjectTag::PHYSICAL,
