@@ -51,16 +51,17 @@ class HubRepo implements HubInterface
             $dateSend = false;
             $adminName = false;
             $i = 0;
-            foreach ($questionnaire->projectMailExpert as $projectMailExpert) {
-                $admin = $this->admin->find($projectMailExpert->admin_id);
-                $user = $this->user->find($projectMailExpert->expert_id);
-                $projectMailExpert->admin_name = $admin->name;
-                $experts[$i]["id"] = $projectMailExpert->expert_id;
-                $experts[$i]["link"] = $user->textFrontLink();
-                $adminName = $admin->name;
-                $dt = Carbon::parse($projectMailExpert->date_send);
-                $dateSend = $dt->year."-".$dt->month."-".$dt->day;
-                $i++;
+            if ($questionnaire->projectMailExpert) {
+                foreach ($questionnaire->projectMailExpert as $projectMailExpert) {
+                    $admin               = $this->admin->findWithTrashed($projectMailExpert->admin_id);
+                    $user                = $this->user->find($projectMailExpert->expert_id);
+                    $experts[$i]["id"]   = $projectMailExpert->expert_id;
+                    $experts[$i]["link"] = $user->textFrontLink();
+                    $adminName           = $admin ? $admin->name : 'id:' . $projectMailExpert->admin_id;
+                    $dt                  = Carbon::parse($projectMailExpert->date_send);
+                    $dateSend            = $dt->year . "-" . $dt->month . "-" . $dt->day;
+                    $i++;
+                }
             }
             if (isset($dateSend) && isset($adminName)) {
                 $questionnaire->mail_send_time    = $dateSend;
@@ -81,16 +82,17 @@ class HubRepo implements HubInterface
             $dateSend = false;
             $adminName = false;
             $i = 0;
-            foreach ($schedule->projectMailExpert as $projectMailExpert) {
-                $admin = $this->admin->find($projectMailExpert->admin_id);
-                $user = $this->user->find($projectMailExpert->expert_id);
-                $projectMailExpert->admin_name = $admin->name;
-                $experts[$i]['id'] = $projectMailExpert->expert_id;
-                $experts[$i]['link'] = $user->textFrontLink();
-                $adminName = $admin->name;
-                $dt = Carbon::parse($projectMailExpert->date_send);
-                $dateSend = $dt->year.'-'.$dt->month.'-'.$dt->day;
-                $i++;
+            if ($schedule->projectMailExpert) {
+                foreach ($schedule->projectMailExpert as $projectMailExpert) {
+                    $admin               = $this->admin->findWithTrashed($projectMailExpert->admin_id);
+                    $user                = $this->user->find($projectMailExpert->expert_id);
+                    $experts[$i]['id']   = $projectMailExpert->expert_id;
+                    $experts[$i]['link'] = $user->textFrontLink();
+                    $adminName           = $admin ? $admin->name : 'id:' . $projectMailExpert->admin_id;
+                    $dt                  = Carbon::parse($projectMailExpert->date_send);
+                    $dateSend            = $dt->year . '-' . $dt->month . '-' . $dt->day;
+                    $i++;
+                }
             }
             if (isset($dateSend) && isset($adminName)) {
                 $schedule->mail_send_time    = $dateSend;

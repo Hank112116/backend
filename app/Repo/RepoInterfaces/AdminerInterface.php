@@ -3,9 +3,12 @@
 interface AdminerInterface
 {
     public function all();
+
     public function allDeleted();
 
     public function find($id);
+
+    public function findWithTrashed($id);
 
     public function validCreate($data);
 
