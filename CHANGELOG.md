@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.5.9
+* [FIXED] [FIXED] fix hub questionnaires recommend expert bug (@Hank)
+
 ## v1.5.8
 * [FIXED] fix JSON.parse parse quote error from solution edit image (@Hank)
 * [FIXED] fix solution edit, array not found thumb_delete_x index key error (@Hank)
