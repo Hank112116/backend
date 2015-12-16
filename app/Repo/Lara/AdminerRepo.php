@@ -38,6 +38,12 @@ class AdminerRepo implements AdminerInterface
     {
         return $this->adminer->with(['role', 'user'])->find($id);
     }
+
+    public function findWithTrashed($id)
+    {
+        return $this->adminer->withTrashed()->with(['role', 'user'])->find($id);
+    }
+
     public function findFrontManager()
     {
         return $this->adminer->with(['role'])->where('role_id', static::TYPE_FRONTEND_MANAGER)->get();

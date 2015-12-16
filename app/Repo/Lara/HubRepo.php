@@ -53,11 +53,11 @@ class HubRepo implements HubInterface
             $i = 0;
             if ($questionnaire->projectMailExpert) {
                 foreach ($questionnaire->projectMailExpert as $projectMailExpert) {
-                    $admin               = $this->admin->find($projectMailExpert->admin_id);
+                    $admin               = $this->admin->findWithTrashed($projectMailExpert->admin_id);
                     $user                = $this->user->find($projectMailExpert->expert_id);
                     $experts[$i]["id"]   = $projectMailExpert->expert_id;
                     $experts[$i]["link"] = $user->textFrontLink();
-                    $adminName           = $admin ? $admin->name : 'Null';
+                    $adminName           = $admin ? $admin->name : 'id:' . $projectMailExpert->admin_id;
                     $dt                  = Carbon::parse($projectMailExpert->date_send);
                     $dateSend            = $dt->year . "-" . $dt->month . "-" . $dt->day;
                     $i++;
@@ -84,11 +84,11 @@ class HubRepo implements HubInterface
             $i = 0;
             if ($schedule->projectMailExpert) {
                 foreach ($schedule->projectMailExpert as $projectMailExpert) {
-                    $admin               = $this->admin->find($projectMailExpert->admin_id);
+                    $admin               = $this->admin->findWithTrashed($projectMailExpert->admin_id);
                     $user                = $this->user->find($projectMailExpert->expert_id);
                     $experts[$i]['id']   = $projectMailExpert->expert_id;
                     $experts[$i]['link'] = $user->textFrontLink();
-                    $adminName           = $admin ? $admin->name : 'Null';
+                    $adminName           = $admin ? $admin->name : 'id:' . $projectMailExpert->admin_id;
                     $dt                  = Carbon::parse($projectMailExpert->date_send);
                     $dateSend            = $dt->year . '-' . $dt->month . '-' . $dt->day;
                     $i++;
