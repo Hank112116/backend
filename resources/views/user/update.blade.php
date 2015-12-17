@@ -187,7 +187,7 @@
         </div>
         @endif
 
-        @if ($user->isExpert() or $user->isToBeExpert())
+        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
             <div class="form-group">
                 <label for="company" class="col-md-3">Company</label>
                 <div class="col-md-5">
@@ -251,7 +251,7 @@
             </div>
         </div>
     
-        @if ($user->isExpert() or $user->isToBeExpert())
+        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
         <div class="form-group">
             <label for="experties" class="col-md-3">Expertise Tags</label>
             <div class="col-md-9 expertise" data-select-tags="expertises">

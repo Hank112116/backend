@@ -89,7 +89,7 @@
 			</div>
 			@endif
 			
-			@if ($user->isExpert() or $user->isToBeExpert())
+			@if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
 				@include ('user.detail-expert-company') 
 			@endif
 			
@@ -124,7 +124,7 @@
 		</div>
 	</div>
 
-	@if ($user->isExpert() or $user->isToBeExpert())
+	@if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default">
