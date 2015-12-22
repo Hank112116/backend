@@ -138,7 +138,7 @@ class User extends Eloquent
         } elseif ($this->isStatus(self::IS_EXPERT_STATUS)) {
             return 'Expert';
         } elseif ($this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
-            return 'Pending to Be Expert';
+            return 'Sign up to Be Expert';
         } elseif ($this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
             return 'Apply to Be Expert';
         } else {
