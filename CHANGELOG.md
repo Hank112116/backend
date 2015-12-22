@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.6.0
+* [NEW] creator upgrade expert (@Hank)
+* [CHANGE] adjust comment report (@Hank)
+
 ## v1.5.9
 * [FIXED] [FIXED] fix hub questionnaires recommend expert bug (@Hank)
 
