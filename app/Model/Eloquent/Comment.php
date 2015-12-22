@@ -6,6 +6,13 @@ use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * TODO old comment , replace
+ * Class Comment
+ *
+ * @package Backend\Model\Eloquent
+ */
+
 class Comment extends Eloquent
 {
 
