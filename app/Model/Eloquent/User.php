@@ -138,7 +138,7 @@ class User extends Eloquent
         } elseif ($this->isStatus(self::IS_EXPERT_STATUS)) {
             return 'Expert';
         } elseif ($this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
-            return 'Pending to Be Expert';
+            return 'Sign up to Be Expert';
         } elseif ($this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
             return 'Apply to Be Expert';
         } else {
@@ -229,12 +229,12 @@ class User extends Eloquent
         return '';
     }
 
-    public function sendCommentCount()
+    public function sendProjectSolutionCommentCount()
     {
         return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
-    public function sendHubCommentCount()
+    public function sendHubProjectSolutionCommentCount()
     {
         return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
@@ -244,43 +244,58 @@ class User extends Eloquent
         return $this->hasOne(Inbox::class, 'sender_id')->selectRaw('sender_id, count(*) as inboxCount')->groupBy('sender_id');
     }
 
+    public function sendUserCommentCount()
+    {
+        //dd($userComment->with('comment')->where('user_id', 852)->get());
+        return $this->hasOne(NewComment::class, 'poster_id')->selectRaw('poster_id, count(*) as commentCount')->groupBy('poster_id');
+
+    }
+
     //Use to get comment count which is be filtered or not be filtered
     public function getCommentCountAttribute()
     {
-        if (!array_key_exists('sendCommentCount', $this->relations)) {
-            $this->load('sendCommentCount');
+        if (!array_key_exists('sendProjectSolutionCommentCount', $this->relations)) {
+            $this->load('sendProjectSolutionCommentCount');
         }
-        if (!array_key_exists('sendHubCommentCount', $this->relations)) {
-            $this->load('sendHubCommentCount');
+        if (!array_key_exists('sendHubProjectSolutionCommentCount', $this->relations)) {
+            $this->load('sendHubProjectSolutionCommentCount');
         }
         if (!array_key_exists('inboxCount', $this->relations)) {
             $this->load('inboxCount');
         }
+        if (!array_key_exists('sendUserCommentCount', $this->relations)) {
+            $this->load('sendUserCommentCount');
+        }
 
-        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = $this->getRelation('sendProjectSolutionCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
-        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = $this->getRelation('sendHubProjectSolutionCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
         $inboxCount      = $this->getRelation('inboxCount');
         $inboxCount      = ($inboxCount) ? $inboxCount->inboxCount : 0;
-        return $commentCount + $hubCommentCount + $inboxCount;
+        $userCommentCount      = $this->getRelation('sendUserCommentCount');
+        $userCommentCount      = ($userCommentCount) ? $userCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount + $inboxCount + $userCommentCount;
     }
 
     //Use to get total comment count from user register.
     public function getTotalCommentCountAttribute()
     {
         //Reload relation to ignore where condition
-        $this->load('sendCommentCount');
-        $this->load('sendHubCommentCount');
+        $this->load('sendProjectSolutionCommentCount');
+        $this->load('sendHubProjectSolutionCommentCount');
         $this->load('inboxCount');
+        $this->load('sendUserCommentCount');
 
-        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = $this->getRelation('sendProjectSolutionCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
-        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = $this->getRelation('sendHubProjectSolutionCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
         $inboxCount      = $this->getRelation('inboxCount');
         $inboxCount      = ($inboxCount) ? $inboxCount->inboxCount : 0;
-        return $commentCount + $hubCommentCount + $inboxCount;
+        $userCommentCount      = $this->getRelation('sendUserCommentCount');
+        $userCommentCount      = ($userCommentCount) ? $userCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount + $inboxCount + $userCommentCount;
     }
 
     public function isCreator()

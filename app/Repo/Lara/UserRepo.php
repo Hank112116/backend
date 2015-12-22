@@ -264,15 +264,18 @@ class UserRepo implements UserInterface
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
         $this->user = $this->user->with([
-            'sendCommentCount'    => function ($q) use ($dstart, $dend) {
+            'sendProjectSolutionCommentCount'    => function ($q) use ($dstart, $dend) {
+                $q->where('profession_id', 0)->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'sendHubProjectSolutionCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->where('profession_id', 0)->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'inboxCount'                         => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
-            'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
-                $q->whereBetween('date_added', [ $dstart, $dend ]);
-            },
-            'inboxCount'          => function ($q) use ($dstart, $dend) {
-                $q->whereBetween('date_added', [ $dstart, $dend ]);
-            },
+            'sendUserCommentCount'               => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('created_at', [ $dstart, $dend ]);
+            }
         ]);
         return $this;
     }
