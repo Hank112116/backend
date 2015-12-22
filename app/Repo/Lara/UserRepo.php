@@ -328,7 +328,7 @@ class UserRepo implements UserInterface
             $user->expert_approved_at = ($user->isExpert()) ? Carbon::now() : null;
         }
         if ($is_type_change && $user->isExpert() &&  $apply_expert_msg = $this->apply_expert_msg_repo->byUserId($user->user_id)->first()) {
-            $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ?: Carbon::now();
+            $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ? $apply_expert_msg->expired_at : Carbon::now();
             $apply_expert_msg->save();
         }
         $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
