@@ -6,6 +6,7 @@ use Backend\Http\Requests;
 use Backend\Http\Controllers\Controller;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
+use Backend\Model\Eloquent\User;
 use Noty;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -83,7 +84,6 @@ class ReportController extends BaseController
             return Redirect::back();
         }
 
-
         $users = $this->report_repo->getRegistrationReport($this->filter, Input::all(), $this->page, $this->per_page);
 
         $template = view('report.registration')
@@ -93,7 +93,6 @@ class ReportController extends BaseController
                 'range'          => Input::get('range'),
                 'is_super_admin' => $this->auth,
             ]);
-
         return $template;
     }
 }

@@ -161,5 +161,30 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\LogAccessHelloInterface',
             'Backend\Repo\Lara\LogAccessHelloRepo'
         );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface',
+            'Backend\Repo\Lara\ApplyExpertMessageRepo'
+        );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\UserCommentInterface',
+            'Backend\Repo\Lara\UserCommentRepo'
+        );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\NewCommentInterface',
+            'Backend\Repo\Lara\NewCommentRepo'
+        );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\CommentFollowerInterface',
+            'Backend\Repo\Lara\CommentFollowerRepo'
+        );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\CommentReplyInterface',
+            'Backend\Repo\Lara\CommentReplyRepo'
+        );
     }
 }

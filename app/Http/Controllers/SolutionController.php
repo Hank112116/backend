@@ -157,6 +157,10 @@ class SolutionController extends BaseController
     public function showDetail($solution_id)
     {
         $solution = $this->solution_repo->find($solution_id);
+        if (is_null($solution)) {
+            Noty::warnLang('user.no-user');
+            return Redirect::action('SolutionController@showList');
+        }
 
         $image_gallery = json_decode($solution->image_gallery);
         $image_gallery = str_replace('\n', '', json_encode($image_gallery, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_PRESERVE_ZERO_FRACTION));
@@ -179,6 +183,11 @@ class SolutionController extends BaseController
 
         $solution = $is_wait_approve_ongoing ?
             $this->solution_repo->findDuplicate($solution_id) : $this->solution_repo->find($solution_id);
+
+        if (is_null($solution)) {
+            Noty::warnLang('user.no-user');
+            return Redirect::action('SolutionController@showList');
+        }
 
         $image_gallery = json_decode($solution->image_gallery);
         $image_gallery = str_replace('\n', '', json_encode($image_gallery, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_PRESERVE_ZERO_FRACTION));

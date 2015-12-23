@@ -74,11 +74,11 @@
         <div class="form-group">
             <label for="role" class="col-md-3">
                 Role
-                @if($user->isToBeExpert())
+                @if($user->isToBeExpert() or $user->isApplyExpert())
                 <br/>
                 <span class="color-info">
                     <i class="fa fa-exclamation-triangle fa-fw"></i>
-                    Pending to be expert
+                    {{ $user->textType() }}
                 </span>
                 @endif
             </label>
@@ -187,7 +187,7 @@
         </div>
         @endif
 
-        @if ($user->isExpert() or $user->isToBeExpert())
+        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
             <div class="form-group">
                 <label for="company" class="col-md-3">Company</label>
                 <div class="col-md-5">
@@ -234,6 +234,15 @@
         </div>
         @endif
 
+        @if ($user->applyExpertMessage->count() > 0 && !$is_restricted)
+        <div class="form-group">
+            <label for="industry" class="col-md-3">Apply expert</label>
+            <div class="col-md-9 industry">
+                @include ('user.detail-apply-expert-msg')
+            </div>
+        </div>
+        @endif
+
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>
             <div class="col-md-9">
@@ -242,7 +251,7 @@
             </div>
         </div>
     
-        @if ($user->isExpert() or $user->isToBeExpert())
+        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
         <div class="form-group">
             <label for="experties" class="col-md-3">Expertise Tags</label>
             <div class="col-md-9 expertise" data-select-tags="expertises">

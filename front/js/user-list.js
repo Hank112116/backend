@@ -24,6 +24,24 @@ $(function () {
         });
     });
 
+    $(".fa-commenting-o").click(function(){
+        var user_id = $(this).attr("rel");
+        $.ajax({
+            type: "POST",
+            url: "/apply-expert-message/messages",
+            data: {
+                user_id: user_id,
+            },
+            success: function success(feeback) {
+                $("#dialog").html(feeback);
+                $("#dialog").dialog({
+                    height: 270,
+                    width: 600
+                });
+            }
+        });
+    });
+
     function post_data(user_id, url, is_hwtrek_pm){
         $.ajax({
             type: "POST",
@@ -43,5 +61,4 @@ $(function () {
             }
         });
     }
-
 });

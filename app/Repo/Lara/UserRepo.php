@@ -1,6 +1,7 @@
 <?php namespace Backend\Repo\Lara;
 
 use Backend\Model\Eloquent\User;
+use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use ImageUp;
 use Validator;
 use Carbon;
@@ -16,6 +17,7 @@ class UserRepo implements UserInterface
 
     private $error;
     private $user;
+    private $apply_expert_msg_repo;
     private $rule = ['email' => 'required|email|unique:user'];
 
     private static $update_columns = [
@@ -28,11 +30,13 @@ class UserRepo implements UserInterface
     public function __construct(
         User $user,
         ExpertiseInterface $expertise,
+        ApplyExpertMessageInterface $apply_expert_msg_repo,
         ImageUp $image_uploader
     ) {
-        $this->user           = $user;
-        $this->expertise      = $expertise;
-        $this->image_uplodaer = $image_uploader;
+        $this->user                  = $user;
+        $this->expertise             = $expertise;
+        $this->apply_expert_msg_repo = $apply_expert_msg_repo;
+        $this->image_uplodaer        = $image_uploader;
     }
 
     public function dummy()
@@ -58,7 +62,8 @@ class UserRepo implements UserInterface
             'solutions',
             'solutions',
             'backedProducts',
-            'backedProducts.project'
+            'backedProducts.project',
+            'applyExpertMessage'
         )->find($id);
 
         return $user;
@@ -104,7 +109,8 @@ class UserRepo implements UserInterface
     public function toBeExpertMemberIds()
     {
         return $this->user
-            ->where('is_sign_up_as_expert', '1')
+            ->orWhere('is_sign_up_as_expert', '1')
+            ->orWhere('is_apply_to_be_expert', '1')
             ->where('user_type', User::TYPE_CREATOR)
             ->lists('user_id');
     }
@@ -258,15 +264,18 @@ class UserRepo implements UserInterface
         $dend   = $dend ? Carbon::parse($dend)->addDay() : Carbon::now();
 
         $this->user = $this->user->with([
-            'sendCommentCount'    => function ($q) use ($dstart, $dend) {
+            'sendProjectSolutionCommentCount'    => function ($q) use ($dstart, $dend) {
+                $q->where('profession_id', 0)->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'sendHubProjectSolutionCommentCount' => function ($q) use ($dstart, $dend) {
+                $q->where('profession_id', 0)->whereBetween('date_added', [ $dstart, $dend ]);
+            },
+            'inboxCount'                         => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
-            'sendHubCommentCount' => function ($q) use ($dstart, $dend) {
-                $q->whereBetween('date_added', [ $dstart, $dend ]);
-            },
-            'inboxCount'          => function ($q) use ($dstart, $dend) {
-                $q->whereBetween('date_added', [ $dstart, $dend ]);
-            },
+            'sendUserCommentCount'               => function ($q) use ($dstart, $dend) {
+                $q->whereBetween('created_at', [ $dstart, $dend ]);
+            }
         ]);
         return $this;
     }
@@ -302,6 +311,7 @@ class UserRepo implements UserInterface
     public function update($id, $data)
     {
         $user = $this->user->find($id);
+        $is_type_change = isset($data['user_type']) && $user->user_type !== $data['user_type'];
         $user->fill(array_only($data, self::$update_columns));
 
         if (null !== array_get($data, 'head', null)) {
@@ -310,8 +320,17 @@ class UserRepo implements UserInterface
         //check input user_type exists, not exists don't change user role
         if (array_key_exists('user_type', $data)) {
             $user->is_sign_up_as_expert = 0;
+            $user->is_apply_to_be_expert = 0;
         }
-
+        if ($is_type_change) {
+            // It means that the user_type change from creator to expert or from expert to creator
+            // If the user is from creator to expert than write the expert_approved_at, otherwise clear expert_approved_at
+            $user->expert_approved_at = ($user->isExpert()) ? Carbon::now() : null;
+        }
+        if ($is_type_change && $user->isExpert() &&  $apply_expert_msg = $this->apply_expert_msg_repo->byUserId($user->user_id)->first()) {
+            $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ? $apply_expert_msg->expired_at : Carbon::now();
+            $apply_expert_msg->save();
+        }
         $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
 
         $tag_ids    = $user->expertises ? explode(',', $user->expertises) : [];

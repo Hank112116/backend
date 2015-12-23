@@ -18,6 +18,7 @@ class ProjectTagNode
         'nfc'                   => 'NFC',
         'rfid'                  => 'RFID',
         'light-communication'   => 'Light Communication',
+        'ir'                    => 'IR',
 
         // PHYSICAL INTERFACE
         'hdmi'                  => 'HDMI',

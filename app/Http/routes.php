@@ -214,6 +214,4 @@ Route::group(['before' => 'backend.login'], function () {
 Route::post('/upload-editor-image', 'ImageUploadController@index');
 Route::post('/hub_email-send', 'EmailSendController@hubMailSend');
 
-get('add-a-log', function () {
-    Log::info("Hello World");
-});
+Route::post('apply-expert-message/messages', 'ApplyExpertMessageController@showMessages');

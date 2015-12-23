@@ -50,10 +50,10 @@
                 Type
             </label>
             <div class="col-md-5">
-                @if($user->isToBeExpert() && $user->isCreator())
-                <font color="red">Pending to Be Expert</font>
+                @if($user->isToBeExpert() or $user->isApplyExpert())
+                <font color="red">{{ $user->textType() }}</font>
                 @else
-                {!! $user->textType() !!}
+                {{ $user->textType() }}
                 @endif
             </div>
         </div>

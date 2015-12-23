@@ -60,7 +60,14 @@
         {!! Form::close() !!}
         {{--</div>--}}
     </div>
-    <div class="row text-center"><h4>{!! $users->total() !!} {!! $users->total() > 1 ? 'results' : 'result' !!}</h4></div>
+    <div class="row text-center">
+        <h4>
+            {!! $users->total() !!} result |
+            {!! $users->filter(function($item){ return $item->isPendingExpert();})->count() !!} not approve |
+            {!! $users->filter(function($item){ return !$item->isEmailVerify();})->count() !!} email not verify |
+            {!! $users->filter(function($item){ return !$item->isActive();})->count() !!} account suspend |
+        </h4>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped">
@@ -97,7 +104,7 @@
                         @if($is_super_admin && $user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
-                            <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                            <td>{!! ($user->isToBeExpert() or $user->isApplyExpert())?"<font color='red'>{$user->textType()}</font>":$user->textType()  !!}</td>
                         @endif
 
 
@@ -133,7 +140,7 @@
                                     'UserController@showDetail', 'DETAIL',
                                     $user->user_id, ['class' => 'btn-mini']) !!}
 
-                            @if($is_super_admin and !$user->isExpert() and $user->isToBeExpert())
+                            @if($is_super_admin and ($user->isApplyExpert() or $user->isToBeExpert()))
                                 {!! link_to_action(
                                         'UserController@showUpdate', 'EDIT & To-Expert',
                                         $user->user_id, ['class' => 'btn-mini btn-danger']) !!}

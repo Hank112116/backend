@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class User extends Eloquent
 {
 
-    protected $table = 'user';
+    protected $table      = 'user';
     protected $primaryKey = 'user_id';
-    protected $appends = ['image_url', 'full_name'];
+    protected $appends    = ['image_url', 'full_name'];
 
     public $timestamps = false; // not use created_at, updated_at
 
     public static $unguarded = true;
-    public static $partial = ['user_id', 'user_name', 'last_name', 'email', 'user_type', 'image'];
+    public static $partial   = ['user_id', 'user_name', 'last_name', 'email', 'user_type', 'image'];
 
-    const ROLE_MEMBER = 0;
+    const ROLE_MEMBER  = 0;
     const ROLE_MANAGER = 1;
-    const ROLE_ADMIN = 2;
+    const ROLE_ADMIN   = 2;
 
     private static $roles = [
         self::ROLE_MEMBER  => 'Member',
@@ -29,23 +29,47 @@ class User extends Eloquent
     ];
 
     const TYPE_CREATOR = '0';
-    const TYPE_EXPERT = '1';
+    const TYPE_EXPERT  = '1';
 
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
         self::TYPE_EXPERT  => 'Expert',
     ];
 
-    const EMAIL_VERIFY_NONE = 1;
-    const EMAIL_VERIFY = 2;
-    const EMAIL_VERIFY_BOUNCE = 3;
-    const EMAIL_VERIFY_COMPLAIN = 4;
+    const EMAIL_VERIFY_NONE     = '1';
+    const EMAIL_VERIFY          = '2';
+    const EMAIL_VERIFY_BOUNCE   = '3';
+    const EMAIL_VERIFY_COMPLAIN = '4';
 
     private static $email_verify_types = [
         self::EMAIL_VERIFY_NONE     => 'Not verify',
         self::EMAIL_VERIFY          => 'Verified',
         self::EMAIL_VERIFY_BOUNCE   => 'Bounce',
         self::EMAIL_VERIFY_COMPLAIN => 'Complain'
+    ];
+
+    const IS_CREATOR_STATUS = [
+        'user_type'             => self::TYPE_CREATOR,
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 0
+    ];
+
+    const IS_EXPERT_STATUS = [
+        'user_type'             => self::TYPE_EXPERT,
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 0
+    ];
+
+    const IS_PENDING_TO_BE_EXPERT_STATUS = [
+        'user_type'             => self::TYPE_CREATOR,
+        'is_sign_up_as_expert'  => 1,
+        'is_apply_to_be_expert' => 0
+    ];
+
+    const IS_APPLY_TO_BE_EXPERT_STATUS = [
+        'user_type'             => self::TYPE_CREATOR,
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 1
     ];
 
     // active in database may be ''(empty string), 1, 0
@@ -63,6 +87,10 @@ class User extends Eloquent
         return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
     }
 
+    public function applyExpertMessage()
+    {
+        return $this->hasMany(ApplyExpertMessage::class)->orderBy('id', 'desc');
+    }
 
     public function scopeQueryExperts($query)
     {
@@ -94,7 +122,7 @@ class User extends Eloquent
 
     public function verified()
     {
-        return $this->email_verify==self::EMAIL_VERIFY;
+        return $this->email_verify == self::EMAIL_VERIFY;
     }
 
     public function getImagePath()
@@ -105,15 +133,22 @@ class User extends Eloquent
 
     public function textType()
     {
-        if (!array_key_exists($this->user_type, static::$types)) {
+        if ($this->isStatus(self::IS_CREATOR_STATUS)) {
+            return 'Creator';
+        } elseif ($this->isStatus(self::IS_EXPERT_STATUS)) {
+            return 'Expert';
+        } elseif ($this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
+            return 'Sign up to Be Expert';
+        } elseif ($this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
+            return 'Apply to Be Expert';
+        } else {
             return 'Undefine';
         }
-
-        return static::$types[$this->user_type];
     }
 
     public function textRole()
     {
+
         return static::$roles[$this->user_role];
     }
 
@@ -194,12 +229,12 @@ class User extends Eloquent
         return '';
     }
 
-    public function sendCommentCount()
+    public function sendProjectSolutionCommentCount()
     {
         return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
-    public function sendHubCommentCount()
+    public function sendHubProjectSolutionCommentCount()
     {
         return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
@@ -209,63 +244,109 @@ class User extends Eloquent
         return $this->hasOne(Inbox::class, 'sender_id')->selectRaw('sender_id, count(*) as inboxCount')->groupBy('sender_id');
     }
 
+    public function sendUserCommentCount()
+    {
+        //dd($userComment->with('comment')->where('user_id', 852)->get());
+        return $this->hasOne(NewComment::class, 'poster_id')->selectRaw('poster_id, count(*) as commentCount')->groupBy('poster_id');
+
+    }
+
     //Use to get comment count which is be filtered or not be filtered
     public function getCommentCountAttribute()
     {
-        if (!array_key_exists('sendCommentCount', $this->relations)) {
-            $this->load('sendCommentCount');
+        if (!array_key_exists('sendProjectSolutionCommentCount', $this->relations)) {
+            $this->load('sendProjectSolutionCommentCount');
         }
-        if (!array_key_exists('sendHubCommentCount', $this->relations)) {
-            $this->load('sendHubCommentCount');
+        if (!array_key_exists('sendHubProjectSolutionCommentCount', $this->relations)) {
+            $this->load('sendHubProjectSolutionCommentCount');
         }
         if (!array_key_exists('inboxCount', $this->relations)) {
             $this->load('inboxCount');
         }
+        if (!array_key_exists('sendUserCommentCount', $this->relations)) {
+            $this->load('sendUserCommentCount');
+        }
 
-        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = $this->getRelation('sendProjectSolutionCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
-        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = $this->getRelation('sendHubProjectSolutionCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
         $inboxCount      = $this->getRelation('inboxCount');
         $inboxCount      = ($inboxCount) ? $inboxCount->inboxCount : 0;
-        return $commentCount + $hubCommentCount + $inboxCount;
+        $userCommentCount      = $this->getRelation('sendUserCommentCount');
+        $userCommentCount      = ($userCommentCount) ? $userCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount + $inboxCount + $userCommentCount;
     }
 
     //Use to get total comment count from user register.
     public function getTotalCommentCountAttribute()
     {
         //Reload relation to ignore where condition
-        $this->load('sendCommentCount');
-        $this->load('sendHubCommentCount');
+        $this->load('sendProjectSolutionCommentCount');
+        $this->load('sendHubProjectSolutionCommentCount');
         $this->load('inboxCount');
+        $this->load('sendUserCommentCount');
 
-        $commentCount    = $this->getRelation('sendCommentCount');
+        $commentCount    = $this->getRelation('sendProjectSolutionCommentCount');
         $commentCount    = ($commentCount) ? $commentCount->commentCount : 0;
-        $hubCommentCount = $this->getRelation('sendHubCommentCount');
+        $hubCommentCount = $this->getRelation('sendHubProjectSolutionCommentCount');
         $hubCommentCount = ($hubCommentCount) ? $hubCommentCount->commentCount : 0;
         $inboxCount      = $this->getRelation('inboxCount');
         $inboxCount      = ($inboxCount) ? $inboxCount->inboxCount : 0;
-        return $commentCount + $hubCommentCount + $inboxCount;
+        $userCommentCount      = $this->getRelation('sendUserCommentCount');
+        $userCommentCount      = ($userCommentCount) ? $userCommentCount->commentCount : 0;
+        return $commentCount + $hubCommentCount + $inboxCount + $userCommentCount;
     }
 
     public function isCreator()
     {
-        return $this->user_type == self::TYPE_CREATOR;
+        return $this->isStatus(self::IS_CREATOR_STATUS);
     }
 
     public function isExpert()
     {
-        return $this->user_type == self::TYPE_EXPERT;
+        return $this->isStatus(self::IS_EXPERT_STATUS);
     }
 
     public function isToBeExpert()
     {
-        return $this->is_sign_up_as_expert;
+        return $this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS);
     }
 
     public function isHWTrekPM()
     {
         return $this->is_hwtrek_pm;
+    }
+
+    public function isApplyExpert()
+    {
+        return $this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS);
+    }
+
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    public function isPendingExpert()
+    {
+        return $this->isToBeExpert() or $this->isApplyExpert();
+    }
+
+    public function isEmailVerify()
+    {
+        return $this->email_verify == self::EMAIL_VERIFY;
+    }
+
+    private function isStatus($status)
+    {
+        foreach ($status as $key => $status_flag) {
+            if ($this->getAttributeValue($key) != $status_flag) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function hasExpertiseTag($tag_id)

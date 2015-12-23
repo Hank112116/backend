@@ -77,6 +77,10 @@ class HubController extends BaseController
     public function showQuestionnaireDetail($id)
     {
         $questionnaire = $this->hub_repo->findQuestionnaire($id);
+        if (is_null($questionnaire)) {
+            Noty::warnLang('No such questionnaire');
+            return Redirect::action('HubController@indexQuestionnaire');
+        }
 
         return view('hub.questionnaire-detail')
             ->with('q', $questionnaire)
