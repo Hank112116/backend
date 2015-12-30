@@ -22,6 +22,7 @@ use Redirect;
 use Auth;
 use Response;
 use Log;
+use Curl\Curl;
 
 class UserController extends BaseController
 {
@@ -198,6 +199,7 @@ class UserController extends BaseController
     public function showDetail($id)
     {
         $user = $this->user_repo->findWithDetail($id);
+
         if (is_null($user)) {
             Noty::warnLang('user.no-user');
             return Redirect::action('UserController@showList');
@@ -210,6 +212,9 @@ class UserController extends BaseController
 
             return Redirect::action('UserController@showList');
         }
+
+        $attachments = $this->getUserAttachment($id);
+
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
@@ -217,7 +222,8 @@ class UserController extends BaseController
             'projects'          => $this->project_repo->byUserId($user->user_id),
             'products'          => $this->product_repo->byUserId($user->user_id),
             'solutions'         => $this->solution_repo->configApprove($user->solutions),
-            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id)
+            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
+            'attachments'        => $attachments
         ];
 
         if ($this->is_limitied_editor) {
@@ -251,13 +257,16 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
+        $attachments = $this->getUserAttachment($id);
+
         $data = [
             'industries'        => Industry::getUpdateArray(),
             'expertise_tags'    => $this->expertise_repo->getTags(),
             'user'              => $user,
             'user_industries'   => explode(',', $user->user_category_id),
             'expertise_setting' => explode(',', $user->expertises),
-            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id)
+            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
+            'attachments'       => $attachments
         ];
 
         if ($this->is_limitied_editor) {
@@ -332,5 +341,16 @@ class UserController extends BaseController
             $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
         }
         return Response::json($res);
+    }
+
+    private function getUserAttachment($user_id)
+    {
+        $curl = new Curl();
+        $curl->setReferrer('https://dev.hwtrek.com');
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+
+        $r = $curl->get("https://dev.hwtrek.com/apis/users/{$user_id}/profile");
+        return $r->attachments;
     }
 }
