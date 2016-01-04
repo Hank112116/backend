@@ -48,7 +48,27 @@
             </div>
         </div>
     </div> 
-
+    @if ($attachments)
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Attachment</div>
+                    <div class="panel-body">
+                        @foreach($attachments as $attachment)
+                            <div class="photo-preview">
+                                <a target="_blank" href="{{ $attachment->url }}">
+                                    <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
+                                </a>
+                                <div class="file-info">
+                                    <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
