@@ -257,6 +257,7 @@
                                     </a>
                                     <div class="file-info">
                                         <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                        <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" rel="{{ base64_encode($attachment->key) }}"></i>
                                     </div>
                                 </div>
                             @endforeach
@@ -264,6 +265,7 @@
                     </div>
                 </div>
             </div>
+            {!! Form::hidden('front_domain', $front_domain) !!}
         @endif
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>

@@ -17,6 +17,7 @@ use Backend\Model\Eloquent\Industry;
 
 use Input;
 use Lang;
+use Config;
 use Noty;
 use Redirect;
 use Auth;
@@ -241,7 +242,7 @@ class UserController extends BaseController
      * @param $id
      * @return $this
      */
-    public function showUpdate($id)
+    public function showUpdate($id, $param = null)
     {
         $user = $this->user_repo->find($id);
         if (is_null($user)) {
@@ -249,15 +250,19 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        if ($this->is_restricted_adminer and
-            !$user->isExpert()
-        ) {
+        if ($this->is_restricted_adminer and !$user->isExpert()) {
             Noty::warn('No access permission');
 
             return Redirect::action('UserController@showList');
         }
 
-        $attachments = $this->getUserAttachment($id);
+        if ($param == 'delete-attachment-fail') {
+            Noty::warn('No access permission');
+            return Redirect::action('UserController@showUpdate', [$id]);
+        }
+
+        $attachments  = $this->getUserAttachment($id);
+        $front_domain = Config::get('app.front_domain');
 
         $data = [
             'industries'        => Industry::getUpdateArray(),
@@ -266,7 +271,8 @@ class UserController extends BaseController
             'user_industries'   => explode(',', $user->user_category_id),
             'expertise_setting' => explode(',', $user->expertises),
             'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
-            'attachments'       => $attachments
+            'attachments'       => $attachments,
+            'front_domain'      => $front_domain
         ];
 
         if ($this->is_limitied_editor) {
@@ -345,12 +351,12 @@ class UserController extends BaseController
 
     private function getUserAttachment($user_id)
     {
+        $front_domain = Config::get('app.front_domain');
         $curl = new Curl();
-        $curl->setReferrer('https://dev.hwtrek.com');
+        $curl->setReferrer('https://' . $front_domain);
         $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-
-        $r = $curl->get("https://dev.hwtrek.com/apis/users/{$user_id}/profile");
+        $r = $curl->get("https://{$front_domain}/apis/users/{$user_id}/profile");
         return $r->attachments;
     }
 }
