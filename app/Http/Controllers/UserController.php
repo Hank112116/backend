@@ -224,7 +224,7 @@ class UserController extends BaseController
             'products'          => $this->product_repo->byUserId($user->user_id),
             'solutions'         => $this->solution_repo->configApprove($user->solutions),
             'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
-            'attachments'        => $attachments
+            'attachments'       => $attachments
         ];
 
         if ($this->is_limitied_editor) {

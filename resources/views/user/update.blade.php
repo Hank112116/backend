@@ -257,7 +257,7 @@
                                     </a>
                                     <div class="file-info">
                                         <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
-                                        <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" rel="{{ base64_encode($attachment->key) }}"></i>
+                                        <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" rel="{{ base64_encode(json_encode($attachment)) }}.{{ $user->user_id }}"></i>
                                     </div>
                                 </div>
                             @endforeach
