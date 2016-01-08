@@ -97,5 +97,5 @@ function delete_attachment(attachment, $this)
                 Notifier.showTimedMessage("Server error", "warning", 2);
             }
         }
-    })
+    });
 }
