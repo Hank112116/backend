@@ -26,7 +26,7 @@ use Response;
 use Log;
 use Curl\Curl;
 use Request;
-use Storage;
+use RSA;
 
 class UserController extends BaseController
 {
@@ -376,10 +376,11 @@ class UserController extends BaseController
      */
     public function createAttachment()
     {
-        $user_id              = Request::get('user_id');
-        $attachment           = $this->putAttachment($user_id, Request::file()[0]);
-        $attachments['put'][] = $attachment;
-        $http_code            = $this->updateAttachment($user_id, $attachments);
+        $user_id                 = Request::get('user_id');
+        $attachment              = $this->putAttachment($user_id, Request::file()[0]);
+        $attachments['put'][]    = $attachment;
+        $attachments['delete']   = [];
+        $http_code               = $this->updateAttachment($user_id, $attachments);
         Log::info('update attachment', array($attachment));
         return Response::json('', $http_code);
     }
@@ -394,10 +395,10 @@ class UserController extends BaseController
         $user_id                 = Request::get('user_id');
         $attachment              = json_decode(base64_decode(Request::get('attachment')));
         $attachments['delete'][] = $attachment;
+        $attachments['put']      = [];
         $http_code               = $this->updateAttachment($user_id, $attachments);
         Log:info('delete attachment', array($attachment));
         return Response::json('', $http_code);
-
     }
 
     /**
@@ -429,18 +430,19 @@ class UserController extends BaseController
         $curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
 
         $curl->put("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
-            'file' => "@{$file_path}",
-            'key'  =>  urlencode(Config::get('app.front_public_key'))
+            'file'      => "@{$file_path}",
+            'pass_code' =>  RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'))
         ]);
 
         fclose($fp);
         unlink($file_path);
 
         if ($curl->error) {
-            return  $curl->errorCode;
-        } else {
-            return $curl->response;
+            return $curl->errorCode;
         }
+        $response = $curl->response;
+        $curl->close();
+        return $response;
     }
 
     /**
@@ -457,19 +459,20 @@ class UserController extends BaseController
         $curl = new Curl();
         $curl->setReferrer('https://' . $backend_domain);
         $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setHeader('Content-Type', 'application/json');
         $curl->setHeader('Accept', 'application/json');
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-
-        $curl->patch("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
-            'attachments' => (object) $attachments,
-            'key'  =>  urlencode(Config::get('app.front_public_key'))
-        ]);
+        $data['attachments'] = $attachments;
+        $data['pass_code']   = RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'));
+        $curl->patch("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", json_encode($data));
         if ($curl->error) {
             $info['message'] =  'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage;
             Log::error('attachment update error', $info);
-            return $curl->errorCode;
+            $http_code = $curl->errorCode;
         } else {
-            return $curl->httpStatusCode;
+            $http_code =  $curl->httpStatusCode;
         }
+        $curl->close();
+        return $http_code;
     }
 }

@@ -16,7 +16,7 @@ return [
     'debug'            => env('APP_DEBUG'),
     'front_domain'     => env('FRONT_DOMAIN', 'www.hwtrek.com'),
     'backend_domain'   => env('BACKEND_DOMAIN', 'backend.hwtrek.com'),
-    'front_public_key' => 'IrH5oyAQby6eDNv6F/bBsg==',
+    'pass_code'        => 'J66UtuTp4Ycny1k67nrjKalA02bE5a0Q',
 
     /*
     |--------------------------------------------------------------------------
