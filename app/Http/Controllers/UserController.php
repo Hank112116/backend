@@ -14,6 +14,7 @@ use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
 use Backend\Model\Eloquent\Industry;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Input;
 use Lang;
@@ -24,6 +25,8 @@ use Auth;
 use Response;
 use Log;
 use Curl\Curl;
+use Request;
+use Storage;
 
 class UserController extends BaseController
 {
@@ -349,6 +352,12 @@ class UserController extends BaseController
         return Response::json($res);
     }
 
+    /**
+     * Get web service profile api return attachments information
+     *
+     * @param $user_id
+     * @return object attachments
+     */
     private function getUserAttachment($user_id)
     {
         $front_domain = Config::get('app.front_domain');
@@ -358,5 +367,109 @@ class UserController extends BaseController
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
         $r = $curl->get("https://{$front_domain}/apis/users/{$user_id}/profile");
         return $r->attachments;
+    }
+
+    /**
+     * Create attachment
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createAttachment()
+    {
+        $user_id              = Request::get('user_id');
+        $attachment           = $this->putAttachment($user_id, Request::file()[0]);
+        $attachments['put'][] = $attachment;
+        $http_code            = $this->updateAttachment($user_id, $attachments);
+        Log::info('update attachment', array($attachment));
+        return Response::json('', $http_code);
+    }
+
+    /**
+     * Delete attachment
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteAttachment()
+    {
+        $user_id                 = Request::get('user_id');
+        $attachment              = json_decode(base64_decode(Request::get('attachment')));
+        $attachments['delete'][] = $attachment;
+        $http_code               = $this->updateAttachment($user_id, $attachments);
+        Log:info('delete attachment', array($attachment));
+        return Response::json('', $http_code);
+
+    }
+
+    /**
+     * Put attachment to web service backend api
+     *
+     * @param              $user_id
+     * @param UploadedFile $file
+     * @return int|null
+     */
+    private function putAttachment($user_id, UploadedFile $file)
+    {
+        $front_domain   = Config::get('app.front_domain');
+        $backend_domain = Config::get('app.backend_domain');
+
+        $upload_dir = '/tmp/';
+
+        $file->move($upload_dir, $file->getClientOriginalName());
+
+        $file_path = $upload_dir . $file->getClientOriginalName();
+        $fp        = fopen($file_path, "r");
+
+        $curl = new Curl();
+        $curl->setReferrer('https://' . $backend_domain);
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setHeader('Content-Type', 'multipart/form-data');
+        $curl->setHeader('Accept', 'application/json');
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+        $curl->setOpt(CURLOPT_INFILE, $fp);
+        $curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
+
+        $curl->put("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
+            'file' => "@{$file_path}",
+            'key'  =>  urlencode(Config::get('app.front_public_key'))
+        ]);
+
+        fclose($fp);
+        unlink($file_path);
+
+        if ($curl->error) {
+            return  $curl->errorCode;
+        } else {
+            return $curl->response;
+        }
+    }
+
+    /**
+     * Update attachment to web service backend api
+     *
+     * @param $user_id
+     * @param $attachments
+     * @return int
+     */
+    private function updateAttachment($user_id, $attachments)
+    {
+        $front_domain   = Config::get('app.front_domain');
+        $backend_domain = Config::get('app.backend_domain');
+        $curl = new Curl();
+        $curl->setReferrer('https://' . $backend_domain);
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setHeader('Accept', 'application/json');
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+
+        $curl->patch("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
+            'attachments' => (object) $attachments,
+            'key'  =>  urlencode(Config::get('app.front_public_key'))
+        ]);
+        if ($curl->error) {
+            $info['message'] =  'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage;
+            Log::error('attachment update error', $info);
+            return $curl->errorCode;
+        } else {
+            return $curl->httpStatusCode;
+        }
     }
 }

@@ -243,29 +243,35 @@
         </div>
         @endif
 
-        @if ($attachments)
+        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
             <div class="form-group">
                 <label for="industry" class="col-md-3">Attachments</label>
                 <div class="col-md-9 industry">
                     <div class="panel panel-default">
                         <div class="panel-heading">Attachments</div>
+
                         <div class="panel-body">
-                            @foreach($attachments as $attachment)
-                                <div class="photo-preview">
-                                    <a target="_blank" href="{{ $attachment->url }}">
-                                        <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
-                                    </a>
-                                    <div class="file-info">
-                                        <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
-                                        <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" rel="{{ base64_encode(json_encode($attachment)) }}.{{ $user->user_id }}"></i>
+                            @if ($attachments)
+                                @foreach($attachments as $attachment)
+                                    <div class="photo-preview">
+                                        <a target="_blank" href="{{ $attachment->url }}">
+                                            <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
+                                        </a>
+                                        <div class="file-info">
+                                            <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                            <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" attachment="{{ base64_encode(json_encode($attachment)) }}"></i>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            @endif
+                        </div>
+
+                        <div class="panel-body-attachment" style="margin-left: 10px; margin-bottom: 10px;">
+                            <input type="file" name="attachment" id="attachment">
                         </div>
                     </div>
                 </div>
             </div>
-            {!! Form::hidden('front_domain', $front_domain) !!}
         @endif
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>
@@ -289,7 +295,8 @@
             <div class="col-md-9">
                 <button class="btn-sassy btn-submit">Update</button>
             </div>
-        </div>    　    
+        </div>
+        <input type="hidden" name="user_id" id="user_id" value="{{ $user->user_id }}">
 	{!! Form::close() !!}		
 	</div>
 
