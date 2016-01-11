@@ -2,21 +2,21 @@
 
 return [
 
-    'url'           => 'http://localhost',
+    'url'              => 'http://localhost',
+    'timezone'         => 'America/Los_Angeles',
+    'locale'           => 'en',
+    'fallback_locale'  => 'en',
 
-    'timezone'      => 'America/Los_Angeles',
+    'hub_token'        => 'fd937f478bec52fa7ab4347eac66e527',
+    'hipchat_token'    => '0f656c8433c1bc4fbf2fe4ae457208',
 
-    'locale'        => 'en',
-    'fallback_locale' => 'en',
+    'key'              => env('APP_KEY', 'SomeRandomString'),
+    'cipher'           => MCRYPT_RIJNDAEL_128,
 
-    'hub_token'     => 'fd937f478bec52fa7ab4347eac66e527',
-    'hipchat_token' => '0f656c8433c1bc4fbf2fe4ae457208',
-
-    'key'             => env('APP_KEY', 'SomeRandomString'),
-    'cipher'          => MCRYPT_RIJNDAEL_128,
-
-    'debug'           => env('APP_DEBUG'),
-    'front_domain'    => env('FRONT_DOMAIN', 'www.hwtrek.com'),
+    'debug'            => env('APP_DEBUG'),
+    'front_domain'     => env('FRONT_DOMAIN', 'www.hwtrek.com'),
+    'backend_domain'   => env('BACKEND_DOMAIN', 'backend.hwtrek.com'),
+    'pass_code'        => 'J66UtuTp4Ycny1k67nrjKalA02bE5a0Q',
 
     /*
     |--------------------------------------------------------------------------

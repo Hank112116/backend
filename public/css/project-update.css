@@ -5210,7 +5210,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b7b7b7;
+  background-color: #b6b6b6;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {
@@ -8321,6 +8321,28 @@ body {
   font-size: 18px;
   margin-right: 10px;
   margin-bottom: 10px;
+}
+
+/* line 22, ../../front/sass/modules/_update-form.scss */
+.photo-preview {
+  display: inline-block;
+  margin-right: 1.5em;
+  margin-top: 1em;
+  vertical-align: top;
+  width: 11.25em;
+}
+
+/* line 30, ../../front/sass/modules/_update-form.scss */
+.photo-thumb {
+  border: 1px solid #999999;
+  height: 8.5em;
+  width: 11.25em;
+  background-color: #f5f5f5;
+  background-position: 50% 50%;
+  background-size: cover;
+  display: inline-block;
+  margin: 0 0.5em 0.5em 0;
+  position: relative;
 }
 
 /* line 2, ../../front/sass/modules/_update-expertise-tags.scss */

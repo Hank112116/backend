@@ -84,7 +84,28 @@
                 </div>
             </div>
         @endif
-
+        @if ($attachments)
+            <div class="form-group">
+                <label for="industry" class="col-md-3">Attachments</label>
+                <div class="col-md-9 industry">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Attachments</div>
+                        <div class="panel-body">
+                            @foreach($attachments as $attachment)
+                                <div class="photo-preview">
+                                    <a target="_blank" href="{{ $attachment->url }}">
+                                        <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
+                                    </a>
+                                    <div class="file-info">
+                                        <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>
             <div class="col-md-9">

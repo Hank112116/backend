@@ -31,7 +31,9 @@ Route::group(['before' => 'backend.user'], function () {
     Route::get('user/to-be-expert', 'UserController@showToBeExperts');
     Route::get('user/search/{by}', 'UserController@showSearch');
     Route::get('user/detail/{id}', 'UserController@showDetail');
+    Route::get('user/update/{id}/param/{param}', 'UserController@showUpdate');
     Route::get('user/update/{id}', 'UserController@showUpdate');
+
 
     Route::get('user/api/search/{id}', 'UserController@searchUser');
 
@@ -44,6 +46,9 @@ Route::group(['before' => 'backend.user'], function () {
 
     Route::post('user/update/{id}', 'UserController@update');
     Route::post('user/change-hwtrek-pm-type', 'UserController@changeHWTrekPM');
+
+    Route::post('user/delete-attachment', 'UserController@deleteAttachment');
+    Route::post('user/create-attachment', 'UserController@createAttachment');
 });
 
 // Inbox

@@ -202,18 +202,18 @@
                 <label for="company-url" class="col-md-3">Company URL</label>
                 <div class="col-md-5">
                     {!! Form::text('company_url', $user->company_url,
-                        ['placeholder' => 'Company URL', 'class'=>'form-control', 'id'=>'company-url']) !!}
+                        ['placeholder' => 'Company URL ex:https://www.hwtrek.com', 'class'=>'form-control', 'id'=>'company-url']) !!}
                 </div>
-                <div class="col-md-5"></div>
+                <div class="col-md-5"><span class='error'>{!! $errors->first('company_url') !!}</span></div>
             </div>
 
             <div class="form-group">
                 <label for="personal-url" class="col-md-3">Personal URL</label>
                 <div class="col-md-5">
                     {!! Form::text('personal_url', $user->personal_url,
-                        ['placeholder' => 'Personal URL', 'class'=>'form-control', 'id'=>'personal-url']) !!}
+                        ['placeholder' => 'Personal URL ex:https://www.personal.com', 'class'=>'form-control', 'id'=>'personal-url']) !!}
                 </div>
-                <div class="col-md-5"></div>
+                <div class="col-md-5"><span class='error'>{!! $errors->first('personal_url') !!}</span></div>
             </div>
         @endif
 
@@ -243,6 +243,36 @@
         </div>
         @endif
 
+        @if ($user->isExpert())
+            <div class="form-group">
+                <label for="industry" class="col-md-3">Attachments</label>
+                <div class="col-md-9 industry">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Attachments</div>
+
+                        <div class="panel-body">
+                            @if ($attachments)
+                                @foreach($attachments as $attachment)
+                                    <div class="photo-preview">
+                                        <a target="_blank" href="{{ $attachment->url }}">
+                                            <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
+                                        </a>
+                                        <div class="file-info">
+                                            <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                            <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" attachment="{{ base64_encode(json_encode($attachment)) }}"></i>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+
+                        <div class="panel-body-attachment" style="margin-left: 10px; margin-bottom: 10px;">
+                            <input type="file" name="attachment" id="attachment">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="form-group">
             <label for="biography" class="col-md-3">Biography</label>
             <div class="col-md-9">
@@ -265,7 +295,8 @@
             <div class="col-md-9">
                 <button class="btn-sassy btn-submit">Update</button>
             </div>
-        </div>    　    
+        </div>
+        <input type="hidden" name="user_id" id="user_id" value="{{ $user->user_id }}">
 	{!! Form::close() !!}		
 	</div>
 
