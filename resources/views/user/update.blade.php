@@ -243,7 +243,7 @@
         </div>
         @endif
 
-        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
+        @if ($user->isExpert())
             <div class="form-group">
                 <label for="industry" class="col-md-3">Attachments</label>
                 <div class="col-md-9 industry">
