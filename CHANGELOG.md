@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.7.0
+* [NEW] add user attachment function in member (@Hank)
+
 ## v1.6.0
 * [NEW] creator upgrade expert (@Hank)
 * [CHANGE] adjust comment report (@Hank)
