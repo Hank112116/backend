@@ -310,6 +310,20 @@ class UserController extends BaseController
         }
 
         $this->user_repo->update($id, $data);
+
+        if (array_key_exists('attachments', $data)) {
+            $attachments['put']    = [];
+            $attachments['delete'] = [];
+            $attachment_data = (json_decode($data['attachments'], true));
+            foreach ($attachment_data['put_items'] as $row) {
+                $attachments['put'][] = $row;
+            }
+            foreach ($attachment_data['delete_items'] as $row) {
+                $attachments['delete'][] = $row;
+            }
+            $this->updateAttachment($id, $attachments);
+        }
+
         Noty::success(Lang::get('user.update'));
 
         $log_action = 'Edit user';
@@ -370,49 +384,18 @@ class UserController extends BaseController
     }
 
     /**
-     * Create attachment
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function createAttachment()
-    {
-        $user_id                 = Request::get('user_id');
-        $attachment              = $this->putAttachment($user_id, Request::file()[0]);
-        $attachments['put'][]    = $attachment;
-        $attachments['delete']   = [];
-        $http_code               = $this->updateAttachment($user_id, $attachments);
-        Log::info('update attachment', array($attachment));
-        return Response::json('', $http_code);
-    }
-
-    /**
-     * Delete attachment
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function deleteAttachment()
-    {
-        $user_id                 = Request::get('user_id');
-        $attachment              = json_decode(base64_decode(Request::get('attachment')));
-        $attachments['delete'][] = $attachment;
-        $attachments['put']      = [];
-        $http_code               = $this->updateAttachment($user_id, $attachments);
-        Log:info('delete attachment', array($attachment));
-        return Response::json('', $http_code);
-    }
-
-    /**
      * Put attachment to web service backend api
      *
      * @param              $user_id
      * @param UploadedFile $file
      * @return int|null
      */
-    private function putAttachment($user_id, UploadedFile $file)
+    public function putAttachment()
     {
         $front_domain   = Config::get('app.front_domain');
         $backend_domain = Config::get('app.backend_domain');
-
+        $user_id = Request::get('user_id');
+        $file    = Request::file()[0];
         $upload_dir = '/tmp/';
 
         $file->move($upload_dir, $file->getClientOriginalName());
@@ -438,11 +421,11 @@ class UserController extends BaseController
         unlink($file_path);
 
         if ($curl->error) {
-            return $curl->errorCode;
+            return Response::json([], $curl->errorCode);
         }
         $response = $curl->response;
         $curl->close();
-        return $response;
+        return json_encode($response);
     }
 
     /**
