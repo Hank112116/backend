@@ -21,7 +21,11 @@ var user_id = $("#user_id").val();
 
 var put_items        = [];
 var delete_items     = [];
-var attachment_items = {put_items, delete_items};
+
+var attachment_items = {
+    put_items:    put_items,
+    delete_items: delete_items
+};
 
 // Variable to store your files
 var files;
