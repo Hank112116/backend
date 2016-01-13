@@ -315,13 +315,16 @@ class UserController extends BaseController
             $attachments['put']    = [];
             $attachments['delete'] = [];
             $attachment_data = (json_decode($data['attachments'], true));
-            foreach ($attachment_data['put_items'] as $row) {
-                $attachments['put'][] = $row;
+
+            if ($attachment_data) {
+                foreach ($attachment_data['put_items'] as $row) {
+                    $attachments['put'][] = $row;
+                }
+                foreach ($attachment_data['delete_items'] as $row) {
+                    $attachments['delete'][] = $row;
+                }
+                $this->updateAttachment($id, $attachments);
             }
-            foreach ($attachment_data['delete_items'] as $row) {
-                $attachments['delete'][] = $row;
-            }
-            $this->updateAttachment($id, $attachments);
         }
 
         Noty::success(Lang::get('user.update'));

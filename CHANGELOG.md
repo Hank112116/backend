@@ -2,13 +2,14 @@
 
 ## v1.7.0
 * [NEW] add user attachment function in member (@Hank)
+* [FIXED] fix editor upload image error (@Hank)
 
 ## v1.6.0
 * [NEW] creator upgrade expert (@Hank)
 * [CHANGE] adjust comment report (@Hank)
 
 ## v1.5.9
-* [FIXED] [FIXED] fix hub questionnaires recommend expert bug (@Hank)
+* [FIXED] fix hub questionnaires recommend expert bug (@Hank)
 
 ## v1.5.8
 * [FIXED] fix JSON.parse parse quote error from solution edit image (@Hank)

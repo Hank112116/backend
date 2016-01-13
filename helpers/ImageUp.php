@@ -144,15 +144,10 @@ class ImageUp
     public function buildThumbImage(UploadedFile $image, $size = [])
     {
         if (!$size) {
-            $setting = DB::table('image_setting')
-                ->select('p_width', 'p_height', 'p_ratio')
-                ->where('image_setting_id', '1')
-                ->first();
-
             $size = [
-                'width'  => $setting->p_width,
-                'height' => $setting->p_height,
-                'ratio'  => $setting->p_ratio
+                'width'  => Config::get('image.thumb_p_width'),
+                'height' => Config::get('image.thumb_p_height'),
+                'ratio'  => Config::get('image.thumb_p_ratio'),
             ];
         }
 
@@ -170,15 +165,10 @@ class ImageUp
 
     public function buildUserThumbImage(UploadedFile $image)
     {
-        $setting = DB::table('image_setting')
-            ->select('u_width', 'u_height', 'u_ratio')
-            ->where('image_setting_id', '1')
-            ->first();
-
         return $this->buildThumbImage($image, [
-            'width'  => $setting->u_width,
-            'height' => $setting->u_height,
-            'ratio'  => $setting->u_ratio
+            'width'  => Config::get('image.thumb_u_width'),
+            'height' => Config::get('image.thumb_u_height'),
+            'ratio'  => Config::get('image.thumb_u_ratio'),
         ]);
     }
 
