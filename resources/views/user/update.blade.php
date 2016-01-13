@@ -250,7 +250,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Attachments</div>
 
-                        <div class="panel-body">
+                        <div class="panel-body-attachment-list" style="margin-left: 10px; margin-bottom: 10px;">
                             @if ($attachments)
                                 @foreach($attachments as $attachment)
                                     <div class="photo-preview">
@@ -259,7 +259,7 @@
                                         </a>
                                         <div class="file-info">
                                             <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
-                                            <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" attachment="{{ base64_encode(json_encode($attachment)) }}"></i>
+                                            <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" attachment="{{ json_encode($attachment) }}"></i>
                                         </div>
                                     </div>
                                 @endforeach
@@ -267,7 +267,8 @@
                         </div>
 
                         <div class="panel-body-attachment" style="margin-left: 10px; margin-bottom: 10px;">
-                            <input type="file" name="attachment" id="attachment">
+                            <input type="file" name="attachment_upload" id="attachment_upload">
+                            <input type="hidden" name="attachments" id="attachments">
                         </div>
                     </div>
                 </div>

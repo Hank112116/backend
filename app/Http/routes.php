@@ -47,8 +47,7 @@ Route::group(['before' => 'backend.user'], function () {
     Route::post('user/update/{id}', 'UserController@update');
     Route::post('user/change-hwtrek-pm-type', 'UserController@changeHWTrekPM');
 
-    Route::post('user/delete-attachment', 'UserController@deleteAttachment');
-    Route::post('user/create-attachment', 'UserController@createAttachment');
+    Route::post('user/put-attachment', 'UserController@putAttachment');
 });
 
 // Inbox
