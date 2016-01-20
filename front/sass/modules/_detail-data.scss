@@ -1,42 +1,63 @@
 $data-group-radius  : 3px;
 $data-group-padding : 5px;
 $grout-min-width    : 90%;
+$grout-half-gap     : 2%;
 
 .data-group {
-    border: 1px solid #ddd;
-    border-radius : $data-group-radius;
-    font-size     : $font-size-base;
-    line-height   : $font-size-large;
-    padding-left  : 0px;
-    margin-bottom : 1em;
-    width: $grout-min-width;
-    .label {
-        background-color: whitesmoke;
-        padding : $data-group-padding  1em $data-group-padding 0.5em;
-        border-radius: $data-group-radius 0 0 $data-group-radius;
-        border-right : 1px solid #dfdfdf;
-        display: inline-block;
-        min-width: 10em;
-    }
+  width: $grout-min-width;
+  margin-bottom: 1em;
+  padding-left: 0;
+  border: 1px solid #ddd;
+  border-radius: $data-group-radius;
+  font-size: $font-size-base;
+  line-height: $font-size-large;
 
-    .tail {
-        background-color: whitesmoke;
-        padding : $data-group-padding  0.3em $data-group-padding 0.5em;
-        border-radius: 0 $data-group-radius $data-group-radius 0;
-        border-left : 1px solid #dfdfdf;
-        display: inline-block;
-        min-width: 2em;
-        float: right;
-    }
+  .label {
+    display: inline-block;
+    min-width: 10em;
+    padding: $data-group-padding  1em $data-group-padding .5em;
+    border-right: 1px solid #dfdfdf;
+    border-radius: $data-group-radius 0 0 $data-group-radius;
+    background-color: #f5f5f5;
+  }
 
-    .content {
-        padding-left : 1em;
-    }
+  .tail {
+    display: inline-block;
+    min-width: 2em;
+    padding: $data-group-padding  .3em $data-group-padding .5em;
+    float: right;
+    border-left: 1px solid #dfdfdf;
+    border-radius: 0 $data-group-radius $data-group-radius 0;
+    background-color: #f5f5f5;
+  }
+
+  .group-half {
+    width: ($grout-min-width - $grout-half-gap)/2;
+    margin-right: $grout-half-gap;
+    float: left;
+  }
+
+  .content {
+    padding-left: 1em;
+  }
 }
 
-$grout-half-gap : 2%;
-.data-group.group-half {
-    width: ($grout-min-width - $grout-half-gap)/2;
-    float: left;
-    margin-right: $grout-half-gap;
+.photo-preview {
+  display: inline-block;
+  width: 11.25em;
+  margin-top: 1em;
+  margin-right: 1.5em;
+  vertical-align: top;
+}
+
+.photo-thumb {
+  display: inline-block;
+  position: relative;
+  width: 11.25em;
+  height: 8.5em;
+  margin: 0 .5em .5em 0;
+  border: 1px solid #999;
+  background-color: #f5f5f5;
+  background-position: 50% 50%;
+  background-size: cover;
 }

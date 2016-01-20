@@ -18,7 +18,11 @@ class UserRepo implements UserInterface
     private $error;
     private $user;
     private $apply_expert_msg_repo;
-    private $rule = ['email' => 'required|email|unique:user'];
+    private $rule = [
+        'email'        => 'required|email',
+        'company_url'  => 'url',
+        'personal_url' => 'url'
+    ];
 
     private static $update_columns = [
         'active', 'email_verify', 'user_type', 'email',
@@ -282,12 +286,12 @@ class UserRepo implements UserInterface
 
     public function validUpdate($id, $data)
     {
-        if (array_key_exists('email', $data)) {
-            $user = $this->user->find($id);
-            if ($user->email === $data['email']) {
-                return true;
-            }
-        }
+//        if (array_key_exists('email', $data)) {
+//            $user = $this->user->find($id);
+//            if ($user->email === $data['email']) {
+//                return true;
+//            }
+//        }
 
         $validator = Validator::make($data, $this->rule);
 

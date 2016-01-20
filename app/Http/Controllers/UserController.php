@@ -14,14 +14,19 @@ use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
 use Backend\Model\Eloquent\Industry;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Input;
 use Lang;
+use Config;
 use Noty;
 use Redirect;
 use Auth;
 use Response;
 use Log;
+use Curl\Curl;
+use Request;
+use RSA;
 
 class UserController extends BaseController
 {
@@ -198,6 +203,7 @@ class UserController extends BaseController
     public function showDetail($id)
     {
         $user = $this->user_repo->findWithDetail($id);
+
         if (is_null($user)) {
             Noty::warnLang('user.no-user');
             return Redirect::action('UserController@showList');
@@ -210,6 +216,9 @@ class UserController extends BaseController
 
             return Redirect::action('UserController@showList');
         }
+
+        $attachments = $this->getUserAttachment($id);
+
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
@@ -217,7 +226,8 @@ class UserController extends BaseController
             'projects'          => $this->project_repo->byUserId($user->user_id),
             'products'          => $this->product_repo->byUserId($user->user_id),
             'solutions'         => $this->solution_repo->configApprove($user->solutions),
-            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id)
+            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
+            'attachments'       => $attachments
         ];
 
         if ($this->is_limitied_editor) {
@@ -235,7 +245,7 @@ class UserController extends BaseController
      * @param $id
      * @return $this
      */
-    public function showUpdate($id)
+    public function showUpdate($id, $param = null)
     {
         $user = $this->user_repo->find($id);
         if (is_null($user)) {
@@ -243,13 +253,19 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        if ($this->is_restricted_adminer and
-            !$user->isExpert()
-        ) {
+        if ($this->is_restricted_adminer and !$user->isExpert()) {
             Noty::warn('No access permission');
 
             return Redirect::action('UserController@showList');
         }
+
+        if ($param == 'delete-attachment-fail') {
+            Noty::warn('No access permission');
+            return Redirect::action('UserController@showUpdate', [$id]);
+        }
+
+        $attachments  = $this->getUserAttachment($id);
+        $front_domain = Config::get('app.front_domain');
 
         $data = [
             'industries'        => Industry::getUpdateArray(),
@@ -257,7 +273,9 @@ class UserController extends BaseController
             'user'              => $user,
             'user_industries'   => explode(',', $user->user_category_id),
             'expertise_setting' => explode(',', $user->expertises),
-            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id)
+            'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
+            'attachments'       => $attachments,
+            'front_domain'      => $front_domain
         ];
 
         if ($this->is_limitied_editor) {
@@ -292,6 +310,23 @@ class UserController extends BaseController
         }
 
         $this->user_repo->update($id, $data);
+
+        if (array_key_exists('attachments', $data)) {
+            $attachments['put']    = [];
+            $attachments['delete'] = [];
+            $attachment_data = (json_decode($data['attachments'], true));
+
+            if ($attachment_data) {
+                foreach ($attachment_data['put_items'] as $row) {
+                    $attachments['put'][] = $row;
+                }
+                foreach ($attachment_data['delete_items'] as $row) {
+                    $attachments['delete'][] = $row;
+                }
+                $this->updateAttachment($id, $attachments);
+            }
+        }
+
         Noty::success(Lang::get('user.update'));
 
         $log_action = 'Edit user';
@@ -332,5 +367,98 @@ class UserController extends BaseController
             $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
         }
         return Response::json($res);
+    }
+
+    /**
+     * Get web service profile api return attachments information
+     *
+     * @param $user_id
+     * @return object attachments
+     */
+    private function getUserAttachment($user_id)
+    {
+        $front_domain = Config::get('app.front_domain');
+        $curl = new Curl();
+        $curl->setReferrer('https://' . $front_domain);
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+        $r = $curl->get("https://{$front_domain}/apis/users/{$user_id}/profile");
+        return $r->attachments;
+    }
+
+    /**
+     * Put attachment to web service backend api
+     *
+     * @param              $user_id
+     * @param UploadedFile $file
+     * @return int|null
+     */
+    public function putAttachment()
+    {
+        $front_domain   = Config::get('app.front_domain');
+        $backend_domain = Config::get('app.backend_domain');
+        $user_id = Request::get('user_id');
+        $file    = Request::file()[0];
+        $upload_dir = '/tmp/';
+
+        $file->move($upload_dir, $file->getClientOriginalName());
+
+        $file_path = $upload_dir . $file->getClientOriginalName();
+        $fp        = fopen($file_path, "r");
+
+        $curl = new Curl();
+        $curl->setReferrer('https://' . $backend_domain);
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setHeader('Content-Type', 'multipart/form-data');
+        $curl->setHeader('Accept', 'application/json');
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+        $curl->setOpt(CURLOPT_INFILE, $fp);
+        $curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
+
+        $curl->put("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
+            'file'      => "@{$file_path}",
+            'pass_code' =>  RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'))
+        ]);
+
+        fclose($fp);
+        unlink($file_path);
+
+        if ($curl->error) {
+            return Response::json([], $curl->errorCode);
+        }
+        $response = $curl->response;
+        $curl->close();
+        return json_encode($response);
+    }
+
+    /**
+     * Update attachment to web service backend api
+     *
+     * @param $user_id
+     * @param $attachments
+     * @return int
+     */
+    private function updateAttachment($user_id, $attachments)
+    {
+        $front_domain   = Config::get('app.front_domain');
+        $backend_domain = Config::get('app.backend_domain');
+        $curl = new Curl();
+        $curl->setReferrer('https://' . $backend_domain);
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
+        $curl->setHeader('Content-Type', 'application/json');
+        $curl->setHeader('Accept', 'application/json');
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
+        $data['attachments'] = $attachments;
+        $data['pass_code']   = RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'));
+        $curl->patch("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", json_encode($data));
+        if ($curl->error) {
+            $info['message'] =  'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage;
+            Log::error('attachment update error', $info);
+            $http_code = $curl->errorCode;
+        } else {
+            $http_code =  $curl->httpStatusCode;
+        }
+        $curl->close();
+        return $http_code;
     }
 }
