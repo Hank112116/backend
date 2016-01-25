@@ -76,7 +76,7 @@
                     <th>Name</th>
                     <th>Role</th>
                     @if($is_super_admin)
-                        <th class="table--user-mail">EMail</th>
+                        <th class="table--user-mail">Email</th>
                     @endif
                     <th>Country<br/>City</th>
                     <th class="table--width-limit">
@@ -89,7 +89,7 @@
                             <br/><span class="table--text-light">Signup Ip</span>
                         @endif
                     </th>
-                    <th>EMail<br/>Verify</th>
+                    <th>Email<br/>Verify</th>
                     <th>Active</th>
                     <th></th>
                 </tr>

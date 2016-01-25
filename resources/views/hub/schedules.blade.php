@@ -83,13 +83,13 @@
                                     </a>
                                 </p>
                             @endforeach
-                                <spna class="table--text-light">
+                                <span class="table--text-light">
                                     {{$s->mail_send_time}}<br>
                                     by {{ $s->mail_send_admin }}
                                 </span>
                         @endif
                     @else
-                        <spna class="table--text-center"><i class="fa fa-check"></i></span>
+                        <span class="table--text-center"><i class="fa fa-check"></i></span>
                     @endif
                 @endif
                 </td>

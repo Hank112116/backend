@@ -186,5 +186,10 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\CommentReplyInterface',
             'Backend\Repo\Lara\CommentReplyRepo'
         );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\EventApplicationInterface',
+            'Backend\Repo\Lara\EventApplicationRepo'
+        );
     }
 }

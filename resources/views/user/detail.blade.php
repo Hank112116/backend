@@ -34,7 +34,7 @@
 			</div>
 
 			<div class="data-group">
-			  <span class="label">EMail</span>
+			  <span class="label">Email</span>
 			  <span class="content">
 				  {{ $user->email }}
 				  @if('facebook' === $user->social)
@@ -59,7 +59,7 @@
 			@if (!$is_restricted)
 			<div class="data-group group-half">
 			  <span class="label">Active</span>
-			  <span class="content">{!! $user->textActive() !!} ( EMail : {!! $user->textEmailVerify() !!} )</span>
+			  <span class="content">{!! $user->textActive() !!} ( Email : {!! $user->textEmailVerify() !!} )</span>
 			</div>
 			@endif
 		</div>		
@@ -84,7 +84,7 @@
 			
 			@if (!$is_restricted)
 			<div class="data-group">
-			  <span class="label">Paypal EMail</span>
+			  <span class="label">Paypal Email</span>
 			  <span class="content">{{ $user->paypal_mail }}</span>
 			</div>
 			@endif

@@ -89,7 +89,7 @@ class User extends Eloquent
 
     public function applyExpertMessage()
     {
-        return $this->hasMany(ApplyExpertMessage::class)->orderBy('id', 'desc');
+        return $this->hasMany(ApplyExpertMessage::class)->where('message', '!=', '')->orderBy('id', 'desc');
     }
 
     public function scopeQueryExperts($query)

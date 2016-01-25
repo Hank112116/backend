@@ -22,7 +22,7 @@
                     <span class="content">{{ $user->last_name }} {{ $user->user_name }}</span>
                 </div>
                 <div class="data-group group-half">
-                    <span class="label">EMail</span>
+                    <span class="label">Email</span>
                     <span class="content">{{ $user->email }}</span>
                 </div>
                 <div class="data-group group-half">
