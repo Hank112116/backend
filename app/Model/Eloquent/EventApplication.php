@@ -46,9 +46,14 @@ class EventApplication extends Model
         return self::EVENT_NAME;
     }
 
-    public function isFinishApply()
+    public function isFinished()
     {
         return isset($this->applied_at);
+    }
+
+    public function isSelected()
+    {
+        return isset($this->approved_at);
     }
 
     public function getCompleteTime()

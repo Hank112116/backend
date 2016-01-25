@@ -102,13 +102,13 @@ class ReportRepo implements ReportInterface
         // filter complete & incomplete
         if ($complete) {
             $join_event_users = $join_event_users->filter(function ($item) {
-                if ($item->applied_at) {
+                if ($item->isFinished()) {
                     return $item;
                 }
             });
         } else {
             $join_event_users = $join_event_users->filter(function ($item) {
-                if (is_null($item->applied_at)) {
+                if (!$item->isFinished()) {
                     return $item;
                 }
             });
@@ -117,13 +117,13 @@ class ReportRepo implements ReportInterface
         if (isset($input['approve']) && !empty($input['approve'])) {
             if ($input['approve'] === 'approved') {
                 $join_event_users = $join_event_users->filter(function ($item) {
-                    if ($item->approved_at) {
+                    if ($item->isSelected()) {
                         return $item;
                     }
                 });
             } elseif ($input['approve'] === 'no-approve') {
                 $join_event_users = $join_event_users->filter(function ($item) {
-                    if (is_null($item->approved_at)) {
+                    if (!$item->isSelected()) {
                         return $item;
                     }
                 });
