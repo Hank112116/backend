@@ -25,6 +25,11 @@ class EventApplication extends Model
         return $this->hasOne(Project::class, 'project_id', 'project_id');
     }
 
+    public function questionnaire()
+    {
+        return $this->hasMany(EventQuestionnaireFeedback::class, 'user_id', 'user_id');
+    }
+
     public function textFullName()
     {
         return "{$this->user_name} {$this->last_name}";
@@ -60,13 +65,29 @@ class EventApplication extends Model
     {
         $email    = $this->email;
         $event_id = $this->event_id;
-        $log_id   = $this->id;
+        $id   = $this->id;
 
-        $log_event_model = new EventApplication();
-        $log_event = $log_event_model->where('email', $email)
+        $event_model = new EventApplication();
+        $event = $event_model->where('email', $email)
             ->where('event_id', $event_id)
-            ->where('id', '!=', $log_id)
+            ->where('id', '!=', $id)
             ->first();
-        return $log_event ? $log_event->applied_at : null;
+        return $event ? $event->applied_at : null;
+    }
+
+    public function getQuestionnaire()
+    {
+        return $this->questionnaire()->where('subject_id', $this->event_id)->orderBy('id', 'DESC')->first();
+    }
+
+    public function getApplyCount()
+    {
+        $event_model = new EventApplication();
+
+        $count = $event_model->where('event_id', $this->event_id)
+            ->where('user_id', $this->user_id)
+            ->where('applied_at', '!=', '')
+            ->count();
+        return $count;
     }
 }

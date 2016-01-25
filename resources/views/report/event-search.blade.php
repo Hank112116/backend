@@ -27,7 +27,7 @@
     </div>
 
     @if($complete)
-        <div class="col-md-1">
+        <!--<div class="col-md-1">
             {!! Form::open(['action' => ['ReportController@showEventReport', 'approve'], 'method' => 'GET']) !!}
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 @if($approve == 'approved')
@@ -51,10 +51,35 @@
                 </li>
             </ul>
             {!! Form::close() !!}
-        </div>
+        </div>-->
     @endif
 
     {!! Form::open(['action' => ['ReportController@showEventReport', $event_id], 'method' => 'GET']) !!}
+    @if($complete)
+    <div class="col-md-1">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            @if(Input::get('role') == 'expert')
+                Show Expert
+            @elseif(Input::get('role') == 'creator')
+                Show Creator
+            @else
+                Show All Role
+            @endif
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                {!! link_to_action('ReportController@showEventReport', 'Show All Role', [ 'event' => $event_id, 'complete' => $complete, 'role' => 'all'], null) !!}
+            </li>
+            <li>
+                {!! link_to_action('ReportController@showEventReport', 'Show Expert', ['event' => $event_id, 'complete' => $complete, 'role' => 'expert'] , null) !!}
+            </li>
+            <li>
+                {!! link_to_action('ReportController@showEventReport', 'Show Creator', ['event' => $event_id, 'complete' => $complete, 'role' => 'creator'] , null) !!}
+            </li>
+        </ul>
+    </div>
+    @endif
     <div class="col-md-2">
         <div class="input-group">
             {!! Form::text('email', '', ['placeholder'=>"Search by user email", 'class'=>"form-control"]) !!}
@@ -66,6 +91,14 @@
     @if($complete)
     <div class="col-md-2">
         <div class="input-group">
+            {!! Form::text('user_name', '', ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
+            <span class="input-group-btn">
+            <button class="btn btn-default js-btn-search" type="button">Go!</button>
+        </span>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="input-group">
             {!! Form::text('user_id', '', ['placeholder'=>"Search by user id", 'class'=>"form-control"]) !!}
             <span class="input-group-btn">
                 <button class="btn btn-default js-btn-search" type="button">Go!</button>
@@ -73,18 +106,6 @@
         </div>
      </div>
 
-    <div class="col-md-2">
-        <div class="input-group">
-            {!! Form::select('role',[
-                    'all'     => 'Show All',
-                    'expert'  => 'Show Expert',
-                    'creator' => 'Show Creator',
-                ],Input::get('role'),['class'=>'form-control']) !!}
-            <span class="input-group-btn">
-                <button class="btn btn-default js-btn-search" type="button">Go!</button>
-            </span>
-        </div>
-    </div>
     <div class="col-md-4">
         <div class="input-group">
             {!! Form::text('applied_at_start', '',
