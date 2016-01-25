@@ -34,7 +34,7 @@
         <!-- Active -->
         <div class="form-group">
             <label for="verify" class="col-md-3">
-                EMail Verify<br/>
+                Email Verify<br/>
                 <span class="color-info">{!! $user->textEmailVerify() !!}</span>
             </label>
 
@@ -98,7 +98,7 @@
         @endif
 
         <div class="form-group">
-            <label for="email" class="col-md-3">EMail</label>
+            <label for="email" class="col-md-3">Email</label>
             <div class="col-md-5">
                 @if($is_restricted)
                     {!! $user->email !!}
@@ -106,7 +106,7 @@
                 @else
                     {!! Form::email(
                         'email', $user->email,
-                        ['placeholder' => 'Enter EMail', 'class'=>'form-control', 'id' => 'email']) !!}
+                        ['placeholder' => 'Enter Email', 'class'=>'form-control', 'id' => 'email']) !!}
                 @endif
             </div>
             <div class="col-md-5"><span class='error'>{!! $errors->first('email') !!}</span></div>

@@ -24,5 +24,6 @@ class FilterServiceProvider extends ServiceProvider
         Route::filter('backend.report', "{$controller}@reportFilter");
         Route::filter('backend.reportRegistration', "{$controller}@reportRegistrationFilter");
         Route::filter('backend.reportComment', "{$controller}@reportCommentFilter");
+        Route::filter('backend.reportEvent', "{$controller}@reportEventFilter");
     }
 }

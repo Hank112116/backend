@@ -49,6 +49,14 @@
                                     </a>
                                 </li>
                             @endif
+                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('event_report'))
+                                <li>
+                                    <a href="{!! action('ReportController@showEventReport', ['event'=>'']) !!}">
+                                        <i class="fa fa-glass fa-fw"></i>
+                                        Events Summary
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </li>
                 @endif

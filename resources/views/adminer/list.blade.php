@@ -29,7 +29,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>EMail</th>
+                <th>Email</th>
                 <th>Role</th>
                 <th>HWTrek</th>
                 <th></th>
