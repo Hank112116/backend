@@ -41,9 +41,13 @@ class EventApplication extends Model
         return $event_list[$this->event_id];
     }
 
-    public function isFullNameCoincide()
+    public function isCoincide()
     {
-        return Str::equals($this->textFullName(), $this->user->textFullName());
+        $full_name_flag = Str::equals($this->textFullName(), $this->user->textFullName());
+        $email_flag     = Str::equals($this->email, $this->user->email);
+        $company_flag   = Str::equals($this->company, $this->user->company);
+        $position_flag  = Str::equals($this->job_title, $this->user->business_id);
+        return $full_name_flag && $email_flag && $company_flag && $position_flag;
     }
 
     public function getEvents()
