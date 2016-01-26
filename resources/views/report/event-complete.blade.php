@@ -41,7 +41,7 @@
                     <th>WeChat</th>
                     <th>Project</th>
                     <th class="table--width-limit">
-                        Apply Time<br/>
+                        Apply Time(PST)<br/>
                         <span class="table--text-light">Member since</span>
                     </th>
                     <th>Note</th>

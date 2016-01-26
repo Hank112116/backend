@@ -28,10 +28,10 @@
                     <th>#</th>
                     <th>Email</th>
                     <th class="table--width-limit">
-                        Enter Time
+                        Enter Time (PST)
                     </th>
                     <th class="table--width-limit">
-                        Complete On
+                        Complete On (PST)
                     </th>
                     <th>Note</th>
                 </tr>
