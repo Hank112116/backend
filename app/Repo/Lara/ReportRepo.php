@@ -4,8 +4,9 @@ use Backend\Model\Eloquent\User;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
-use Carbon;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Support\Str;
+use Carbon;
 
 class ReportRepo implements ReportInterface
 {
@@ -133,7 +134,16 @@ class ReportRepo implements ReportInterface
         if (isset($input['email']) && !empty($input['email'])) {
             $email = trim($input['email']);
             $join_event_users = $join_event_users->filter(function ($item) use ($email) {
-                if ($item->email === $email) {
+                if (Str::equals($item->email, $email)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (isset($input['user_name']) && !empty($input['user_name'])) {
+            $user_name = $input['user_name'];
+            $join_event_users = $join_event_users->filter(function ($item) use ($user_name) {
+                if (Str::contains($item->textFullName(), $user_name)) {
                     return $item;
                 }
             });
@@ -216,7 +226,7 @@ class ReportRepo implements ReportInterface
             })->count();
 
             $join_event_users->approved_count = $join_event_users->filter(function ($item) {
-                if ($item->approved_at) {
+                if ($item->isFinished()) {
                     return $item;
                 }
             })->count();

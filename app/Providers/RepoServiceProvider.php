@@ -191,5 +191,10 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\EventApplicationInterface',
             'Backend\Repo\Lara\EventApplicationRepo'
         );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\EventQuestionnaireInterface',
+            'Backend\Repo\Lara\EventQuestionnaireRepo'
+        );
     }
 }
