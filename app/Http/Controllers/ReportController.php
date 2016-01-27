@@ -104,7 +104,12 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $complete = Input::get('complete') ? Input::get('complete') : 0;
+        if (is_null(Input::get('complete'))) {
+            $complete = 1;
+        } else {
+            $complete = Input::get('complete');
+        }
+
         $approve  = Input::get('approve') ? Input::get('approve') : null;
 
         $view     = $complete ? 'report.event-complete' : 'report.event-incomplete';
@@ -115,14 +120,14 @@ class ReportController extends BaseController
 
         $template = view($view)
             ->with([
-                'title'          => $event_list[$event_id] . ' Summary',
-                'event_name'     => $event_list[$event_id],
-                'event_users'    => $join_event_users,
-                'event_list'     => $event_list,
-                'event_id'       => $event_id,
-                'complete'       => $complete,
-                'approve'        => $approve,
-                'is_super_admin' => $this->auth,
+                'title'            => $event_list[$event_id]['orig'] . ' Summary',
+                'event_short_name' => $event_list[$event_id]['short'],
+                'event_users'      => $join_event_users,
+                'event_list'       => $event_list,
+                'event_id'         => $event_id,
+                'complete'         => $complete,
+                'approve'          => $approve,
+                'is_super_admin'   => $this->auth,
             ]);
         return $template;
     }

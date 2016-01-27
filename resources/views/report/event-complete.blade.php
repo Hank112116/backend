@@ -18,7 +18,7 @@
     @include ('report.event-search')
     <div class="row text-center">
         <h4>
-            Total {{ $event_users->total() }} application | {{ $event_users->expert_count }} Experts | {{ $event_users->creator_count }} Creators | {{ $event_users->approved_count }} Selected
+            Total {{ $event_users->total() }} applications | {{ $event_users->expert_count }} Experts | {{ $event_users->creator_count }} Creators
         </h4>
     </div>
     <div class="row">
@@ -41,7 +41,7 @@
                     <th>WeChat</th>
                     <th>Project</th>
                     <th class="table--width-limit">
-                        Apply Time<br/>
+                        Apply Time(PST)<br/>
                         <span class="table--text-light">Member since</span>
                     </th>
                     <th>Note</th>
@@ -51,7 +51,7 @@
                     <tr>
                         <td>
                             @if($event_user->user)
-                            {!! $event_user->user->user_id !!}
+                            {!! $event_user->user->user_id !!}<br>
                                 <span class="table--text-light" title="Apply count.">[{{ $event_user->getApplyCount() }}]</span>
                             @endif
                         </td>
@@ -61,7 +61,7 @@
                                 <a href="{!! $event_user->user->textFrontLink() !!}" target="_blank">
                                     {{ $event_user->textFullName() }}
                                 </a>
-                                @if(!$event_user->isFullNameCoincide())
+                                @if(!$event_user->isCoincide())
                                     <font color="#ff8c00"><i class="fa fa-pencil-square-o" title="Different from profile."></i></font>
                                 @endif
                                 <br>

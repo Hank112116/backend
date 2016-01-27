@@ -18,7 +18,7 @@
     @include ('report.event-search')
     <div class="row text-center">
         <h4>
-            Total {{ $event_users->total() }} Interest | {{ $event_users->complete_count }} Completed
+            Total {{ $event_users->total() }} Interests | {{ $event_users->complete_count }} Completed
         </h4>
     </div>
     <div class="row">
@@ -28,10 +28,10 @@
                     <th>#</th>
                     <th>Email</th>
                     <th class="table--width-limit">
-                        Enter Time
+                        Enter Time (PST)
                     </th>
                     <th class="table--width-limit">
-                        Complete On
+                        Complete On (PST)
                     </th>
                     <th>Note</th>
                 </tr>

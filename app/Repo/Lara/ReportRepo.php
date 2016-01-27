@@ -184,8 +184,10 @@ class ReportRepo implements ReportInterface
             } else {
                 $entered_at_end = Carbon::now()->toDateString();
             }
+
             $join_event_users = $join_event_users->filter(function ($item) use ($entered_at_start, $entered_at_end) {
-                if ($item->entered_at <= $entered_at_end && $item->entered_at >= $entered_at_start) {
+                $entered_at = Carbon::parse($item->entered_at)->toDateString();
+                if ($entered_at <= $entered_at_end && $entered_at >= $entered_at_start) {
                     return $item;
                 }
             });
@@ -200,7 +202,8 @@ class ReportRepo implements ReportInterface
                 $applied_at_end = Carbon::now()->toDateString();
             }
             $join_event_users = $join_event_users->filter(function ($item) use ($applied_at_start, $applied_at_end) {
-                if ($item->applied_at <= $applied_at_end && $item->applied_at >= $applied_at_start) {
+                $applied_at = Carbon::parse($item->applied_at)->toDateString();
+                if ($applied_at <= $applied_at_end && $applied_at >= $applied_at_start) {
                     return $item;
                 }
             });
