@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.0
+* [NEW] add events report (@Hank)
+* [FIXED] fix apply to be expert message empty issue (@Hank)
+
 ## v1.7.0
 * [NEW] add user attachment function in member (@Hank)
 * [FIXED] fix editor upload image error (@Hank)
