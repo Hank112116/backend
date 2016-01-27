@@ -28,7 +28,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
-                    <th>EMail<br/>Verify</th>
+                    <th>Email<br/>Verify</th>
                     <th>Active</th>
                     <th></th>
                 </tr>

@@ -207,6 +207,12 @@ Route::group([ 'before' => 'backend.reportRegistration' ], function () {
 Route::group([ 'before' => 'backend.reportComment' ], function () {
     Route::get('report/comment', 'ReportController@showCommentReport');
 });
+Route::group([ 'before' => 'backend.reportEvent' ], function () {
+    Route::get('report/events', 'ReportController@showEventReport');
+    Route::get('report/events/{event_id}', 'ReportController@showEventReport');
+    Route::post('report/events/update-note', 'ReportController@updateEventNote');
+    Route::post('report/events/approve-user', 'ReportController@approveEventUser');
+});
 
 
 // Engineer

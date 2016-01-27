@@ -32,7 +32,7 @@
         <!-- Active -->
         <div class="form-group">
             <label for="verify" class="col-md-3">
-                EMail Verify<br/>
+                Email Verify<br/>
             </label>
 
             <div class="col-md-5">
