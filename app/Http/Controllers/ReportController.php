@@ -104,7 +104,12 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $complete = Input::get('complete') ? Input::get('complete') : 1;
+        if (is_null(Input::get('complete'))) {
+            $complete = 1;
+        } else {
+            $complete = Input::get('complete');
+        }
+
         $approve  = Input::get('approve') ? Input::get('approve') : null;
 
         $view     = $complete ? 'report.event-complete' : 'report.event-incomplete';
