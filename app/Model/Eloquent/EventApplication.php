@@ -9,10 +9,13 @@ class EventApplication extends Model
     const TYPE_AIT_2016_Q1 = 1;
 
     const EVENT_NAME = [
-        self::TYPE_AIT_2016_Q1 => 'Asia Innovation Tour 2016 Q1',
+        self::TYPE_AIT_2016_Q1 => [
+            'orig'  => 'Asia Innovation Tour 2016 Q1',
+            'short' => '2016 Q1'
+        ],
     ];
 
-    protected $table = 'event_application';
+    protected $table   = 'event_application';
     public $timestamps = false;
 
     public function user()

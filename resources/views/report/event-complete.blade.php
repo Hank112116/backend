@@ -51,7 +51,7 @@
                     <tr>
                         <td>
                             @if($event_user->user)
-                            {!! $event_user->user->user_id !!}
+                            {!! $event_user->user->user_id !!}<br>
                                 <span class="table--text-light" title="Apply count.">[{{ $event_user->getApplyCount() }}]</span>
                             @endif
                         </td>
