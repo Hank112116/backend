@@ -117,12 +117,12 @@
                     {!! link_to_action('SolutionController@showDetail', 'DETAIL',
                     $solution->solution_id, ['class' => 'btn-mini']) !!}
 
-                    @if($solution->is_wait_approve_draft)
+                    @if($solution->is_wait_approve_draft && !$is_restricted)
                         @if(!Auth::user()->isFrontendPM())
                             {!! link_to_action( 'SolutionController@showUpdate', 'Edit & Approve',
                             $solution->solution_id, ['class' => 'btn-mini btn-danger']) !!}
                         @endif
-                    @elseif($solution->is_wait_approve_ongoing)
+                    @elseif($solution->is_wait_approve_ongoing && !$is_restricted)
                         @if(!Auth::user()->isFrontendPM())
                             <a href="{!! action('SolutionController@showUpdate', $solution->solution_id) !!}" class="btn-mini btn-danger">
                                 Edit & Approve <i class="fa fa-copy"></i>
