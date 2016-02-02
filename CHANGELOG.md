@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.0.1
+* [FIXED] fix solution limited (@Hank)
+
 ## v2.0.0
 * [NEW] add events report (@Hank)
 * [FIXED] fix apply to be expert message empty issue (@Hank)
