@@ -56,12 +56,6 @@
                                         Events Summary
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{!! action('ReportController@showQuestionnaire') !!}">
-                                        <i class="fa fa-clipboard fa-fw"></i>
-                                        Questionnaire Summary
-                                    </a>
-                                </li>
                             @endif
                         </ul>
                     </li>

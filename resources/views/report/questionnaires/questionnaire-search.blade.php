@@ -12,15 +12,31 @@
         </ul>
     </div>
 
+    <div class="col-md-2">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Questionnaire
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li>
+                {!! link_to_action('ReportController@showEventReport', 'Incomplete', [ 'event' => $event_id, 'complete' => 0], null) !!}
+            </li>
+            <li>
+                {!! link_to_action('ReportController@showEventReport', 'Complete', ['event' => $event_id, 'complete' => 1], null) !!}
+            </li>
+            <li>
+                {!! link_to_action('ReportController@showQuestionnaire', 'Questionnaire', ['event' => $event_id], null) !!}
+            </li>
+        </ul>
+    </div>
+
     @if($event_id == 1)
-        <div class="col-md-1">
+        <div class="col-md-2">
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 @if(Input::get('participation') == 'shenzhen')
-                    Shenzhen
+                    SZ
                 @elseif(Input::get('participation') == 'beijing')
-                    Beijing
+                    BJ
                 @elseif(Input::get('participation') == 'taipei')
-                    Taipei
+                    TW
                 @else
                     All
                 @endif
@@ -31,13 +47,13 @@
                     {!! link_to_action('ReportController@showQuestionnaire', 'All', [ 'event' => $event_id, 'participation' => ''], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showQuestionnaire', 'Shenzhen', ['event' => $event_id, 'participation' => 'shenzhen'] , null) !!}
+                    {!! link_to_action('ReportController@showQuestionnaire', 'SZ', ['event' => $event_id, 'participation' => 'shenzhen'] , null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showQuestionnaire', 'Beijing', ['event' => $event_id, 'participation' => 'beijing'] , null) !!}
+                    {!! link_to_action('ReportController@showQuestionnaire', 'BJ', ['event' => $event_id, 'participation' => 'beijing'] , null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showQuestionnaire', 'Taipei', ['event' => $event_id, 'participation' => 'taipei'] , null) !!}
+                    {!! link_to_action('ReportController@showQuestionnaire', 'TW', ['event' => $event_id, 'participation' => 'taipei'] , null) !!}
                 </li>
             </ul>
         </div>

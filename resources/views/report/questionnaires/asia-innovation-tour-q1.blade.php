@@ -20,8 +20,8 @@
 
     <div class="row text-center">
         <h4>
-            Total {{ $questionnaires->dinner_count }} peoples | Shenzhen {{ $questionnaires->shenzhen_count }} peoples |
-            Beijing {{ $questionnaires->beijing_count }} peoples | Taipei {{ $questionnaires->taipei_count }} peoples
+            Total {{ $questionnaires->dinner_count }} peoples | SZ {{ $questionnaires->shenzhen_count }} peoples |
+            BJ {{ $questionnaires->beijing_count }} peoples | TW {{ $questionnaires->taipei_count }} peoples
             <br><br>
             {{ $questionnaires->dinner_count }} Attend Dinner | {{ $questionnaires->prototype_count }} Prototype |
             {{ $questionnaires->join_count }} Other Join | {{ $questionnaires->wechat_count }} Have WeChat |
