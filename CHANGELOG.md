@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.0.2
+* [FIXED] fix event report note function (@Hank)
+
 ## v2.0.1
 * [FIXED] fix solution limited (@Hank)
 
