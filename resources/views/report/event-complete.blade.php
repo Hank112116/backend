@@ -122,9 +122,10 @@
                         </td>
 
                         <td>
-                            @if(!is_null($event_user->note))
+                            @if(!empty($event_user->note))
                                 <a href="javascript:void(0)"
                                    class="note" rel="{!! $event_user->id !!}" note="{{ $event_user->note }}">
+                                    <i class="fa fa-pencil"></i>
                                     {{ mb_strimwidth($event_user->note, 0, 30, mb_substr($event_user->note, 0, 30) . '...') }}
                                 </a>
                             @else
