@@ -19,7 +19,7 @@ interface UserInterface
     public function byName($name);
     public function byMail($email);
     public function byCompany($company);
-    public function byDateRange($date_range);
+    public function byDateRange($dstart, $dend);
 
     public function validUpdate($id, $data);
     public function errors();

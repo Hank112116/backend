@@ -1,7 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
 use Carbon;
-use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\Transaction;
 use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -9,6 +8,13 @@ use Backend\Repo\RepoInterfaces\TransactionInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 
+/**
+ * TODO Unused, remove
+ *
+ * Class TransactionRepo
+ *
+ * @package Backend\Repo\Lara
+ */
 class TransactionRepo implements TransactionInterface
 {
     use PaginateTrait;

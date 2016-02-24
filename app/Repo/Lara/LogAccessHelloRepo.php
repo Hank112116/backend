@@ -7,6 +7,7 @@ use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
 class LogAccessHelloRepo implements LogAccessHelloInterface
 {
     private $log_access_hello;
+    private $misc;
 
     public function __construct(LogAccessHello $log_access_hello, Misc $misc)
     {

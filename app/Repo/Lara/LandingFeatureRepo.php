@@ -8,12 +8,17 @@ use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 
 class LandingFeatureRepo implements LandingFeatureInterface
 {
+    private $feature;
+    private $project;
+    private $solution;
+    private $user;
+
     public function __construct(Feature $feature, Project $project, SolutionInterface $solution, UserInterface $user)
     {
-        $this->feature =  $feature;
-        $this->project = $project;
+        $this->feature  = $feature;
+        $this->project  = $project;
         $this->solution = $solution;
-        $this->user = $user;
+        $this->user     = $user;
     }
 
     public function all()

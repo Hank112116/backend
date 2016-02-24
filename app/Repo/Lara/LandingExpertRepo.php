@@ -6,22 +6,25 @@ use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 
 class LandingExpertRepo implements LandingExpertInterface
 {
-    public function __construct(ExpertFeature $expertFeature, UserInterface $user)
+    private $expert_feature;
+    private $user;
+
+    public function __construct(ExpertFeature $expert_feature, UserInterface $user)
     {
-        $this->expertFeature =  $expertFeature;
+        $this->expert_feature =  $expert_feature;
         $this->user = $user;
     }
     private function truncateTable()
     {
-        $this->expertFeature->truncate();
+        $this->expert_feature->truncate();
     }
     public function getExpertList()
     {
-        $expertFeatures = $this->expertFeature->limit(12)->orderBy("order")->get();
-        foreach ($expertFeatures as $e) {
+        $expert_features = $this->expert_feature->limit(12)->orderBy("order")->get();
+        foreach ($expert_features as $e) {
             $e->entity = $this->user->find($e->block_data);
         }
-        return $expertFeatures;
+        return $expert_features;
     }
     public function getExpert($user_id)
     {

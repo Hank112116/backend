@@ -6,8 +6,6 @@ use Auth;
 use Illuminate\Support\Collection;
 use Input;
 use League\Csv\Writer;
-use League\Csv\Plugin\SkipNullValuesFormatter;
-
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Foundation\Validation\ValidatesRequests;

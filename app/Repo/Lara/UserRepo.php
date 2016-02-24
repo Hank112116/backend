@@ -17,7 +17,9 @@ class UserRepo implements UserInterface
 
     private $error;
     private $user;
+    private $expertise;
     private $apply_expert_msg_repo;
+    private $image_uplodaer;
     private $rule = [
         'email'        => 'required|email',
         'company_url'  => 'url',

@@ -14,10 +14,22 @@ use Lang;
 use Noty;
 use Redirect;
 
+/**
+ * TODO Unused, need remove
+ *
+ * Class ProductController
+ *
+ * @package Backend\Http\Controllers
+ */
 class ProductController extends BaseController
 {
-
     protected $cert = 'user';
+
+    private $project_repo;
+    private $product_repo;
+    private $perk_repo;
+    private $transaction_repo;
+    private $expertise_repo;
 
     public function __construct(
         ProjectInterface $project,

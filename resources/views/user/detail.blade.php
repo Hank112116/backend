@@ -162,11 +162,9 @@
 
 	@if(!$is_restricted)
 		@include ('user.detail-projects')
-		@include ('user.detail-products')
 	@endif
 
 	@include ('user.detail-solutions')
-    {{-- @include ('user.detail-backed-products') --}}
 </div>
 
 @stop

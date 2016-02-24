@@ -1,7 +1,5 @@
 <?php namespace Backend\Http\Controllers;
 
-use Backend\Http\Controllers\Controller;
-
 use Input;
 use ImageUp;
 

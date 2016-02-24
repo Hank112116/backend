@@ -6,6 +6,8 @@ use Backend\Repo\RepoInterfaces\PerkInterface;
 
 class PerkRepo implements PerkInterface
 {
+    private $perk;
+
     public function __construct(Perk $perk)
     {
         $this->perk = $perk;

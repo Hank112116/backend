@@ -4,7 +4,6 @@ use Carbon;
 use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\ProjectCategory;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\Paginator;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Model\ModelInterfaces\ProjectTagBuilderInterface;
@@ -17,6 +16,12 @@ class ProjectRepo implements ProjectInterface
 
     protected $with_relations = ['user', 'category', 'propose'];
 
+    private $project;
+    private $category;
+    private $user_repo;
+    private $project_tag_builder;
+    private $project_modifier;
+
     public function __construct(
         Project $project,
         ProjectCategory $category,
@@ -24,13 +29,11 @@ class ProjectRepo implements ProjectInterface
         ProjectTagBuilderInterface $project_tag_builder,
         ProjectModifierInterface $project_modifier
     ) {
-        $this->project  = $project;
-        $this->category = $category;
-
+        $this->project             = $project;
+        $this->category            = $category;
         $this->user_repo           = $user;
         $this->project_tag_builder = $project_tag_builder;
-
-        $this->project_modifier = $project_modifier;
+        $this->project_modifier    = $project_modifier;
     }
 
     public function find($id)
@@ -211,7 +214,7 @@ class ProjectRepo implements ProjectInterface
             'Key Components List'       => implode(',', $project->keyComponents()),
             'Team Strengths'            => implode(',', $project->teamStrengths()),
             'Resource Requirements'     => implode(',', $project->resourceRequirements()),
-            'Pairing Tags'              => $this->project_tag_builder->projectTagOutput($project->project_tags),
+            'Pairing Tags'              => $this->project_tag_builder->projectTagOutput($project->getProjectTagsAttribute()),
             'Brief'                     => e($project->project_summary),
         ];
     }

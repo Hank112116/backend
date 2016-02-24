@@ -7,12 +7,10 @@ use Backend\Repo\RepoTrait\PaginateTrait;
 use Backend\Repo\RepoInterfaces\InboxInterface;
 use Illuminate\Support\Collection;
 use Mews\Purifier\Purifier;
-
 use Log;
 
 class InboxRepo implements InboxInterface
 {
-
     use PaginateTrait;
 
     const SEARCH_BY_SENDER = 'sender';
@@ -22,15 +20,16 @@ class InboxRepo implements InboxInterface
 
     private $inbox;
     private $user_repo;
+    private $purifier;
 
     public function __construct(
         Inbox $inbox,
         UserInterface $user_repo,
         Purifier $purifier
     ) {
-        $this->inbox = $inbox;
+        $this->inbox     = $inbox;
         $this->user_repo = $user_repo;
-        $this->purifier = $purifier;
+        $this->purifier  = $purifier;
     }
 
     public function topicsByPage($page = 1, $limit = 20)

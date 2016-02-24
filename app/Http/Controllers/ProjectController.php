@@ -11,8 +11,9 @@ use Log;
 
 class ProjectController extends BaseController
 {
-
     protected $cert = 'project';
+
+    private $project_repo;
 
     public function __construct(ProjectInterface $project)
     {

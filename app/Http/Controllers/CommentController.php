@@ -2,18 +2,16 @@
 
 namespace Backend\Http\Controllers;
 
-use Backend\Http\Controllers\BaseController;
-use Illuminate\Support\Collection;
 use Backend\Repo\RepoInterfaces\CommentInterface;
 use Backend\Api\ApiInterfaces\CommentApiInterface;
-
 use Input;
 use Response;
-use View;
 use Log;
 
 class CommentController extends BaseController
 {
+    private $comment_repo;
+    private $comment_api;
 
     public function __construct(
         CommentInterface $comment_repo,

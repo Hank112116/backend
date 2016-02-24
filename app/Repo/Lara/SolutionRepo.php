@@ -19,6 +19,14 @@ class SolutionRepo implements SolutionInterface
     use PaginateTrait;
 
     private $wait_approve;
+    private $solution;
+    private $duplicate;
+    private $project_tag_builder;
+    private $solution_modifier;
+    private $category;
+    private $certification;
+    private $image_uploader;
+    private $feature;
 
     public function __construct(
         Solution $solution,
@@ -31,18 +39,15 @@ class SolutionRepo implements SolutionInterface
         SolutionCertification $certification,
         ImageUp $uploader
     ) {
-        $this->solution = $solution;
-
-        $this->duplicate = $duplicate;
-        $this->user      = $user;
-
+        $this->solution            = $solution;
+        $this->duplicate           = $duplicate;
+        $this->user                = $user;
         $this->project_tag_builder = $project_tag_builder;
-        $this->solution_modifier = $solution_modifier;
-
-        $this->category       = $category;
-        $this->certification  = $certification;
-        $this->image_uploader = $uploader;
-        $this->feature        = $feature_modify;
+        $this->solution_modifier   = $solution_modifier;
+        $this->category            = $category;
+        $this->certification       = $certification;
+        $this->image_uploader      = $uploader;
+        $this->feature             = $feature_modify;
     }
 
     public function duplicateRepo()
@@ -377,7 +382,7 @@ class SolutionRepo implements SolutionInterface
             'Member'       => $solution->textUserName(),
             'Country'      => $solution->user->country,
             'City'         => $solution->user->city,
-            'Pairing Tags' => $this->project_tag_builder->projectTagOutput($solution->project_tags),
+            'Pairing Tags' => $this->project_tag_builder->projectTagOutput($solution->getProjectTagsAttribute()),
             'Brief'        => $solution->solution_summary,
             'Status'       => $solution->textStatus(),
             'Approve Date' => $solution->approve_time,

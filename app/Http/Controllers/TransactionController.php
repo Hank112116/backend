@@ -2,19 +2,24 @@
 
 namespace Backend\Http\Controllers;
 
-use Backend\Http\Controllers\BaseController;
-use CSV;
 use Illuminate\Support\Collection;
 use Backend\Repo\RepoInterfaces\TransactionInterface;
 use Input;
 use Noty;
 use Redirect;
-use View;
 
+/**
+ * TODO Unused, remove
+ *
+ * Class TransactionController
+ *
+ * @package Backend\Http\Controllers
+ */
 class TransactionController extends BaseController
 {
-
     protected $cert = 'project';
+
+    private $transaction_repo;
 
     public function __construct(TransactionInterface $t)
     {

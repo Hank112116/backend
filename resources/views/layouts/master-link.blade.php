@@ -77,22 +77,6 @@
                         Projects
                     </a>
                 </li>
-
-                <li>
-                    <a href="{!! action('ProductController@showList') !!}">
-                        <i class="fa fa-rocket fa-fw"></i>
-                        Products
-                    </a>
-                </li>
-                @endif
-
-                @if(Auth::user()->isShowLink('project'))
-                <li>
-                    <a href="{!! action('TransactionController@showList') !!}">
-                        <i class="fa fa-money fa-fw"></i>
-                        Transactions
-                    </a>
-                </li>
                 @endif
 
                 @if(Auth::user()->isShowLink('solution'))

@@ -13,6 +13,8 @@ class MailTemplateController extends BaseController
 
     protected $cert = 'email_template';
 
+    private $mail_repo;
+
     public function __construct(MailTemplateInterface $mt)
     {
         parent::__construct();

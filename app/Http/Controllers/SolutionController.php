@@ -15,8 +15,11 @@ use Log;
 
 class SolutionController extends BaseController
 {
-
     protected $cert = 'solution';
+
+    private $solution_repo;
+    private $project_repo;
+    private $adminer_repo;
 
     public function __construct(
         SolutionInterface $solution,
