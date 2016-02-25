@@ -78,6 +78,7 @@ class EventApplication extends Model
         $event = $event_model->where('email', $email)
             ->where('event_id', $event_id)
             ->where('id', '!=', $id)
+            ->orderBy('id', 'DESC')
             ->first();
         return $event ? $event->applied_at : null;
     }
