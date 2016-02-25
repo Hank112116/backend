@@ -5190,7 +5190,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b7b7b7;
+  background-color: #b6b6b6;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {
@@ -6013,9 +6013,10 @@ body.stop-scrolling {
 /* line 1, ../../front/sass/modules/_common-main.scss */
 .wrapper {
   background: #f8f8f8;
+  min-width: 1500px;
 }
 
-/* line 5, ../../front/sass/modules/_common-main.scss */
+/* line 6, ../../front/sass/modules/_common-main.scss */
 .page-wrapper {
   background: #fff;
   border-left: 1px solid #e7e7e7;
@@ -6025,18 +6026,18 @@ body.stop-scrolling {
 }
 
 @media (min-width: 768px) {
-  /* line 14, ../../front/sass/modules/_common-main.scss */
+  /* line 15, ../../front/sass/modules/_common-main.scss */
   .page-wrapper {
     margin-left: 250px;
     min-height: 800px;
   }
 }
-/* line 20, ../../front/sass/modules/_common-main.scss */
+/* line 21, ../../front/sass/modules/_common-main.scss */
 .page-wrapper--collapse {
   margin-left: 0px;
 }
 
-/* line 24, ../../front/sass/modules/_common-main.scss */
+/* line 25, ../../front/sass/modules/_common-main.scss */
 .page-header {
   text-align: center;
   text-transform: uppercase;
@@ -6044,12 +6045,12 @@ body.stop-scrolling {
   padding-top: 10px;
 }
 
-/* line 31, ../../front/sass/modules/_common-main.scss */
+/* line 32, ../../front/sass/modules/_common-main.scss */
 .link-float-right {
   float: right;
 }
 
-/* line 35, ../../front/sass/modules/_common-main.scss */
+/* line 36, ../../front/sass/modules/_common-main.scss */
 .pointer {
   cursor: pointer;
 }

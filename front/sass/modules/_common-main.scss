@@ -1,31 +1,32 @@
 .wrapper {
+  min-width: 1500px;
   background: #f8f8f8;
 }
 
 .page-wrapper {
-  background: #fff;
-  border-left: 1px solid #e7e7e7;
   min-height: 800px;
-  margin-bottom: -20px;
   margin-top: -40px;
+  margin-bottom: -20px;
+  border-left: 1px solid #e7e7e7;
+  background: #fff;
 }
 
 @media (min-width: 768px) {
   .page-wrapper {
-    margin-left: 250px;
     min-height: 800px;
+    margin-left: 250px;
   }
 }
 
 .page-wrapper--collapse {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 .page-header {
+  padding-top: 10px;
+  color: $gray-dark;
   text-align: center;
   text-transform: uppercase;
-  color : $gray-dark;
-  padding-top: 10px;
 }
 
 .link-float-right {

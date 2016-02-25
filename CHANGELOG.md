@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.3
+* [FIXED] fix event report location error (@Hank)
+* [CHANGE] adjust word count display (@Hank)
+
 ## v2.0.2
 * [FIXED] fix event report note function (@Hank)
 
