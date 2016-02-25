@@ -99,7 +99,7 @@
                         <td class="table--width-limit">
                             @if($event_user->user)
                             {{ $event_user->user->country }}<br/>
-                            <span class="table--text-light">{{ $event_user->city }}</span>
+                            <span class="table--text-light">{{ $event_user->user->city }}</span>
                             @endif
                         </td>
 
@@ -126,7 +126,7 @@
                                 <a href="javascript:void(0)"
                                    class="note" rel="{!! $event_user->id !!}" note="{{ $event_user->note }}">
                                     <i class="fa fa-pencil"></i>
-                                    {{ mb_strimwidth($event_user->note, 0, 30, mb_substr($event_user->note, 0, 30) . '...') }}
+                                    {{ mb_strimwidth($event_user->note, 0, 130, mb_substr($event_user->note, 0, 130) . '...') }}
                                 </a>
                             @else
                             <div class="process-btns">
