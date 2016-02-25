@@ -18,7 +18,6 @@ class InboxController extends BaseController
         parent::__construct();
 
         $this->inbox_repo = $inbox_repo;
-        $this->per_page   = 20;
     }
 
     /**

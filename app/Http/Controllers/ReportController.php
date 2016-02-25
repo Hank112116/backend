@@ -16,8 +16,6 @@ use Noty;
 class ReportController extends BaseController
 {
     protected $cert = "report";
-    protected $page;
-    protected $per_page;
     private $auth;
     private $user_repo;
     private $report_repo;
@@ -37,8 +35,6 @@ class ReportController extends BaseController
         $this->report_repo        = $report_repo;
         $this->event_repo         = $event_repo;
         $this->questionnaire_repo = $questionnaire_repo;
-        $this->page               = Input::get('page', 1);
-        $this->per_page           = Input::get('pp', 50);
     }
 
     /**
@@ -168,7 +164,6 @@ class ReportController extends BaseController
         }
         $event_list     = $this->event_repo->getEvents();
         $questionnaires = $this->report_repo->getQuestionnaireReport($event_id, Input::all(), $this->page, $this->per_page);
-        $questionnaires = $this->report_repo->getQuestionnaireStatistics($questionnaires);
         $view           = $this->questionnaire_repo->getView($event_id);
         $template = view($view)
             ->with([

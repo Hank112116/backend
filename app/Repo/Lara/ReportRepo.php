@@ -218,10 +218,7 @@ class ReportRepo implements ReportInterface
 
         $statistics       = $this->getEventStatistics($complete, $join_event_users);
         $join_event_users = $this->event_repo->byCollectionPage($join_event_users, $page, $per_page);
-
-        foreach ($statistics as $key => $row) {
-            $join_event_users->$key = $row;
-        }
+        $join_event_users = $this->appendStatistics($join_event_users, $statistics);
         return $join_event_users;
     }
 
@@ -272,6 +269,7 @@ class ReportRepo implements ReportInterface
 
     public function getQuestionnaireReport($event_id, $input, $page, $per_page)
     {
+        /* @var Collection $questionnaires*/
         $questionnaires =  $this->questionnaire_repo->findByEventId($event_id);
 
         if (isset($input['participation']) && !empty($input['participation'])) {
@@ -301,62 +299,71 @@ class ReportRepo implements ReportInterface
             });
         }
 
+        $statistics     = $this->getQuestionnaireStatistics($questionnaires);
         $questionnaires = $this->event_repo->byCollectionPage($questionnaires, $page, $per_page);
+        $questionnaires = $this->appendStatistics($questionnaires, $statistics);
         return $questionnaires;
     }
 
-    public function getQuestionnaireStatistics($questionnaires)
+    private function getQuestionnaireStatistics(Collection $questionnaires)
     {
-
-        $questionnaires->dinner_count = $questionnaires->filter(function ($item) {
-            if ($item->attend_to_april_dinner == 'true') {
+        $result = [];
+        $result['dinner_count'] = $questionnaires->filter(function ($item) {
+            if ($item->attend_to_april_dinner == '1') {
                 return $item;
             }
         })->count();
 
-        $questionnaires->prototype_count = $questionnaires->filter(function ($item) {
-            if ($item->bring_prototype == 'true') {
+        $result['prototype_count'] = $questionnaires->filter(function ($item) {
+            if ($item->bring_prototype == '1') {
                 return $item;
             }
         })->count();
 
-        $questionnaires->join_count = $questionnaires->filter(function ($item) {
-            if ($item->other_member_to_join == 'true') {
+        $result['join_count'] = $questionnaires->filter(function ($item) {
+            if ($item->other_member_to_join == '1') {
                 return $item;
             }
         })->count();
 
-        $questionnaires->wechat_count = $questionnaires->filter(function ($item) {
-            if ($item->wechat_account == 'true') {
+        $result['wechat_count'] = $questionnaires->filter(function ($item) {
+            if ($item->wechat_account) {
                 return $item;
             }
         })->count();
 
-        $questionnaires->material_count = $questionnaires->filter(function ($item) {
-            if ($item->forward_material == 'true') {
+        $result['material_count'] = $questionnaires->filter(function ($item) {
+            if ($item->forward_material == '1') {
                 return $item;
             }
         })->count();
 
-        $questionnaires->shenzhen_count = $questionnaires->filter(function ($item) {
+        $result['shenzhen_count'] = $questionnaires->filter(function ($item) {
             if (in_array('shenzhen', $item->trip_participation)) {
                 return $item;
             }
         })->count();
 
-        $questionnaires->beijing_count = $questionnaires->filter(function ($item) {
+        $result['beijing_count'] = $questionnaires->filter(function ($item) {
             if (in_array('beijing', $item->trip_participation)) {
                 return $item;
             }
         })->count();
 
-        $questionnaires->taipei_count = $questionnaires->filter(function ($item) {
+        $result['taipei_count'] = $questionnaires->filter(function ($item) {
             if (in_array('taipei', $item->trip_participation)) {
                 return $item;
             }
         })->count();
 
+        return $result;
+    }
 
-        return $questionnaires;
+    private function appendStatistics($object, $statistics)
+    {
+        foreach ($statistics as $key => $row) {
+            $object->$key = $row;
+        }
+        return $object;
     }
 }

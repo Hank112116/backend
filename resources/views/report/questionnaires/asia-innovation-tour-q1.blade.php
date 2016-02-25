@@ -20,7 +20,7 @@
 
     <div class="row text-center">
         <h4>
-            Total {{ $questionnaires->dinner_count }} peoples | SZ {{ $questionnaires->shenzhen_count }} peoples |
+            Total {{ $questionnaires->total() }} peoples | SZ {{ $questionnaires->shenzhen_count }} peoples |
             BJ {{ $questionnaires->beijing_count }} peoples | TW {{ $questionnaires->taipei_count }} peoples
             <br><br>
             {{ $questionnaires->dinner_count }} Attend Dinner | {{ $questionnaires->prototype_count }} Prototype |
@@ -80,25 +80,25 @@
 
                         <td class="table--width-limit">
                             {{ $questionnaire->flight_local_to_shenzhen_flight }}<br/>
-                            <span class="table--text-light">{{ date_format(date_create($questionnaire->flight_local_to_shenzhen_datetime), 'Y-m-d H:i')  }}</span>
+                            <span class="table--text-light">{{ $questionnaire->flight_local_to_shenzhen_datetime }}</span>
                         </td>
 
                         <td class="table--width-limit">
                             {{ $questionnaire->flight_shenzhen_to_beijing_flight }}<br/>
-                            <span class="table--text-light">{{ date_format(date_create($questionnaire->flight_shenzhen_to_beijing_datetime), 'Y-m-d H:i') }}</span>
+                            <span class="table--text-light">{{ $questionnaire->flight_shenzhen_to_beijing_datetime }}</span>
                         </td>
 
                         <td class="table--width-limit">
                             {{ $questionnaire->flight_beijing_to_taipei_flight }}<br/>
-                            <span class="table--text-light">{{ date_format(date_create($questionnaire->flight_beijing_to_taipei_datetime), 'Y-m-d H:i')  }}</span>
+                            <span class="table--text-light">{{ $questionnaire->flight_beijing_to_taipei_datetime }}</span>
                         </td>
 
                         <td>
-                            {{ $questionnaire->attend_to_april_dinner === 'true' ? 'Yes' : 'No' }}<br/>
+                            {{ $questionnaire->attend_to_april_dinner == '1' ? 'Yes' : 'No' }}<br/>
                         </td>
 
                         <td>
-                            {{ $questionnaire->bring_prototype === 'true' ? 'Yes' : 'No' }}<br/>
+                            {{ $questionnaire->bring_prototype == '1' ? 'Yes' : 'No' }}<br/>
                         </td>
                     </tr>
                 @endforeach
@@ -115,12 +115,12 @@
                 <td><span id="phone"></span></td>
             </tr>
             <tr>
-                <td>Other Join</td>
-                <td><span id="join"></span></td>
-            </tr>
-            <tr>
                 <td>Wechat</td>
                 <td><span id="wechat"></span></td>
+            </tr>
+            <tr>
+                <td>Other Join</td>
+                <td><span id="join"></span></td>
             </tr>
             <tr>
                 <td>Forward Material</td>

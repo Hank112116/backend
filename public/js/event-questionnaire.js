@@ -9,19 +9,19 @@ $(function () {
 
         $("#phone").text(data.phone);
 
-        if (data.other_member_to_join == "true") {
+        if (data.other_member_to_join == "1") {
             $("#join").text("Yes");
         } else {
             $("#join").text("No");
         }
 
-        if (data.wechat_account == "true") {
-            $("#wechat").text("Yes");
+        if (data.wechat_account) {
+            $("#wechat").text(data.wechat_account);
         } else {
             $("#wechat").text("No");
         }
 
-        if (data.forward_material == "true") {
+        if (data.forward_material == "1") {
             $("#material").text("Yes");
         } else {
             $("#material").text("No");

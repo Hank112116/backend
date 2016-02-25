@@ -23,7 +23,7 @@ class BaseController extends Controller
     public function __construct()
     {
         $this->page     = $this->page ?: Input::get('page', 1);
-        $this->per_page = $this->per_page ?: Input::get('pp', 50);
+        $this->per_page = $this->per_page ?: Input::get('pp', 1000);
         if (isset($this->cert)) {
             $this->setCert();
         }

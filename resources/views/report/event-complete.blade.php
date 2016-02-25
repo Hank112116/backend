@@ -67,11 +67,11 @@
                                 @endif
                                 <br>
                                 @if(!$event_user->approved_at)
-                                <!--<span class="user-sub-category">
+                                <span class="user-sub-category">
                                     <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->id !!}"> Select
-                                </span>-->
+                                </span>
                                 @else
-                                    <!--<label for="active_1" class='iradio-lable'>Selected</label>-->
+                                    <label for="active_1" class='iradio-lable'>Selected</label>
                                 @endif
                             @else
                                 {{ $event_user->textFullName() }}
