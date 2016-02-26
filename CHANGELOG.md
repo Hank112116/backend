@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.5
+* [FIXED] fix event report count error (@Hank)
+* [NEW] add event report unique count information (@Hank)
+
 ## v2.0.4
 * [FIXED] fix event report incomplete data error (@Hank)
 

@@ -115,8 +115,10 @@ class ReportController extends BaseController
         $view     = $complete ? 'report.event-complete' : 'report.event-incomplete';
 
         $event_list       = $this->event_repo->getEvents();
+
         $join_event_users = $this->report_repo->getEventReport($event_id, $complete, Input::all(), $this->page, $this->per_page);
-        $join_event_users = $this->report_repo->getEventStatistics($complete, $join_event_users);
+
+        $begin_number = $join_event_users->total() - (($this->page -1) * $this->per_page);
 
         $template = view($view)
             ->with([
@@ -128,6 +130,7 @@ class ReportController extends BaseController
                 'complete'         => $complete,
                 'approve'          => $approve,
                 'is_super_admin'   => $this->auth,
+                'begin_number'     => $begin_number
             ]);
         return $template;
     }

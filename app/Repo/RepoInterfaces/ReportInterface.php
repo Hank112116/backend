@@ -5,5 +5,4 @@ interface ReportInterface
     public function getCommentReport($filter, $input, $page, $per_page);
     public function getRegistrationReport($filter, $input, $page, $per_page);
     public function getEventReport($event_id, $complete, $input, $page, $per_page);
-    public function getEventStatistics($complete, $join_event_users);
 }
