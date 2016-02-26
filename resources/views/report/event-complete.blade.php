@@ -81,6 +81,9 @@
 
                         <td class="table--user-mail">
                             {{ $event_user->email }}
+                            @if($event_user->getQuestionnaire())
+                                <i style="cursor:pointer" class="fa fa-clipboard" rel="{{ $event_user->getQuestionnaire()->id }}"></i>
+                            @endif
                         </td>
 
                         <td>
@@ -147,6 +150,6 @@
     </div>
     <div id="dialog" class="ui-widget" title="Apply messages" style="display:none"></div>
     @include ('report.event-note-dialog')
-
+    @include ('report.event-questionnaire-dialog')
 @stop
 

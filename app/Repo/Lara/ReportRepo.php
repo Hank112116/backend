@@ -4,6 +4,7 @@ use Backend\Model\Eloquent\User;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
+use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Backend\Model\Eloquent\EventApplication;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,13 +17,16 @@ class ReportRepo implements ReportInterface
 
     private $user_repo;
     private $event_repo;
+    private $questionnaire_repo;
 
     public function __construct(
-        UserInterface              $user_repo,
-        EventApplicationInterface  $even_repo
+        UserInterface               $user_repo,
+        EventApplicationInterface   $even_repo,
+        EventQuestionnaireInterface $questionnaire_repo
     ) {
-        $this->user_repo  = $user_repo;
-        $this->event_repo = $even_repo;
+        $this->user_repo          = $user_repo;
+        $this->event_repo         = $even_repo;
+        $this->questionnaire_repo = $questionnaire_repo;
     }
 
     private function getTimeInterval($input)
@@ -264,5 +268,95 @@ class ReportRepo implements ReportInterface
 
         }
         return $result;
+    }
+
+    public function getQuestionnaireReport($event_id, $input, $page, $per_page)
+    {
+        $questionnaires =  $this->questionnaire_repo->findByEventId($event_id);
+
+        if (isset($input['participation']) && !empty($input['participation'])) {
+            $participation = trim($input['participation']);
+            $questionnaires = $questionnaires->filter(function ($item) use ($participation) {
+                if (in_array($participation, $item->trip_participation)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (isset($input['user_name']) && !empty($input['user_name'])) {
+            $user_name = $input['user_name'];
+            $questionnaires = $questionnaires->filter(function ($item) use ($user_name) {
+                if (Str::contains($item->user->textFullName(), $user_name)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (isset($input['user_id']) && !empty($input['user_id'])) {
+            $user_id = trim($input['user_id']);
+            $questionnaires = $questionnaires->filter(function ($item) use ($user_id) {
+                if ($item->user_id == $user_id) {
+                    return $item;
+                }
+            });
+        }
+
+        $questionnaires = $this->event_repo->byCollectionPage($questionnaires, $page, $per_page);
+        return $questionnaires;
+    }
+
+    public function getQuestionnaireStatistics($questionnaires)
+    {
+
+        $questionnaires->dinner_count = $questionnaires->filter(function ($item) {
+            if ($item->attend_to_april_dinner == 'true') {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->prototype_count = $questionnaires->filter(function ($item) {
+            if ($item->bring_prototype == 'true') {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->join_count = $questionnaires->filter(function ($item) {
+            if ($item->other_member_to_join == 'true') {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->wechat_count = $questionnaires->filter(function ($item) {
+            if ($item->wechat_account == 'true') {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->material_count = $questionnaires->filter(function ($item) {
+            if ($item->forward_material == 'true') {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->shenzhen_count = $questionnaires->filter(function ($item) {
+            if (in_array('shenzhen', $item->trip_participation)) {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->beijing_count = $questionnaires->filter(function ($item) {
+            if (in_array('beijing', $item->trip_participation)) {
+                return $item;
+            }
+        })->count();
+
+        $questionnaires->taipei_count = $questionnaires->filter(function ($item) {
+            if (in_array('taipei', $item->trip_participation)) {
+                return $item;
+            }
+        })->count();
+
+
+        return $questionnaires;
     }
 }

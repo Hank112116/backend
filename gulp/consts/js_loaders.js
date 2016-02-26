@@ -21,7 +21,8 @@ module.exports = [
     'landing-expert.js',
     'solution-list.js',
     'user-list.js',
-    'event-report-list.js'
+    'event-report-list.js',
+    'event-questionnaire.js'
 ];
 
 
