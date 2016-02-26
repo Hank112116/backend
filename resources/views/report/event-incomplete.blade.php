@@ -18,7 +18,7 @@
     @include ('report.event-search')
     <div class="row text-center">
         <h4>
-            Total {{ $event_users->total() }} Interests | {{ $event_users->complete_count }} Completed
+            Total {{ $event_users->total() }} Interests | {{ $event_users->complete_count }} Completed | {{ $event_users->unique_complete_count }} Unique Completed
         </h4>
     </div>
     <div class="row">
@@ -38,7 +38,7 @@
 
                 @foreach($event_users as $no => $event_user)
                     <tr>
-                        <td>{!! $no+1 !!}</td>
+                        <td>{!! $begin_number -- !!}</td>
 
                         <td class="table--user-mail">
                             {{ $event_user->email }}

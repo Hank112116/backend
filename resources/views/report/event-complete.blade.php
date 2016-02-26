@@ -18,7 +18,8 @@
     @include ('report.event-search')
     <div class="row text-center">
         <h4>
-            Total {{ $event_users->total() }} applications | {{ $event_users->expert_count }} Experts | {{ $event_users->creator_count }} Creators
+            Total {{ $event_users->total() }} applications | {{ $event_users->expert_count }} Experts | {{ $event_users->creator_count }} Creators |
+            {{ $event_users->unique_expert_count }} Unique Experts | {{ $event_users->unique_creator_count }} Unique Creators
         </h4>
     </div>
     <div class="row">
