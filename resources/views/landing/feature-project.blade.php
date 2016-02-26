@@ -5,7 +5,7 @@
 <div class="panel panel-default project">
 
     <div class="panel-heading">
-        {!! link_to_action('ProductController@showDetail',
+        {!! link_to_action('ProjectController@showDetail',
           "PROJECT #{$project->project_id}", $project->project_id) !!}
         <span class='icon icon-remove js-remove'></span>
     </div>

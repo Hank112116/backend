@@ -10,7 +10,6 @@ export function init() {
 
     $(window).bind("load resize", function () {
         width = this.window.innerWidth > 0 ? this.window.innerWidth : this.screen.width;
-
         path_name = window.location.pathname;
         if (path_name == "/") {
             $page_collapse.addClass("page-wrapper--collapse");

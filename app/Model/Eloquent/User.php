@@ -107,14 +107,6 @@ class User extends Eloquent
         return $query->where('is_hwtrek_pm', true);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function backedProducts()
-    {
-        return $this->hasMany(Transaction::class, 'user_id', 'user_id');
-    }
-
     public function getPrimaryKey()
     {
         return $this->primaryKey;

@@ -66,9 +66,6 @@ class UserRepo implements UserInterface
             'projects',
             'projects.category',
             'solutions',
-            'solutions',
-            'backedProducts',
-            'backedProducts.project',
             'applyExpertMessage'
         )->find($id);
 
