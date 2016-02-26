@@ -261,7 +261,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toProgram($solution_id, Auth::user()->isBackendPM());
                 $res   = ['status' => 'success'];
             } else {
@@ -278,7 +278,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toSolution($solution_id, Auth::user()->isBackendPM());
                 $res   = ['status' => 'success'];
             } else {
@@ -295,7 +295,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toProgram($solution_id, false);
                 $res   = ['status' => 'success'];
             } else {
@@ -312,7 +312,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toSolution($solution_id, false);
                 $res   = ['status' => 'success'];
             } else {

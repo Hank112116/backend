@@ -5,7 +5,7 @@ use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use ImageUp;
 use Validator;
 use Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
