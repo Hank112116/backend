@@ -12,7 +12,6 @@ use Backend\Repo\RepoTrait\PaginateTrait;
 
 class UserRepo implements UserInterface
 {
-
     use PaginateTrait;
 
     private $error;
@@ -20,11 +19,6 @@ class UserRepo implements UserInterface
     private $expertise;
     private $apply_expert_msg_repo;
     private $image_uplodaer;
-    private $rule = [
-        'email'        => 'required|email',
-        'company_url'  => 'url',
-        'personal_url' => 'url'
-    ];
 
     private static $update_columns = [
         'active', 'email_verify', 'user_type', 'email',
@@ -285,15 +279,13 @@ class UserRepo implements UserInterface
 
     public function validUpdate($id, $data)
     {
-//        if (array_key_exists('email', $data)) {
-//            $user = $this->user->find($id);
-//            if ($user->email === $data['email']) {
-//                return true;
-//            }
-//        }
+        $rule = [
+            'email'        => 'required|email|unique:user,email,' . $id . ',user_id',
+            'company_url'  => 'url',
+            'personal_url' => 'url'
+        ];
 
-        $validator = Validator::make($data, $this->rule);
-
+        $validator = Validator::make($data, $rule);
         if ($validator->passes()) {
             return true;
         }
