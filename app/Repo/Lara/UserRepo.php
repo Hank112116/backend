@@ -5,7 +5,7 @@ use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use ImageUp;
 use Validator;
 use Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
@@ -17,7 +17,9 @@ class UserRepo implements UserInterface
 
     private $error;
     private $user;
+    private $expertise;
     private $apply_expert_msg_repo;
+    private $image_uplodaer;
     private $rule = [
         'email'        => 'required|email',
         'company_url'  => 'url',
@@ -64,9 +66,6 @@ class UserRepo implements UserInterface
             'projects',
             'projects.category',
             'solutions',
-            'solutions',
-            'backedProducts',
-            'backedProducts.project',
             'applyExpertMessage'
         )->find($id);
 

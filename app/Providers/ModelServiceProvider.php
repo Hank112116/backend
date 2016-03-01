@@ -35,7 +35,6 @@ class ModelServiceProvider extends ServiceProvider
             function ($app) {
                 return new ProjectModifier(
                     new \Backend\Model\Eloquent\Project(),
-                    new \Backend\Model\Eloquent\DuplicateProject(),
                     new ProjectProfile(),
                     new \ImageUp()
                 );

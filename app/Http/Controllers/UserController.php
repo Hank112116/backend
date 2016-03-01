@@ -2,20 +2,15 @@
 
 namespace Backend\Http\Controllers;
 
-use CSV;
 use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\UserInterface;
-
 use Backend\Repo\RepoInterfaces\ProjectInterface;
-use Backend\Repo\RepoInterfaces\ProductInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
-
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
 use Backend\Model\Eloquent\Industry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Input;
 use Lang;
 use Config;
@@ -32,10 +27,16 @@ class UserController extends BaseController
 {
     protected $cert = 'user';
 
+    private $user_repo;
+    private $project_repo;
+    private $solution_repo;
+    private $expertise_repo;
+    private $user_api;
+    private $apply_msg_repo;
+
     public function __construct(
         UserInterface $user,
         ProjectInterface $project,
-        ProductInterface $product,
         SolutionInterface $solution,
         ExpertiseInterface $expertise,
         UserApiInterface $user_api,
@@ -45,7 +46,6 @@ class UserController extends BaseController
 
         $this->user_repo      = $user;
         $this->project_repo   = $project;
-        $this->product_repo   = $product;
         $this->solution_repo  = $solution;
         $this->expertise_repo = $expertise;
         $this->user_api       = $user_api;
@@ -224,7 +224,6 @@ class UserController extends BaseController
             'expertise_setting' => explode(',', $user->expertises),
             'user'              => $user,
             'projects'          => $this->project_repo->byUserId($user->user_id),
-            'products'          => $this->product_repo->byUserId($user->user_id),
             'solutions'         => $this->solution_repo->configApprove($user->solutions),
             'apply_expert_msg'  => $this->apply_msg_repo->byUserId($user->user_id),
             'attachments'       => $attachments

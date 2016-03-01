@@ -5,13 +5,11 @@ namespace Backend\Http\Controllers;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
-use Guzzle\Log\LogAdapterInterface;
 use Illuminate\Http\Request;
 use Input;
 use Noty;
 use Redirect;
 use Response;
-use Browser\Browser;
 
 class LandingController extends BaseController
 {

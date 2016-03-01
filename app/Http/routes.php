@@ -85,38 +85,6 @@ Route::group(['before' => 'backend.project'], function () {
     Route::post('project/update/{id}', 'ProjectController@update');
 });
 
-// Product
-Route::group(['before' => 'backend.project'], function () {
-
-    Route::get('product/all', 'ProductController@showList');
-    Route::get('product/wait-approve', 'ProductController@showWaitApproves');
-    Route::get('product/search/{by}', 'ProductController@showSearch');
-
-    Route::get('product/detail/{id}', 'ProductController@showDetail');
-    Route::get('product/project-detail/{id}', 'ProductController@showProjectDetail');
-
-    Route::get('product/update/{id}', 'ProductController@showUpdate');
-    Route::get('product/project-update/{id}', 'ProductController@showProjectUpdate');
-
-    Route::get('product/new-perk/{is_pro}', 'ProductController@renderNewPerk');
-
-    Route::get('product/postpone/{id}', 'ProductController@postpone');
-    Route::get('product/recover-postpone/{id}', 'ProductController@recoverPostpone');
-
-    Route::get('product/approve/{id}', 'ProductController@approve');
-    Route::get('product/reject/{id}', 'ProductController@reject');
-    Route::post('product/update/{id}', 'ProductController@update');
-
-    Route::post('product/update-ongoing/{id}', 'ProductController@updateOngoing');
-    Route::post('product/update-project/{id}', 'ProductController@updateProject');
-});
-
-// Transaction
-Route::group(['before' => 'backend.project'], function () {
-    Route::get('transaction/all', 'TransactionController@showList');
-    Route::get('transaction/search/{by}', 'TransactionController@showSearch');
-});
-
 // Solution
 Route::group(['before' => 'backend.solution'], function () {
     Route::get('solution/all', 'SolutionController@showList');

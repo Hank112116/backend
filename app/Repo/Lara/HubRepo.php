@@ -11,6 +11,13 @@ use Carbon;
 
 class HubRepo implements HubInterface
 {
+    private $questionnaire;
+    private $schedule;
+    private $admin;
+    private $user;
+    private $token;
+    private $snapshot_api;
+
     public function __construct(
         HubQuestionnaire $q,
         HubSchedule $schedule,
@@ -20,7 +27,7 @@ class HubRepo implements HubInterface
         $this->questionnaire    = $q;
         $this->schedule         = $schedule;
         $this->admin            = $admin;
-        $this->user            = $user;
+        $this->user             = $user;
 
         $this->token        = Config::get('app.hub_token');
         $this->snapshot_api = 'https://'.Config::get('app.front_domain').'/hub/apis/admin-snapshot';

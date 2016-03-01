@@ -20,6 +20,12 @@ class HubController extends BaseController
 
     protected $cert = 'hub';
 
+    private $hub_repo;
+    private $user_repo;
+    private $adminer_repo;
+    private $project_repo;
+    private $purifier;
+
     public function __construct(
         HubInterface $hub,
         UserInterface $user,

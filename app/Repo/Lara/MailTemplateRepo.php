@@ -5,6 +5,8 @@ use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 
 class MailTemplateRepo implements MailTemplateInterface
 {
+    private $mt;
+
     public function __construct(MailTemplate $mt)
     {
         $this->mt = $mt;

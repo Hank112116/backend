@@ -5,6 +5,8 @@ use Backend\Repo\RepoInterfaces\RoleInterface;
 
 class RoleRepo implements RoleInterface
 {
+    private $role;
+
     public function __construct(Role $role)
     {
         $this->role = $role;

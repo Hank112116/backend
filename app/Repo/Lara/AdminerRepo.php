@@ -12,6 +12,8 @@ class AdminerRepo implements AdminerInterface
     const TYPE_BACKEND_MANAGER  = 5;
 
     private $error;
+    private $adminer;
+    private $role;
     private $rules = [
         'name'     => 'required',
         'password' => 'required|min:4|confirmed',

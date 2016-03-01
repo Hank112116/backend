@@ -17,7 +17,6 @@ use Log;
 
 class CommentRepo implements CommentInterface
 {
-
     use PaginateTrait;
 
     const SEARCH_BY_TOPIC_CREATOR = 'topic_creator';
@@ -25,11 +24,17 @@ class CommentRepo implements CommentInterface
     const SEARCH_BY_OWNER = 'owner';
     const SEARCH_BY_PROFESSION_NAME = 'profession_name';
 
+    private $comment;
+    private $user_repo;
+    private $project_repo;
+    private $solution_repo;
+    private $inbox_repo;
+    private $purifier;
+
     public function __construct(
         Comment $comment,
         UserInterface $user_repo,
         ProjectInterface $project_repo,
-        ProductInterface $product_repo,
         SolutionInterface $solution_repo,
         InboxInterface $inbox_repo,
         Purifier $purifier
@@ -38,10 +43,8 @@ class CommentRepo implements CommentInterface
 
         $this->user_repo     = $user_repo;
         $this->project_repo  = $project_repo;
-        $this->prodcut_repo  = $product_repo;
         $this->solution_repo = $solution_repo;
-        $this->inbox_repo   = $inbox_repo;
-
+        $this->inbox_repo    = $inbox_repo;
         $this->purifier      = $purifier;
     }
 
@@ -131,19 +134,13 @@ class CommentRepo implements CommentInterface
                 break;
 
             case self::SEARCH_BY_TITLE:
-                $ids = array_merge(
-                    $this->project_repo->byTitle($value)->lists('project_id')->all(),
-                    $this->prodcut_repo->byTitle($value)->lists('project_id')->all()
-                );
+                $ids = $this->project_repo->byTitle($value)->lists('project_id')->all();
 
                 $where_column = 'project_id';
                 break;
 
             case self::SEARCH_BY_OWNER:
-                $ids = array_merge(
-                    $this->project_repo->byUserName($value)->lists('project_id')->all(),
-                    $this->prodcut_repo->byUserName($value)->lists('project_id')->all()
-                );
+                $ids = $this->project_repo->byUserName($value)->lists('project_id')->all();
                 $where_column = 'project_id';
                 break;
         }
