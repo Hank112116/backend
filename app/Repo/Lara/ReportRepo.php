@@ -122,7 +122,7 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (isset($input['approve']) && !empty($input['approve'])) {
+        if (!empty($input['approve'])) {
             if ($input['approve'] === 'approved') {
                 $join_event_users = $join_event_users->filter(function (EventApplication $item) {
                     if ($item->isSelected()) {
@@ -138,7 +138,7 @@ class ReportRepo implements ReportInterface
             }
         }
 
-        if (isset($input['email']) && !empty($input['email'])) {
+        if (!empty($input['email'])) {
             $email = trim($input['email']);
             $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($email) {
                 if (Str::equals($item->email, $email)) {
@@ -147,7 +147,7 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (isset($input['user_name']) && !empty($input['user_name'])) {
+        if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
             $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($user_name) {
                 if (Str::contains($item->textFullName(), $user_name)) {
@@ -157,7 +157,7 @@ class ReportRepo implements ReportInterface
         }
 
         // filter user role
-        if (isset($input['role']) && $input['role'] != 'all') {
+        if (!empty($input['role']) && $input['role'] != 'all') {
             if ($input['role'] === 'expert') {
                 $join_event_users = $join_event_users->filter(function (EventApplication $item) {
                     if ($item->user->isExpert()) {
@@ -174,7 +174,7 @@ class ReportRepo implements ReportInterface
         }
 
         // filter user id
-        if (isset($input['user_id']) && !empty($input['user_id'])) {
+        if (!empty($input['user_id'])) {
             $user_id = trim($input['user_id']);
             $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($user_id) {
                 if ($item->user->user_id == $user_id) {
@@ -184,9 +184,9 @@ class ReportRepo implements ReportInterface
         }
 
         // filter entered at time
-        if (isset($input['entered_at_start']) && !empty($input['entered_at_start'])) {
+        if (!empty($input['entered_at_start'])) {
             $entered_at_start =  $input['entered_at_start'];
-            if (isset($input['entered_at_end']) && !empty($input['entered_at_end'])) {
+            if (!empty($input['entered_at_end'])) {
                 $entered_at_end = $input['entered_at_end'];
             } else {
                 $entered_at_end = Carbon::now()->toDateString();
@@ -201,9 +201,9 @@ class ReportRepo implements ReportInterface
         }
 
         // filter applied at time
-        if (isset($input['applied_at_start']) && !empty($input['applied_at_start'])) {
+        if (!empty($input['applied_at_start'])) {
             $applied_at_start =  $input['applied_at_start'];
-            if (isset($input['applied_at_end']) && !empty($input['applied_at_end'])) {
+            if (!empty($input['applied_at_end'])) {
                 $applied_at_end = $input['applied_at_end'];
             } else {
                 $applied_at_end = Carbon::now()->toDateString();
@@ -222,7 +222,7 @@ class ReportRepo implements ReportInterface
         return $join_event_users;
     }
 
-    private function getEventStatistics($complete, $join_event_users)
+    private function getEventStatistics($complete, Collection $join_event_users)
     {
         $result = [];
         if ($complete) {
@@ -272,7 +272,7 @@ class ReportRepo implements ReportInterface
         /* @var Collection $questionnaires*/
         $questionnaires =  $this->questionnaire_repo->findByEventId($event_id);
 
-        if (isset($input['participation']) && !empty($input['participation'])) {
+        if (!empty($input['participation'])) {
             $participation = trim($input['participation']);
             $questionnaires = $questionnaires->filter(function ($item) use ($participation) {
                 if (in_array($participation, $item->trip_participation)) {
@@ -281,7 +281,7 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (isset($input['user_name']) && !empty($input['user_name'])) {
+        if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
             $questionnaires = $questionnaires->filter(function ($item) use ($user_name) {
                 if (Str::contains($item->user->textFullName(), $user_name)) {
@@ -290,7 +290,7 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (isset($input['user_id']) && !empty($input['user_id'])) {
+        if (!empty($input['user_id'])) {
             $user_id = trim($input['user_id']);
             $questionnaires = $questionnaires->filter(function ($item) use ($user_id) {
                 if ($item->user_id == $user_id) {
