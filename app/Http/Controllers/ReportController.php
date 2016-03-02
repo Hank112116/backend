@@ -6,35 +6,35 @@ use Backend\Http\Requests;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
-use Noty;
+use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Noty;
 
 class ReportController extends BaseController
 {
     protected $cert = "report";
-    protected $page;
-    protected $per_page;
     private $auth;
     private $user_repo;
     private $report_repo;
     private $filter;
     private $event_repo;
+    private $questionnaire_repo;
 
     public function __construct(
-        UserInterface $user_repo,
-        ReportInterface $report_repo,
-        EventApplicationInterface $event_repo
+        UserInterface               $user_repo,
+        ReportInterface             $report_repo,
+        EventApplicationInterface   $event_repo,
+        EventQuestionnaireInterface $questionnaire_repo
     ) {
         parent::__construct();
-        $this->auth        = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
-        $this->user_repo   = $user_repo;
-        $this->report_repo = $report_repo;
-        $this->event_repo  = $event_repo;
-        $this->page        = Input::get('page', 1);
-        $this->per_page    = Input::get('pp', 50);
+        $this->auth               = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
+        $this->user_repo          = $user_repo;
+        $this->report_repo        = $report_repo;
+        $this->event_repo         = $event_repo;
+        $this->questionnaire_repo = $questionnaire_repo;
     }
 
     /**
@@ -153,5 +153,40 @@ class ReportController extends BaseController
             $result['status'] = 'fail';
         }
         return json_encode($result);
+    }
+
+    public function showQuestionnaire()
+    {
+        if (Input::get('event_id')) {
+            $event_id = Input::get('event_id');
+        } else {
+            $event_id = $this->event_repo->getDefaultEvent();
+        }
+        $event_list     = $this->event_repo->getEvents();
+        $questionnaires = $this->report_repo->getQuestionnaireReport($event_id, Input::all(), $this->page, $this->per_page);
+        $view           = $this->questionnaire_repo->getView($event_id);
+        $template = view($view)
+            ->with([
+                'title'            => $event_list[$event_id]['orig'] . ' Questionnaire',
+                'event_short_name' => $event_list[$event_id]['short'],
+                'event_list'       => $event_list,
+                'event_id'         => $event_id,
+                'questionnaires'   => $questionnaires,
+                'is_super_admin'   => $this->auth
+            ]);
+        return $template;
+    }
+
+    public function showUserQuestionnaire()
+    {
+        $questionnaire = $this->questionnaire_repo->find(Input::get('questionnaire_id'));
+        $questionnaire_column = $this->questionnaire_repo->getQuestionnaireColumn($questionnaire->subject_id);
+        $questionnaire_items  = json_decode($questionnaire->detail, true);
+        $template = view('report.event-questionnaire')
+            ->with([
+                'questionnaire_column' => $questionnaire_column,
+                'questionnaire_items'  => $questionnaire_items
+            ]);
+        return $template;
     }
 }

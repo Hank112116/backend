@@ -73,4 +73,24 @@ $(function () {
             }
         });
     });
+
+    $(".fa-clipboard").click(function(){
+        var $this = $(this);
+        var questionnaire_id = $this.attr("rel");
+        $.ajax({
+            type: "POST",
+            url: "/report/events/user-questionnaire",
+            data: {
+                questionnaire_id: questionnaire_id
+            },
+            success: function success(feeback) {
+                var $questionnaire_dialog = $("#questionnaire_dialog");
+                $questionnaire_dialog.html(feeback);
+                $questionnaire_dialog.dialog({
+                    height: 670,
+                    width: 600
+                });
+            }
+        });
+    });
 });
