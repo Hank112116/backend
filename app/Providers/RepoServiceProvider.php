@@ -44,9 +44,11 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\ProjectInterface',
             function ($app) {
                 return new Lara\ProjectRepo(
+                    $app->make('Backend\Repo\RepoInterfaces\AdminerInterface'),
                     new \Backend\Model\Eloquent\Project(),
                     new \Backend\Model\Eloquent\ProjectCategory(),
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
+                    $app->make('Backend\Model\ModelInterfaces\TagBuilderInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface')
                 );

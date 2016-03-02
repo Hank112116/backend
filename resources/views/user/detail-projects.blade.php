@@ -30,7 +30,7 @@
 					</td>
 
 					<td>
-						@include('modules.list-category', ['category' => $p->category])
+						@include('modules.list-category', ['category' => $p->categoryData()])
 					</td>
 
 					<td>

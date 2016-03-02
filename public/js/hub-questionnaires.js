@@ -1,8 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
-require("./libs/MailSchedule.js");
+require("./libs/RecommendExpert.js");
 
-},{"./libs/MailSchedule.js":2}],2:[function(require,module,exports){
+},{"./libs/RecommendExpert.js":2}],2:[function(require,module,exports){
 /* jshint quotmark: false */
 "use strict";
 
@@ -22,7 +22,7 @@ $(function () {
         $("#projectTitle").val(projectTitle);
         $("#userId").val(userId);
         $("#PM").val(PM);
-        $("#dialog").dialog({
+        $("#email-recommend-expert-dialog").dialog({
             height: 270,
             width: 600
         });
@@ -73,7 +73,7 @@ $(function () {
         var userId = $("#userId").val();
         var PM = $("#PM").val();
         if (expert1 && expert2 && PM) {
-            $("#dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
+            $("#email-recommend-expert-dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
@@ -92,7 +92,7 @@ $(function () {
                         location.reload();
                         return;
                     }
-                    $("#dialog").dialog("close");
+                    $("#email-recommend-expert-dialog").dialog("close");
                     Notifier.showTimedMessage("Send mail successful", "information", 2);
                     location.reload();
                 }

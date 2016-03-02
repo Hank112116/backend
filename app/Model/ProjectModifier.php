@@ -1,6 +1,8 @@
 <?php namespace Backend\Model;
 
 use Backend\Model\Eloquent\Project;
+use Backend\Model\Eloquent\InternalProjectMemo;
+use Backend\Model\Eloquent\ProjectTeam;
 use ImageUp;
 use Carbon;
 use Backend\Model\Plain\ProjectProfile;
@@ -9,31 +11,47 @@ use Backend\Model\ModelInterfaces\ProjectModifierInterface;
 class ProjectModifier implements ProjectModifierInterface
 {
     private $update_columns = [
-        'user_id', 'category_id',
+        'user_id', 'category_id', 'innovation_type',
         'project_title', 'project_summary',
         'progress', 'project_country', 'project_city',
-        'preliminary_spec', 'key_component', 'description',
-        'team', 'resource', 'resource_other', 'requirement',
-        'quantity', 'msrp', 'launch_date', 'tags',
+        'key_component', 'description',
+        'resource', 'resource_other', 'requirement',
+        'quantity', 'budget', 'msrp', 'launch_date', 'tags',
         'is_deleted',
+    ];
+
+    private $update_memo_columns = [
+        'description', 'schedule_note', 'schedule_note_grade',
+        'project_managers', 'tags'
+    ];
+
+    private $update_team_columns = [
+        'company_name', 'company_url', 'size', 'strengths'
     ];
 
     private $project_profile;
     private $image_uploader;
     private $project;
+    private $project_memo;
+    private $project_team;
 
     public function __construct(
         Project $project,
         ProjectProfile $project_profile,
-        ImageUp $image_uploader
+        ImageUp $image_uploader,
+        InternalProjectMemo $project_memo,
+        ProjectTeam $project_team
     ) {
-        $this->project   = $project;
+        $this->project         = $project;
         $this->project_profile = $project_profile;
         $this->image_uploader  = $image_uploader;
+        $this->project_memo    = $project_memo;
+        $this->project_team    = $project_team;
     }
 
     public function updateProject($project_id, $data)
     {
+
         $project = $this->project->find($project_id);
         $project->fill(array_only($data, $this->update_columns));
 
@@ -53,7 +71,17 @@ class ProjectModifier implements ProjectModifierInterface
             $project->deleted_date = Carbon::now();
         }
 
+        if (array_key_exists('tags', $data) and $data[ 'tags' ] !== null) {
+            $project->tags = json_encode(explode(',', $project->tags));
+        }
+
+        if (array_key_exists('resource', $data) and $data[ 'resource' ] !== null) {
+            $project->resource = json_encode(explode(',', $project->resource));
+        }
+
         $this->update($project);
+
+        $this->updateProjectTeam($project_id, $data);
     }
 
     public function toDraftProject($project_id)
@@ -72,6 +100,36 @@ class ProjectModifier implements ProjectModifierInterface
     {
         $this->project->where('project_id', $project_id)
             ->update($this->project_profile->public_project);
+    }
+
+    public function updateProjectMemo($project_id, $data)
+    {
+        $memo = $this->project_memo->find($project_id);
+        if ($memo) {
+            $memo->fill(array_only($data, $this->update_memo_columns));
+            return $memo->save();
+        } else {
+            $this->project_memo->id = $project_id;
+            $this->project_memo->fill(array_only($data, $this->update_memo_columns));
+            return $this->project_memo->save();
+        }
+    }
+
+    public function updateProjectTeam($project_id, $data)
+    {
+        if (array_key_exists('strengths', $data) and $data['strengths'] !== null) {
+            $data['strengths'] = json_encode(explode(',', $data['strengths']));
+        }
+
+        $team = $this->project_team->find($project_id);
+        if ($team) {
+            $team->fill(array_only($data, $this->update_team_columns));
+            return $team->save();
+        } else {
+            $this->project_team->id = $project_id;
+            $this->project_team->fill(array_only($data, $this->update_team_columns));
+            return $this->project_team->save();
+        }
     }
 
     /**

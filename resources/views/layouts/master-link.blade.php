@@ -126,32 +126,6 @@
                     </ul>
                 </li>
                 @endif
-                
-                @if(Auth::user()->isShowLink('hub'))
-                <li>
-                    <a href="#">
-                        <i class="fa fa-dashboard fa-fw"></i>
-                        Hub
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="{!! action('HubController@indexQuestionnaire') !!}">
-                                <i class="fa fa-tablet fa-fw"></i>
-                                Questionnaire
-                            </a>
-                        </li>
-                        @if(Auth::user()->isShowLink('hub_full'))
-                        <li>
-                            <a href="{!! action('HubController@indexSchedule') !!}">
-                                <i class="fa fa-tasks fa-fw"></i>
-                                Schedule
-                            </a>
-                        </li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
 
                 @if(Auth::user()->isAdmin())
                 <li>

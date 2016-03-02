@@ -191,4 +191,9 @@ class EngineerController extends BaseController
                 'type'      => $type,
             ]);
     }
+
+    public function viewInject()
+    {
+        return view('engineer.inject');
+    }
 }

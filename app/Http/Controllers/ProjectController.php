@@ -2,23 +2,29 @@
 
 namespace Backend\Http\Controllers;
 
-use Illuminate\Support\Collection;
+use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
+use Backend\Repo\RepoInterfaces\HubInterface;
 use Input;
 use Noty;
 use Redirect;
 use Log;
+use Response;
 
 class ProjectController extends BaseController
 {
     protected $cert = 'project';
 
     private $project_repo;
+    private $adminer_repo;
+    private $hub_repo;
 
-    public function __construct(ProjectInterface $project)
+    public function __construct(ProjectInterface $project, AdminerInterface $adminer, HubInterface $hub)
     {
         parent::__construct();
         $this->project_repo = $project;
+        $this->adminer_repo = $adminer;
+        $this->hub_repo     = $hub;
     }
 
 
@@ -35,47 +41,17 @@ class ProjectController extends BaseController
         return $this->showProjects($projects, $paginate = false, $title = 'Deleted Projects');
     }
 
-    public function showSearch($search_by)
+    public function showSearch()
     {
-        switch ($search_by) {
-            case 'name':
-                $projects = $this->project_repo->byUserName(Input::get('name'));
-                break;
-
-            case 'project_id':
-                $projects = $this->project_repo->byProjectId(Input::get('project_id'));
-                break;
-
-            case 'title':
-                $projects = $this->project_repo->byTitle(Input::get('title'));
-                break;
-
-            case 'date':
-                $projects = $this->project_repo->byDateRange(Input::get('dstart'), Input::get('dend'));
-                break;
-
-            default:
-                $projects = new Collection();
-        }
-
-        $log_action = 'Search by '.$search_by;
-        $log_data   = [
-            'id'        => Input::get('project_id'),
-            'user_name' => Input::get('name'),
-            'title'     => Input::get('title'),
-            'dstart'    => Input::get('dstart'),
-            'dend'      => Input::get('dend'),
-            'result'    => sizeof($projects)
-        ];
-        Log::info($log_action, $log_data);
+        $projects = $this->project_repo->byUnionSearch(Input::all(), $this->page, $this->per_page);
+        $log_action = 'Search project';
+        Log::info($log_action, Input::all());
 
         if ($projects->count() == 0) {
             Noty::warnLang('common.no-search-result');
-
-            return Redirect::action('ProjectController@showList');
-        } else {
-            return $this->showProjects($projects, $paginate = false);
         }
+
+        return $this->showProjects($projects, $paginate = true);
     }
 
     public function showProjects($projects, $paginate = true, $title = '')
@@ -85,10 +61,12 @@ class ProjectController extends BaseController
         }
         return view('project.list')
             ->with([
-                'title'         => $title ?: 'projects',
-                'projects'      => $projects,
-                'per_page'      => $this->per_page,
-                'show_paginate' => $paginate,
+                'title'            => $title ?: 'projects',
+                'projects'         => $projects,
+                'per_page'         => $this->per_page,
+                'show_paginate'    => $paginate,
+                'project_tag_tree' => $this->project_repo->tagTree(),
+                'adminers'         => $this->adminer_repo->all(),
             ]);
     }
 
@@ -109,8 +87,9 @@ class ProjectController extends BaseController
 
     public function showDetail($project_id)
     {
-        $project = $this->project_repo->find($project_id);
-
+        $project  = $this->project_repo->find($project_id);
+        $schedule = $this->hub_repo->findSchedule($project_id);
+        
         if (!$project) {
             Noty::warnLang('project.no-project');
 
@@ -119,8 +98,10 @@ class ProjectController extends BaseController
 
         return view('project.detail')
             ->with([
-                'project_tag_tree' => $this->project_repo->projectTagTree(),
-                'project'          => $project
+                'project_tag_tree' => $this->project_repo->tagTree(),
+                'project'          => $project,
+                'adminers'         => $this->adminer_repo->all(),
+                'schedule'         => $schedule ?: $this->hub_repo->dummySchedule()
             ]);
     }
 
@@ -136,15 +117,17 @@ class ProjectController extends BaseController
 
         return view('project.update')
             ->with([
-                'project_tag_tree'      => $this->project_repo->projectTagTree(),
+                'project_tag_tree'      => $this->project_repo->tagTree(),
 
                 'category_options'      => $this->project_repo->categoryOptions(
                     $is_selected = $project->category ? true : false
                 ),
                 'current_stage_options' => $this->project_repo->currentStageOptions(),
+                'innovation_options'    => $this->project_repo->innovationOptions(),
                 'resource_options'      => $this->project_repo->resourceOptions(),
                 'quantity_options'      => $this->project_repo->quantityOptions(),
-
+                'budget_options'        => $this->project_repo->budgetOptions(),
+                'team_size_options'     => $this->project_repo->teamSizeOptions(),
                 'project'               => $project
             ]);
     }
@@ -206,5 +189,20 @@ class ProjectController extends BaseController
         Log::info($log_action, $log_data);
 
         return Redirect::action('ProjectController@showList');
+    }
+
+    public function updateMemo()
+    {
+        $input = Input::all();
+        if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
+            $res   = ['status' => 'success'];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+        }
+
+        $log_action = 'Edit internal information';
+        Log::info($log_action, $input);
+
+        return Response::json($res);
     }
 }

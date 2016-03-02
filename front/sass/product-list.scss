@@ -6,6 +6,18 @@
 @import "modules/page-header-with-btn";
 @import "modules/list-search";
 @import "modules/list-table";
-
+@import "vendor/fronteed/icheck/blue";
 @import "modules/list-icon";
+@import "modules/detail-tags";
+@import "pages/project/tag-component";
 
+.adminer-tag {
+  display: inline-block;
+  min-width: 15em;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background: #fcfcfc;
+}

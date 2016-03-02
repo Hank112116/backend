@@ -17,7 +17,7 @@
     </h1>
 
     <div class="page-header--user">
-        by <a href="{!! $user->textFrontLink()}}">{!! $user->textFullName() !!}</a>
+        by <a href="{!! $user->textFrontLink() !!}">{!! $user->textFullName() !!}</a>
         {!! HTML::image($user->getImagePath(), '', ['class' => 'user-avatar']) !!}
         @ {!! HTML::date($q->date_added) !!}
     </div>

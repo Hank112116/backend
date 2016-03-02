@@ -14,15 +14,6 @@
     </div>
 </div>
 
-<!-- Preliminary Specifications -->
-<div class="form-group">
-    <label for="preliminary_spec" class="col-md-3">Preliminary Specifications</label>
-    <div class="col-md-9">
-        <textarea id="preliminary_spec" class='js-editor'
-                  name="preliminary_spec">{!! $project->preliminary_spec !!}</textarea>
-    </div>
-</div>
-
 <!-- Key Components List -->
 <div class="form-group">
     <label for="key_component" class="col-md-3">Key Components List</label>
@@ -33,13 +24,47 @@
     </div>
 </div>
 
+<!-- Company Name -->
+<div class="form-group">
+    <label for="title" class="col-md-3">Company Name</label>
+    <div class="col-md-5">
+        <input type="text" class="form-control" id="title" maxlength="55"
+               name="company_name" value="{!! htmlspecialchars($project->projectTeam->company_name) !!}">
+    </div>
+    <div class="col-md-5"></div>
+</div>
+
+<!-- Company Url -->
+<div class="form-group">
+    <label for="title" class="col-md-3">Company Url</label>
+    <div class="col-md-5">
+        <input type="text" class="form-control" id="title" maxlength="55"
+               name="company_url" value="{!! htmlspecialchars($project->projectTeam->company_url) !!}">
+    </div>
+    <div class="col-md-5"></div>
+</div>
+
+<!-- Team Size -->
+<div class="form-group">
+    <label for="size" class="col-md-3">Team size</label>
+    <div class="col-md-9 select-tags" data-select-one = "team-size">
+        @foreach($team_size_options as $index => $size)
+            <div data-id='{!! $index  !!}'
+                 class='btn btn-primary tag {!! $project->projectTeam->size == $index ? 'active' : '' !!}' >
+                {!! $size  !!}
+            </div>
+        @endforeach
+        <input type="hidden" name="size" value="{!! $project->projectTeam->size  !!}" />
+    </div>
+</div>
+
 <!-- Team Strengths -->
 <div class="form-group">
     <label for="team" class="col-md-3">Team Strengths</label>
     <div class="col-md-9">
-        <input type="text" id="team" name="team"
+        <input type="text" id="strengths" name="strengths"
                 placeholder="Enter 'key component' then press [Enter]"
-                value="{!! $project->team !!}" />
+                value="{!! implode(',', $project->teamStrengths()) !!}" />
     </div>
 </div>
 
@@ -55,7 +80,7 @@
                    {!! $resource  !!}
                </div>
             @endforeach
-            <input type="hidden" name="resource" value="{!! $project->resource  !!}" />
+            <input type="hidden" name="resource" value="{{ implode(',', $project->getActiveResourcesAttribute()) }}" />
         </div>
 
         <div class="other-tag">
@@ -78,9 +103,16 @@
     </div>
 </div>
 
+<!-- Target Martket -->
+<div class="form-group">
+    <label for="address" class="col-md-3">Target Martket</label>
+    <div class="col-md-5">{!! $project->textTargetMartket() !!}</div>
+    <div class="col-md-5"></div>
+</div>
+
 <!-- First Batch Quantity -->
 <div class="form-group">
-    <label for="quantity" class="col-md-3">First Batch Quantity</label>
+    <label for="quantity" class="col-md-3">Shipping Quantity</label>
     <div class="col-md-9 select-tags" data-select-one = "quantity">
         @foreach($quantity_options as $index => $quantity)
            <div data-id='{!! $index  !!}'
@@ -89,6 +121,20 @@
            </div>
         @endforeach
         <input type="hidden" name="quantity" value="{!! $project->quantity  !!}" />
+    </div>
+</div>
+
+<!-- First Batch Budget -->
+<div class="form-group">
+    <label for="budget" class="col-md-3">Budget</label>
+    <div class="col-md-9 select-tags" data-select-one = "budget">
+        @foreach($budget_options as $index => $budget)
+            <div data-id='{!! $index  !!}'
+                 class='btn btn-primary tag {!! $project->budget == $index ? 'active' : '' !!}' >
+                {!! $budget  !!}
+            </div>
+        @endforeach
+        <input type="hidden" name="budget" value="{!! $project->budget  !!}" />
     </div>
 </div>
 
@@ -130,9 +176,33 @@
     </div>
 </div>
 
+<!-- Founding Rounds -->
+<div class="form-group">
+    <label for="funding_rounds" class="col-md-3">Funding Rounds</label>
+    <div class="col-md-8">
+        @include('project.detail-project-funding', ['funding_rounds' => $project->fundingRounds()])
+    </div>
+</div>
+
+<!-- Attachments -->
+<div class="form-group">
+    <label for="funding_rounds" class="col-md-3">Attachments</label>
+    <div class="col-md-8">
+        @include('project.detail-project-attachments')
+    </div>
+</div>
+
+<!-- Power and Battery -->
+<div class="form-group">
+    <label for="power_battery" class="col-md-3">Projecr Spec</label>
+    <div class="col-md-8">
+        @include('project.detail-project-spec')
+    </div>
+</div>
+
 <!-- Project Tag -->
 <div class="form-group">
-    <label for="experties" class="col-md-3">Project Tags</label>
+    <label for="experties" class="col-md-3">Tech Tags</label>
     <div class="col-md-9 expertise" data-select-tags="project-tag">
         @include('project.update-project-tags')
     </div>

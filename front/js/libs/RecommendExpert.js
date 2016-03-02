@@ -15,7 +15,7 @@ $(function () {
         $("#projectTitle").val(projectTitle);
         $("#userId").val(userId);
         $("#PM").val(PM);
-        $("#dialog").dialog({
+        $("#email-recommend-expert-dialog").dialog({
             height: 270,
             width: 600
         });
@@ -66,7 +66,7 @@ $(function () {
         var userId = $("#userId").val();
         var PM = $("#PM").val();
         if(expert1 && expert2 && PM){
-            $("#dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
+            $("#email-recommend-expert-dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
@@ -85,7 +85,7 @@ $(function () {
                         location.reload();
                         return;
                     }
-                    $( "#dialog" ).dialog( "close" );
+                    $( "#email-recommend-expert-dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Send mail successful", "information", 2);
                     location.reload();
                 }

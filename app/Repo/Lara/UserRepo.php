@@ -58,7 +58,6 @@ class UserRepo implements UserInterface
     {
         $user = $this->user->with(
             'projects',
-            'projects.category',
             'solutions',
             'applyExpertMessage'
         )->find($id);

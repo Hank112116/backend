@@ -51,10 +51,10 @@ class EmailSendController extends BaseController
         $frontPM = [];
         $backPM  = [];
         foreach ($this->adminer_repo->findFrontManager()->toArray() as $row) {
-            $frontPM[] = $row['id'];
+            $frontPM[] = $row['hwtrek_member'];
         }
         foreach ($this->adminer_repo->findBackManager()->toArray() as $row) {
-            $backPM[] = $row['id'];
+            $backPM[] = $row['hwtrek_member'];
         }
         $input   = Input::all();
         $expert1 = $this->user_repo->findExpert($input['expert1']);
@@ -75,13 +75,13 @@ class EmailSendController extends BaseController
             //find frontPM & backendPM
             foreach ($tmpArr as $row) {
                 if (in_array($row, $frontPM)) {
-                    $adminer = $this->adminer_repo->find($row);
+                    $adminer = $this->adminer_repo->findHWTrekMember($row);
                     $nameTmp = explode(' ', $adminer->name);
                     $contentData['frontPM_fname'] = $nameTmp[0];
                     $emailData['cc'] = $adminer->email;
                 }
                 if (in_array($row, $backPM)) {
-                    $adminer = $this->adminer_repo->find($row);
+                    $adminer = $this->adminer_repo->findHWTrekMember($row);
                     $emailData['bcc'] = $emailConfig['bcc'];
                     array_push($emailData['bcc'], $adminer->email);
                 }

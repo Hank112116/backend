@@ -41,6 +41,11 @@ class AdminerRepo implements AdminerInterface
         return $this->adminer->with(['role', 'user'])->find($id);
     }
 
+    public function findHWTrekMember($hwtrek_member)
+    {
+        return $this->adminer->where('hwtrek_member', $hwtrek_member)->first();
+    }
+
     public function findWithTrashed($id)
     {
         return $this->adminer->withTrashed()->with(['role', 'user'])->find($id);
@@ -53,6 +58,18 @@ class AdminerRepo implements AdminerInterface
     public function findBackManager()
     {
         return $this->adminer->with(['role'])->where('role_id', static::TYPE_BACKEND_MANAGER)->get();
+    }
+
+    public function findAssignedProjectPM(array $pms)
+    {
+        foreach ($pms as $key => $pm) {
+            if ($key == 0) {
+                $this->adminer = $this->adminer->where('name', 'like', '%'. $pm .'%');
+            } else {
+                $this->adminer = $this->adminer->orwhere('name', 'like', '%' . $pm . '%');
+            }
+        }
+        return $this->adminer->get();
     }
 
     public function validCreate($input)
@@ -122,7 +139,9 @@ class AdminerRepo implements AdminerInterface
         $adminer->role()->associate($role);
 
         if (array_get($input, 'user_id')) {
-            $adminer->user_id = $input[ 'user_id' ];
+            $adminer->hwtrek_member = $input[ 'user_id' ];
+        } else {
+            $adminer->hwtrek_member = null;
         }
 
         if (array_get($input, 'password')) {

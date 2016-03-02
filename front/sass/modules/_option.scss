@@ -1,0 +1,36 @@
+.option-tag {
+  min-width: 8em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.option-dimention {
+  font-size: 1.3em;
+}
+
+.option-weight {
+  font-size: 1.3em;
+}
+
+.option-power {
+  margin-bottom: .5em;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.option-power--type {
+  display: inline-block;
+  width: 10em;
+  margin-right: .3em;
+}
+
+.option-power--value {
+  display: inline-block;
+  min-width: 3em;
+  margin-right: .5em;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #fafafa;
+  color: $brand-primary;
+  text-align: right;
+}

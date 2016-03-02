@@ -3,35 +3,44 @@
 use Carbon;
 use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\ProjectCategory;
-use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
+use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
+use Backend\Model\ModelInterfaces\TagBuilderInterface;
 use Backend\Model\ModelInterfaces\ProjectTagBuilderInterface;
 use Backend\Model\ModelInterfaces\ProjectModifierInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 
 class ProjectRepo implements ProjectInterface
 {
     use PaginateTrait;
 
-    protected $with_relations = ['user', 'category', 'propose'];
+    protected $with_relations = ['user', 'propose', 'recommendExperts', 'projectTeam', 'internalProjectMemo'];
 
+    private $adminer;
     private $project;
     private $category;
     private $user_repo;
+    private $tag_builder;
     private $project_tag_builder;
     private $project_modifier;
 
     public function __construct(
+        AdminerInterface $adminer,
         Project $project,
         ProjectCategory $category,
         UserInterface $user,
+        TagBuilderInterface $tag_builder,
         ProjectTagBuilderInterface $project_tag_builder,
         ProjectModifierInterface $project_modifier
     ) {
+        $this->adminer             = $adminer;
         $this->project             = $project;
         $this->category            = $category;
         $this->user_repo           = $user;
+        $this->tag_builder         = $tag_builder;
         $this->project_tag_builder = $project_tag_builder;
         $this->project_modifier    = $project_modifier;
     }
@@ -63,7 +72,6 @@ class ProjectRepo implements ProjectInterface
     {
         $projects = $this->modelBuilder($this->project, $page, $limit)
             ->with($this->with_relations)
-            ->queryNotDeleted()
             ->get();
 
         $this->setPaginateTotal($this->project->count());
@@ -79,6 +87,138 @@ class ProjectRepo implements ProjectInterface
             ->get();
 
         return $projects;
+    }
+
+    public function byUnionSearch($input, $page, $per_page)
+    {
+        /* @var Collection $projects */
+        $projects = $this->project->with($this->with_relations)->orderBy('project_id', 'desc')->get();
+
+        if (!empty($input['project_title'])) {
+            $project_title = $input['project_title'];
+            $projects = $projects->filter(function (Project $item) use ($project_title) {
+                if (stristr($item->project_title, $project_title)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['project_id'])) {
+            $project_id = trim($input['project_id']);
+            $projects = $projects->filter(function (Project $item) use ($project_id) {
+                if ($item->project_id == $project_id) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['user_name'])) {
+            $user_name = $input['user_name'];
+            $projects = $projects->filter(function (Project $item) use ($user_name) {
+                if (stristr($item->user->textFullName(), $user_name)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['assigned_pm'])) {
+            $assigned_pm = explode(',', $input['assigned_pm']);
+            $projects = $projects->filter(function (Project $item) use ($assigned_pm) {
+                $project_managers = json_decode($item->internalProjectMemo->project_managers, true);
+                if ($project_managers) {
+                    $adminers = $this->adminer->findAssignedProjectPM($assigned_pm);
+                    if ($adminers) {
+                        foreach ($adminers as $adminer) {
+                            if (in_array($adminer->hwtrek_member, $project_managers)) {
+                                return $item;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['description'])) {
+            $description = $input['description'];
+            $projects = $projects->filter(function (Project $item) use ($description) {
+                if (stristr($item->internalProjectMemo->description, $description)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['country'])) {
+            $country = $input['country'];
+            $projects = $projects->filter(function (Project $item) use ($country) {
+                if (stristr($item->project_country, $country)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['tag'])) {
+            $search_tag = $input['tag'];
+            $projects   = $projects->filter(function (Project $item) use ($search_tag) {
+
+                $tags = $item->getMappingTag();
+                $internal_tag = [];
+                if ($item->internalProjectMemo->tags) {
+                    $internal_tag = explode(',', $item->internalProjectMemo->tags);
+                }
+
+                $all_tags = array_merge($tags, $internal_tag);
+
+                if ($all_tags) {
+                    foreach ($all_tags as $tag) {
+                        if (stristr($tag, $search_tag)) {
+                            return $item;
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['dstart']) and !empty($input['time_type'])) {
+            $dstart = $input['dstart'];
+
+            if (!empty($input['dend'])) {
+                $dend = $input['dend'];
+            } else {
+                $dend = Carbon::now()->toDateString();
+            }
+
+            $time_type = $input['time_type'];
+
+            $projects = $projects->filter(function (Project $item) use ($dstart, $dend, $time_type) {
+                switch ($time_type)
+                {
+                    case 'update':
+                        $update_time = Carbon::parse($item->update_time)->toDateString();
+                        if ($update_time <= $dend && $update_time >= $dstart) {
+                            return $item;
+                        }
+                        break;
+                    case 'create':
+                        $create_time = Carbon::parse($item->date_added)->toDateString();
+                        if ($create_time <= $dend && $create_time >= $dstart) {
+                            return $item;
+                        }
+                        break;
+                    case 'release':
+                        if ($item->recommendExperts()->count() > 0) {
+                            $recommend_experts = $item->recommendExperts()->getResults();
+                            $release_time = Carbon::parse($recommend_experts[0]->date_send)->toDateString();
+                            if ($release_time <= $dend && $release_time >= $dstart) {
+                                return $item;
+                            }
+                        }
+                        break;
+                }
+            });
+        }
+
+
+        return $this->getPaginateFromCollection($projects, $page, $per_page);
     }
 
     public function byUserName($name)
@@ -168,9 +308,29 @@ class ProjectRepo implements ProjectInterface
         return $this->project->getQuantityOptions();
     }
 
+    public function teamSizeOptions()
+    {
+        return $this->project->getTeamSizeOptions();
+    }
+
+    public function budgetOptions()
+    {
+        return $this->project->getBudgetOptions();
+    }
+
+    public function innovationOptions()
+    {
+        return $this->project->getInnovationOptions();
+    }
+
     public function projectTagTree()
     {
         return $this->project_tag_builder->projectTagTree();
+    }
+
+    public function tagTree()
+    {
+        return $this->tag_builder->tagTree();
     }
 
     /*
@@ -208,7 +368,7 @@ class ProjectRepo implements ProjectInterface
             'Key Components List'       => implode(',', $project->keyComponents()),
             'Team Strengths'            => implode(',', $project->teamStrengths()),
             'Resource Requirements'     => implode(',', $project->resourceRequirements()),
-            'Pairing Tags'              => $this->project_tag_builder->projectTagOutput($project->getProjectTagsAttribute()),
+            'Pairing Tags'              => $this->tag_builder->tagOutput($project->getProjectTagsAttribute()),
             'Brief'                     => e($project->project_summary),
         ];
     }
@@ -240,12 +400,14 @@ class ProjectRepo implements ProjectInterface
     {
         $this->project_modifier->toSubmittedPublicProject($project_id);
     }
+
     public function updateNote($project_id, $data)
     {
-        $model = new Project();
-        $project = $model->find($project_id);
-        $project->hub_note = $data['hub_note'];
-        $project->hub_note_level = $data['hub_note_level'];
-        return $project->save();
+        return $this->project_modifier->updateProjectMemo($project_id, $data);
+    }
+
+    public function updateInternalNote($project_id, $data)
+    {
+        return $this->project_modifier->updateProjectMemo($project_id, $data);
     }
 }

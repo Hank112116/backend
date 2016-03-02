@@ -12,7 +12,7 @@
                             <p class='category_title'>{!! $parent->name !!}</p>
 
                             @foreach ($parent->nodes as $tag)
-                                @if($project->hasProjectTag($tag->id))
+                                @if($project->hasProjectTag($tag->key))
                                 <span class='tag'>{!! $tag->name !!}</span>
                                 @endif
                             @endforeach

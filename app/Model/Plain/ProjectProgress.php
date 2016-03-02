@@ -2,20 +2,14 @@
 
 class ProjectProgress
 {
-    const PROGRESS_BRINSTROMING = 1;
-    const PROGRESS_POC = 2;
-    const PROGRESS_PROTOTYPE = 3;
-    const PROGRESS_INDUSTRIAL_DESIGN = 4;
-    const PROGRESS_IMPROVING = 5;
-    const PROGRESS_MANUFACTURABILITY = 6;
-
     private static $progresses = [
-        self::PROGRESS_BRINSTROMING      => 'Brainstorming an idea',
-        self::PROGRESS_POC               => 'Proof of concept',
-        self::PROGRESS_PROTOTYPE         => 'Working prototype',
-        self::PROGRESS_INDUSTRIAL_DESIGN => 'Enhancing industrial design',
-        self::PROGRESS_IMPROVING         => 'Improving electronic board',
-        self::PROGRESS_MANUFACTURABILITY => 'Design for manufacturability',
+        'tbd'               => 'TBD',
+        'brainstorming'     => 'Idea / Brainstorming',
+        'poc'               => 'Proof of concept',
+        'prototype'         => 'Working prototype',
+        'industrial-design' => 'Industrial design',
+        'improving'         => 'Electronic board design',
+        'manufacturability' => 'Design for manufacturability'
     ];
 
     private $solution_looking_progress_ids = null;

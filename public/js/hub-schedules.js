@@ -7,7 +7,8 @@ var _libsSweetAlert = require("./libs/SweetAlert");
 
 var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
-require("./libs/MailSchedule.js");
+require("./libs/RecommendExpert.js");
+require("./libs/InternalProjectMemo.js");
 
 $(function () {
     $(".js-approve").click(function (e) {
@@ -24,39 +25,47 @@ $(function () {
             }
 
         });
-
-        // if(confirm('Approve?')) {
-        //     window.location = link;
-        // }
-
         return false;
     });
+});
 
-    $(".note").click(function () {
+},{"./libs/InternalProjectMemo.js":2,"./libs/RecommendExpert.js":3,"./libs/SweetAlert":4}],2:[function(require,module,exports){
+/* jshint quotmark: false */
+"use strict";
+
+$(function () {
+    var $internal_tag_input = $("#internal-tag");
+    $internal_tag_input.tagsinput({
+        confirmKeys: [13],
+        allowDuplicates: false,
+        tagClass: "bootstrap-tagsinput--tag"
+    });
+
+    //open dialog
+    $(".internal-tag").click(function () {
         var $this = $(this);
-        var projectId = $this.attr("rel");
-        var note = $this.attr("note");
-        var level = $this.attr("level");
-        $("#note").text(note);
-        $("#level").val(level);
-        $("#note_project_id").val(projectId);
-        $("#note_dialog").dialog({
-            height: 270,
-            width: 500
+        var tech_tag = $this.attr("tech-tags");
+        var internal_tag = $this.attr("tags");
+        var project_id = $this.attr("rel");
+        $internal_tag_input.tagsinput('removeAll');
+        $internal_tag_input.tagsinput('add', internal_tag);
+        $("#internal_tag_project_id").val(project_id);
+        $("#tech-tag").text(tech_tag);
+        $("#internal-tag-dialog").dialog({
+            height: 300,
+            width: 750
         });
     });
 
-    $("#edit_note").click(function () {
-        var projectId = $("#note_project_id").val();
-        var note = $("#note").val();
-        var level = $("#level").val();
+    $("#add-tags").click(function () {
+        var project_id = $("#internal_tag_project_id").val();
+        var tags = $internal_tag_input.val();
         $.ajax({
             type: "POST",
-            url: "/hub/update-project-note",
+            url: "/project/update-memo",
             data: {
-                projectId: projectId,
-                note: note,
-                level: level
+                project_id: project_id,
+                tags: tags
             },
             dataType: "JSON",
             success: function success(feeback) {
@@ -64,7 +73,130 @@ $(function () {
                     Notifier.showTimedMessage(feeback.msg, "warning", 2);
                     return;
                 }
-                $("#note_dialog").dialog("close");
+                $("#internal-tag-dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
+
+    $(".grade").click(function () {
+        var $this = $(this);
+        var project_id = $this.attr("rel");
+        var note = $this.attr("note");
+        var grade = $this.attr("grade");
+        $("#grade_note").text(note);
+        $("#grade").val(grade);
+        $("#grade_project_id").val(project_id);
+        $("#grade_dialog").dialog({
+            height: 350,
+            width: 530
+        });
+    });
+
+    $("#edit_grade").click(function () {
+        var project_id = $("#grade_project_id").val();
+        var note = $("#grade_note").val();
+        var grade = $("#grade").val();
+        $.ajax({
+            type: "POST",
+            url: "/project/update-memo",
+            data: {
+                project_id: project_id,
+                schedule_note: note,
+                schedule_note_grade: grade
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#grade_dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
+
+    //open dialog
+    $(".internal-description").click(function () {
+        var $this = $(this);
+        var project_id = $this.attr("rel");
+        var internal_description = $this.attr("description");
+        $("#internal_description").text(internal_description);
+        $("#internal_description_project_id").val(project_id);
+        $("#internal-description-dialog").dialog({
+            height: 300,
+            width: 700
+        });
+    });
+
+    $("#edit_internal_description").click(function () {
+        var project_id = $("#internal_description_project_id").val();
+        var internal_description = $("#internal_description").val();
+        $.ajax({
+            type: "POST",
+            url: "/project/update-memo",
+            data: {
+                project_id: project_id,
+                description: internal_description
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#internal-description-dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
+
+    //open dialog
+    $(".schedule-manager").click(function () {
+        var $this = $(this);
+        var project_id = $this.attr("rel");
+        var pm = $this.attr("pm");
+        $("input[name='managers[]']").iCheck("uncheck");
+        if (pm) {
+            pm = JSON.parse(pm);
+            pm.forEach(function (hwtrek_member) {
+                $("#hwtrek_member_" + hwtrek_member).iCheck('check');
+            });
+        }
+        $("#schedule_manager_project_id").val(project_id);
+        $("#schedule-manager-dialog").dialog({
+            height: 270,
+            width: 600
+        });
+    });
+
+    $("#update-schedule-manager").click(function () {
+        var project_id = $("#schedule_manager_project_id").val();
+        var managers = [];
+        $("input[type=checkbox]").each(function () {
+            if (this.checked) {
+                managers.push($(this).val());
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/project/update-memo",
+            data: {
+                project_id: project_id,
+                project_managers: JSON.stringify(managers)
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#schedule-manager-dialog").dialog("close");
                 Notifier.showTimedMessage("Update successful", "information", 2);
                 location.reload();
             }
@@ -72,7 +204,7 @@ $(function () {
     });
 });
 
-},{"./libs/MailSchedule.js":2,"./libs/SweetAlert":3}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /* jshint quotmark: false */
 "use strict";
 
@@ -92,7 +224,7 @@ $(function () {
         $("#projectTitle").val(projectTitle);
         $("#userId").val(userId);
         $("#PM").val(PM);
-        $("#dialog").dialog({
+        $("#email-recommend-expert-dialog").dialog({
             height: 270,
             width: 600
         });
@@ -143,7 +275,7 @@ $(function () {
         var userId = $("#userId").val();
         var PM = $("#PM").val();
         if (expert1 && expert2 && PM) {
-            $("#dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
+            $("#email-recommend-expert-dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
                 url: "/hub_email-send",
@@ -162,7 +294,7 @@ $(function () {
                         location.reload();
                         return;
                     }
-                    $("#dialog").dialog("close");
+                    $("#email-recommend-expert-dialog").dialog("close");
                     Notifier.showTimedMessage("Send mail successful", "information", 2);
                     location.reload();
                 }
@@ -180,7 +312,7 @@ $(function () {
     });
 });
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // jshint unused: false
 "use strict";
 
@@ -203,7 +335,7 @@ function alert(param) {
     }, param.handleOnConfirm);
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":12}],4:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":13}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -235,7 +367,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -368,7 +500,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],6:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9,"./utils":12}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -541,7 +673,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -622,7 +754,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":6,"./handle-swal-dom":8}],8:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -775,7 +907,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":4,"./handle-dom":6,"./injected-html":9,"./utils":11}],9:[function(require,module,exports){
+},{"./default-params":5,"./handle-dom":7,"./injected-html":10,"./utils":12}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -816,7 +948,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1036,7 +1168,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],11:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9,"./utils":12}],12:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1111,7 +1243,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1381,4 +1513,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":4,"./modules/handle-click":5,"./modules/handle-dom":6,"./modules/handle-key":7,"./modules/handle-swal-dom":8,"./modules/set-params":10,"./modules/utils":11}]},{},[1]);
+},{"./modules/default-params":5,"./modules/handle-click":6,"./modules/handle-dom":7,"./modules/handle-key":8,"./modules/handle-swal-dom":9,"./modules/set-params":11,"./modules/utils":12}]},{},[1]);

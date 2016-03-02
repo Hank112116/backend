@@ -8,3 +8,22 @@
 @import "modules/detail-expertise-tags";
 @import "modules/perk-panel";
 @import "modules/page-header-with-btn";
+@import "modules/option";
+@import "vendor/fronteed/icheck/blue";
+
+.adminer-tag {
+  display: inline-block;
+  min-width: 15em;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background: #fcfcfc;
+}
+
+.group-half {
+  width: 45%;
+  margin-left: 5px;
+  float: left;
+}

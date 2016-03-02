@@ -24,5 +24,5 @@
     <input type="hidden" id="projectTitle">
     <input type="hidden" id="userId">
     <input type="hidden" id="PM">
-    <button id="sendMail">SendMail</button>
+    <button id="sendMail" class="btn btn-default">SendMail</button>
 </div>

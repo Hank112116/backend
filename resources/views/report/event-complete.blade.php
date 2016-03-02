@@ -96,8 +96,11 @@
                         </td>
 
                         <td class="table--width-limit">
-                            <a href="{!! $event_user->company_url !!}" target="_blank">
-                            {{ $event_user->company }}</a><br/>
+                            @if($event_user->company_url)
+                                <a href="{!! $event_user->company_url !!}" target="_blank">{{ $event_user->company }}</a><br/>
+                            @else
+                                {{ $event_user->company }}<br/>
+                            @endif
                             <span class="table--text-light">{{ $event_user->job_title  }}</span>
                         </td>
                         <td class="table--width-limit">

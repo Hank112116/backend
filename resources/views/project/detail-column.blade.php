@@ -1,16 +1,22 @@
 <div id="project-detail">
 	<div class="row">
+
 		<div class="col-md-11 col-md-offset-1">
 			@include('modules.update-cover', ['image' => $project->getImagePath()])
 		</div>
 
 		<div class="col-md-10 col-md-offset-1 clearfix">
+            <div class="clearfix">
+                @include('modules.detail-half-column', [
+                    'label' => 'Title',
+                    'content' => e($project->textTitle())
+                ])
 
-            @include('modules.detail-half-column', [
-                'label' => 'Title',
-                'content' => e($project->project_title)
-            ])
-
+                @include('modules.detail-half-column', [
+                    'label' => 'Type of innovation',
+                    'content' => $project->textInnovationType()
+                ])
+            </div>
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
 			        'label' => 'Category',
@@ -40,24 +46,36 @@
 
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Current Development Stage',
+			        'label' => 'Current Stage',
 			        'content' => $project->textProgress()
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'First Batch Quantity',
+			        'label' => 'Shipping Quantity',
 			        'content' => $project->firstBatchQuantity()
 			    ])
 			</div>
 
             <div class="clearfix">
+                @include('modules.detail-half-column', [
+                    'label' => 'Target martket',
+                    'content' => $project->textTargetMartket()
+                ])
+
+                @include('modules.detail-half-column', [
+                    'label' => 'Budget',
+                    'content' => $project->textBudget()
+                ])
+            </div>
+
+            <div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Target Price (MSRP)',
+			        'label' => 'Target Price',
 			        'content' => $project->textMsrp()
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'Target Shipping Date',
+			        'label' => 'Target Ship Date',
 			        'content' => $project->textLaunchDate()
 			    ])
             </div>
@@ -76,13 +94,37 @@
 
             <div class="clearfix">
                 @include('modules.detail-half-column', [
+                    'label' => 'Company name',
+                    'content' => link_to($project->projectTeam->company_url, $project->projectTeam->company_name, ['target' => '_blank'])
+                ])
+
+                @include('modules.detail-half-column', [
+                    'label' => 'Team Size',
+                    'content' => $project->projectTeam->size
+                ])
+            </div>
+
+            <div class="clearfix">
+                @include('modules.detail-half-column', [
                     'label' => 'Create Date',
                     'content' => $project->date_added
                 ])
 
                 @include('modules.detail-half-column', [
                     'label' => 'Last Update',
-                    'content' => $project->update_time
+                    'content' => $project->update_time . ' By ' . link_to($project->lastEditorUser->textFrontLink(), $project->lastEditorUser->textFullName(), ['target' => '_blank'])
+                ])
+            </div>
+
+            <div class="clearfix">
+                @include('modules.detail-half-column', [
+                    'label' => 'KickStarter',
+                    'content' => $project->textKickstarterLink()
+                ])
+
+                @include('modules.detail-half-column', [
+                    'label' => 'Indiegogo',
+                    'content' => $project->textIndiegogoLink()
                 ])
             </div>
 
@@ -94,11 +136,6 @@
             'column_title' => 'Brief',
             'column_content' => e($project->project_summary)
         ])
-
-		@include('modules.detail-panel', [
-		    'column_title' => 'Preliminary Specifications',
-		    'column_content' => Purifier::clean($project->preliminary_spec)
-		])
 
         @include('modules.detail-panel', [
             'column_title' => 'Description',
@@ -129,7 +166,21 @@
     </div>
 
 	@include ('project.detail-project-tags')
-
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            @include ('project.detail-project-spec')
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            @include ('project.detail-project-attachments')
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            @include ('project.detail-project-funding', ['funding_rounds' => $project->fundingRounds()])
+        </div>
+    </div>
 </div>
 
 
