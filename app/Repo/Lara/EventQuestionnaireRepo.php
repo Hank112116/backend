@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Model\Eloquent\EventApplication;
 use Carbon;
 use Backend\Model\Eloquent\EventQuestionnaireFeedback;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
@@ -46,6 +47,26 @@ class EventQuestionnaireRepo implements EventQuestionnaireInterface
         }
         return $questionnaires;
     }
+
+    public function findByApproveUser(EventApplication $user)
+    {
+        $questionnaire =  $this->questionnaire->where('subject_id', $user->event_id)
+            ->where('user_id', $user->user_id)
+            ->first();
+
+        if (is_null($questionnaire)) {
+            return null;
+        }
+
+        $details = json_decode($questionnaire->detail, true);
+
+        foreach ($details as $key => $item) {
+            $questionnaire->$key = $item;
+        }
+
+        return $questionnaire;
+    }
+
 
     public function getQuestionnaireColumn($event_id)
     {

@@ -9,6 +9,7 @@ var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
 $(function () {
 
+    var event_id = $("#event_id").val();
     //change user type to user checkbox
     $(document).on("ifChecked", ".approve_event_user", function (e) {
         e.preventDefault();
@@ -30,7 +31,7 @@ $(function () {
                             return;
                         }
                         Notifier.showTimedMessage("Update successful", "information", 2);
-                        location.reload();
+                        window.location = "/report/questionnaires?event=" + event_id;
                     }
                 });
             }

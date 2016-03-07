@@ -269,90 +269,127 @@ class ReportRepo implements ReportInterface
 
     public function getQuestionnaireReport($event_id, $input, $page, $per_page)
     {
-        /* @var Collection $questionnaires*/
-        $questionnaires =  $this->questionnaire_repo->findByEventId($event_id);
+        $approve_event_users = $this->event_repo->findApproveEventUsers($event_id);
+
+        if ($approve_event_users) {
+            foreach ($approve_event_users as $index => $user) {
+                $questionnaire = $this->questionnaire_repo->findByApproveUser($user);
+                $approve_event_users[$index]->questionnaire = $questionnaire;
+            }
+        }
 
         if (!empty($input['participation'])) {
             $participation = trim($input['participation']);
-            $questionnaires = $questionnaires->filter(function ($item) use ($participation) {
-                if (in_array($participation, $item->trip_participation)) {
-                    return $item;
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($participation) {
+                if ($item->questionnaire) {
+                    if (in_array($participation, $item->questionnaire->trip_participation)) {
+                        return $item;
+                    }
                 }
             });
         }
 
         if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
-            $questionnaires = $questionnaires->filter(function ($item) use ($user_name) {
-                if (Str::contains($item->user->textFullName(), $user_name)) {
-                    return $item;
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($user_name) {
+                if ($item->questionnaire) {
+                    if (Str::contains($item->questionnaire->user->textFullName(), $user_name)) {
+                        return $item;
+                    }
+                } else {
+                    if (Str::contains($item->user->textFullName(), $user_name)) {
+                        return $item;
+                    }
                 }
             });
         }
 
         if (!empty($input['user_id'])) {
             $user_id = trim($input['user_id']);
-            $questionnaires = $questionnaires->filter(function ($item) use ($user_id) {
-                if ($item->user_id == $user_id) {
-                    return $item;
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($user_id) {
+                if ($item->questionnaire) {
+                    if ($item->questionnaire->user_id == $user_id) {
+                        return $item;
+                    }
+                } else {
+                    if ($item->user_id == $user_id) {
+                        return $item;
+                    }
                 }
             });
         }
 
-        $statistics     = $this->getQuestionnaireStatistics($questionnaires);
-        $questionnaires = $this->event_repo->byCollectionPage($questionnaires, $page, $per_page);
-        $questionnaires = $this->appendStatistics($questionnaires, $statistics);
-        return $questionnaires;
+        $statistics     = $this->getQuestionnaireStatistics($approve_event_users);
+        $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
+        $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
+        return $approve_event_users;
     }
 
-    private function getQuestionnaireStatistics(Collection $questionnaires)
+    private function getQuestionnaireStatistics(Collection $approve_event_users)
     {
         $result = [];
-        $result['dinner_count'] = $questionnaires->filter(function ($item) {
-            if ($item->attend_to_april_dinner == '1') {
-                return $item;
+        $result['dinner_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->attend_to_april_dinner == '1') {
+                    return $item;
+                }
+            }
+
+        })->count();
+
+        $result['prototype_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->bring_prototype == '1') {
+                    return $item;
+                }
             }
         })->count();
 
-        $result['prototype_count'] = $questionnaires->filter(function ($item) {
-            if ($item->bring_prototype == '1') {
-                return $item;
+        $result['join_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->other_member_to_join == '1') {
+                    return $item;
+                }
             }
         })->count();
 
-        $result['join_count'] = $questionnaires->filter(function ($item) {
-            if ($item->other_member_to_join == '1') {
-                return $item;
+        $result['wechat_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->wechat_account) {
+                    return $item;
+                }
             }
         })->count();
 
-        $result['wechat_count'] = $questionnaires->filter(function ($item) {
-            if ($item->wechat_account) {
-                return $item;
+        $result['material_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->forward_material == '1') {
+                    return $item;
+                }
             }
         })->count();
 
-        $result['material_count'] = $questionnaires->filter(function ($item) {
-            if ($item->forward_material == '1') {
-                return $item;
+        $result['shenzhen_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if (in_array('shenzhen', $item->questionnaire->trip_participation)) {
+                    return $item;
+                }
             }
         })->count();
 
-        $result['shenzhen_count'] = $questionnaires->filter(function ($item) {
-            if (in_array('shenzhen', $item->trip_participation)) {
-                return $item;
+        $result['beijing_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if (in_array('beijing', $item->questionnaire->trip_participation)) {
+                    return $item;
+                }
             }
         })->count();
 
-        $result['beijing_count'] = $questionnaires->filter(function ($item) {
-            if (in_array('beijing', $item->trip_participation)) {
-                return $item;
-            }
-        })->count();
-
-        $result['taipei_count'] = $questionnaires->filter(function ($item) {
-            if (in_array('taipei', $item->trip_participation)) {
-                return $item;
+        $result['taipei_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if (in_array('taipei', $item->questionnaire->trip_participation)) {
+                    return $item;
+                }
             }
         })->count();
 
