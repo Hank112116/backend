@@ -4,6 +4,7 @@ use Carbon;
 use Backend\Model\Eloquent\EventApplication;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Database\Eloquent\Collection;
 
 class EventApplicationRepo implements EventApplicationInterface
 {
@@ -25,6 +26,15 @@ class EventApplicationRepo implements EventApplicationInterface
     {
         return $this->event->where('event_id', $event_id)->orderBy('id', 'DESC')->get();
     }
+
+    public function findApproveEventUsers($event_id)
+    {
+        return $this->event->where('event_id', $event_id)
+            ->whereNotNull('approved_at')
+            ->groupBy('user_id')
+            ->orderBy('id', 'DESC')->get();
+    }
+
 
     public function getEvents()
     {

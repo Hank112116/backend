@@ -20,12 +20,13 @@
 
     <div class="row text-center">
         <h4>
-            Total {{ $questionnaires->total() }} peoples | SZ {{ $questionnaires->shenzhen_count }} peoples |
-            BJ {{ $questionnaires->beijing_count }} peoples | TW {{ $questionnaires->taipei_count }} peoples
+            Total {{ $approve_event_users->total() }} participants SZ {{ $approve_event_users->shenzhen_count }} peoples |
+            BJ {{ $approve_event_users->beijing_count }} peoples | TPE {{ $approve_event_users->taipei_count }} peoples
             <br><br>
-            {{ $questionnaires->dinner_count }} Attend Dinner | {{ $questionnaires->prototype_count }} Prototype |
-            {{ $questionnaires->join_count }} Other Join | {{ $questionnaires->wechat_count }} Have WeChat |
-            {{ $questionnaires->material_count }} Forward material
+            Dinner {{ $approve_event_users->dinner_count }} | Plus One {{ $approve_event_users->join_count }} |
+            Sent Presentation {{ $approve_event_users->material_count }} | Bring Prototype {{ $approve_event_users->prototype_count }} |
+            WeChat Contact {{ $approve_event_users->wechat_count }}
+
         </h4>
     </div>
     <div class="row">
@@ -40,65 +41,129 @@
                         Company<br/>
                         <span class="table--text-light">Position</span>
                     </th>
-                    <th>Participation</th>
-                    <th class="table--width-limit">
-                        At SZ<br/>
+                    <th>Locations</th>
+                    <th>
+                        SZ Flight<br/>
                         <span class="table--text-light">Arrival Time</span>
                     </th>
                     <th class="table--width-limit">
-                        SZ to BJ<br/>
+                        SZ to BJ Flight<br/>
+                        <span>Arrival Time</span>
+                    </th>
+                    <th>
+                        BJ to TPE Flight<br/>
                         <span class="table--text-light">Arrival Time</span>
+                    </th>
+                    <th>
+                        Dinner<br/>
+                        <span class="table--text-light">Plus One</span>
                     </th>
                     <th class="table--width-limit">
-                        BJ to TW<br/>
-                        <span class="table--text-light">Arrival Time</span>
+                        Presentation<br/>
+                        <span class="table--text-light">Prototype</span>
                     </th>
-                    <th>Dinner</th>
-                    <th>Prototype</th>
+                    <th>Note</th>
                 </tr>
 
-                @foreach($questionnaires as $no => $questionnaire)
+                @foreach($approve_event_users as $approve_user)
                     <tr>
-                        <td>{!! $questionnaire->user->user_id !!}</td>
+                        <td>{!! $approve_user->user_id !!}</td>
 
                         <td class="table--width-limit">
-                            <a href="{!! $questionnaire->user->textFrontLink() !!}" target="_blank">
-                                {{ $questionnaire->user->textFullName() }}</a>
-                            <i style="cursor:pointer" class="fa fa-sticky-note-o" rel="{{ $questionnaire->detail }}"></i>
+                            @if($approve_user->questionnaire)
+                                <a href="{!! $approve_user->user->textFrontLink() !!}" target="_blank">
+                                    {{ $approve_user->user->textFullName() }}</a>
+                                @if($approve_user->project)
+                                    | <a href="{!! $approve_user->project->textFrontProjectLink() !!}" target="_blank">{{ $approve_user->project->project_id }}</a>
+                                @endif
+                                <i style="cursor:pointer" class="fa fa-sticky-note-o" rel="{{ $approve_user->questionnaire->detail }}"></i>
+                            @else
+                                <a href="{!! $approve_user->user->textFrontLink() !!}" target="_blank">
+                                    {{ $approve_user->user->textFullName() }}</a>
+                                @if($approve_user->project)
+                                    | <a href="{!! $approve_user->project->textFrontProjectLink() !!}" target="_blank">{{ $approve_user->project->project_id }}</a>
+                                @endif
+                                <i style="cursor:pointer" class="fa fa-sticky-note-o" rel=""></i>
+                            @endif
                         </td>
 
                         <td class="table--width-limit">
-                            {{ $questionnaire->company_name }}<br/>
-                            <span class="table--text-light">{{ $questionnaire->job_title  }}</span>
+                            @if($approve_user->questionnaire)
+                                {{ $approve_user->questionnaire->company_name }}<br/>
+                                <span class="table--text-light">{{ $approve_user->questionnaire->job_title  }}</span>
+                            @else
+                                {{ $approve_user->company }}<br/>
+                                <span class="table--text-light">{{ $approve_user->job_title  }}</span>
+                            @endif
                         </td>
 
                         <td>
-                            @foreach($questionnaire->trip_participation as $participation)
-                            {{ $participation }}<br/>
-                            @endforeach
+                            @if($approve_user->questionnaire)
+                                @foreach($approve_user->questionnaire->trip_participation as $participation)
+                                    @if($participation === 'shenzhen')
+                                        SZ
+                                    @elseif($participation === 'beijing')
+                                        BJ
+                                    @elseif($participation === 'taipei')
+                                        TPE
+                                    @endif
+                                <br/>
+                                @endforeach
+                            @endif
                         </td>
 
                         <td class="table--width-limit">
-                            {{ $questionnaire->flight_local_to_shenzhen_flight }}<br/>
-                            <span class="table--text-light">{{ $questionnaire->flight_local_to_shenzhen_datetime }}</span>
+                            @if($approve_user->questionnaire)
+                                {{ $approve_user->questionnaire->flight_local_to_shenzhen_flight }}<br/>
+                                <span class="table--text-light">{{ $approve_user->questionnaire->flight_local_to_shenzhen_datetime }}</span>
+                            @endif
                         </td>
 
                         <td class="table--width-limit">
-                            {{ $questionnaire->flight_shenzhen_to_beijing_flight }}<br/>
-                            <span class="table--text-light">{{ $questionnaire->flight_shenzhen_to_beijing_datetime }}</span>
+                            @if($approve_user->questionnaire)
+                                {{ $approve_user->questionnaire->flight_shenzhen_to_beijing_flight }}<br/>
+                                <span class="table--text-light">{{ $approve_user->questionnaire->flight_shenzhen_to_beijing_datetime }}</span>
+                            @endif
                         </td>
 
                         <td class="table--width-limit">
-                            {{ $questionnaire->flight_beijing_to_taipei_flight }}<br/>
-                            <span class="table--text-light">{{ $questionnaire->flight_beijing_to_taipei_datetime }}</span>
+                            @if($approve_user->questionnaire)
+                                {{ $approve_user->questionnaire->flight_beijing_to_taipei_flight }}<br/>
+                                <span class="table--text-light">{{ $approve_user->questionnaire->flight_beijing_to_taipei_datetime }}</span>
+                            @endif
                         </td>
 
                         <td>
-                            {{ $questionnaire->attend_to_april_dinner == '1' ? 'Yes' : 'No' }}<br/>
+                            @if($approve_user->questionnaire)
+                                {{ $approve_user->questionnaire->attend_to_april_dinner == '1' ? 'Yes' : '' }}<br/>
+                                <span class="table--text-light">
+                                {{ $approve_user->questionnaire->other_member_to_join == '1' ? 'Yes' : '' }}
+                            </span>
+                            @endif
                         </td>
 
                         <td>
-                            {{ $questionnaire->bring_prototype == '1' ? 'Yes' : 'No' }}<br/>
+                            @if($approve_user->questionnaire)
+                                {{ $approve_user->questionnaire->forward_material == '1' ? 'Yes' : '' }}<br/>
+                                <span class="table--text-light">
+                                {{ $approve_user->questionnaire->bring_prototype == '1' ? 'Yes' : '' }}
+                                </span>
+                            @endif
+                        </td>
+                        <td>
+                            @if(!empty($approve_user->note))
+                                <a href="javascript:void(0)"
+                                   class="note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->note }}">
+                                    <i class="fa fa-pencil"></i>
+                                    {{ mb_strimwidth($approve_user->note, 0, 130, mb_substr($approve_user->note, 0, 130) . '...') }}
+                                </a>
+                            @else
+                                <div class="process-btns">
+                                    <a href="javascript:void(0)"
+                                       class="btn-mini btn-danger note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->note }}" >
+                                        <i class="fa fa-pencil fa-fw"></i>NOTE</a>
+                                </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -106,7 +171,7 @@
         </div>
     </div>
     <div class="text-center">
-        {!! $questionnaires->appends(Input::all())->render() !!}
+        {!! $approve_event_users->appends(Input::all())->render() !!}
     </div>
     <div id="questionnaire-2016-q1" class="ui-widget" title="Detail information" style="display:none">
         <table class="table table-striped">
@@ -118,15 +183,7 @@
                 <td>Wechat</td>
                 <td><span id="wechat"></span></td>
             </tr>
-            <tr>
-                <td>Other Join</td>
-                <td><span id="join"></span></td>
-            </tr>
-            <tr>
-                <td>Forward Material</td>
-                <td><span id="material"></span></td>
-            </tr>
         </table>
     </div>
+    @include ('report.event-note-dialog')
 @stop
-
