@@ -42,19 +42,19 @@
                         <span class="table--text-light">Position</span>
                     </th>
                     <th>Locations</th>
-                    <th class="table--width-limit">
+                    <th>
                         SZ Flight<br/>
                         <span class="table--text-light">Arrival Time</span>
                     </th>
                     <th class="table--width-limit">
                         SZ to BJ Flight<br/>
-                        <span class="table--text-light">Arrival Time</span>
+                        <span>Arrival Time</span>
                     </th>
-                    <th class="table--width-limit">
+                    <th>
                         BJ to TPE Flight<br/>
                         <span class="table--text-light">Arrival Time</span>
                     </th>
-                    <th class="table--width-limit">
+                    <th>
                         Dinner<br/>
                         <span class="table--text-light">Plus One</span>
                     </th>
@@ -100,7 +100,14 @@
                         <td>
                             @if($approve_user->questionnaire)
                                 @foreach($approve_user->questionnaire->trip_participation as $participation)
-                                {{ $participation }}<br/>
+                                    @if($participation === 'shenzhen')
+                                        SZ
+                                    @elseif($participation === 'beijing')
+                                        BJ
+                                    @elseif($participation === 'taipei')
+                                        TPE
+                                    @endif
+                                <br/>
                                 @endforeach
                             @endif
                         </td>
