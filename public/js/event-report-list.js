@@ -7,6 +7,8 @@ var _libsSweetAlert = require("./libs/SweetAlert");
 
 var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
+require("./libs/EventNote.js");
+
 $(function () {
 
     var event_id = $("#event_id").val();
@@ -48,6 +50,32 @@ $(function () {
         });
     });
 
+    $(".fa-clipboard").click(function () {
+        var $this = $(this);
+        var questionnaire_id = $this.attr("rel");
+        $.ajax({
+            type: "POST",
+            url: "/report/events/user-questionnaire",
+            data: {
+                questionnaire_id: questionnaire_id
+            },
+            success: function success(feeback) {
+                var $questionnaire_dialog = $("#questionnaire_dialog");
+                $questionnaire_dialog.html(feeback);
+                $questionnaire_dialog.dialog({
+                    height: 670,
+                    width: 600
+                });
+            }
+        });
+    });
+});
+
+},{"./libs/EventNote.js":2,"./libs/SweetAlert":3}],2:[function(require,module,exports){
+/* jshint quotmark: false */
+"use strict";
+
+$(function () {
     $(".note").click(function () {
         var $this = $(this);
         var id = $this.attr("rel");
@@ -82,29 +110,9 @@ $(function () {
             }
         });
     });
-
-    $(".fa-clipboard").click(function () {
-        var $this = $(this);
-        var questionnaire_id = $this.attr("rel");
-        $.ajax({
-            type: "POST",
-            url: "/report/events/user-questionnaire",
-            data: {
-                questionnaire_id: questionnaire_id
-            },
-            success: function success(feeback) {
-                var $questionnaire_dialog = $("#questionnaire_dialog");
-                $questionnaire_dialog.html(feeback);
-                $questionnaire_dialog.dialog({
-                    height: 670,
-                    width: 600
-                });
-            }
-        });
-    });
 });
 
-},{"./libs/SweetAlert":2}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 // jshint unused: false
 "use strict";
 
@@ -127,7 +135,7 @@ function alert(param) {
     }, param.handleOnConfirm);
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":11}],3:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":12}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -159,7 +167,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -292,7 +300,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],5:[function(require,module,exports){
+},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -465,7 +473,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -546,7 +554,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7}],7:[function(require,module,exports){
+},{"./handle-dom":6,"./handle-swal-dom":8}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -699,7 +707,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":3,"./handle-dom":5,"./injected-html":8,"./utils":10}],8:[function(require,module,exports){
+},{"./default-params":4,"./handle-dom":6,"./injected-html":9,"./utils":11}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -740,7 +748,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -960,7 +968,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],10:[function(require,module,exports){
+},{"./handle-dom":6,"./handle-swal-dom":8,"./utils":11}],11:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1035,7 +1043,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1305,4 +1313,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":3,"./modules/handle-click":4,"./modules/handle-dom":5,"./modules/handle-key":6,"./modules/handle-swal-dom":7,"./modules/set-params":9,"./modules/utils":10}]},{},[1]);
+},{"./modules/default-params":4,"./modules/handle-click":5,"./modules/handle-dom":6,"./modules/handle-key":7,"./modules/handle-swal-dom":8,"./modules/set-params":10,"./modules/utils":11}]},{},[1]);

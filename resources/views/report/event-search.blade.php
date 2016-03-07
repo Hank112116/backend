@@ -22,7 +22,7 @@
                 {!! link_to_action('ReportController@showEventReport', 'Complete', ['event' => $event_id, 'complete' => 1], null) !!}
             </li>
             <li>
-                {!! link_to_action('ReportController@showQuestionnaire', 'Questionnaire', ['event' => $event_id], null) !!}
+                {!! link_to_action('ReportController@showQuestionnaire', 'Tour Form', ['event' => $event_id], null) !!}
             </li>
         </ul>
     </div>

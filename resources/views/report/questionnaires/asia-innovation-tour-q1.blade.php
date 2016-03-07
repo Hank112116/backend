@@ -62,6 +62,7 @@
                         Presentation<br/>
                         <span class="table--text-light">Prototype</span>
                     </th>
+                    <th>Note</th>
                 </tr>
 
                 @foreach($approve_event_users as $approve_user)
@@ -142,6 +143,21 @@
                                 </span>
                             @endif
                         </td>
+                        <td>
+                            @if(!empty($approve_user->note))
+                                <a href="javascript:void(0)"
+                                   class="note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->note }}">
+                                    <i class="fa fa-pencil"></i>
+                                    {{ mb_strimwidth($approve_user->note, 0, 130, mb_substr($approve_user->note, 0, 130) . '...') }}
+                                </a>
+                            @else
+                                <div class="process-btns">
+                                    <a href="javascript:void(0)"
+                                       class="btn-mini btn-danger note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->note }}" >
+                                        <i class="fa fa-pencil fa-fw"></i>NOTE</a>
+                                </div>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </table>
@@ -162,5 +178,5 @@
             </tr>
         </table>
     </div>
+    @include ('report.event-note-dialog')
 @stop
-

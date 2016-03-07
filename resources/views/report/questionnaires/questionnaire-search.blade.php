@@ -13,7 +13,7 @@
     </div>
 
     <div class="col-md-2">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Questionnaire
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tour Form
             <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li>
@@ -23,7 +23,7 @@
                 {!! link_to_action('ReportController@showEventReport', 'Complete', ['event' => $event_id, 'complete' => 1], null) !!}
             </li>
             <li>
-                {!! link_to_action('ReportController@showQuestionnaire', 'Questionnaire', ['event' => $event_id], null) !!}
+                {!! link_to_action('ReportController@showQuestionnaire', 'Tour Form', ['event' => $event_id], null) !!}
             </li>
         </ul>
     </div>

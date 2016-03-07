@@ -167,7 +167,7 @@ class ReportController extends BaseController
         $view           = $this->questionnaire_repo->getView($event_id);
         $template = view($view)
             ->with([
-                'title'               => $event_list[$event_id]['orig'] . ' Questionnaire',
+                'title'               => $event_list[$event_id]['orig'],
                 'event_short_name'    => $event_list[$event_id]['short'],
                 'event_list'          => $event_list,
                 'event_id'            => $event_id,
