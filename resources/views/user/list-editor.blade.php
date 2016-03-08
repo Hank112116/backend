@@ -28,6 +28,14 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
+                    <th>Country<br/>
+                        <span class="table--text-light">City</span>
+                    </th>
+                    <th class="table--width-limit">
+                        Company<br/>
+                        <span class="table--text-light">Position</span>
+                    </th>
+                    <th>Registed On</th>
                     <th>Email<br/>Verify</th>
                     <th>Active</th>
                     <th></th>
@@ -41,6 +49,14 @@
                                 {{ $user->textFullName() }}</a>
                         </td>
                         <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                        <td>{{ $user->country }}<br/><span class="table--text-light">{{ $user->city }}</span></td>
+                        <td class="table--width-limit">
+                            {{ $user->company }}<br/>
+                            <span class="table--text-light">{{ $user->business_id  }}</span>
+                        </td>
+                        <td>
+                            <span data-time="{!! $user->date_added !!}">{!! HTML::date($user->date_added) !!}</span>
+                        </td>
                         <td>{!! $user->textEmailVerify() !!}</td>
                         <td>{!! $user->textActive() !!}</td>
                         <td>
