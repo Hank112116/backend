@@ -76,6 +76,30 @@
             <div class="col-md-5"></div>
         </div>
 
+        <div class="form-group">
+            <label for="last-name" class="col-md-3">Country City</label>
+            <div class="col-md-5">
+                {{ $user->country }} {{$user->city}}
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="last-name" class="col-md-3">Company Position</label>
+            <div class="col-md-5">
+                {{ $user->company }} {{ $user->business_id }}
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="last-name" class="col-md-3">Registed On</label>
+            <div class="col-md-5">
+                {{ $user->date_added }}
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+
         @if ($user->isExpert() or $user->isToBeExpert())
             <div class="form-group">
                 <label for="industry" class="col-md-3">Industry</label>

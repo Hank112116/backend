@@ -48,6 +48,39 @@
             </div>
         </div>
     </div> 
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="data-group">
+                <span class="label">Country</span>
+                <span class="content">{{ $user->country }}</span>
+            </div>
+
+            <div class="data-group">
+                <span class="label">City</span>
+                <span class="content">{{ $user->city }}</span>
+            </div>
+
+            <div class="clearfix">
+                <div class="data-group group-half">
+                    <span class="label">Company</span>
+                    <span class="content">{{ $user->company }}</span>
+                </div>
+
+                <div class="data-group group-half">
+                    <span class="label">Position</span>
+                    <span class="content">{{ $user->business_id }}</span>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="data-group group-half">
+                    <span class="label">Registed On</span>
+                    <span class="content">{!! $user->date_added !!}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
     @if ($attachments)
         <div class="row">
             <div class="col-md-10 col-md-offset-1">

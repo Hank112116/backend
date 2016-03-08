@@ -70,7 +70,7 @@
                                     <br>
                                     @if(!$event_user->approved_at)
                                     <span class="user-sub-category">
-                                        <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->id !!}"> Select
+                                        <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}"> Select
                                     </span>
                                     @else
                                         <label for="active_1" class='iradio-lable'>Selected</label>
