@@ -16,6 +16,12 @@ interface EventApplicationInterface
     public function findByEventId($event_id);
 
     /**
+     * @param $user_id
+     * @return Collection EventApplication[]
+     */
+    public function findByUserId($user_id);
+
+    /**
      * @param $event_id
      * @return Collection EventApplication[]
      */
@@ -47,8 +53,8 @@ interface EventApplicationInterface
     public function updateEventNote($id, $note);
 
     /**
-     * @param $id
+     * @param $user_id
      * @return boolean
      */
-    public function approveEventUser($id);
+    public function approveEventUser($user_id);
 }
