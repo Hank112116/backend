@@ -332,7 +332,8 @@ class UserController extends BaseController
         $log_data   = [
             'user'        => $id,
             'origin_data' => $origin_data,
-            'is_expert'   => $user->isExpert()
+            'is_expert'   => $user->isExpert(),
+            Input::all()
         ];
         Log::info($log_action, $log_data);
 
