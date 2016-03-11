@@ -220,6 +220,7 @@ class SolutionController extends BaseController
         $log_action = 'Edit solution';
         $log_data   = [
             'solution' => $solution_id,
+            Input::all()
         ];
         Log::info($log_action, $log_data);
 

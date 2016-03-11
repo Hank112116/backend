@@ -15,7 +15,7 @@ $(function () {
     //change user type to user checkbox
     $(document).on("ifChecked", ".approve_event_user", function (e) {
         e.preventDefault();
-        var id = $(this).attr("rel");
+        var user_id = $(this).attr("rel");
         SweetAlert.alert({
             title: "Select this user?",
             confirmButton: "Yes!",
@@ -24,7 +24,7 @@ $(function () {
                     type: "POST",
                     url: "/report/events/approve-user",
                     data: {
-                        id: id
+                        user_id: user_id
                     },
                     dataType: "JSON",
                     success: function success(feeback) {

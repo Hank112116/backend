@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.1.0
+* [NEW] add event questionnaire summary (@Hank)
+* [CHANGE] adjust member view authorization of editor role (@Hank)
+* [FIXED] fix event report note bug & select user issue (@Hank)
+
 ## v2.0.5
 * [FIXED] fix event report count error (@Hank)
 * [NEW] add event report unique count information (@Hank)

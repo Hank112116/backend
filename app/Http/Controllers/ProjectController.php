@@ -181,7 +181,8 @@ class ProjectController extends BaseController
     {
         $log_action = 'Edit project';
         $log_data   =  [
-            'project' => $project_id
+            'project' => $project_id,
+            Input::all()
         ];
         Log::info($log_action, $log_data);
 

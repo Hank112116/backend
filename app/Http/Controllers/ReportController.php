@@ -147,7 +147,7 @@ class ReportController extends BaseController
 
     public function approveEventUser()
     {
-        if ($this->event_repo->approveEventUser(Input::get('id'))) {
+        if ($this->event_repo->approveEventUser(Input::get('user_id'))) {
             $result['status'] = 'success';
         } else {
             $result['status'] = 'fail';
