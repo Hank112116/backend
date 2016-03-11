@@ -26,6 +26,7 @@
             <table class="table table-striped">
                 <tr>
                     <th>#</th>
+                    <th>ID</th>
                     <th>Email</th>
                     <th class="table--width-limit">
                         Enter Time (PST)
@@ -39,6 +40,8 @@
                 @foreach($event_users as $no => $event_user)
                     <tr>
                         <td>{!! $begin_number -- !!}</td>
+
+                        <td>{!! $event_user->id !!}</td>
 
                         <td class="table--user-mail">
                             {{ $event_user->email }}

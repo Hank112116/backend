@@ -4,6 +4,7 @@ use Carbon;
 use Backend\Model\Eloquent\EventApplication;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Database\Eloquent\Collection;
 
 class EventApplicationRepo implements EventApplicationInterface
 {
@@ -26,6 +27,20 @@ class EventApplicationRepo implements EventApplicationInterface
         return $this->event->where('event_id', $event_id)->orderBy('id', 'DESC')->get();
     }
 
+    public function findByUserId($user_id)
+    {
+        return $this->event->where('user_id', $user_id)->get();
+    }
+
+    public function findApproveEventUsers($event_id)
+    {
+        return $this->event->where('event_id', $event_id)
+            ->whereNotNull('approved_at')
+            ->groupBy('user_id')
+            ->orderBy('id', 'DESC')->get();
+    }
+
+
     public function getEvents()
     {
         return $this->event->getEvents();
@@ -45,15 +60,33 @@ class EventApplicationRepo implements EventApplicationInterface
 
     public function updateEventNote($id, $note)
     {
+        // if event complete update same user note, else update event row note
         $event_user = $this->event->find($id);
-        $event_user->note = $note;
-        return $event_user->save();
+
+        if ($event_user->user_id === 0) {
+            $event_user->note = $note;
+            return $event_user->save();
+        }
+
+        $same_event_users = $this->findByUserId($event_user->user_id);
+
+        if ($same_event_users) {
+            foreach ($same_event_users as $user) {
+                $user->note = $note;
+                $user->save();
+            }
+        }
+        return true;
     }
 
-    public function approveEventUser($id)
+    public function approveEventUser($user_id)
     {
-        $event_user = $this->event->find($id);
-        $event_user->approved_at = Carbon::now();
-        return $event_user->save();
+        $same_event_users = $this->findByUserId($user_id);
+        $approved_at = Carbon::now();
+        foreach ($same_event_users as $user) {
+            $user->approved_at = $approved_at;
+            $user->save();
+        }
+        return true;
     }
 }

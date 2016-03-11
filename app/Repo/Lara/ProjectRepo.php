@@ -4,7 +4,6 @@ use Carbon;
 use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\ProjectCategory;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\Paginator;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Model\ModelInterfaces\ProjectTagBuilderInterface;
@@ -17,6 +16,12 @@ class ProjectRepo implements ProjectInterface
 
     protected $with_relations = ['user', 'category', 'propose'];
 
+    private $project;
+    private $category;
+    private $user_repo;
+    private $project_tag_builder;
+    private $project_modifier;
+
     public function __construct(
         Project $project,
         ProjectCategory $category,
@@ -24,25 +29,23 @@ class ProjectRepo implements ProjectInterface
         ProjectTagBuilderInterface $project_tag_builder,
         ProjectModifierInterface $project_modifier
     ) {
-        $this->project  = $project;
-        $this->category = $category;
-
+        $this->project             = $project;
+        $this->category            = $category;
         $this->user_repo           = $user;
         $this->project_tag_builder = $project_tag_builder;
-
-        $this->project_modifier = $project_modifier;
+        $this->project_modifier    = $project_modifier;
     }
 
     public function find($id)
     {
-        $project = $this->project->queryProject()->find($id);
+        $project = $this->project->find($id);
 
         return $project;
     }
 
     public function all()
     {
-        return $this->project->queryProject()
+        return $this->project
             ->with($this->with_relations)
             ->orderBy('project_id', 'desc')
             ->get();
@@ -50,7 +53,7 @@ class ProjectRepo implements ProjectInterface
 
     public function deletedProjects()
     {
-        return $this->project->queryProject()
+        return $this->project
             ->queryDeleted()
             ->orderBy('project_id', 'desc')
             ->get();
@@ -60,11 +63,10 @@ class ProjectRepo implements ProjectInterface
     {
         $projects = $this->modelBuilder($this->project, $page, $limit)
             ->with($this->with_relations)
-            ->queryProject()
             ->queryNotDeleted()
             ->get();
 
-        $this->setPaginateTotal($this->project->queryProject()->count());
+        $this->setPaginateTotal($this->project->count());
 
         return $this->getPaginateContainer($this->project, $page, $limit, $projects);
     }
@@ -72,7 +74,6 @@ class ProjectRepo implements ProjectInterface
     public function byUserId($user_id)
     {
         $projects = $this->project->with($this->with_relations)
-            ->queryProject()
             ->where('user_id', $user_id)
             ->orderBy('project_id', 'desc')
             ->get();
@@ -88,7 +89,6 @@ class ProjectRepo implements ProjectInterface
         }
 
         $projects = $this->project->with($this->with_relations)
-            ->queryProject()
             ->whereIn('user_id', $users->lists('user_id'))
             ->orderBy('project_id', 'desc')
             ->get();
@@ -103,7 +103,6 @@ class ProjectRepo implements ProjectInterface
         }
 
         $projects = $this->project->with($this->with_relations)
-            ->queryProject()
             ->where('project_id', $project_id)
             ->get();
 
@@ -120,7 +119,6 @@ class ProjectRepo implements ProjectInterface
         $keys    = explode(' ', $trimmed);
 
         return $this->project->with($this->with_relations)
-            ->queryProject()
             ->where(
                 function ($query) use ($keys) {
                     foreach ($keys as $k) {
@@ -141,7 +139,6 @@ class ProjectRepo implements ProjectInterface
         $dend   = $dend ? Carbon::parse($dend)->endOfDay() : Carbon::now()->endOfDay();
 
         return $this->project->whereBetween('update_time', [$dstart, $dend])
-            ->queryProject()
             ->orderBy('project_id', 'desc')
             ->get();
     }
@@ -211,7 +208,7 @@ class ProjectRepo implements ProjectInterface
             'Key Components List'       => implode(',', $project->keyComponents()),
             'Team Strengths'            => implode(',', $project->teamStrengths()),
             'Resource Requirements'     => implode(',', $project->resourceRequirements()),
-            'Pairing Tags'              => $this->project_tag_builder->projectTagOutput($project->project_tags),
+            'Pairing Tags'              => $this->project_tag_builder->projectTagOutput($project->getProjectTagsAttribute()),
             'Brief'                     => e($project->project_summary),
         ];
     }

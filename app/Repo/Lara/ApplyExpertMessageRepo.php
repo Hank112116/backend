@@ -2,7 +2,6 @@
 namespace Backend\Repo\Lara;
 
 use Backend\Model\Eloquent\ApplyExpertMessage;
-
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 
 class ApplyExpertMessageRepo implements ApplyExpertMessageInterface

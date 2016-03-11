@@ -14,8 +14,10 @@ use Log;
 
 class AdminerController extends BaseController
 {
-
     protected $cert = 'adminer';
+
+    private $adminer_repo;
+    private $role_repo;
 
     public function __construct(
         AdminerInterface $adminer,

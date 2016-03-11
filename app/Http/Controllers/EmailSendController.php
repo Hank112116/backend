@@ -1,17 +1,14 @@
 <?php namespace Backend\Http\Controllers;
 
-use Backend\Http\Controllers\Controller;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Mews\Purifier\Purifier;
-use Backend\Model\Eloquent\ProjectMailExpert;
 use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Config;
 use Input;
 use Log;
-use PHPMailer;
 use EmailSend;
 use Response;
 use Session;
@@ -19,6 +16,13 @@ use Carbon;
 
 class EmailSendController extends BaseController
 {
+    private $user_repo;
+    private $adminer_repo;
+    private $project_repo;
+    private $mail_repo;
+    private $pme_repo;
+    private $purifier;
+
     public function __construct(
         UserInterface $user,
         AdminerInterface $adminer,

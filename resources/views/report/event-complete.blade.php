@@ -65,13 +65,16 @@
                                 @if(!$event_user->isCoincide())
                                     <font color="#ff8c00"><i class="fa fa-pencil-square-o" title="Different from profile."></i></font>
                                 @endif
-                                <br>
-                                @if(!$event_user->approved_at)
-                                <!--<span class="user-sub-category">
-                                    <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->id !!}"> Select
-                                </span>-->
-                                @else
-                                    <!--<label for="active_1" class='iradio-lable'>Selected</label>-->
+
+                                @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                                    <br>
+                                    @if(!$event_user->approved_at)
+                                    <span class="user-sub-category">
+                                        <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}"> Select
+                                    </span>
+                                    @else
+                                        <label for="active_1" class='iradio-lable'>Selected</label>
+                                    @endif
                                 @endif
                             @else
                                 {{ $event_user->textFullName() }}
@@ -145,8 +148,9 @@
     <div class="text-center">
         {!! $event_users->appends(Input::all())->render() !!}
     </div>
+    <input type="hidden" id="event_id" name="event_id" value="{{ $event_id }}">
     <div id="dialog" class="ui-widget" title="Apply messages" style="display:none"></div>
     @include ('report.event-note-dialog')
-
+    @include ('report.event-questionnaire-dialog')
 @stop
 

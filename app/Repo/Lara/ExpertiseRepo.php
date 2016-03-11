@@ -5,6 +5,8 @@ use Backend\Model\Eloquent\Expertise;
 
 class ExpertiseRepo implements ExpertiseInterface
 {
+    private $expertise;
+
     public function __construct(Expertise $expertise)
     {
         $this->expertise = $expertise;

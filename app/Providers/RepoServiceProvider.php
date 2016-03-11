@@ -41,16 +41,6 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\PerkInterface',
-            'Backend\Repo\Lara\PerkRepo'
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\DuplicatePerkInterface',
-            'Backend\Repo\Lara\DuplicatePerkRepo'
-        );
-
-        $this->app->bind(
             'Backend\Repo\RepoInterfaces\ProjectInterface',
             function ($app) {
                 return new Lara\ProjectRepo(
@@ -59,43 +49,6 @@ class RepoServiceProvider extends ServiceProvider
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface')
-                );
-            }
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\ProductInterface',
-            function ($app) {
-                return new Lara\ProductRepo(
-                    new \Backend\Model\Eloquent\Project(),
-                    $app->make('Backend\Repo\RepoInterfaces\DuplicateProductInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\PerkInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface'),
-                    new \ImageUp()
-                );
-            }
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\DuplicateProductInterface',
-            function ($app) {
-                return new Lara\DuplicateProductRepo(
-                    new \Backend\Model\Eloquent\Project(),
-                    new \Backend\Model\Eloquent\DuplicateProject(),
-                    $app->make('Backend\Repo\RepoInterfaces\DuplicatePerkInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface')
-                );
-            }
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\TransactionInterface',
-            function ($app) {
-                return new Lara\TransactionRepo(
-                    new \Backend\Model\Eloquent\Transaction(),
-                    $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\ProjectInterface')
                 );
             }
         );

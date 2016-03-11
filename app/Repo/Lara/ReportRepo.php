@@ -4,6 +4,7 @@ use Backend\Model\Eloquent\User;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
+use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Backend\Model\Eloquent\EventApplication;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,13 +17,16 @@ class ReportRepo implements ReportInterface
 
     private $user_repo;
     private $event_repo;
+    private $questionnaire_repo;
 
     public function __construct(
-        UserInterface              $user_repo,
-        EventApplicationInterface  $even_repo
+        UserInterface               $user_repo,
+        EventApplicationInterface   $even_repo,
+        EventQuestionnaireInterface $questionnaire_repo
     ) {
-        $this->user_repo  = $user_repo;
-        $this->event_repo = $even_repo;
+        $this->user_repo          = $user_repo;
+        $this->event_repo         = $even_repo;
+        $this->questionnaire_repo = $questionnaire_repo;
     }
 
     private function getTimeInterval($input)
@@ -118,7 +122,7 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (isset($input['approve']) && !empty($input['approve'])) {
+        if (!empty($input['approve'])) {
             if ($input['approve'] === 'approved') {
                 $join_event_users = $join_event_users->filter(function (EventApplication $item) {
                     if ($item->isSelected()) {
@@ -134,7 +138,7 @@ class ReportRepo implements ReportInterface
             }
         }
 
-        if (isset($input['email']) && !empty($input['email'])) {
+        if (!empty($input['email'])) {
             $email = trim($input['email']);
             $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($email) {
                 if (Str::equals($item->email, $email)) {
@@ -143,7 +147,7 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (isset($input['user_name']) && !empty($input['user_name'])) {
+        if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
             $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($user_name) {
                 if (Str::contains($item->textFullName(), $user_name)) {
@@ -153,7 +157,7 @@ class ReportRepo implements ReportInterface
         }
 
         // filter user role
-        if (isset($input['role']) && $input['role'] != 'all') {
+        if (!empty($input['role']) && $input['role'] != 'all') {
             if ($input['role'] === 'expert') {
                 $join_event_users = $join_event_users->filter(function (EventApplication $item) {
                     if ($item->user->isExpert()) {
@@ -170,7 +174,7 @@ class ReportRepo implements ReportInterface
         }
 
         // filter user id
-        if (isset($input['user_id']) && !empty($input['user_id'])) {
+        if (!empty($input['user_id'])) {
             $user_id = trim($input['user_id']);
             $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($user_id) {
                 if ($item->user->user_id == $user_id) {
@@ -180,9 +184,9 @@ class ReportRepo implements ReportInterface
         }
 
         // filter entered at time
-        if (isset($input['entered_at_start']) && !empty($input['entered_at_start'])) {
+        if (!empty($input['entered_at_start'])) {
             $entered_at_start =  $input['entered_at_start'];
-            if (isset($input['entered_at_end']) && !empty($input['entered_at_end'])) {
+            if (!empty($input['entered_at_end'])) {
                 $entered_at_end = $input['entered_at_end'];
             } else {
                 $entered_at_end = Carbon::now()->toDateString();
@@ -197,9 +201,9 @@ class ReportRepo implements ReportInterface
         }
 
         // filter applied at time
-        if (isset($input['applied_at_start']) && !empty($input['applied_at_start'])) {
+        if (!empty($input['applied_at_start'])) {
             $applied_at_start =  $input['applied_at_start'];
-            if (isset($input['applied_at_end']) && !empty($input['applied_at_end'])) {
+            if (!empty($input['applied_at_end'])) {
                 $applied_at_end = $input['applied_at_end'];
             } else {
                 $applied_at_end = Carbon::now()->toDateString();
@@ -214,14 +218,11 @@ class ReportRepo implements ReportInterface
 
         $statistics       = $this->getEventStatistics($complete, $join_event_users);
         $join_event_users = $this->event_repo->byCollectionPage($join_event_users, $page, $per_page);
-
-        foreach ($statistics as $key => $row) {
-            $join_event_users->$key = $row;
-        }
+        $join_event_users = $this->appendStatistics($join_event_users, $statistics);
         return $join_event_users;
     }
 
-    private function getEventStatistics($complete, $join_event_users)
+    private function getEventStatistics($complete, Collection $join_event_users)
     {
         $result = [];
         if ($complete) {
@@ -264,5 +265,142 @@ class ReportRepo implements ReportInterface
 
         }
         return $result;
+    }
+
+    public function getQuestionnaireReport($event_id, $input, $page, $per_page)
+    {
+        $approve_event_users = $this->event_repo->findApproveEventUsers($event_id);
+
+        if ($approve_event_users) {
+            foreach ($approve_event_users as $index => $user) {
+                $questionnaire = $this->questionnaire_repo->findByApproveUser($user);
+                $approve_event_users[$index]->questionnaire = $questionnaire;
+            }
+        }
+
+        if (!empty($input['participation'])) {
+            $participation = trim($input['participation']);
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($participation) {
+                if ($item->questionnaire) {
+                    if (in_array($participation, $item->questionnaire->trip_participation)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['user_name'])) {
+            $user_name = $input['user_name'];
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($user_name) {
+                if ($item->questionnaire) {
+                    if (Str::contains($item->questionnaire->user->textFullName(), $user_name)) {
+                        return $item;
+                    }
+                } else {
+                    if (Str::contains($item->user->textFullName(), $user_name)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['user_id'])) {
+            $user_id = trim($input['user_id']);
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($user_id) {
+                if ($item->questionnaire) {
+                    if ($item->questionnaire->user_id == $user_id) {
+                        return $item;
+                    }
+                } else {
+                    if ($item->user_id == $user_id) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+        $statistics     = $this->getQuestionnaireStatistics($approve_event_users);
+        $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
+        $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
+        return $approve_event_users;
+    }
+
+    private function getQuestionnaireStatistics(Collection $approve_event_users)
+    {
+        $result = [];
+        $result['dinner_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->attend_to_april_dinner == '1') {
+                    return $item;
+                }
+            }
+
+        })->count();
+
+        $result['prototype_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->bring_prototype == '1') {
+                    return $item;
+                }
+            }
+        })->count();
+
+        $result['join_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->other_member_to_join == '1') {
+                    return $item;
+                }
+            }
+        })->count();
+
+        $result['wechat_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->wechat_account) {
+                    return $item;
+                }
+            }
+        })->count();
+
+        $result['material_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if ($item->questionnaire->forward_material == '1') {
+                    return $item;
+                }
+            }
+        })->count();
+
+        $result['shenzhen_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if (in_array('shenzhen', $item->questionnaire->trip_participation)) {
+                    return $item;
+                }
+            }
+        })->count();
+
+        $result['beijing_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if (in_array('beijing', $item->questionnaire->trip_participation)) {
+                    return $item;
+                }
+            }
+        })->count();
+
+        $result['taipei_count'] = $approve_event_users->filter(function ($item) {
+            if ($item->questionnaire) {
+                if (in_array('taipei', $item->questionnaire->trip_participation)) {
+                    return $item;
+                }
+            }
+        })->count();
+
+        return $result;
+    }
+
+    private function appendStatistics($object, $statistics)
+    {
+        foreach ($statistics as $key => $row) {
+            $object->$key = $row;
+        }
+        return $object;
     }
 }

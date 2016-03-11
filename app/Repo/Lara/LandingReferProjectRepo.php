@@ -6,6 +6,9 @@ use Backend\Repo\RepoInterfaces\LandingReferProjectInterface;
 
 class LandingReferProjectRepo implements LandingReferProjectInterface
 {
+    private $refer;
+    private $project;
+
     public function __construct(
         ReferenceProject $refer,
         Project $project

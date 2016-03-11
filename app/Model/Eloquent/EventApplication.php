@@ -1,20 +1,11 @@
 <?php namespace Backend\Model\Eloquent;
 
+use Backend\Enums\EventEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class EventApplication extends Model
 {
-
-    const TYPE_AIT_2016_Q1 = 1;
-
-    const EVENT_NAME = [
-        self::TYPE_AIT_2016_Q1 => [
-            'orig'  => 'Asia Innovation Tour 2016 Q1',
-            'short' => '2016 Q1'
-        ],
-    ];
-
     protected $table   = 'event_application';
     public $timestamps = false;
 
@@ -40,7 +31,7 @@ class EventApplication extends Model
 
     public function textEventName()
     {
-        $event_list = self::EVENT_NAME;
+        $event_list = EventEnum::EVENT_NAME;
         return $event_list[$this->event_id];
     }
 
@@ -55,7 +46,7 @@ class EventApplication extends Model
 
     public function getEvents()
     {
-        return self::EVENT_NAME;
+        return EventEnum::EVENT_NAME;
     }
 
     public function isFinished()
@@ -85,7 +76,9 @@ class EventApplication extends Model
 
     public function getQuestionnaire()
     {
-        return $this->questionnaire()->where('subject_id', $this->event_id)->orderBy('id', 'DESC')->first();
+        return $this->questionnaire()->where('subject_id', $this->event_id)
+            ->where('user_id', $this->user_id)
+            ->orderBy('id', 'DESC')->first();
     }
 
     public function getApplyCount()

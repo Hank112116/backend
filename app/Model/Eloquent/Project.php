@@ -24,9 +24,6 @@ class Project extends Eloquent
 
     public static $partial = ['project_id', 'project_title'];
 
-    const CHOOSE_TYPE_PROJECT = 1;
-    const CHOOSE_TYPE_PRODUCT = 2;
-
     const MSRP_UNSURE = - 1;
 
     const PROGRESS_DEFAULT = - 1;
@@ -97,36 +94,16 @@ class Project extends Eloquent
         return $this->belongsTo(ProjectCategory::class, 'category_id', 'tag_id');
     }
 
-    public function perks()
-    {
-        return $this->hasMany(Perk::class);
-    }
-
-    public function backs()
-    {
-        return $this->hasMany(Transaction::class, 'project_id', 'project_id');
-    }
 
     public function propose()
     {
         return $this->hasMany(ProposeSolution::class, 'project_id', 'project_id');
     }
 
-    public function scopeQueryProduct(Builder $query)
-    {
-        return $query->where('choose_type', self::CHOOSE_TYPE_PRODUCT);
-    }
-
-    public function scopeQueryProject(Builder $query)
-    {
-        return $query->where('choose_type', self::CHOOSE_TYPE_PROJECT);
-    }
-
     // pending-for-approve products
     public function scopeQueryApprovePending(Builder $query)
     {
-        return $query->where('choose_type', self::CHOOSE_TYPE_PRODUCT)
-            ->where('active', '0')
+        return $query->where('active', '0')
             ->where('project_draft', '1');
     }
 
@@ -178,7 +155,7 @@ class Project extends Eloquent
 
     public function textChooseType()
     {
-        return $this->isProject() ? 'Project' : 'Product';
+        return 'Project';
     }
 
     public function textVideo()
@@ -234,10 +211,6 @@ class Project extends Eloquent
 
     public function textFrontLink()
     {
-        if ($this->isProduct()) {
-            return FrontLinkGenerator::prodcut($this->project_id, $this->getProfileAttribute()->is_ongoing);
-        }
-
         return FrontLinkGenerator::project($this->project_id);
     }
 
@@ -312,16 +285,6 @@ class Project extends Eloquent
         }
 
         return $resources;
-    }
-
-    public function isProject()
-    {
-        return $this->choose_type == self::CHOOSE_TYPE_PROJECT;
-    }
-
-    public function isProduct()
-    {
-        return $this->choose_type == self::CHOOSE_TYPE_PRODUCT;
     }
 
     public function isMsrpUnsure()

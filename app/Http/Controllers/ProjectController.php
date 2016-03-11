@@ -11,8 +11,9 @@ use Log;
 
 class ProjectController extends BaseController
 {
-
     protected $cert = 'project';
+
+    private $project_repo;
 
     public function __construct(ProjectInterface $project)
     {
@@ -180,7 +181,8 @@ class ProjectController extends BaseController
     {
         $log_action = 'Edit project';
         $log_data   =  [
-            'project' => $project_id
+            'project' => $project_id,
+            Input::all()
         ];
         Log::info($log_action, $log_data);
 

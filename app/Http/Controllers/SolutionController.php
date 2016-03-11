@@ -15,8 +15,11 @@ use Log;
 
 class SolutionController extends BaseController
 {
-
     protected $cert = 'solution';
+
+    private $solution_repo;
+    private $project_repo;
+    private $adminer_repo;
 
     public function __construct(
         SolutionInterface $solution,
@@ -217,6 +220,7 @@ class SolutionController extends BaseController
         $log_action = 'Edit solution';
         $log_data   = [
             'solution' => $solution_id,
+            Input::all()
         ];
         Log::info($log_action, $log_data);
 
@@ -258,7 +262,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toProgram($solution_id, Auth::user()->isBackendPM());
                 $res   = ['status' => 'success'];
             } else {
@@ -275,7 +279,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toSolution($solution_id, Auth::user()->isBackendPM());
                 $res   = ['status' => 'success'];
             } else {
@@ -292,7 +296,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toProgram($solution_id, false);
                 $res   = ['status' => 'success'];
             } else {
@@ -309,7 +313,7 @@ class SolutionController extends BaseController
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
             $solution_id = Input::get('solution_id');
             $solution = $this->solution_repo->find($solution_id);
-            if (count($solution) > 0) {
+            if ($solution) {
                 $this->solution_repo->toSolution($solution_id, false);
                 $res   = ['status' => 'success'];
             } else {

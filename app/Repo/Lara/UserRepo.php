@@ -5,24 +5,20 @@ use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use ImageUp;
 use Validator;
 use Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 
 class UserRepo implements UserInterface
 {
-
     use PaginateTrait;
 
     private $error;
     private $user;
+    private $expertise;
     private $apply_expert_msg_repo;
-    private $rule = [
-        'email'        => 'required|email',
-        'company_url'  => 'url',
-        'personal_url' => 'url'
-    ];
+    private $image_uplodaer;
 
     private static $update_columns = [
         'active', 'email_verify', 'user_type', 'email',
@@ -64,9 +60,6 @@ class UserRepo implements UserInterface
             'projects',
             'projects.category',
             'solutions',
-            'solutions',
-            'backedProducts',
-            'backedProducts.project',
             'applyExpertMessage'
         )->find($id);
 
@@ -286,15 +279,13 @@ class UserRepo implements UserInterface
 
     public function validUpdate($id, $data)
     {
-//        if (array_key_exists('email', $data)) {
-//            $user = $this->user->find($id);
-//            if ($user->email === $data['email']) {
-//                return true;
-//            }
-//        }
+        $rule = [
+            'email'        => 'required|email|unique:user,email,' . $id . ',user_id',
+            'company_url'  => 'url',
+            'personal_url' => 'url'
+        ];
 
-        $validator = Validator::make($data, $this->rule);
-
+        $validator = Validator::make($data, $rule);
         if ($validator->passes()) {
             return true;
         }
