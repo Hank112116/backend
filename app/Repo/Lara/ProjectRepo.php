@@ -157,19 +157,18 @@ class ProjectRepo implements ProjectInterface
         }
 
         if (!empty($input['tag'])) {
-            $search_tag = $input['tag'];
+            $search_tag = $this->tag_builder->tagTransformKey($input['tag']);
             $projects   = $projects->filter(function (Project $item) use ($search_tag) {
 
-                $tags = $item->getMappingTag();
+                if ($item->isSimilarTag($search_tag)) {
+                    return $item;
+                }
                 $internal_tag = [];
                 if ($item->internalProjectMemo->tags) {
                     $internal_tag = explode(',', $item->internalProjectMemo->tags);
                 }
-
-                $all_tags = array_merge($tags, $internal_tag);
-
-                if ($all_tags) {
-                    foreach ($all_tags as $tag) {
+                if ($internal_tag) {
+                    foreach ($internal_tag as $tag) {
                         if (stristr($tag, $search_tag)) {
                             return $item;
                         }

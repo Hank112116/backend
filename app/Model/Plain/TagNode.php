@@ -1,6 +1,7 @@
 <?php namespace Backend\Model\Plain;
 
 use Backend\Enums\TechTag;
+use Backend\Model\Eloquent\Tag as OtherTag;
 
 class TagNode
 {
@@ -147,11 +148,21 @@ class TagNode
     public function __construct($tag)
     {
         $this->key = $tag;
-        $this->name = self::$tags[$tag];
+        $this->name = $this->tags()[$tag];
+
     }
 
     public static function tags()
     {
-        return self::$tags;
+        $other_tag_model = new OtherTag();
+        $other_tags = $other_tag_model->all();
+        $result = [];
+        if ($other_tags) {
+            foreach ($other_tags as $other_tag) {
+                $result[$other_tag->classified_slug] = $other_tag->name;
+            }
+        }
+        $result = array_merge(self::$tags, $result);
+        return $result;
     }
 }

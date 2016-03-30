@@ -144,11 +144,6 @@
 	</div>
 
     @include('modules.detail-tag', [
-        'column_title' => 'Key Components List',
-        'column_tags'  => $project->keyComponents()
-    ])
-
-    @include('modules.detail-tag', [
         'column_title' => 'Team Strengths',
         'column_tags'  => $project->teamStrengths()
     ])

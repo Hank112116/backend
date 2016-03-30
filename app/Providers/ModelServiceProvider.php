@@ -35,7 +35,8 @@ class ModelServiceProvider extends ServiceProvider
             'Backend\Model\ModelInterfaces\TagBuilderInterface',
             function ($app) {
                 return new TagBuilder(
-                    new \Backend\Model\Eloquent\ProjectTag()
+                    new \Backend\Model\Eloquent\ProjectTag(),
+                    new \Backend\Model\Eloquent\Tag()
                 );
             }
         );

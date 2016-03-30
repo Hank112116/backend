@@ -14,16 +14,6 @@
     </div>
 </div>
 
-<!-- Key Components List -->
-<div class="form-group">
-    <label for="key_component" class="col-md-3">Key Components List</label>
-    <div class="col-md-9">
-        <input type="text" id="key_component" name="key_component"
-               placeholder="Enter 'key component' then press [Enter]"
-               value="{!! $project->key_component !!}" />
-    </div>
-</div>
-
 <!-- Company Name -->
 <div class="form-group">
     <label for="title" class="col-md-3">Company Name</label>

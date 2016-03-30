@@ -13,8 +13,7 @@ class ProjectModifier implements ProjectModifierInterface
     private $update_columns = [
         'user_id', 'category_id', 'innovation_type',
         'project_title', 'project_summary',
-        'progress', 'project_country', 'project_city',
-        'key_component', 'description',
+        'progress', 'project_country', 'project_city', 'description',
         'resource', 'resource_other', 'requirement',
         'quantity', 'budget', 'msrp', 'launch_date', 'tags',
         'is_deleted',

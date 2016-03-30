@@ -25,7 +25,6 @@ class ProjectController extends BaseController
         $this->project_repo = $project;
         $this->adminer_repo = $adminer;
         $this->hub_repo     = $hub;
-        $this->per_page     = 20;
     }
 
 
@@ -96,7 +95,6 @@ class ProjectController extends BaseController
 
             return Redirect::action('ProjectController@showList');
         }
-
         return view('project.detail')
             ->with([
                 'project_tag_tree' => $this->project_repo->tagTree(),

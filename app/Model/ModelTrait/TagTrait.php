@@ -22,6 +22,17 @@ trait TagTrait
         return in_array($tag, $this->getProjectTagsAttribute());
     }
 
+    public function isSimilarTag($search_tag)
+    {
+        $tags = $this->getProjectTagsAttribute();
+        foreach ($tags as $tag) {
+            if (stristr($tag, $search_tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getMappingTag($amount = 0)
     {
         $tags      = $this->getProjectTagsAttribute();
