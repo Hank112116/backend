@@ -81,7 +81,7 @@ interface ProjectInterface
     /**
      * @return array
      */
-    public function categoryOptions($is_selected = true);
+    public function categoryOptions();
 
     /**
      * @return array

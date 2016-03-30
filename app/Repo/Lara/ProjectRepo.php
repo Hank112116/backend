@@ -283,14 +283,9 @@ class ProjectRepo implements ProjectInterface
             ->get();
     }
 
-    public function categoryOptions($is_selected = true)
+    public function categoryOptions()
     {
-        return $is_selected ?
-            $this->category->categories() :
-            array_merge(
-                $this->category->emptyOption(),
-                $this->category->categories()
-            );
+        return  $this->category->categories();
     }
 
     public function currentStageOptions()

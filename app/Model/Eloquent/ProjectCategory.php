@@ -6,19 +6,17 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class ProjectCategory extends Eloquent
 {
-
-    const CATEGORY_EMPTY = 0;
-
-    const CATEGORY_WEARABLE = 1;
+    const CATEGORY_OTHERS     = 0;
+    const CATEGORY_WEARABLE   = 1;
     const CATEGORY_INDUSTRIAL = 2;
-    const CATEGORY_SPORTS = 3;
-    const CATEGORY_TOYS = 4;
-    const CATEGORY_CAMERAS = 5;
-    const CATEGORY_FAMILY = 6;
-    const CATEGORY_MOBILE = 7;
-    const CATEGORY_AUTO = 8;
-    const CATEGORY_HEALTH = 9;
-    const CATEGORY_SCIENCE = 10;
+    const CATEGORY_SPORTS     = 3;
+    const CATEGORY_TOYS       = 4;
+    const CATEGORY_CAMERAS    = 5;
+    const CATEGORY_FAMILY     = 6;
+    const CATEGORY_MOBILE     = 7;
+    const CATEGORY_AUTO       = 8;
+    const CATEGORY_HEALTH     = 9;
+    const CATEGORY_SCIENCE    = 10;
 
     private static $categories = [
         self::CATEGORY_WEARABLE   => 'Wearable',
@@ -30,7 +28,8 @@ class ProjectCategory extends Eloquent
         self::CATEGORY_MOBILE     => 'Mobile Device Accessories',
         self::CATEGORY_AUTO       => 'Auto',
         self::CATEGORY_HEALTH     => 'Health',
-        self::CATEGORY_SCIENCE    => 'Science'
+        self::CATEGORY_SCIENCE    => 'Science',
+        self::CATEGORY_OTHERS     => 'Others'
     ];
 
     const DEFAULT_TYPE = '2';
@@ -44,11 +43,6 @@ class ProjectCategory extends Eloquent
     public function categories()
     {
         return self::$categories;
-    }
-
-    public function emptyOption()
-    {
-        return [self::CATEGORY_EMPTY => 'N/A'];
     }
 
     public function parseSolutionLookingCategory($category_implode, $category_other)

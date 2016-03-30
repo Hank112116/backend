@@ -3,7 +3,7 @@ namespace Backend\Enums;
 
 class ProjectCategoryEnum
 {
-    const CATEGORY_EMPTY      = 0;
+    const CATEGORY_OTHERS     = 0;
     const CATEGORY_WEARABLE   = 1;
     const CATEGORY_INDUSTRIAL = 2;
     const CATEGORY_SPORTS     = 3;
@@ -16,7 +16,6 @@ class ProjectCategoryEnum
     const CATEGORY_SCIENCE    = 10;
 
     const CATEGORIES = [
-        self::CATEGORY_EMPTY      => null,
         self::CATEGORY_WEARABLE   => 'Wearable',
         self::CATEGORY_INDUSTRIAL => 'Industrial Applications',
         self::CATEGORY_SPORTS     => 'Sports',
@@ -26,6 +25,8 @@ class ProjectCategoryEnum
         self::CATEGORY_MOBILE     => 'Mobile Device Accessories',
         self::CATEGORY_AUTO       => 'Auto',
         self::CATEGORY_HEALTH     => 'Health',
-        self::CATEGORY_SCIENCE    => 'Science'
+        self::CATEGORY_SCIENCE    => 'Science',
+        self::CATEGORY_OTHERS     => 'Others'
+
     ];
 }

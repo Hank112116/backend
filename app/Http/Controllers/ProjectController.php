@@ -25,6 +25,7 @@ class ProjectController extends BaseController
         $this->project_repo = $project;
         $this->adminer_repo = $adminer;
         $this->hub_repo     = $hub;
+        $this->per_page     = 20;
     }
 
 
@@ -119,9 +120,7 @@ class ProjectController extends BaseController
             ->with([
                 'project_tag_tree'      => $this->project_repo->tagTree(),
 
-                'category_options'      => $this->project_repo->categoryOptions(
-                    $is_selected = $project->category ? true : false
-                ),
+                'category_options'      => $this->project_repo->categoryOptions(),
                 'current_stage_options' => $this->project_repo->currentStageOptions(),
                 'innovation_options'    => $this->project_repo->innovationOptions(),
                 'resource_options'      => $this->project_repo->resourceOptions(),
