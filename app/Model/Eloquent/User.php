@@ -146,7 +146,7 @@ class User extends Eloquent
 
     public function textFullName()
     {
-        return "{$this->user_name} {$this->last_name}";
+        return UrlFilter::filter("{$this->user_name} {$this->last_name}");
     }
 
     public function textFrontLink()

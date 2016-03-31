@@ -295,7 +295,7 @@ class Solution extends Eloquent
             return 'Untitled';
         }
 
-        return $this->solution_title;
+        return UrlFilter::filter($this->solution_title);
     }
 
     public function textUserName()
