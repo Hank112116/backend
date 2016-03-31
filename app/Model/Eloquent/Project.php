@@ -752,12 +752,14 @@ class Project extends Eloquent
                     $referral = $user_model->find($applicant->referral);
                     if ($referral->isHWTrekPM() == $is_hwtrek_pm) {
                         $user                 = $user_model->find($applicant->user_id);
-                        $data['user_id']      = $applicant->user_id;
-                        $data['profile_url']  = $user->textFrontLink();
-                        $data['user_name']    = $user->textFullName();
-                        $data['company_name'] = $user->company;
-                        $data['type']         = 'applicant';
-                        $results[]             = $data;
+                        if ($user) {
+                            $data['user_id']      = $applicant->user_id;
+                            $data['profile_url']  = $user->textFrontLink();
+                            $data['user_name']    = $user->textFullName();
+                            $data['company_name'] = $user->company;
+                            $data['type']         = 'applicant';
+                            $results[]            = $data;
+                        }
                     }
                 }
             }
@@ -767,12 +769,14 @@ class Project extends Eloquent
 
             if ($recommend_experts) {
                 foreach ($recommend_experts as $recommend_expert) {
-                    $data['user_id']      = $recommend_expert->expert_id;
-                    $data['profile_url']  = $recommend_expert->user->textFrontLink();
-                    $data['user_name']    = $recommend_expert->user->textFullName();
-                    $data['company_name'] = $recommend_expert->user->company;
-                    $data['type']         = 'email-out';
-                    $results[]             = $data;
+                    if ($recommend_expert->user) {
+                        $data['user_id']      = $recommend_expert->expert_id;
+                        $data['profile_url']  = $recommend_expert->user->textFrontLink();
+                        $data['user_name']    = $recommend_expert->user->textFullName();
+                        $data['company_name'] = $recommend_expert->user->company;
+                        $data['type']         = 'email-out';
+                        $results[]            = $data;
+                    }
                 }
             }
         }
