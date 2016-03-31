@@ -8,7 +8,11 @@
         @else
             <span class="table--text-light">
                 {{ $project->recommendExpertTime() }}<br>
-                by {{ $project->recommendExperts[0]->adminer->name }}
+                @if ($project->recommendExperts[0]->adminer)
+                    by {{ $project->recommendExperts[0]->adminer->name }}
+                @else
+                    by Unknown adminer
+                @endif
             </span>
         @endif
     @else
