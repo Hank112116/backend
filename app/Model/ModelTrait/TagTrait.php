@@ -10,6 +10,11 @@ trait TagTrait
     {
         if (isset($this->tags)) {
             $this->project_tags = json_decode($this->tags, true);
+
+            if (!is_array($this->project_tags)) {
+                return [];
+            }
+
         } else {
             $this->project_tags = [];
         }
@@ -37,6 +42,9 @@ trait TagTrait
     {
         $tags      = $this->getProjectTagsAttribute();
         $node_tags = TagNode::tags();
+        if (empty($tags)) {
+            return [];
+        }
         $mapping   = [];
         foreach ($tags as $tag) {
             if (array_key_exists($tag, $node_tags)) {

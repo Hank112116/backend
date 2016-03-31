@@ -19,7 +19,7 @@
     <label for="title" class="col-md-3">Company Name</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
-               name="company_name" value="{!! htmlspecialchars($project->projectTeam->company_name) !!}">
+               name="company_name" value="{!! htmlspecialchars($project->textCompanyName()) !!}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -29,7 +29,7 @@
     <label for="title" class="col-md-3">Company Url</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
-               name="company_url" value="{!! htmlspecialchars($project->projectTeam->company_url) !!}">
+               name="company_url" value="{!! htmlspecialchars($project->textCompanyUrl()) !!}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -40,11 +40,11 @@
     <div class="col-md-9 select-tags" data-select-one = "team-size">
         @foreach($team_size_options as $index => $size)
             <div data-id='{!! $index  !!}'
-                 class='btn btn-primary tag {!! $project->projectTeam->size == $index ? 'active' : '' !!}' >
+                 class='btn btn-primary tag {!! $project->textTeamSize() == $index ? 'active' : '' !!}' >
                 {!! $size  !!}
             </div>
         @endforeach
-        <input type="hidden" name="size" value="{!! $project->projectTeam->size  !!}" />
+        <input type="hidden" name="size" value="{!! $project->textTeamSize()  !!}" />
     </div>
 </div>
 

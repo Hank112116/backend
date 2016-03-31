@@ -1,12 +1,12 @@
 @if (Auth::user()->role->hasCert('schedule_manager'))
-    @if(!$project->internalProjectMemo->hasProjectManager())
+    @if(!$project->hasProjectManager())
         <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->project_id }}" pm="">
             <p class="hub-manages">
                 <i class="fa fa-fw fa-exclamation-triangle"></i> No PM
             </p>
         </a>
     @else
-        <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->project_id }}" pm="{{ $project->internalProjectMemo->project_managers }}"/>
+        <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->project_id }}" pm="{{ $project->getProjectManagers() }}"/>
         @foreach($project->getHubManagerNames() as $manager)
             <p class="hub-manages">
                 <i class="fa fa-user fa-fw"></i> {!! $manager !!}
@@ -20,8 +20,9 @@
         @endforeach
         </a>
     @endif
+
 @else
-    @if(!$project->internalProjectMemo->hasProjectManager())
+    @if(!$project->hasProjectManager())
             <p class="hub-manages">
                 <i class="fa fa-fw fa-exclamation-triangle"></i> No PM
             </p>

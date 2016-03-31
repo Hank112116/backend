@@ -95,12 +95,12 @@
             <div class="clearfix">
                 @include('modules.detail-half-column', [
                     'label' => 'Company name',
-                    'content' => link_to($project->projectTeam->company_url, $project->projectTeam->company_name, ['target' => '_blank'])
+                    'content' => link_to($project->textCompanyUrl(), $project->textCompanyName(), ['target' => '_blank'])
                 ])
 
                 @include('modules.detail-half-column', [
                     'label' => 'Team Size',
-                    'content' => $project->projectTeam->size
+                    'content' => $project->textTeamSize()
                 ])
             </div>
 

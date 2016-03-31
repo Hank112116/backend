@@ -322,6 +322,30 @@ class Project extends Eloquent
         }
     }
 
+    public function textCompanyName()
+    {
+        if (!$this->projectTeam) {
+            return null;
+        }
+        return $this->projectTeam->company_name ? $this->projectTeam->company_name : 'N/A';
+    }
+
+    public function textCompanyUrl()
+    {
+        if (!$this->projectTeam) {
+            return null;
+        }
+        return $this->projectTeam->company_url ? $this->projectTeam->company_url : '';
+    }
+
+    public function textTeamSize()
+    {
+        if (!$this->projectTeam) {
+            return '1-5';
+        }
+        return $this->projectTeam->size ? $this->projectTeam->size : '1-5';
+    }
+
     public function textFrontLink()
     {
         return FrontLinkGenerator::project($this->project_id);
@@ -382,6 +406,9 @@ class Project extends Eloquent
 
     public function teamStrengths()
     {
+        if (!$this->projectTeam) {
+            return [];
+        }
         $team_strengths = json_decode($this->projectTeam->strengths, true);
         return $team_strengths ? $team_strengths : [];
     }
@@ -485,6 +512,14 @@ class Project extends Eloquent
         $weight_spec = array_merge($this->weight_spec_default, $weight_spec);
 
         return (object) $weight_spec;
+    }
+
+    public function hasProjectManager()
+    {
+        if (!$this->internalProjectMemo) {
+            return false;
+        }
+        return $this->internalProjectMemo->hasProjectManager();
     }
 
     public function fundingRounds()
@@ -595,8 +630,17 @@ class Project extends Eloquent
         return "//" . config('app.front_domain') . "/hub/manage-schedule-panel/{$this->project_id}/admin-edit";
     }
 
+    public function getProjectManagers()
+    {
+        return $this->internalProjectMemo ? $this->internalProjectMemo->project_managers : null;
+    }
+
     public function getHubManagerNames()
     {
+        if (!$this->internalProjectMemo) {
+            return [];
+        }
+
         if (!$this->internalProjectMemo->project_managers) {
             return [];
         }
@@ -607,6 +651,10 @@ class Project extends Eloquent
 
     public function getDeletedHubManagerNames()
     {
+        if (!$this->internalProjectMemo) {
+            return [];
+        }
+
         if (!$this->internalProjectMemo->project_managers) {
             return [];
         }
