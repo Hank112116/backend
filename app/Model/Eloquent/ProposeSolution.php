@@ -9,4 +9,9 @@ class ProposeSolution extends Eloquent
 
     protected $table = 'log_propose_solution';
     protected $primaryKey = 'log_id';
+
+    public function projectProposeSolution()
+    {
+
+    }
 }

@@ -5190,7 +5190,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b6b6b6;
+  background-color: #b7b7b7;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {
@@ -6012,37 +6012,37 @@ body.stop-scrolling {
 }
 /* line 1, ../../front/sass/modules/_common-main.scss */
 .wrapper {
+  min-width: 1650px;
   background: #f8f8f8;
-  min-width: 1500px;
 }
 
 /* line 6, ../../front/sass/modules/_common-main.scss */
 .page-wrapper {
-  background: #fff;
-  border-left: 1px solid #e7e7e7;
   min-height: 800px;
-  margin-bottom: -20px;
   margin-top: -40px;
+  margin-bottom: -20px;
+  border-left: 1px solid #e7e7e7;
+  background: #fff;
 }
 
 @media (min-width: 768px) {
   /* line 15, ../../front/sass/modules/_common-main.scss */
   .page-wrapper {
-    margin-left: 250px;
     min-height: 800px;
+    margin-left: 250px;
   }
 }
 /* line 21, ../../front/sass/modules/_common-main.scss */
 .page-wrapper--collapse {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* line 25, ../../front/sass/modules/_common-main.scss */
 .page-header {
+  padding-top: 10px;
+  color: #333333;
   text-align: center;
   text-transform: uppercase;
-  color: #333333;
-  padding-top: 10px;
 }
 
 /* line 32, ../../front/sass/modules/_common-main.scss */
@@ -6998,4 +6998,144 @@ body {
   color: #999999;
   font-size: 20px;
   padding-left: 0.2em;
+}
+
+/* line 1, ../../front/sass/modules/_option.scss */
+.option-tag {
+  min-width: 8em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+/* line 7, ../../front/sass/modules/_option.scss */
+.option-dimention {
+  font-size: 1.3em;
+}
+
+/* line 11, ../../front/sass/modules/_option.scss */
+.option-weight {
+  font-size: 1.3em;
+}
+
+/* line 15, ../../front/sass/modules/_option.scss */
+.option-power {
+  margin-bottom: .5em;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* line 21, ../../front/sass/modules/_option.scss */
+.option-power--type {
+  display: inline-block;
+  width: 10em;
+  margin-right: .3em;
+}
+
+/* line 27, ../../front/sass/modules/_option.scss */
+.option-power--value {
+  display: inline-block;
+  min-width: 3em;
+  margin-right: .5em;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #fafafa;
+  color: #428bca;
+  text-align: right;
+}
+
+/* iCheck plugin Minimal skin, blue
+----------------------------------- */
+/* line 3, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue,
+.iradio_minimal-blue {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  background: url("/images/vendor/icheck/blue.png") no-repeat;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* line 16, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue {
+  background-position: 0 0;
+}
+
+/* line 19, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.hover {
+  background-position: -20px 0;
+}
+
+/* line 22, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.checked {
+  background-position: -40px 0;
+}
+
+/* line 25, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.disabled {
+  background-position: -60px 0;
+  cursor: default;
+}
+
+/* line 29, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.checked.disabled {
+  background-position: -80px 0;
+}
+
+/* line 33, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue {
+  background-position: -100px 0;
+}
+
+/* line 36, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.hover {
+  background-position: -120px 0;
+}
+
+/* line 39, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.checked {
+  background-position: -140px 0;
+}
+
+/* line 42, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.disabled {
+  background-position: -160px 0;
+  cursor: default;
+}
+
+/* line 46, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.checked.disabled {
+  background-position: -180px 0;
+}
+
+/* Retina support */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3 / 2), only screen and (min-device-pixel-ratio: 1.5) {
+  /* line 55, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+  .icheckbox_minimal-blue,
+  .iradio_minimal-blue {
+    background-image: url("/images/vendor/icheck/blue@2x.png");
+    -webkit-background-size: 200px 20px;
+    background-size: 200px 20px;
+  }
+}
+/* line 14, ../../front/sass/product-detail.scss */
+.adminer-tag {
+  display: inline-block;
+  min-width: 15em;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background: #fcfcfc;
+}
+
+/* line 25, ../../front/sass/product-detail.scss */
+.group-half {
+  width: 45%;
+  margin-left: 5px;
+  float: left;
 }

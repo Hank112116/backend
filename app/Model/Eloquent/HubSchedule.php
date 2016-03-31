@@ -33,10 +33,7 @@ class HubSchedule extends Project
     {
         return "//" . config('app.front_domain') . "/hub/manage-schedule-panel/{$this->project_id}/admin-edit";
     }
-    public function textNoteLevel()
-    {
-         return static::$options['notelevel'][$this->hub_note_level];
-    }
+
     public function getOriginVersion()
     {
         $row = DB::table('pms_schedule_version')
@@ -58,24 +55,6 @@ class HubSchedule extends Project
             ->first();
 
         return $row ? $row->version_id : '';
-    }
-
-    public function getHubManagerNames()
-    {
-        if (!$this->hub_managers) {
-            return [];
-        }
-
-        return Adminer::whereIn('id', explode(',', $this->hub_managers))->lists('name');
-    }
-
-    public function getDeletedHubManagerNames()
-    {
-        if (!$this->hub_managers) {
-            return [];
-        }
-
-        return Adminer::onlyTrashed()->whereIn('id', explode(',', $this->hub_managers))->lists('name');
     }
 
     public function approve()

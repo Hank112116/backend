@@ -20,7 +20,7 @@ class Adminer extends Eloquent implements AuthenticatableContract
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class, 'hwtrek_member', 'user_id');
     }
 
     public function role()

@@ -8,7 +8,7 @@
     <meta name="token"  content="{!! Session::token() !!}">
 
     <meta name="noty-msg"  content = "{{ Session::get('noty.msg') }}">
-    <meta name="noty-type" content = "{!! Session::get('noty.type') !!}">
+    <meta name="noty-type" content = "{!! Session::get('noty.type') !!} {!! Session::forget('noty') !!}">
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="Bookmark" href="/favicon.ico" type="image/x-icon" />

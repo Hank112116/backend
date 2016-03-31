@@ -1,12 +1,15 @@
 @extends('layouts.master')
 @include('layouts.macro')
-
+@section('jqui')
+    @include('layouts.jqui')
+@stop
 @section('css')
     <link rel="stylesheet" href="/css/product-list.css">
 @stop
 
 @section('js')
     <script src='/js/list.js'></script>
+    <script src='/js/project-list.js'></script>
 @stop
 
 @section('content')
@@ -25,21 +28,19 @@
 
 <div class="row">
     <div class="col-md-12">
-
         <table class="table table-striped">
             <tr>
                 <th>#</th>
-                <th class="table--name">Title</th>
-                <th>Category</th>
-                <th>User</th>
-                <th>Country<br/><span class="table--text-light">City</span></th>
-
-                <th>Status</th>
-                <th>Submit</th>
-
-                <th>Hub</th>
-                <th class="table--text-center">Propose</th>
-                <th>Last Update</th>
+                <th class="table--name">Title<br/><span class="table--text-light">Category</span></th>
+                <th>User<br/><span class="table--text-light">Country</span></th>
+                <th>Status<br/><span class="table--text-light">Chang on</span></th>
+                <th>Company</th>
+                <th>Assigned PM<br/><span class="table--text-light">Email out</span></th>
+                <th>Propose</th>
+                <th>Recommend</th>
+                <th>Tech tags<br/><span class="table--text-light">Internal tags</span></th>
+                <th>Internal description</th>
+                <th>Last Update<br/><span class="table--text-light">By</span></th>
                 <th></th>
             </tr>
 
@@ -47,60 +48,115 @@
             <tr>
                 <td>{!! $project->project_id !!}</td>
                 <td class="table--name">
-                    <a href="{!! $project->textFrontLink() !!}" target="_blank">
+                    @if($project->is_deleted)
                         {{ $project->textTitle() }}
-                    </a>
-                </td>
-
-                <td>
-                    @include('modules.list-category', ['category' => $project->category])
-                </td>
-
-                <td>
-                    @include('layouts.user', ['user' => $project->user])
-                </td>
-
-                <td>
-                    {!! $project->project_country !!}
+                    @else
+                        <a href="{!! $project->textFrontLink() !!}" target="_blank">
+                            {{ $project->textTitle() }}
+                        </a>
+                    @endif
                     <br/>
-                    <span class="table--text-light">{{ $project->project_city }}</span>
+                    @include('modules.list-category', ['category' => $project->categoryData()])
+                    @if($project->is_created_via_fusion360)
+                        <img src="/images/fusion-360-logo.png" height="20" width="20">
+                    @endif
+                </td>
+                <td>
+                    @include('layouts.user', ['user' => $project->user])<br/>
+                    <span class="table--text-light">{{ $project->project_country }}</span>
                 </td>
 
                 <td>
                     {!! $project->profile->text_status !!}
                     @if($project->is_deleted)
-                        <br/>Deleted ({{$project->deleted_date}})
+                        <br/><i class="fa fa-trash" title="deleted"></i> <span class="table--text-light">{{$project->textDeletedTime()}}</span>
+                    @else
+                        <br/><span class="table--text-light">{{ $project->textSubmitTime() }}</span>
+                    @endif
+                    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                        @if(!$project->profile->isDraft())
+                            <br/><a href="{{ $project->textScheduleFrontEditLink() }}" target="_blank" class="btn-mini">Schedule</a>
+                            @if(!$project->hub_approve)
+                            <br/><a href="{!! action('HubController@approveSchedule', $project->project_id) !!}"
+                                    class="btn-mini btn-danger js-approve"><i class="fa fa-pencil fa-fw"></i>APPROVE</a>
+                            @endif
+                        @endif
                     @endif
                 </td>
 
-                <td>{!! $project->profile->text_project_submit !!}<br/> <!-- project summit date --></td>
-
                 <td>
-                    @if($project->schedule)
-                    <i class="fa fa-check"></i>
+                    @if($project->projectTeam->company_url)
+                        <a href="{{ $project->projectTeam->company_url }}">
+                            {{ $project->projectTeam->company_name }}
+                        </a>
+                    @else
+                        {{ $project->projectTeam->company_name }}
                     @endif
                 </td>
 
-                <td class="table--text-center">{!! $project->propose->count() !!}</td>
-
-                <td>{!! HTML::time($project->update_time)  !!}</td>
+                <td>
+                    @include('project.assigned-pm')
+                    @include('project.recommend-expert')
+                </td>
 
                 <td>
-                    {!!
-                        link_to_action('ProjectController@showDetail', 'DETAIL',
-                            $project->project_id, ['class' => 'btn-mini'])
-                    !!}
+                    <a href="javascript:void(0)" title="Internal Propose Solution" class="project_propose" propose="{{ $project->internalProposeSolution()->toJson() }}">internal:{{ $project->internalProposeSolution()->count() }}</a><br/>
+                    <a href="javascript:void(0)" title="External Propose Solution" class="project_propose" propose="{{ $project->externalProposeSolution()->toJson() }}">external:{{ $project->externalProposeSolution()->count() }}</a><br/>
+                    total: {{ $project->internalProposeSolution()->count() + $project->externalProposeSolution()->count() }}
+                </td>
+                <td>
+                    <a href="javascript:void(0)" title="Internal Recommend Expert" class="project_recommend" recommend="{{ $project->internalRecommendExpert()->toJson() }}">internal:{{ $project->internalRecommendExpert()->count() }}</a><br/>
+                    <a href="javascript:void(0)" title="External Recommend Expert" class="project_recommend" recommend="{{ $project->externalRecommendExpert()->toJson() }}">external:{{ $project->externalRecommendExpert()->count() }}</a><br/>
+                    total: {{ $project->internalRecommendExpert()->count() + $project->externalRecommendExpert()->count() }}
+                </td>
+                <td>
+                    {{ implode(' / ', $project->getMappingTag(2)) }} <br/>
+                     <span class="table--text-light"> {{ str_replace(',', ' / ', $project->internalProjectMemo->tags) }} </span><br/>
+                    <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="{{ $project->internalProjectMemo->tags }}" tech-tags="{{ implode(' / ', $project->getMappingTag()) }}">Add</a>
+                </td>
 
-                    {!!
-                        link_to_action('ProjectController@showUpdate', 'EDIT',
-                            $project->project_id, ['class' => 'btn-mini'])
-                    !!}
+                <td>
+                    @if($project->internalProjectMemo->description)
+                        <a href="javascript:void(0)" class="internal-description" rel="{!! $project->project_id !!}" description="{{ $project->internalProjectMemo->description }}">
+                            <i class="fa fa-pencil"></i>{{ mb_strimwidth($project->internalProjectMemo->description, 0, 130, mb_substr($project->internalProjectMemo->description, 0, 130) . '...') }}
+                        </a>
+                    @else
+                        <a href="javascript:void(0)" class="btn-mini internal-description" rel="{!! $project->project_id !!}" description="{{ $project->internalProjectMemo->description }}">Add</a>
+                    @endif
+                </td>
+
+                <td>
+                    {{ $project->textLastUpdateTime() }} <br/>
+                    @include('layouts.user', ['user' => $project->lastEditorUser])
+                </td>
+
+                <td>
+                    @if($project->isDeleted())
+                        <a href="" class="btn btn-primary btn-disabled" disabled>Project was deleted</a>
+                    @else
+                        {!!
+                            link_to_action('ProjectController@showDetail', 'DETAIL',
+                                $project->project_id, ['class' => 'btn-mini'])
+                        !!}
+
+                        {!!
+                            link_to_action('ProjectController@showUpdate', 'EDIT',
+                                $project->project_id, ['class' => 'btn-mini'])
+                        !!}
+                    @endif
                 </td>
             </tr>
             @endforeach
         </table>
 
     </div>
+    @include('project.dialog.schedule-grade-dialog')
+    @include('project.dialog.email-recommend-expert-dialog')
+    @include('project.dialog.add-tags-dialog')
+    @include('project.dialog.description-dialog')
+    @include('project.dialog.schedule-manager-dialog')
+    @include('project.dialog.propose-solution-dialog')
+    @include('project.dialog.recommend-expert-dialog')
 </div>
 
 @if($show_paginate)
@@ -111,6 +167,4 @@
 @endif
 
 @stop
-
-
 

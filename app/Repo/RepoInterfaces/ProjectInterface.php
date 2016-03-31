@@ -60,6 +60,12 @@ interface ProjectInterface
     public function byUserId($user_id);
 
     /**
+     * @param array $input
+     * @return Collection|Project[]
+     */
+    public function byUnionSearch($input, $page, $per_page);
+
+    /**
      * @param $project_id
      * @param $data
      * @return boolean
@@ -75,7 +81,7 @@ interface ProjectInterface
     /**
      * @return array
      */
-    public function categoryOptions($is_selected = true);
+    public function categoryOptions();
 
     /**
      * @return array
@@ -95,7 +101,27 @@ interface ProjectInterface
     /**
      * @return array
      */
+    public function teamSizeOptions();
+
+    /**
+     * @return array
+     */
+    public function budgetOptions();
+
+    /**
+     * @return array
+     */
+    public function innovationOptions();
+
+    /**
+     * @return array
+     */
     public function projectTagTree();
+
+    /**
+     * @return array
+     */
+    public function tagTree();
 
     /**
      * @param $projects
@@ -120,4 +146,18 @@ interface ProjectInterface
      * @return void
      */
     public function toSubmittedPublic($project_id);
+
+    /**
+     * @param $project_id
+     * @param $data
+     * @return boolean
+     */
+    public function updateNote($project_id, $data);
+
+    /**
+     * @param $project_id
+     * @param $data
+     * @return boolean
+     */
+    public function updateInternalNote($project_id, $data);
 }

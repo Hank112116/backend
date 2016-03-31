@@ -49,6 +49,20 @@
     </div>
 </div>
 
+<!-- Type Innovation -->
+<div class="form-group">
+    <label for="innovation-type" class="col-md-3">Type of Innovation</label>
+    <div class="col-md-5">
+        <select class="form-control" id="innovation-type" name="innovation_type">
+            @foreach($innovation_options as $index => $innovation_option)
+                <option value="{!! $index !!}" {!! $index == $project->innovation_type? 'selected' : '' !!} >
+                    {!! $innovation_option !!}
+                </option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
 <!-- Project Name -->
 <div class="form-group">
     <label for="title" class="col-md-3">Project Name</label>
@@ -92,6 +106,20 @@
         <input type="text" class="form-control" id="city"
             name="project_city" value="{!! $project->project_city !!}">
     </div>
+    <div class="col-md-5"></div>
+</div>
+
+<!-- KickStarter -->
+<div class="form-group">
+    <label for="kickstarter" class="col-md-3">KickStarter</label>
+    <div class="col-md-5">{!! $project->textKickstarterLink() !!}</div>
+    <div class="col-md-5"></div>
+</div>
+
+<!-- Indiegogo -->
+<div class="form-group">
+    <label for="indiegogo" class="col-md-3">Indiegogo</label>
+    <div class="col-md-5">{!! $project->textIndiegogoLink() !!}</div>
     <div class="col-md-5"></div>
 </div>
 

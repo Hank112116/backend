@@ -67,7 +67,7 @@ Route::group(['before' => 'backend.project'], function () {
     Route::get('project/all', 'ProjectController@showList');
     Route::get('project/deleted', 'ProjectController@showDeletedProjects');
 
-    Route::get('project/search/{by}', 'ProjectController@showSearch');
+    Route::get('project/search', 'ProjectController@showSearch');
 
     Route::get('project/detail/{id}', 'ProjectController@showDetail');
     Route::get('project/update/{id}', 'ProjectController@showUpdate');
@@ -83,6 +83,7 @@ Route::group(['before' => 'backend.project'], function () {
     Route::get('project/comments/projects/private/{comment_id}', 'CommentController@togglePrivate');
 
     Route::post('project/update/{id}', 'ProjectController@update');
+    Route::post('project/update-memo', 'ProjectController@updateMemo');
 });
 
 // Solution
@@ -133,7 +134,6 @@ Route::group(['before' => 'backend.hub'], function () {
     Route::get('hub/questionnaires/approve/{project_id}', 'HubController@approveSchedule');
 
     Route::post('hub/update-schedule-manager/{id}', 'HubController@updateScheduleManager');
-    Route::post('hub/update-project-note', 'HubController@updateProjectNote');
     Route::post('hub/get-expert', 'HubController@getExpert');
 });
 

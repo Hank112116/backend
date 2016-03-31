@@ -6,4 +6,6 @@ interface ProjectModifierInterface
     public function toDraftProject($project_id);
     public function toSubmittedPrivateProject($project_id);
     public function toSubmittedPublicProject($project_id);
+    public function updateProjectMemo($project_id, $data);
+    public function updateProjectTeam($project_id, $data);
 }

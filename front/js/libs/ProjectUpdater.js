@@ -10,12 +10,14 @@ export default class ProjectUpdater {
     }
 
     bootProject() {
-        this.initTagsInputs(["key_component", "team"]);
+        this.initTagsInputs(["key_component", "strengths"]);
 
         this.initSelectTag($("[data-select-tags=resource]"));
         this.initSelectOtherTag($("[data-other-tag=resource]"));
 
         this.initSelectOne($("[data-select-one=quantity]"));
+        this.initSelectOne($("[data-select-one=budget]"));
+        this.initSelectOne($("[data-select-one=team-size]"));
 
         this.initSelectUnsure($("[data-select-unsure=msrp]"));
         this.initSelectUnsure($("[data-select-unsure=shipping-date]"));

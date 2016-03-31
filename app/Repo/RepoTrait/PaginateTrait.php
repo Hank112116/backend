@@ -53,7 +53,6 @@ trait PaginateTrait
 
     protected function getPaginateFromCollection($collection, $currentPage, $perPage)
     {
-
         $pagedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $paginator = new Paginator($pagedData, $collection->count(), $perPage);
         $paginator->setPath('/' . \Request::path());

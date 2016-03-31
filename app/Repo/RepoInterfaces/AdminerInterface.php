@@ -1,5 +1,8 @@
 <?php namespace Backend\Repo\RepoInterfaces;
 
+use Backend\Model\Eloquent\Adminer;
+use Illuminate\Database\Eloquent\Collection;
+
 interface AdminerInterface
 {
     public function all();
@@ -7,6 +10,8 @@ interface AdminerInterface
     public function allDeleted();
 
     public function find($id);
+
+    public function findHWTrekMember($hwtrek_member);
 
     public function findWithTrashed($id);
 
@@ -24,7 +29,19 @@ interface AdminerInterface
 
     public function toOutputArray($adminers);
 
+    /**
+     * @return Collection|Adminer[]
+     */
     public function findFrontManager();
 
+    /**
+     * @return Collection|Adminer[]
+     */
     public function findBackManager();
+
+    /**
+     * @param array $ids
+     * @return Collection|Adminer[]
+     */
+    public function findAssignedProjectPM(array $ids);
 }

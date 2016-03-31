@@ -130,7 +130,7 @@ class HubController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        return Redirect::action('HubController@indexQuestionnaire');
+        return Redirect::action('ProjectController@showList');
     }
 
     /**
@@ -154,41 +154,16 @@ class HubController extends BaseController
 
         Noty::success("Project [{$schedule->project_title}] is approved");
 
-        return Redirect::action('HubController@indexSchedule');
+        return Redirect::action('ProjectController@showList');
     }
-    /**
-     * @param $projectId $note
-     * @return mixed
-     */
-    public function updateProjectNote()
-    {
-        $input = Input::all();
-        $data["hub_note"] = $input["note"];
-        $data["hub_note_level"] = $input["level"];
-        if ($this->project_repo->updateNote($input["projectId"], $data)) {
-            $res   = ['status' => 'success'];
-        } else {
-            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
-        }
 
-        $log_action = 'Edit Note';
-        $log_data   = [
-            'project'     => $input['projectId'],
-            'note'        => $data['hub_note'],
-            'level'       => $data['hub_note_level'],
-            'edit_status' => $res['status']
-        ];
-        Log::info($log_action, $log_data);
-
-        return Response::json($res);
-    }
     /**
      * @param $expertId
      * @return mixed
      */
     public function getExpert()
     {
-        $input = Input::all();
+        $input  = Input::all();
         $expert = $this->user_repo->findExpert($input["expertId"]);
 
         if (sizeof($expert) >0) {

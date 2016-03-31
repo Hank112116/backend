@@ -5210,7 +5210,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b6b6b6;
+  background-color: #b7b7b7;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {
@@ -6032,37 +6032,37 @@ body.stop-scrolling {
 }
 /* line 1, ../../front/sass/modules/_common-main.scss */
 .wrapper {
+  min-width: 1650px;
   background: #f8f8f8;
-  min-width: 1500px;
 }
 
 /* line 6, ../../front/sass/modules/_common-main.scss */
 .page-wrapper {
-  background: #fff;
-  border-left: 1px solid #e7e7e7;
   min-height: 800px;
-  margin-bottom: -20px;
   margin-top: -40px;
+  margin-bottom: -20px;
+  border-left: 1px solid #e7e7e7;
+  background: #fff;
 }
 
 @media (min-width: 768px) {
   /* line 15, ../../front/sass/modules/_common-main.scss */
   .page-wrapper {
-    margin-left: 250px;
     min-height: 800px;
+    margin-left: 250px;
   }
 }
 /* line 21, ../../front/sass/modules/_common-main.scss */
 .page-wrapper--collapse {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* line 25, ../../front/sass/modules/_common-main.scss */
 .page-header {
+  padding-top: 10px;
+  color: #333333;
   text-align: center;
   text-transform: uppercase;
-  color: #333333;
-  padding-top: 10px;
 }
 
 /* line 32, ../../front/sass/modules/_common-main.scss */
@@ -6502,6 +6502,10 @@ body {
 .input-group .date-input {
   width: 50%;
 }
+/* line 18, ../../front/sass/modules/_list-search.scss */
+.input-group .sel-input {
+  width: 31%;
+}
 
 /* line 1, ../../front/sass/modules/_list-table.scss */
 .table {
@@ -6540,8 +6544,221 @@ body {
   text-align: right;
 }
 
+/* iCheck plugin Minimal skin, blue
+----------------------------------- */
+/* line 3, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue,
+.iradio_minimal-blue {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  background: url("/images/vendor/icheck/blue.png") no-repeat;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* line 16, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue {
+  background-position: 0 0;
+}
+
+/* line 19, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.hover {
+  background-position: -20px 0;
+}
+
+/* line 22, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.checked {
+  background-position: -40px 0;
+}
+
+/* line 25, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.disabled {
+  background-position: -60px 0;
+  cursor: default;
+}
+
+/* line 29, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.icheckbox_minimal-blue.checked.disabled {
+  background-position: -80px 0;
+}
+
+/* line 33, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue {
+  background-position: -100px 0;
+}
+
+/* line 36, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.hover {
+  background-position: -120px 0;
+}
+
+/* line 39, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.checked {
+  background-position: -140px 0;
+}
+
+/* line 42, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.disabled {
+  background-position: -160px 0;
+  cursor: default;
+}
+
+/* line 46, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+.iradio_minimal-blue.checked.disabled {
+  background-position: -180px 0;
+}
+
+/* Retina support */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3 / 2), only screen and (min-device-pixel-ratio: 1.5) {
+  /* line 55, ../../front/sass/vendor/fronteed/icheck/_blue.scss */
+  .icheckbox_minimal-blue,
+  .iradio_minimal-blue {
+    background-image: url("/images/vendor/icheck/blue@2x.png");
+    -webkit-background-size: 200px 20px;
+    background-size: 200px 20px;
+  }
+}
 /* line 1, ../../front/sass/modules/_list-icon.scss */
 .icon-category {
   font-size: 1.5em;
   color: #666;
+}
+
+/* line 1, ../../front/sass/modules/_detail-tags.scss */
+.tag {
+  display: inline-block;
+  border-left: 5px solid #b8b0ca;
+  padding: .2em;
+  padding-left: .4em;
+  padding-right: 1em;
+  margin-right: 1em;
+  box-shadow: 1px 0.2px 0.2px rgba(100, 100, 100, 0.2);
+  color: #666;
+  min-width: 100px;
+  margin-bottom: .8em;
+  background-color: #fdfdfd;
+}
+
+/* line 1, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  display: inline-block;
+  padding: 4px 6px;
+  color: #555;
+  vertical-align: middle;
+  border-radius: 4px;
+  max-width: 100%;
+  line-height: 22px;
+  cursor: text;
+}
+
+/* line 14, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput input {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0 6px;
+  margin: 0;
+  width: auto !important;
+  max-width: inherit;
+}
+
+/* line 24, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput.form-control input::-moz-placeholder {
+  color: #777;
+  opacity: 1;
+}
+
+/* line 28, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+  color: #777;
+}
+
+/* line 31, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+  color: #777;
+}
+
+/* line 34, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput input:focus {
+  border: none;
+  box-shadow: none;
+}
+
+/* line 38, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag {
+  margin-right: 2px;
+  color: white;
+}
+
+/* line 42, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* line 46, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  content: "x";
+  padding: 0px 2px;
+}
+
+/* line 50, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* line 53, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+/* line 3, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput {
+  width: 100%;
+  padding: 10px 5px;
+}
+/* line 7, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput .tag {
+  position: relative;
+  color: #53d2ff;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  padding: 5px 30px;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid #53d2ff;
+  color: #53d2ff;
+}
+/* line 24, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  position: absolute;
+  top: 0px;
+  right: 3px;
+}
+/* line 29, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  font: normal normal normal 14px/1 FontAwesome;
+  content: "\f014";
+  font-size: 10px;
+}
+
+/* line 14, ../../front/sass/product-list.scss */
+.adminer-tag {
+  display: inline-block;
+  min-width: 15em;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background: #fcfcfc;
 }

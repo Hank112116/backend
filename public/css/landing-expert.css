@@ -5210,7 +5210,7 @@ body.stop-scrolling {
 }
 /* line 234, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:active {
-  background-color: #b6b6b6;
+  background-color: #b7b7b7;
 }
 /* line 238, ../../front/sass/vendor/sweetalert/_sweetalert.scss */
 .sweet-alert button.cancel:focus {
@@ -6032,37 +6032,37 @@ body.stop-scrolling {
 }
 /* line 1, ../../front/sass/modules/_common-main.scss */
 .wrapper {
+  min-width: 1650px;
   background: #f8f8f8;
-  min-width: 1500px;
 }
 
 /* line 6, ../../front/sass/modules/_common-main.scss */
 .page-wrapper {
-  background: #fff;
-  border-left: 1px solid #e7e7e7;
   min-height: 800px;
-  margin-bottom: -20px;
   margin-top: -40px;
+  margin-bottom: -20px;
+  border-left: 1px solid #e7e7e7;
+  background: #fff;
 }
 
 @media (min-width: 768px) {
   /* line 15, ../../front/sass/modules/_common-main.scss */
   .page-wrapper {
-    margin-left: 250px;
     min-height: 800px;
+    margin-left: 250px;
   }
 }
 /* line 21, ../../front/sass/modules/_common-main.scss */
 .page-wrapper--collapse {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* line 25, ../../front/sass/modules/_common-main.scss */
 .page-header {
+  padding-top: 10px;
+  color: #333333;
   text-align: center;
   text-transform: uppercase;
-  color: #333333;
-  padding-top: 10px;
 }
 
 /* line 32, ../../front/sass/modules/_common-main.scss */
@@ -6821,6 +6821,10 @@ body.stop-scrolling {
 /* line 14, ../../front/sass/modules/_list-search.scss */
 .input-group .date-input {
   width: 50%;
+}
+/* line 18, ../../front/sass/modules/_list-search.scss */
+.input-group .sel-input {
+  width: 31%;
 }
 
 /* line 1, ../../front/sass/modules/_landing.scss */

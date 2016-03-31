@@ -4,6 +4,7 @@ use Backend\Model\Plain\ProjectProfile;
 use Backend\Model\ProjectModifier;
 use Backend\Model\ProjectProfileGenerator;
 use Backend\Model\ProjectTagBuilder;
+use Backend\Model\TagBuilder;
 use Backend\Model\SolutionModifier;
 use Backend\Model\FeatureModifier;
 use Illuminate\Support\ServiceProvider;
@@ -30,13 +31,25 @@ class ModelServiceProvider extends ServiceProvider
             }
         );
 
+        $this->app->singleton(
+            'Backend\Model\ModelInterfaces\TagBuilderInterface',
+            function ($app) {
+                return new TagBuilder(
+                    new \Backend\Model\Eloquent\ProjectTag(),
+                    new \Backend\Model\Eloquent\Tag()
+                );
+            }
+        );
+
         $this->app->bind(
             'Backend\Model\ModelInterfaces\ProjectModifierInterface',
             function ($app) {
                 return new ProjectModifier(
                     new \Backend\Model\Eloquent\Project(),
                     new ProjectProfile(),
-                    new \ImageUp()
+                    new \ImageUp(),
+                    new \Backend\Model\Eloquent\InternalProjectMemo(),
+                    new \Backend\Model\Eloquent\ProjectTeam()
                 );
             }
         );

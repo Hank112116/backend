@@ -54,6 +54,21 @@ class ProjectProfile
         $this->is_wait_approve_ongoing = $is_wait_approve_ongoing;
     }
 
+    public function isPublic()
+    {
+        return $this->isStatus($this->public_project);
+    }
+
+    public function isPrivate()
+    {
+        return $this->isStatus($this->private_project);
+    }
+
+    public function isDraft()
+    {
+        return $this->isStatus($this->draft_project);
+    }
+
     private function isPostPone()
     {
         return (
@@ -121,11 +136,11 @@ class ProjectProfile
     {
         switch (true) {
             case $this->isProjectSubmittedPublic():
-                return 'Expert-Only Project';
+                return 'Expert-Only';
             case $this->isProjectSubmittedPrivate():
-                return 'Private Project';
+                return 'Private';
             default:  //   !$project->isProjectSubmitted()
-                return 'Unfinished Draft';
+                return 'Draft';
         }
     }
 }

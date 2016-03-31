@@ -5,13 +5,17 @@
 }
 
 .input-group {
-	margin-bottom: 15px;
+  margin-bottom: 15px;
 
-	.form-control {
-		height: auto;
-	}
+  .form-control {
+    height: auto;
+  }
 
-	.date-input {
-		width: 50%;
-	}
+  .date-input {
+    width: 50%;
+  }
+
+  .sel-input {
+    width: 31%;
+  }
 }
