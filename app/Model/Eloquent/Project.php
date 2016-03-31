@@ -630,6 +630,11 @@ class Project extends Eloquent
         return "//" . config('app.front_domain') . "/hub/manage-schedule-panel/{$this->project_id}/admin-edit";
     }
 
+    public function textProjectManagers()
+    {
+        return $this->internalProjectMemo ? $this->internalProjectMemo->textProjectManagers() : null;
+    }
+
     public function getProjectManagers()
     {
         return $this->internalProjectMemo ? $this->internalProjectMemo->project_managers : null;

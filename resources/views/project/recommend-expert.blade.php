@@ -1,8 +1,8 @@
 @if($project->hub_approve)
     @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($project->date_added)))
-        @if(!$project->recommendExpertTime() && $project->internalProjectMemo)
+        @if(!$project->recommendExpertTime())
             <a class="btn-mini btn-danger sendmail" href="javascript:void(0)" projectId="{{ $project->project_id }}"
-               projectTitle="{{ $project->textTitle() }}" userId="{{ $project->user_id }}" PM="{!! $project->internalProjectMemo->textProjectManagers() !!}">
+               projectTitle="{{ $project->textTitle() }}" userId="{{ $project->user_id }}" PM="{!! $project->textProjectManagers() !!}">
                 <i class="fa fa-envelope fa-fw"></i> SEND
             </a>
         @else
