@@ -796,8 +796,8 @@ class Project extends Eloquent
         $groups = $this->group;
         if ($groups) {
             foreach ($groups as $group) {
-                if ($group->member_applicant) {
-                    foreach ($group->member_applicant as $applicant) {
+                if ($group->memberApplicant) {
+                    foreach ($group->memberApplicant as $applicant) {
                         if ($applicant->user && $applicant->referralUser) {
                             $data['user_id']      = $applicant->user_id;
                             $data['profile_url']  = $applicant->user->textFrontLink();
