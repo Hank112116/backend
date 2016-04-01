@@ -100,22 +100,18 @@
                 </td>
 
                 <td>
-                    <a href="javascript:void(0)" title="Internal Propose Solution" class="project_propose" propose="{{ $project->internalProposeSolution()->toJson() }}">internal:{{ $project->internalProposeSolution()->count() }}</a><br/>
-                    <a href="javascript:void(0)" title="External Propose Solution" class="project_propose" propose="{{ $project->externalProposeSolution()->toJson() }}">external:{{ $project->externalProposeSolution()->count() }}</a><br/>
-                    total: {{ $project->internalProposeSolution()->count() + $project->externalProposeSolution()->count() }}
+                    @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($pm_ids)])
                 </td>
                 <td>
-                    <a href="javascript:void(0)" title="Internal Recommend Expert" class="project_recommend" recommend="{{ $project->internalRecommendExpert()->toJson() }}">internal:{{ $project->internalRecommendExpert()->count() }}</a><br/>
-                    <a href="javascript:void(0)" title="External Recommend Expert" class="project_recommend" recommend="{{ $project->externalRecommendExpert()->toJson() }}">external:{{ $project->externalRecommendExpert()->count() }}</a><br/>
-                    total: {{ $project->internalRecommendExpert()->count() + $project->externalRecommendExpert()->count() }}
+                    @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertCount($pm_ids)])
                 </td>
                 <td>
-                    {{ implode(' / ', $project->getMappingTag(2)) }} <br/>
+                    {{ implode(' / ', $project->getMappingTag($tag_tree, 2)) }} <br/>
                     @if ($project->internalProjectMemo)
                         <span class="table--text-light"> {{ str_replace(',', ' / ', $project->internalProjectMemo->tags) }} </span><br/>
-                        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="{{ $project->internalProjectMemo->tags }}" tech-tags="{{ implode(' / ', $project->getMappingTag()) }}">Add</a>
+                        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="{{ $project->internalProjectMemo->tags }}" tech-tags="{{ implode(' / ', $project->getMappingTag($tag_tree)) }}">Add</a>
                     @else
-                        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="" tech-tags="{{ implode(' / ', $project->getMappingTag()) }}">Add</a>
+                        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="" tech-tags="{{ implode(' / ', $project->getMappingTag($tag_tree)) }}">Add</a>
                     @endif
 
                 </td>

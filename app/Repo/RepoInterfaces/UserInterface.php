@@ -186,4 +186,10 @@ interface UserInterface
      * @return void
      */
     public function changeHWTrekPM($user_id, $is_hwtrek_pm);
+
+    /**
+     * @return mixed
+     * @return Collection|User[]
+     */
+    public function findHWTrekPM();
 }

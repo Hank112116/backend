@@ -1,0 +1,3 @@
+<a href="javascript:void(0)" title="Internal Propose Solution" class="project_propose" propose="internal" rel="{{ $project->project_id }}">internal:{{ $propose_solution->internal_count }}</a><br/>
+<a href="javascript:void(0)" title="External Propose Solution" class="project_propose" propose="external" rel="{{ $project->project_id }}">external:{{ $propose_solution->external_count }}</a><br/>
+total: {{$propose_solution->total_count }}

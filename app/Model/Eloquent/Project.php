@@ -197,6 +197,11 @@ class Project extends Eloquent
         return $this->hasMany(ProjectAttachment::class, 'project_id', 'project_id');
     }
 
+    public function group()
+    {
+        return $this->hasMany(ProjectGroup::class, 'project_id', 'project_id');
+    }
+
     // pending-for-approve products
     public function scopeQueryApprovePending(Builder $query)
     {
@@ -687,99 +692,153 @@ class Project extends Eloquent
         return $this->is_deleted;
     }
 
-    public function internalProposeSolution()
+    public function proposeSolutionCount($pm_ids = [])
     {
-        return $this->filterProposeSolution(true);
-    }
-
-    public function externalProposeSolution()
-    {
-        return $this->filterProposeSolution(false);
-    }
-
-    public function internalRecommendExpert()
-    {
-        return $this->filterRecommendExpert(true);
-    }
-
-    public function externalRecommendExpert()
-    {
-        return $this->filterRecommendExpert(false);
-    }
-
-    private function filterProposeSolution($is_hwtrek_pm)
-    {
-        $results = $this->propose()->getResults();
-        $results = $results->filter(function ($item) use ($is_hwtrek_pm) {
-            if ($item->event !== 'click') {
-                $user_model = new User();
-                $user = $user_model->find($item->proposer_id);
-                if ($user->isHWTrekPM() == $is_hwtrek_pm) {
-                    $solution_model = new Solution();
-                    $solution = $solution_model->find($item->solution_id);
-                    $item->solution_url   = $solution->textFrontLink();
-                    $item->solution_title = $solution->textTitle();
-                    return $item;
+        if (empty($pm_ids)) {
+            $user_model = new User();
+            $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
+            if ($hwtrek_pms) {
+                foreach ($hwtrek_pms as $pm) {
+                    $pm_ids[] = $pm->user_id;
                 }
             }
-        });
-        return $results;
+        }
+        $propose_solution_model = new ProposeSolution();
+        $internal_count = $propose_solution_model->where('project_id', $this->project_id)
+            ->where('event', '!=', 'click')
+            ->whereIn('proposer_id', $pm_ids)
+            ->count();
+        $external_count = $propose_solution_model->where('project_id', $this->project_id)
+            ->where('event', '!=', 'click')
+            ->whereNotIn('proposer_id', $pm_ids)
+            ->count();
+        $total_count    = $internal_count + $external_count;
+        $result = [
+            'internal_count' => $internal_count,
+            'external_count' => $external_count,
+            'total_count'    => $total_count
+        ];
+
+        return (object) $result;
     }
 
-    private function filterRecommendExpert($is_hwtrek_pm)
+    public function recommendExpertCount($pm_ids = [])
     {
-        $results = [];
-        $applicant_model = new GroupMemberApplicant();
-        $applicants = $applicant_model->all(['user_id', 'apply_date','referral', 'additional_privileges']);
-        $project_id = $this->project_id;
+        $internal_count = $external_count = 0;
+        if (empty($pm_ids)) {
+            $user_model = new User();
+            $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
+            if ($hwtrek_pms) {
+                foreach ($hwtrek_pms as $pm) {
+                    $pm_ids[] = $pm->user_id;
+                }
+            }
+        }
 
+        $groups = $this->group;
+        if ($groups) {
+            foreach ($groups as $group) {
+                if ($group->memberApplicant) {
+                    $member_applicant_model = new GroupMemberApplicant();
+                    $internal_count += $member_applicant_model->where('group_id', $group->group_id)
+                        ->whereIn('referral', $pm_ids)
+                        ->count();
+                    $external_count += $member_applicant_model->where('group_id', $group->group_id)
+                        ->whereNotIn('referral', $pm_ids)
+                        ->count();
+                }
+            }
+        }
 
-        if ($applicants) {
-            foreach ($applicants as $applicant) {
-                $additional_privileges = json_decode($applicant->additional_privileges, true);
-                $flag = false;
-                foreach ($additional_privileges as $additional_privilege) {
-                    if (in_array('project', $additional_privilege) &&
-                        in_array($project_id, $additional_privilege) &&
-                        $applicant->referral
-                    ) {
-                        $flag = true;
-                        break;
+        $internal_count += $this->recommendExperts->count();
+        $total_count = $internal_count + $external_count;
+        $result = [
+            'internal_count' => $internal_count,
+            'external_count' => $external_count,
+            'total_count'    => $total_count
+        ];
+        return (object) $result;
+    }
+
+    public function proposeSolutionStatistics()
+    {
+        $internal_count = $external_count = 0;
+        $internal_date  = $external_data  = [];
+        $propose_solutions = $this->propose()->getResults();
+        if ($propose_solutions) {
+            foreach ($propose_solutions as $propose_solution) {
+                if ($propose_solution->event !== 'click' && $propose_solution->user  && $propose_solution->solution) {
+                    $data['solution_id']    = $propose_solution->solution->solution_id;
+                    $data['solution_url']   = $propose_solution->solution->textFrontLink();
+                    $data['solution_title'] = $propose_solution->solution->textTitle();
+                    if ($propose_solution->user->isHWTrekPM()) {
+                        $internal_date[] = $data;
+                        $internal_count ++;
+                    } else {
+                        $external_data[] = $data;
+                        $external_count ++;
                     }
                 }
-                if ($flag) {
-                    $user_model = new User();
-                    $referral = $user_model->find($applicant->referral);
-                    if ($referral->isHWTrekPM() == $is_hwtrek_pm) {
-                        $user                 = $user_model->find($applicant->user_id);
-                        if ($user) {
+            }
+        }
+        $result['internal_count'] = $internal_count;
+        $result['internal_data']  = $internal_date;
+        $result['external_count'] = $external_count;
+        $result['external_data']  = $external_data;
+        $result['total']          = $internal_count + $external_count;
+        return (object) $result;
+    }
+
+    public function recommendExpertStatistics()
+    {
+        $internal_count = $external_count = 0;
+        $internal_date  = $external_data  = [];
+        $groups = $this->group;
+        if ($groups) {
+            foreach ($groups as $group) {
+                if ($group->member_applicant) {
+                    foreach ($group->member_applicant as $applicant) {
+                        if ($applicant->user && $applicant->referralUser) {
                             $data['user_id']      = $applicant->user_id;
-                            $data['profile_url']  = $user->textFrontLink();
-                            $data['user_name']    = $user->textFullName();
-                            $data['company_name'] = $user->company;
+                            $data['profile_url']  = $applicant->user->textFrontLink();
+                            $data['user_name']    = $applicant->user->textFullName();
+                            $data['company_name'] = $applicant->user->company;
                             $data['type']         = 'applicant';
-                            $results[]            = $data;
+                            if ($applicant->referralUser->isHWTrekPM()) {
+                                $internal_date[] = $data;
+                                $internal_count ++;
+                            } else {
+                                $external_data[] = $data;
+                                $external_count ++;
+                            }
                         }
-                    }
-                }
-            }
-        }
-        if ($is_hwtrek_pm) {
-            $recommend_experts = $this->recommendExperts()->getResults();
 
-            if ($recommend_experts) {
-                foreach ($recommend_experts as $recommend_expert) {
-                    if ($recommend_expert->user) {
-                        $data['user_id']      = $recommend_expert->expert_id;
-                        $data['profile_url']  = $recommend_expert->user->textFrontLink();
-                        $data['user_name']    = $recommend_expert->user->textFullName();
-                        $data['company_name'] = $recommend_expert->user->company;
-                        $data['type']         = 'email-out';
-                        $results[]            = $data;
                     }
                 }
             }
         }
-        return Collection::make($results);
+
+        $recommend_experts = $this->recommendExperts()->getResults();
+
+        if ($recommend_experts) {
+            foreach ($recommend_experts as $recommend_expert) {
+                if ($recommend_expert->user) {
+                    $data['user_id']      = $recommend_expert->expert_id;
+                    $data['profile_url']  = $recommend_expert->user->textFrontLink();
+                    $data['user_name']    = $recommend_expert->user->textFullName();
+                    $data['company_name'] = $recommend_expert->user->company;
+                    $data['type']         = 'email-out';
+                    $internal_date[]      = $data;
+                    $internal_count ++;
+                }
+            }
+        }
+        $result['internal_count'] = $internal_count;
+        $result['internal_data']  = $internal_date;
+        $result['external_count'] = $external_count;
+        $result['external_data']  = $external_data;
+        $result['total']          = $internal_count + $external_count;
+        return (object) $result;
+
     }
 }

@@ -84,6 +84,8 @@ Route::group(['before' => 'backend.project'], function () {
 
     Route::post('project/update/{id}', 'ProjectController@update');
     Route::post('project/update-memo', 'ProjectController@updateMemo');
+    Route::post('project/propose-solution', 'ProjectController@proposeSolution');
+    Route::post('project/recommend-expert', 'ProjectController@recommendExpert');
 });
 
 // Solution

@@ -124,13 +124,15 @@ class ProjectRepo implements ProjectInterface
         if (!empty($input['assigned_pm'])) {
             $assigned_pm = explode(',', $input['assigned_pm']);
             $projects = $projects->filter(function (Project $item) use ($assigned_pm) {
-                $project_managers = json_decode($item->internalProjectMemo->project_managers, true);
-                if ($project_managers) {
-                    $adminers = $this->adminer->findAssignedProjectPM($assigned_pm);
-                    if ($adminers) {
-                        foreach ($adminers as $adminer) {
-                            if (in_array($adminer->hwtrek_member, $project_managers)) {
-                                return $item;
+                if ($item->internalProjectMemo) {
+                    $project_managers = json_decode($item->internalProjectMemo->project_managers, true);
+                    if ($project_managers) {
+                        $adminers = $this->adminer->findAssignedProjectPM($assigned_pm);
+                        if ($adminers) {
+                            foreach ($adminers as $adminer) {
+                                if (in_array($adminer->hwtrek_member, $project_managers)) {
+                                    return $item;
+                                }
                             }
                         }
                     }
@@ -141,8 +143,10 @@ class ProjectRepo implements ProjectInterface
         if (!empty($input['description'])) {
             $description = $input['description'];
             $projects = $projects->filter(function (Project $item) use ($description) {
-                if (stristr($item->internalProjectMemo->description, $description)) {
-                    return $item;
+                if ($item->internalProjectMemo) {
+                    if (stristr($item->internalProjectMemo->description, $description)) {
+                        return $item;
+                    }
                 }
             });
         }
@@ -164,13 +168,15 @@ class ProjectRepo implements ProjectInterface
                     return $item;
                 }
                 $internal_tag = [];
-                if ($item->internalProjectMemo->tags) {
-                    $internal_tag = explode(',', $item->internalProjectMemo->tags);
-                }
-                if ($internal_tag) {
-                    foreach ($internal_tag as $tag) {
-                        if (stristr($tag, $search_tag)) {
-                            return $item;
+                if ($item->internalProjectMemo) {
+                    if ($item->internalProjectMemo->tags) {
+                        $internal_tag = explode(',', $item->internalProjectMemo->tags);
+                    }
+                    if ($internal_tag) {
+                        foreach ($internal_tag as $tag) {
+                            if (stristr($tag, $search_tag)) {
+                                return $item;
+                            }
                         }
                     }
                 }

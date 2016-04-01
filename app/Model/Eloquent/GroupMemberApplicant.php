@@ -9,4 +9,14 @@ class GroupMemberApplicant extends Eloquent
     protected $primaryKey = 'applicant_id';
     public static $unguarded = true;
     public $timestamps = false;
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'user_id', 'user_id');
+    }
+
+    public function referralUser()
+    {
+        return $this->hasOne(User::class, 'user_id', 'referral');
+    }
 }

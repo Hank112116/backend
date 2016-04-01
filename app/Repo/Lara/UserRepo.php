@@ -343,6 +343,11 @@ class UserRepo implements UserInterface
         $user->save();
     }
 
+    public function findHWTrekPM()
+    {
+        return $this->user->where('is_hwtrek_pm', true)->get();
+    }
+
     /*
      * @param Paginator|Collection
      * return array

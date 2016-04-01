@@ -5,6 +5,8 @@ namespace Backend\Http\Controllers;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
+use Backend\Repo\RepoInterfaces\UserInterface;
+use Backend\Model\Plain\TagNode;
 use Input;
 use Noty;
 use Redirect;
@@ -18,13 +20,19 @@ class ProjectController extends BaseController
     private $project_repo;
     private $adminer_repo;
     private $hub_repo;
+    private $user_repo;
 
-    public function __construct(ProjectInterface $project, AdminerInterface $adminer, HubInterface $hub)
-    {
+    public function __construct(
+        ProjectInterface $project,
+        AdminerInterface $adminer,
+        HubInterface $hub,
+        UserInterface $user
+    ) {
         parent::__construct();
         $this->project_repo = $project;
         $this->adminer_repo = $adminer;
         $this->hub_repo     = $hub;
+        $this->user_repo    = $user;
     }
 
 
@@ -59,14 +67,24 @@ class ProjectController extends BaseController
         if (Input::has('csv')) {
             return $this->renderCsv($projects);
         }
+
+        $hwtrek_pms = $this->user_repo->findHWTrekPM();
+
+        $pm_ids = [];
+        if ($hwtrek_pms) {
+            foreach ($hwtrek_pms as $pm) {
+                $pm_ids[] = $pm->user_id;
+            }
+        }
         return view('project.list')
             ->with([
                 'title'            => $title ?: 'projects',
                 'projects'         => $projects,
                 'per_page'         => $this->per_page,
                 'show_paginate'    => $paginate,
-                'project_tag_tree' => $this->project_repo->tagTree(),
                 'adminers'         => $this->adminer_repo->all(),
+                'tag_tree'         => TagNode::tags(),
+                'pm_ids'           => $pm_ids
             ]);
     }
 
@@ -87,9 +105,8 @@ class ProjectController extends BaseController
 
     public function showDetail($project_id)
     {
-        $project  = $this->project_repo->find($project_id);
-        $schedule = $this->hub_repo->findSchedule($project_id);
-        
+        $project    = $this->project_repo->find($project_id);
+        $schedule   = $this->hub_repo->findSchedule($project_id);
         if (!$project) {
             Noty::warnLang('project.no-project');
 
@@ -201,5 +218,35 @@ class ProjectController extends BaseController
         Log::info($log_action, $input);
 
         return Response::json($res);
+    }
+
+    public function proposeSolution()
+    {
+        $project_id   = Input::get('project_id');
+        $propose_type = Input::get('propose_type');
+        $project = $this->project_repo->find($project_id);
+        $result = $project->proposeSolutionStatistics();
+        if ($propose_type == 'internal') {
+            return Response::json($result->internal_data);
+        } elseif ($propose_type == 'external') {
+            return Response::json($result->external_data);
+        } else {
+            return Response::json('', 400);
+        }
+    }
+
+    public function recommendExpert()
+    {
+        $project_id   = Input::get('project_id');
+        $recommend_type = Input::get('recommend_type');
+        $project = $this->project_repo->find($project_id);
+        $result = $project->recommendExpertStatistics();
+        if ($recommend_type == 'internal') {
+            return Response::json($result->internal_data);
+        } elseif ($recommend_type == 'external') {
+            return Response::json($result->external_data);
+        } else {
+            return Response::json('', 400);
+        }
     }
 }
