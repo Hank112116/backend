@@ -104,7 +104,7 @@
                     @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($pm_ids)])
                 </td>
                 <td>
-                    @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertCount($pm_ids)])
+                    @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics()])
                 </td>
                 <td>
                     Community:{{ $project->getPageViewCount() }}<br/>

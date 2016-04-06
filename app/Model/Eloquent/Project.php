@@ -832,32 +832,25 @@ class Project extends Eloquent
                 if ($group->memberApplicant) {
                     foreach ($group->memberApplicant as $applicant) {
                         if ($applicant->user) {
-                            $data['user_id']            = $applicant->user_id;
-                            $data['profile_url']        = $applicant->user->textFrontLink();
-                            $data['user_name']          = $applicant->user->textFullName();
-                            $data['company_name']       = $applicant->user->company;
-                            $data['type']          = 'applicant';
-                            if ($applicant->referralUser) {
-                                $data['referral_user_name'] = $applicant->referralUser->textFullName();
-                                $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
-                                if ($applicant->referralUser->isHWTrekPM()) {
-                                    $internal_date[] = $data;
-                                    $internal_count++;
-                                } else {
-                                    $external_data[] = $data;
-                                    $external_count++;
-                                }
-                            } else {
-                                if ($applicant->user->isHWTrekPM()) {
-                                    $internal_date[] = $data;
-                                    $internal_count++;
-                                } else {
-                                    $external_data[] = $data;
-                                    $external_count++;
+                            if ($applicant->user->isExpert()) {
+                                $data['user_id']      = $applicant->user_id;
+                                $data['profile_url']  = $applicant->user->textFrontLink();
+                                $data['user_name']    = $applicant->user->textFullName();
+                                $data['company_name'] = $applicant->user->company;
+                                $data['type']         = 'applicant';
+                                if ($applicant->referralUser) {
+                                    $data['referral_user_name'] = $applicant->referralUser->textFullName();
+                                    $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
+                                    if ($applicant->referralUser->isHWTrekPM()) {
+                                        $internal_date[] = $data;
+                                        $internal_count++;
+                                    } else {
+                                        $external_data[] = $data;
+                                        $external_count++;
+                                    }
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -887,7 +880,7 @@ class Project extends Eloquent
         $result['internal_data']  = $internal_date;
         $result['external_count'] = $external_count;
         $result['external_data']  = $external_data;
-        $result['total']          = $internal_count + $external_count;
+        $result['total_count']    = $internal_count + $external_count;
         return (object) $result;
 
     }
@@ -915,13 +908,24 @@ class Project extends Eloquent
             foreach ($groups as $group) {
                 if ($group->memberApplicant) {
                     $member_applicant_model = new GroupMemberApplicant();
-                    $count = $member_applicant_model->where('group_id', $group->group_id)
+                    $member_applicants = $member_applicant_model->where('group_id', $group->group_id)
                         ->whereIn('referral', $pm_ids)
                         ->whereNotNull('user_id')
-                        ->count();
+                        ->get();
+
+                    $member_applicants = $member_applicants->filter(function (GroupMemberApplicant $item) {
+                        if ($item->user) {
+                            if ($item->user->isExpert()) {
+                                return $item;
+                            }
+                        }
+                    });
+
+                    $count = $member_applicants->count();
                 }
             }
         }
+
 
         return $count;
     }
