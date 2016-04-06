@@ -917,6 +917,7 @@ class Project extends Eloquent
                     $member_applicant_model = new GroupMemberApplicant();
                     $count = $member_applicant_model->where('group_id', $group->group_id)
                         ->whereIn('referral', $pm_ids)
+                        ->whereNotNull('user_id')
                         ->count();
                 }
             }
