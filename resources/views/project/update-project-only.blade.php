@@ -1,6 +1,6 @@
 <!-- Current Development Stage -->
 <div class="form-group">
-    <label for="progress" class="col-md-3">Current Development Stage</label>
+    <label for="progress" class="col-md-3">Current Stage (initial launch)</label>
     <div class="col-md-5">
 
         <select class="form-control" id="progress" name="progress">
@@ -26,7 +26,7 @@
 
 <!-- Company Url -->
 <div class="form-group">
-    <label for="title" class="col-md-3">Company Url</label>
+    <label for="title" class="col-md-3">Company URL</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
                name="company_url" value="{!! htmlspecialchars($project->textCompanyUrl()) !!}">
@@ -36,7 +36,7 @@
 
 <!-- Team Size -->
 <div class="form-group">
-    <label for="size" class="col-md-3">Team size</label>
+    <label for="size" class="col-md-3">Team Size</label>
     <div class="col-md-9 select-tags" data-select-one = "team-size">
         @foreach($team_size_options as $index => $size)
             <div data-id='{!! $index  !!}'
@@ -60,7 +60,7 @@
 
 <!-- Resource Requirement -->
 <div class="form-group">
-    <label for="team" class="col-md-3">Resource Requirements</label>
+    <label for="team" class="col-md-3">Resource Required</label>
     <div class="col-md-9">
 
         <div class="resource-container select-tags" data-select-tags = "resource" >
@@ -76,7 +76,7 @@
         <div class="other-tag">
             <div class="btn btn-primary tag resource-other {!! $project->resource_other? 'active' : '' !!}"
                  data-other-tag = "resource">
-                <span class="tag-other">Other</span>
+                <span class="tag-other">Others</span>
                 <input type="text" maxlength="50" name="resource_other" value="{!! $project->resource_other  !!}" />
             </div>
         </div>
@@ -86,7 +86,7 @@
 
 <!-- Requirement Criteria -->
 <div class="form-group">
-    <label for="requirement" class="col-md-3">Requirement Criteria</label>
+    <label for="requirement" class="col-md-3">Message to Experts</label>
     <div class="col-md-5">
         <textarea id="requirement" name="requirement"
             class="form-control" rows="5">{!! $project->requirement !!}</textarea>
@@ -95,7 +95,7 @@
 
 <!-- Target Martket -->
 <div class="form-group">
-    <label for="address" class="col-md-3">Target Martket</label>
+    <label for="address" class="col-md-3">Target Markets</label>
     <div class="col-md-5">{!! $project->textTargetMartket() !!}</div>
     <div class="col-md-5"></div>
 </div>
@@ -116,7 +116,7 @@
 
 <!-- First Batch Budget -->
 <div class="form-group">
-    <label for="budget" class="col-md-3">Budget</label>
+    <label for="budget" class="col-md-3">Development Budget</label>
     <div class="col-md-9 select-tags" data-select-one = "budget">
         @foreach($budget_options as $index => $budget)
             <div data-id='{!! $index  !!}'
@@ -182,18 +182,11 @@
     </div>
 </div>
 
-<!-- Power and Battery -->
+<!-- Project Features -->
 <div class="form-group">
-    <label for="power_battery" class="col-md-3">Projecr Spec</label>
-    <div class="col-md-8">
-        @include('project.detail-project-spec')
-    </div>
-</div>
-
-<!-- Project Tag -->
-<div class="form-group">
-    <label for="experties" class="col-md-3">Tech Tags</label>
+    <label for="experties" class="col-md-3">Features</label>
     <div class="col-md-9 expertise" data-select-tags="project-tag">
         @include('project.update-project-tags')
+        @include('project.detail-project-spec')
     </div>
 </div>

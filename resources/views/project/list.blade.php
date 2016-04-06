@@ -31,14 +31,15 @@
         <table class="table table-striped">
             <tr>
                 <th>#</th>
-                <th class="table--name">Title<br/><span class="table--text-light">Category</span></th>
-                <th>User<br/><span class="table--text-light">Country</span></th>
-                <th>Status<br/><span class="table--text-light">Chang on</span></th>
+                <th class="table--name">Project Title<br/><span class="table--text-light">Category</span></th>
+                <th>Owner<br/><span class="table--text-light">Country</span></th>
+                <th>Status<br/><span class="table--text-light">Status Change</span></th>
                 <th>Company</th>
-                <th>Assigned PM<br/><span class="table--text-light">Email out</span></th>
-                <th>Propose</th>
-                <th>Recommend</th>
-                <th>Tech tags<br/><span class="table--text-light">Internal tags</span></th>
+                <th>Assigned PM<br/><span class="table--text-light">Email Out</span></th>
+                <th>Proposed</th>
+                <th>Referrals</th>
+                <th>Statistics</th>
+                <th>Feature tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Internal description</th>
                 <th>Last Update<br/><span class="table--text-light">By</span></th>
                 <th></th>
@@ -106,6 +107,11 @@
                     @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertCount($pm_ids)])
                 </td>
                 <td>
+                    Community:{{ $project->getPageViewCount() }}<br/>
+                    Staff Referrals:{{ $project->getStaffReferredCount($pm_ids) }} <br/>
+                    Collaborators:{{ $project->getCollaboratorsCount() }}
+                </td>
+                <td>
                     {{ implode(' / ', $project->getMappingTag($tag_tree, 2)) }} <br/>
                     @if ($project->internalProjectMemo)
                         <span class="table--text-light"> {{ str_replace(',', ' / ', $project->internalProjectMemo->tags) }} </span><br/>
@@ -137,7 +143,7 @@
 
                 <td>
                     @if($project->isDeleted())
-                        <a href="" class="btn btn-primary btn-disabled" disabled>Project was deleted</a>
+                        <a href="" class="btn btn-primary btn-disabled" disabled>Project deleted</a>
                     @else
                         {!!
                             link_to_action('ProjectController@showDetail', 'DETAIL',

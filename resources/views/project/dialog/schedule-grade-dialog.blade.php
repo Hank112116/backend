@@ -1,4 +1,4 @@
-<div id="grade_dialog" class="ui-widget" title="Edit Grade" style="display:none">
+<div id="grade_dialog" class="ui-widget" title="Update Project Grade" style="display:none">
     <table class="table table-striped">
         <tr>
             <td>
@@ -16,7 +16,7 @@
             <td><textarea id="grade_note" rows="4" cols="50" title="grade message"></textarea></td>
         </tr>
         <tr>
-            <td><button id="edit_grade" class="btn btn-default">Edit Note</button></td>
+            <td><button id="edit_grade" class="btn btn-default">Edit Grade</button></td>
         </tr>
     </table>
     <input type="hidden" id="grade_project_id" value="">

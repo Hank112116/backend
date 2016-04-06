@@ -11,7 +11,7 @@
                 @if ($project->recommendExperts[0]->adminer)
                     by {{ $project->recommendExperts[0]->adminer->name }}
                 @else
-                    by Unknown adminer
+                    Exception
                 @endif
             </span>
         @endif
@@ -30,7 +30,7 @@
             @else
                 <a href="javascript:void(0)"
                    class="grade" rel="{!! $project->project_id !!}" note="{{ $project->internalProjectMemo->schedule_note }}" grade="{!! $project->internalProjectMemo->schedule_note_grade !!}">
-                    {{ $project->textNoteGrade() }} @if($project->internalProjectMemo->schedule_note != null ) : @endif {{ $project->internalProjectMemo->schedule_note }}
+                    {{ $project->textNoteGrade() }}@if($project->internalProjectMemo->schedule_note != null ):@endif {{ $project->internalProjectMemo->schedule_note }}
                 </a>
             @endif
         @else

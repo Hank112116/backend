@@ -34,7 +34,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        Product Diemntions :
+        Product Dimensions:
         <span class="option-dimention">
             {{ $project->dimensionSpec()->length }} mm(L) X {{ $project->dimensionSpec()->width }} mm(W) X {{ $project->dimensionSpec()->height }} mm(L)
         </span>
@@ -46,7 +46,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        Product Weight : <span class="option-weight">{{ $project->weightSpec()->weight }} g</span>
+        Product Weight: <span class="option-weight">{{ $project->weightSpec()->weight }} g</span>
     </div>
     <div class="panel-body option-other-weight">
         {{ $project->weightSpec()->other }}

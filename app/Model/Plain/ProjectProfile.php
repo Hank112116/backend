@@ -136,11 +136,11 @@ class ProjectProfile
     {
         switch (true) {
             case $this->isProjectSubmittedPublic():
-                return 'Expert-Only';
+                return 'Expert Mode';
             case $this->isProjectSubmittedPrivate():
-                return 'Private';
+                return 'Private Mode';
             default:  //   !$project->isProjectSubmitted()
-                return 'Draft';
+                return 'Unfinished Draft';
         }
     }
 }

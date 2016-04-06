@@ -197,7 +197,7 @@ $(function () {
             success: function success(feeback) {
                 var propose_list = '';
                 $.each(feeback, function (index, value) {
-                    propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" + "#" + value.solution_id + ". " + "<a href='" + value.solution_url + "' target='_blank' style='color: #428bca'> " + value.solution_title + " </a>" + "</div>";
+                    propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" + "#" + value.solution_id + ". " + "<a href='" + value.solution_url + "' target='_blank' style='color: #428bca'> " + value.solution_title + " </a>" + " By " + "<a href='" + value.user_url + "' target='_blank' style='color: #428bca'> " + value.user_name + " </a>" + "</div>";
                 });
                 $propose_dialog.html(propose_list);
             }
@@ -238,6 +238,11 @@ $(function () {
                         } else {
                             email_out_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a>";
                         }
+
+                        if (value.referral_user_name) {
+                            email_out_recommend_list += " By " + value.referral_user_name;
+                        }
+
                         email_out_recommend_list += "</div>";
                     }
 
@@ -248,6 +253,10 @@ $(function () {
                         } else {
                             applicant_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a>";
                         }
+
+                        if (value.referral_user_name) {
+                            applicant_recommend_list += " By " + "<a href='" + value.referral_user_url + "' target='_blank' style='color: #428bca'> " + value.referral_user_name + " </a>";
+                        }
                         applicant_recommend_list += "</div>";
                     }
                 });
@@ -255,10 +264,17 @@ $(function () {
                 $recommend_applicant.html(applicant_recommend_list);
             }
         });
+
+        if (recommend_type == "internal") {
+            $("#email-out-tr").show();
+        } else if (recommend_type == "external") {
+            $("#email-out-tr").hide();
+        }
+
         $recommend_dialog.dialog({
             title: title,
             height: 400,
-            width: 700
+            width: 900
         });
     });
 });
@@ -414,8 +430,8 @@ $(function () {
         var link = this.href;
 
         SweetAlert.alert({
-            title: "Approve?",
-            desc: "It'll take a bit long time to approve",
+            title: "Approve and release the Schedule?",
+            desc: "Once confirmed, the Hub schedule will be released to the Project owner.",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm() {
                 return window.location = link;

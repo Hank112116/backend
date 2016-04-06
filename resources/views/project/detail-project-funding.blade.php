@@ -7,7 +7,7 @@
                 <th>Funding Date</th>
                 <th>Amount (USD)</th>
                 <th>Investors</th>
-                <th>Funding Url</th>
+                <th>Press URL</th>
             </tr>
             @if ($funding_rounds)
                 @foreach($funding_rounds as $funding_round)

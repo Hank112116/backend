@@ -14,4 +14,21 @@ class ProjectGroup extends Eloquent
     {
         return $this->hasMany(GroupMemberApplicant::class, 'group_id', 'group_id');
     }
+
+    public function group()
+    {
+        return $this->hasMany(Group::class, 'group_id', 'group_id');
+    }
+
+    public function isDefaultGroup($owner_id)
+    {
+        if ($this->group) {
+            foreach ($this->group as $group) {
+                if ($group->group_owner == $owner_id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

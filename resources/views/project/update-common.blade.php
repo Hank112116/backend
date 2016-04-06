@@ -19,7 +19,7 @@
 
 <!-- Project Cover Art -->
 <div class="form-group">
-    <label for="cover" class="col-md-3">Project Cover Art</label>
+    <label for="cover" class="col-md-3">Project Image</label>
     <div class="col-md-5">
         {!! HTML::image($project->getImagePath(), '', ['class' => 'cover']) !!}
         <input type="file" id="cover" name="cover">
@@ -29,10 +29,15 @@
 <!-- Project Owner -->
 <div class="form-group">
     <label for="member" class="col-md-3">Project Owner</label>
-
+    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
     <div id="owner-selector" class="col-md-5" 
          data-user='{!! $project->user->toBasicJson() !!}'>
     </div>
+    @else
+        <div class="col-md-5">
+            <a href="{{ $project->user->textFrontLink() }}" target="_blank"> {{ $project->user->textFullName() }}</a>
+        </div>
+    @endif
 </div>
 
 <!-- Project Category -->
@@ -51,7 +56,7 @@
 
 <!-- Type Innovation -->
 <div class="form-group">
-    <label for="innovation-type" class="col-md-3">Type of Innovation</label>
+    <label for="innovation-type" class="col-md-3">Project Type</label>
     <div class="col-md-5">
         <select class="form-control" id="innovation-type" name="innovation_type">
             @foreach($innovation_options as $index => $innovation_option)
@@ -65,7 +70,7 @@
 
 <!-- Project Name -->
 <div class="form-group">
-    <label for="title" class="col-md-3">Project Name</label>
+    <label for="title" class="col-md-3">Project Title</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
                name="project_title" value="{!! htmlspecialchars($project->project_title) !!}">
@@ -75,7 +80,7 @@
 
 <!-- Project Brief -->
 <div class="form-group">
-    <label for="project_summary" class="col-md-3">Project Brief</label>
+    <label for="project_summary" class="col-md-3">Project Summary</label>
     <div class="col-md-5">
         <textarea id="project_summary" name="project_summary" maxlength="150"
             class="form-control" rows="5">{!! $project->project_summary !!}</textarea>
@@ -111,21 +116,19 @@
 
 <!-- KickStarter -->
 <div class="form-group">
-    <label for="kickstarter" class="col-md-3">KickStarter</label>
+    <label for="kickstarter" class="col-md-3">Kickstarter Campaign</label>
     <div class="col-md-5">{!! $project->textKickstarterLink() !!}</div>
-    <div class="col-md-5"></div>
 </div>
 
 <!-- Indiegogo -->
 <div class="form-group">
-    <label for="indiegogo" class="col-md-3">Indiegogo</label>
+    <label for="indiegogo" class="col-md-3">Indiegogo Campaign</label>
     <div class="col-md-5">{!! $project->textIndiegogoLink() !!}</div>
-    <div class="col-md-5"></div>
 </div>
 
 <!-- Design Concept -->
 <div class="form-group">
-    <label for="description" class="col-md-3">Design Concept</label>
+    <label for="description" class="col-md-3">Project Concept</label>
     <div class="col-md-9">
         <textarea id="description" class='js-editor' name="description">{!! $project->description !!}</textarea>
     </div>

@@ -13,30 +13,31 @@
 @section('content')
 	<div class="page-header">
 	    <h1>{{ $project->project_title }}</h1>
+        @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+            <div>
+                <a href="/project/update-status/draft/{!! $project->project_id !!}"
+                   class="btn-mini">
+                    <i class="fa fa-pencil-square-o fa-fw"></i>Change To Unfinished Draft
+                </a>
 
-        <div>
-            <a href="/project/update-status/draft/{!! $project->project_id !!}"
-               class="btn-mini">
-                <i class="fa fa-pencil-square-o fa-fw"></i>Change To Unfinished Draft
-            </a>
+                <a href="/project/update-status/private/{!! $project->project_id !!}"
+                   class="btn-mini btn-flat-green">
+                    <i class="fa fa-lock fa-fw"></i>Change To Private mode
+                </a>
 
-            <a href="/project/update-status/private/{!! $project->project_id !!}"
-               class="btn-mini btn-flat-green">
-                <i class="fa fa-lock fa-fw"></i>Change To Private
-            </a>
+                <a href="/project/update-status/public/{!! $project->project_id !!}"
+                    class="btn-mini btn-flat-purple">
+                    <i class="fa fa-unlock-alt fa-fw"></i>Change To Expert mode
+                </a>
 
-            <a href="/project/update-status/public/{!! $project->project_id !!}"
-                class="btn-mini btn-flat-purple">
-                <i class="fa fa-unlock-alt fa-fw"></i>Change To Public( Expert-Only )
-            </a>
-
-            @if(!$project->is_deleted)
-            <a href="/project/delete/{!! $project->project_id !!}"
-               class="btn-mini btn-flat-red js-delete">
-                <i class="fa fa-trash-o fa-fw"></i>Delete
-            </a>
-            @endif
-        </div>
+                @if(!$project->is_deleted)
+                <a href="/project/delete/{!! $project->project_id !!}"
+                   class="btn-mini btn-flat-red js-delete">
+                    <i class="fa fa-trash-o fa-fw"></i>Delete
+                </a>
+                @endif
+            </div>
+        @endif
 
 	</div>
 

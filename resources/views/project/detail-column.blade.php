@@ -8,23 +8,23 @@
 		<div class="col-md-10 col-md-offset-1 clearfix">
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Title',
+                    'label' => 'Project Title',
                     'content' => e($project->textTitle())
                 ])
 
                 @include('modules.detail-half-column', [
-                    'label' => 'Type of innovation',
+                    'label' => 'Project Type',
                     'content' => $project->textInnovationType()
                 ])
             </div>
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Category',
+			        'label' => 'Project Category',
 			        'content' => e($project->textCategory())
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'User',
+			        'label' => 'Owner',
 			        'content' => link_to_action('UserController@showDetail',
                                     e($project->user->textFullName()),
                                     $project->user_id
@@ -46,7 +46,7 @@
 
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Current Stage',
+			        'label' => 'Current Stage (initial launch)',
 			        'content' => $project->textProgress()
 			    ])
 
@@ -58,43 +58,43 @@
 
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Target martket',
+                    'label' => 'Target Markets',
                     'content' => $project->textTargetMartket()
                 ])
 
                 @include('modules.detail-half-column', [
-                    'label' => 'Budget',
+                    'label' => 'Development Budget',
                     'content' => $project->textBudget()
                 ])
             </div>
 
             <div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Target Price',
+			        'label' => 'Target Price (MSRP)',
 			        'content' => $project->textMsrp()
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'Target Ship Date',
+			        'label' => 'Target Shipping Date',
 			        'content' => $project->textLaunchDate()
 			    ])
             </div>
 
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Status',
+			        'label' => 'Project Status',
 			        'content' => $project->profile->text_status . ($project->is_deleted? ' | Deleted (' .$project->deleted_date. ')' : '')
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'Submit',
+			        'label' => 'Completed',
 			        'content' => $project->profile->text_project_submit
 			    ])
 			</div>
 
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Company name',
+                    'label' => 'Company Name',
                     'content' => link_to($project->textCompanyUrl(), $project->textCompanyName(), ['target' => '_blank'])
                 ])
 
@@ -106,24 +106,24 @@
 
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Create Date',
+                    'label' => 'Created On',
                     'content' => $project->date_added
                 ])
 
                 @include('modules.detail-half-column', [
-                    'label' => 'Last Update',
+                    'label' => 'Project Last Update',
                     'content' => $project->update_time . ' By ' . link_to($project->lastEditorUser->textFrontLink(), $project->lastEditorUser->textFullName(), ['target' => '_blank'])
                 ])
             </div>
 
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'KickStarter',
+                    'label' => 'Kickstarter Campaign',
                     'content' => $project->textKickstarterLink()
                 ])
 
                 @include('modules.detail-half-column', [
-                    'label' => 'Indiegogo',
+                    'label' => 'Indiegogo Campaign',
                     'content' => $project->textIndiegogoLink()
                 ])
             </div>
@@ -133,12 +133,12 @@
 
 	<div class="row">
         @include('modules.detail-panel', [
-            'column_title' => 'Brief',
+            'column_title' => 'Project Summary',
             'column_content' => e($project->project_summary)
         ])
 
         @include('modules.detail-panel', [
-            'column_title' => 'Description',
+            'column_title' => 'Project Concept',
             'column_content' => Purifier::clean($project->description)
         ])
 	</div>
@@ -149,13 +149,13 @@
     ])
 
     @include('modules.detail-tag', [
-        'column_title' => 'Resource Requirements',
+        'column_title' => 'Resource Required',
         'column_tags'  => $project->resourceRequirements()
     ])
 
     <div class="row">
         @include('modules.detail-panel', [
-            'column_title' => 'Requirement Criteria',
+            'column_title' => 'Message to Experts',
             'column_content' => e($project->requirement)
         ])
     </div>

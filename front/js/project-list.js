@@ -11,8 +11,8 @@ $(function () {
         var link = this.href;
 
         SweetAlert.alert({
-            title: "Approve?",
-            desc: "It'll take a bit long time to approve",
+            title: "Approve and release the Schedule?",
+            desc: "Once confirmed, the Hub schedule will be released to the Project owner.",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: () => window.location = link
 

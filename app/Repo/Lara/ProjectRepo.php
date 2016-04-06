@@ -160,6 +160,29 @@ class ProjectRepo implements ProjectInterface
             });
         }
 
+        if (!empty($input['status'] && $input['status'] != 'all')) {
+            $status = $input['status'];
+            $projects = $projects->filter(function (Project $item) use ($status) {
+                switch ($status) {
+                    case 'public':
+                        if ($item->profile->isPublic()) {
+                            return $item;
+                        }
+                        break;
+                    case 'private':
+                        if ($item->profile->isPrivate()) {
+                            return $item;
+                        }
+                        break;
+                    case 'draft':
+                        if ($item->profile->isDraft()) {
+                            return $item;
+                        }
+                        break;
+                }
+            });
+        }
+
         if (!empty($input['tag'])) {
             $search_tag = $this->tag_builder->tagTransformKey($input['tag']);
             $projects   = $projects->filter(function (Project $item) use ($search_tag) {

@@ -3,7 +3,6 @@
 namespace Backend\Model\Eloquent;
 
 use Backend\Enums\ProjectCategoryEnum;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use FrontLinkGenerator;
 use Illuminate\Database\Eloquent\Builder;
@@ -124,19 +123,19 @@ class Project extends Eloquent
             'volt'   => 0,
             'ampere' => 0
         ],
-        'other' => 'No other power setting'
+        'other' => 'Other power options'
     ];
 
     private $dimension_spec_default = [
         'length' => 0,
         'width'  => 0,
         'height' => 0,
-        'other'  => 'No other shape setting'
+        'other'  => 'Other dimensions'
     ];
 
     private $weight_spec_default = [
         'weight' => 0,
-        'other'  => 'No other weight setting'
+        'other'  => 'Other weights'
     ];
 
     private $founding_round_default = [
@@ -202,6 +201,16 @@ class Project extends Eloquent
         return $this->hasMany(ProjectGroup::class, 'project_id', 'project_id');
     }
 
+    public function projectStatistic()
+    {
+        return $this->hasOne(ProjectStatistic::class, 'id', 'project_id');
+    }
+
+    public function projectMember()
+    {
+        return $this->hasOne(ProjectMember::class, 'project_id', 'project_id');
+    }
+
     // pending-for-approve products
     public function scopeQueryApprovePending(Builder $query)
     {
@@ -262,6 +271,19 @@ class Project extends Eloquent
     public function getInnovationOptions()
     {
         return $this->innovation_type_map;
+    }
+
+    public function getInternalTags()
+    {
+        if (!$this->internalProjectMemo) {
+            return [];
+        }
+
+        if (!$this->internalProjectMemo->tags) {
+            return [];
+        }
+
+        return explode(',', $this->internalProjectMemo->tags);
     }
 
     public function getImagePath()
@@ -746,6 +768,15 @@ class Project extends Eloquent
                     $external_count += $member_applicant_model->where('group_id', $group->group_id)
                         ->whereNotIn('referral', $pm_ids)
                         ->count();
+
+                    $internal_count += $member_applicant_model->where('group_id', $group->group_id)
+                        ->whereNull('referral')
+                        ->whereIn('user_id', $pm_ids)
+                        ->count();
+                    $external_count += $member_applicant_model->where('group_id', $group->group_id)
+                        ->whereNull('referral')
+                        ->whereNotIn('user_id', $pm_ids)
+                        ->count();
                 }
             }
         }
@@ -771,6 +802,8 @@ class Project extends Eloquent
                     $data['solution_id']    = $propose_solution->solution->solution_id;
                     $data['solution_url']   = $propose_solution->solution->textFrontLink();
                     $data['solution_title'] = $propose_solution->solution->textTitle();
+                    $data['user_name']      = $propose_solution->user->textFullName();
+                    $data['user_url']       = $propose_solution->user->textFrontLink();
                     if ($propose_solution->user->isHWTrekPM()) {
                         $internal_date[] = $data;
                         $internal_count ++;
@@ -798,18 +831,30 @@ class Project extends Eloquent
             foreach ($groups as $group) {
                 if ($group->memberApplicant) {
                     foreach ($group->memberApplicant as $applicant) {
-                        if ($applicant->user && $applicant->referralUser) {
-                            $data['user_id']      = $applicant->user_id;
-                            $data['profile_url']  = $applicant->user->textFrontLink();
-                            $data['user_name']    = $applicant->user->textFullName();
-                            $data['company_name'] = $applicant->user->company;
-                            $data['type']         = 'applicant';
-                            if ($applicant->referralUser->isHWTrekPM()) {
-                                $internal_date[] = $data;
-                                $internal_count ++;
+                        if ($applicant->user) {
+                            $data['user_id']            = $applicant->user_id;
+                            $data['profile_url']        = $applicant->user->textFrontLink();
+                            $data['user_name']          = $applicant->user->textFullName();
+                            $data['company_name']       = $applicant->user->company;
+                            $data['type']          = 'applicant';
+                            if ($applicant->referralUser) {
+                                $data['referral_user_name'] = $applicant->referralUser->textFullName();
+                                $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
+                                if ($applicant->referralUser->isHWTrekPM()) {
+                                    $internal_date[] = $data;
+                                    $internal_count++;
+                                } else {
+                                    $external_data[] = $data;
+                                    $external_count++;
+                                }
                             } else {
-                                $external_data[] = $data;
-                                $external_count ++;
+                                if ($applicant->user->isHWTrekPM()) {
+                                    $internal_date[] = $data;
+                                    $internal_count++;
+                                } else {
+                                    $external_data[] = $data;
+                                    $external_count++;
+                                }
                             }
                         }
 
@@ -827,6 +872,11 @@ class Project extends Eloquent
                     $data['profile_url']  = $recommend_expert->user->textFrontLink();
                     $data['user_name']    = $recommend_expert->user->textFullName();
                     $data['company_name'] = $recommend_expert->user->company;
+                    if ($recommend_expert->adminer) {
+                        $data['referral_user_name'] = $recommend_expert->adminer->name;
+                    } else {
+                        $data['referral_user_name'] = 'Exception';
+                    }
                     $data['type']         = 'email-out';
                     $internal_date[]      = $data;
                     $internal_count ++;
@@ -840,5 +890,43 @@ class Project extends Eloquent
         $result['total']          = $internal_count + $external_count;
         return (object) $result;
 
+    }
+
+    public function getPageViewCount()
+    {
+        return $this->projectStatistic->page_view;
+    }
+
+    public function getStaffReferredCount($pm_ids = [])
+    {
+        $count = 0;
+        if (empty($pm_ids)) {
+            $user_model = new User();
+            $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
+            if ($hwtrek_pms) {
+                foreach ($hwtrek_pms as $pm) {
+                    $pm_ids[] = $pm->user_id;
+                }
+            }
+        }
+
+        $groups = $this->group;
+        if ($groups) {
+            foreach ($groups as $group) {
+                if ($group->memberApplicant) {
+                    $member_applicant_model = new GroupMemberApplicant();
+                    $count = $member_applicant_model->where('group_id', $group->group_id)
+                        ->whereIn('referral', $pm_ids)
+                        ->count();
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    public function getCollaboratorsCount()
+    {
+        return $this->projectMember()->count();
     }
 }

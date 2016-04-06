@@ -1,18 +1,18 @@
-<div id="email-recommend-expert-dialog" class="ui-widget" title="Send mail" style="display:none">
+<div id="email-recommend-expert-dialog" class="ui-widget" title="Email out - initial referral" style="display:none">
     <table class="table table-striped">
         <tr>
-            <td>Expert</td>
+            <td>Expert 1</td>
             <td>
-                <input type="number" id="expert1" placeholder="Expert Id">
+                <input type="number" id="expert1" placeholder="Expert ID">
             </td>
             <td class="table--text-left">
                 <span id="expert1Info"></span>
             </td>
         </tr>
         <tr>
-            <td>Expert</td>
+            <td>Expert 2</td>
             <td>
-                <input type="number" id="expert2" placeholder="Expert Id">
+                <input type="number" id="expert2" placeholder="Expert ID">
             </td>
             <td class="table--text-left">
                 <span id="expert2Info"></span>
@@ -24,5 +24,5 @@
     <input type="hidden" id="projectTitle">
     <input type="hidden" id="userId">
     <input type="hidden" id="PM">
-    <button id="sendMail" class="btn btn-default">SendMail</button>
+    <button id="sendMail" class="btn btn-default">Send email</button>
 </div>
