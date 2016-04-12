@@ -69,6 +69,11 @@ class ProjectProfile
         return $this->isStatus($this->draft_project);
     }
 
+    public function isDeleted()
+    {
+        return $this->project->is_deleted;
+    }
+
     private function isPostPone()
     {
         return (
@@ -139,8 +144,12 @@ class ProjectProfile
                 return 'Expert Mode';
             case $this->isProjectSubmittedPrivate():
                 return 'Private Mode';
-            default:  //   !$project->isProjectSubmitted()
+            case $this->isDraft():
                 return 'Unfinished Draft';
+            case $this->isDeleted():
+                return 'Deleted';
+            default:  //   !$project->isProjectSubmitted()
+                return 'N/A';
         }
     }
 }

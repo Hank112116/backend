@@ -4,11 +4,11 @@ class ProjectProgress
 {
     private static $progresses = [
         'tbd'               => 'TBD',
-        'brainstorming'     => 'Idea / Brainstorming',
+        'brainstorming'     => 'Brainstorming an idea',
         'poc'               => 'Proof of concept',
         'prototype'         => 'Working prototype',
-        'industrial-design' => 'Industrial design',
-        'improving'         => 'Electronic board design',
+        'industrial-design' => 'Enhancing industrial design',
+        'improving'         => 'Improving electronic board',
         'manufacturability' => 'Design for manufacturability'
     ];
 

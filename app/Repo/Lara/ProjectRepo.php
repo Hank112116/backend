@@ -151,6 +151,17 @@ class ProjectRepo implements ProjectInterface
             });
         }
 
+        if (!empty($input['report_action'])) {
+            $action = $input['report_action'];
+            $projects = $projects->filter(function (Project $item) use ($action) {
+                if ($item->internalProjectMemo) {
+                    if (stristr($item->internalProjectMemo->report_action, $action)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
         if (!empty($input['country'])) {
             $country = $input['country'];
             $projects = $projects->filter(function (Project $item) use ($country) {
@@ -160,27 +171,29 @@ class ProjectRepo implements ProjectInterface
             });
         }
 
-        if (!empty($input['status'] && $input['status'] != 'all')) {
-            $status = $input['status'];
-            $projects = $projects->filter(function (Project $item) use ($status) {
-                switch ($status) {
-                    case 'public':
-                        if ($item->profile->isPublic()) {
-                            return $item;
-                        }
-                        break;
-                    case 'private':
-                        if ($item->profile->isPrivate()) {
-                            return $item;
-                        }
-                        break;
-                    case 'draft':
-                        if ($item->profile->isDraft()) {
-                            return $item;
-                        }
-                        break;
-                }
-            });
+        if (!empty($input['status'])) {
+            if ($input['status'] != 'all') {
+                $status   = $input['status'];
+                $projects = $projects->filter(function (Project $item) use ($status) {
+                    switch ($status) {
+                        case 'public':
+                            if ($item->profile->isPublic()) {
+                                return $item;
+                            }
+                            break;
+                        case 'private':
+                            if ($item->profile->isPrivate()) {
+                                return $item;
+                            }
+                            break;
+                        case 'draft':
+                            if ($item->profile->isDraft()) {
+                                return $item;
+                            }
+                            break;
+                    }
+                });
+            }
         }
 
         if (!empty($input['tag'])) {
@@ -210,9 +223,9 @@ class ProjectRepo implements ProjectInterface
             $dstart = $input['dstart'];
 
             if (!empty($input['dend'])) {
-                $dend = $input['dend'];
+                $dend = Carbon::parse($input['dend'])->addDay()->toDateString();
             } else {
-                $dend = Carbon::now()->toDateString();
+                $dend = Carbon::tomorrow()->toDateString();
             }
 
             $time_type = $input['time_type'];
@@ -222,13 +235,13 @@ class ProjectRepo implements ProjectInterface
                 {
                     case 'update':
                         $update_time = Carbon::parse($item->update_time)->toDateString();
-                        if ($update_time <= $dend && $update_time >= $dstart) {
+                        if ($update_time < $dend && $update_time >= $dstart) {
                             return $item;
                         }
                         break;
                     case 'create':
                         $create_time = Carbon::parse($item->date_added)->toDateString();
-                        if ($create_time <= $dend && $create_time >= $dstart) {
+                        if ($create_time < $dend && $create_time >= $dstart) {
                             return $item;
                         }
                         break;
@@ -236,17 +249,27 @@ class ProjectRepo implements ProjectInterface
                         if ($item->recommendExperts()->count() > 0) {
                             $recommend_experts = $item->recommendExperts()->getResults();
                             $release_time = Carbon::parse($recommend_experts[0]->date_send)->toDateString();
-                            if ($release_time <= $dend && $release_time >= $dstart) {
+                            if ($release_time < $dend && $release_time >= $dstart) {
                                 return $item;
                             }
+                        }
+                        break;
+                    case 'match':
+                        $create_time = Carbon::parse($item->date_added)->toDateString();
+                        if ($item->hasProposeSolution($dstart, $dend) or
+                            $item->hasRecommendExpert($dstart, $dend) or
+                            ($create_time < $dend && $create_time >= $dstart)
+                        ) {
+                            return $item;
                         }
                         break;
                 }
             });
         }
-
-
-        return $this->getPaginateFromCollection($projects, $page, $per_page);
+        $statistics = $this->getProjectStatistics($projects);
+        $projects   = $this->getPaginateFromCollection($projects, $page, $per_page);
+        $projects   = $this->appendStatistics($projects, $statistics);
+        return $projects;
     }
 
     public function byUserName($name)
@@ -432,5 +455,43 @@ class ProjectRepo implements ProjectInterface
     public function updateInternalNote($project_id, $data)
     {
         return $this->project_modifier->updateProjectMemo($project_id, $data);
+    }
+
+    private function getProjectStatistics(Collection $projects)
+    {
+        $result = [];
+        $result['public_count'] = $projects->filter(function (Project $item) {
+            if ($item->profile->isPublic()) {
+                return $item;
+            }
+        })->count();
+
+        $result['private_count'] = $projects->filter(function (Project $item) {
+            if ($item->profile->isPrivate()) {
+                return $item;
+            }
+        })->count();
+
+        $result['draft_count'] = $projects->filter(function (Project $item) {
+            if ($item->profile->isDraft()) {
+                return $item;
+            }
+        })->count();
+
+        $result['delete_count'] = $projects->filter(function (Project $item) {
+            if ($item->isDeleted()) {
+                return $item;
+            }
+        })->count();
+
+        return $result;
+    }
+
+    private function appendStatistics($object, $statistics)
+    {
+        foreach ($statistics as $key => $row) {
+            $object->$key = $row;
+        }
+        return $object;
     }
 }

@@ -12,7 +12,7 @@
             @if ($funding_rounds)
                 @foreach($funding_rounds as $funding_round)
                     <tr>
-                        <td>{{ $funding_round->rounds }}</td>
+                        <td>{{ $funding_round->round }}</td>
                         <td>{{ $funding_round->date }}</td>
                         <td>{{ number_format($funding_round->amount, 1) }}</td>
                         <td>{{ $funding_round->investors }}</td>

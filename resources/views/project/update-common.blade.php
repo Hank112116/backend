@@ -19,7 +19,7 @@
 
 <!-- Project Cover Art -->
 <div class="form-group">
-    <label for="cover" class="col-md-3">Project Image</label>
+    <label for="cover" class="col-md-3">Project Image*</label>
     <div class="col-md-5">
         {!! HTML::image($project->getImagePath(), '', ['class' => 'cover']) !!}
         <input type="file" id="cover" name="cover">
@@ -28,7 +28,7 @@
 
 <!-- Project Owner -->
 <div class="form-group">
-    <label for="member" class="col-md-3">Project Owner</label>
+    <label for="member" class="col-md-3">Project Owner*</label>
     @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
     <div id="owner-selector" class="col-md-5" 
          data-user='{!! $project->user->toBasicJson() !!}'>
@@ -42,7 +42,7 @@
 
 <!-- Project Category -->
 <div class="form-group">
-    <label for="category" class="col-md-3">Project Category</label>
+    <label for="category" class="col-md-3">Project Category*</label>
     <div class="col-md-5">
         <select class="form-control" id="category" name="category_id">
             @foreach($category_options as $category_id => $category_option)
@@ -56,7 +56,7 @@
 
 <!-- Type Innovation -->
 <div class="form-group">
-    <label for="innovation-type" class="col-md-3">Project Type</label>
+    <label for="innovation-type" class="col-md-3">Project Type*</label>
     <div class="col-md-5">
         <select class="form-control" id="innovation-type" name="innovation_type">
             @foreach($innovation_options as $index => $innovation_option)
@@ -70,7 +70,7 @@
 
 <!-- Project Name -->
 <div class="form-group">
-    <label for="title" class="col-md-3">Project Title</label>
+    <label for="title" class="col-md-3">Project Title*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
                name="project_title" value="{!! htmlspecialchars($project->project_title) !!}">
@@ -80,7 +80,7 @@
 
 <!-- Project Brief -->
 <div class="form-group">
-    <label for="project_summary" class="col-md-3">Project Summary</label>
+    <label for="project_summary" class="col-md-3">Brief*</label>
     <div class="col-md-5">
         <textarea id="project_summary" name="project_summary" maxlength="150"
             class="form-control" rows="5">{!! $project->project_summary !!}</textarea>
@@ -89,14 +89,14 @@
 
 <!-- Project Location -->
 <div class="form-group">
-    <label for="address" class="col-md-3">Project Location</label>
+    <label for="address" class="col-md-3">Project Location*</label>
     <div class="col-md-5">{!! $project->project_address !!}</div>
     <div class="col-md-5"></div>
 </div>
 
 <!-- Project Location : Country -->
 <div class="form-group">
-    <label for="country" class="col-md-3">Country</label>
+    <label for="country" class="col-md-3">Country*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="country"
             name="project_country" value="{!! $project->project_country !!}">
@@ -106,7 +106,7 @@
 
 <!-- Project Location : City -->
 <div class="form-group">
-    <label for="city" class="col-md-3">City</label>
+    <label for="city" class="col-md-3">City*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="city"
             name="project_city" value="{!! $project->project_city !!}">
@@ -128,7 +128,7 @@
 
 <!-- Design Concept -->
 <div class="form-group">
-    <label for="description" class="col-md-3">Project Concept</label>
+    <label for="description" class="col-md-3">Project Concept*</label>
     <div class="col-md-9">
         <textarea id="description" class='js-editor' name="description">{!! $project->description !!}</textarea>
     </div>

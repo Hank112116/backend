@@ -177,6 +177,9 @@ Route::group([ 'before' => 'backend.reportRegistration' ], function () {
 Route::group([ 'before' => 'backend.reportComment' ], function () {
     Route::get('report/comment', 'ReportController@showCommentReport');
 });
+Route::group([ 'before' => 'backend.reportProject' ], function () {
+    Route::get('report/project', 'ReportController@showProjectReport');
+});
 Route::group([ 'before' => 'backend.reportEvent' ], function () {
     Route::get('report/events', 'ReportController@showEventReport');
     Route::get('report/events/{event_id}', 'ReportController@showEventReport');

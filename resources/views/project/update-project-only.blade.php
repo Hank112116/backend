@@ -1,6 +1,6 @@
 <!-- Current Development Stage -->
 <div class="form-group">
-    <label for="progress" class="col-md-3">Current Stage (initial launch)</label>
+    <label for="progress" class="col-md-3">Current Stage (initial launch)*</label>
     <div class="col-md-5">
 
         <select class="form-control" id="progress" name="progress">
@@ -16,7 +16,7 @@
 
 <!-- Company Name -->
 <div class="form-group">
-    <label for="title" class="col-md-3">Company Name</label>
+    <label for="title" class="col-md-3">Company Name*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
                name="company_name" value="{!! htmlspecialchars($project->textCompanyName()) !!}">
@@ -36,7 +36,7 @@
 
 <!-- Team Size -->
 <div class="form-group">
-    <label for="size" class="col-md-3">Team Size</label>
+    <label for="size" class="col-md-3">Team Size*</label>
     <div class="col-md-9 select-tags" data-select-one = "team-size">
         @foreach($team_size_options as $index => $size)
             <div data-id='{!! $index  !!}'
@@ -50,7 +50,7 @@
 
 <!-- Team Strengths -->
 <div class="form-group">
-    <label for="team" class="col-md-3">Team Strengths</label>
+    <label for="team" class="col-md-3">Team Strengths*</label>
     <div class="col-md-9">
         <input type="text" id="strengths" name="strengths"
                 placeholder="Enter 'key component' then press [Enter]"
@@ -60,7 +60,7 @@
 
 <!-- Resource Requirement -->
 <div class="form-group">
-    <label for="team" class="col-md-3">Resource Required</label>
+    <label for="team" class="col-md-3">Resource Required*</label>
     <div class="col-md-9">
 
         <div class="resource-container select-tags" data-select-tags = "resource" >
@@ -116,7 +116,7 @@
 
 <!-- First Batch Budget -->
 <div class="form-group">
-    <label for="budget" class="col-md-3">Development Budget</label>
+    <label for="budget" class="col-md-3">Development Budget*</label>
     <div class="col-md-9 select-tags" data-select-one = "budget">
         @foreach($budget_options as $index => $budget)
             <div data-id='{!! $index  !!}'
@@ -130,7 +130,7 @@
 
 <!-- Target Price (MSRP) -->
 <div class="form-group">
-    <label for="msrp" class="col-md-3">Target Price (MSRP)</label>
+    <label for="msrp" class="col-md-3">Target Price (MSRP)*</label>
 
     <div class="col-md-4">
         <div class="input-group select-unsure-wrapper" data-select-unsure="msrp">
@@ -149,7 +149,7 @@
 
 <!-- Target Shipping Date -->
 <div class="form-group">
-    <label for="launch_date" class="col-md-3">Target Shipping Date</label>
+    <label for="launch_date" class="col-md-3">Target Shipping Date*</label>
 
     <div class="col-md-4">
         <div class="input-group select-unsure-wrapper" data-select-unsure="shipping-date">

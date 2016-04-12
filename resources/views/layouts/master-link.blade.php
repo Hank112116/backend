@@ -37,7 +37,15 @@
                                 <li>
                                     <a href="{!! action('ReportController@showRegistrationReport', ['range' => 7]) !!}">
                                         <i class="fa fa-users fa-fw"></i>
-                                        Registration Summary
+                                        Registration
+                                    </a>
+                                </li>
+                            @endif
+                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('project_report'))
+                                <li>
+                                    <a href="{!! action('ReportController@showProjectReport', ['range'=>7]) !!}">
+                                        <i class="fa fa-send fa-fw"></i>
+                                        Projects
                                     </a>
                                 </li>
                             @endif
@@ -45,7 +53,7 @@
                                 <li>
                                     <a href="{!! action('ReportController@showCommentReport', ['range'=>7]) !!}">
                                         <i class="fa fa-comment-o fa-fw"></i>
-                                        Comments Summary
+                                        Comments
                                     </a>
                                 </li>
                             @endif
@@ -53,7 +61,7 @@
                                 <li>
                                     <a href="{!! action('ReportController@showEventReport', ['event'=>'']) !!}">
                                         <i class="fa fa-glass fa-fw"></i>
-                                        Events Summary
+                                        Events
                                     </a>
                                 </li>
                             @endif

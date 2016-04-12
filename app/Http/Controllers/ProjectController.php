@@ -224,8 +224,11 @@ class ProjectController extends BaseController
     {
         $project_id   = Input::get('project_id');
         $propose_type = Input::get('propose_type');
+        $dstart       = Input::get('dstart');
+        $dend         = Input::get('dend');
+
         $project = $this->project_repo->find($project_id);
-        $result = $project->proposeSolutionStatistics();
+        $result = $project->proposeSolutionStatistics($dstart, $dend);
         if ($propose_type == 'internal') {
             return Response::json($result->internal_data);
         } elseif ($propose_type == 'external') {
@@ -237,10 +240,12 @@ class ProjectController extends BaseController
 
     public function recommendExpert()
     {
-        $project_id   = Input::get('project_id');
+        $project_id     = Input::get('project_id');
         $recommend_type = Input::get('recommend_type');
+        $dstart         = Input::get('dstart');
+        $dend           = Input::get('dend');
         $project = $this->project_repo->find($project_id);
-        $result = $project->recommendExpertStatistics();
+        $result  = $project->recommendExpertStatistics($dstart, $dend);
         if ($recommend_type == 'internal') {
             return Response::json($result->internal_data);
         } elseif ($recommend_type == 'external') {

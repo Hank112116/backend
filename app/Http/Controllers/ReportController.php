@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Carbon;
 use Noty;
 
 class ReportController extends BaseController
@@ -186,6 +187,61 @@ class ReportController extends BaseController
             ->with([
                 'questionnaire_column' => $questionnaire_column,
                 'questionnaire_items'  => $questionnaire_items
+            ]);
+        return $template;
+    }
+
+    public function showProjectReport()
+    {
+        if ($this->dateValidator()->fails()) {
+            Noty::warn('The input parameter is wrong');
+            return Redirect::back();
+        }
+
+        $input = Input::all();
+
+        if (empty($input['time_type'])) {
+            $input['time_type'] = 'match';
+        }
+
+        if (Input::get('range')) {
+            $input['dstart']    = Carbon::parse(Input::get('range') . ' days ago')->toDateString();
+        }
+
+        if (empty(Input::get('range')) && empty(Input::get('dstart'))) {
+            $input['dstart']    = Carbon::parse('7 days ago')->toDateString();
+        }
+
+        if (empty($input['dend'])) {
+            $input['dend']      = Carbon::parse('1 days ago')->toDateString();
+        }
+
+        $hwtrek_pms = $this->user_repo->findHWTrekPM();
+
+        $pm_ids = [];
+        if ($hwtrek_pms) {
+            foreach ($hwtrek_pms as $pm) {
+                $pm_ids[] = $pm->user_id;
+            }
+        }
+
+        $projects = $this->report_repo->getProjectReport($input, $this->page, $this->per_page);
+        if ($input['time_type'] == 'match') {
+            $match_statistics = $this->report_repo->getProjectMatchFromPM($projects, $input['dstart'], $input['dend']);
+        } else {
+            $match_statistics = $this->report_repo->getProjectMatchFromPM($projects);
+        }
+
+        $template = view('report.project')
+            ->with([
+                'title'            => 'Project Report',
+                'projects'         => $projects,
+                'range'            => Input::get('range'),
+                'is_super_admin'   => $this->auth,
+                'pm_ids'           => $pm_ids,
+                'input'            => $input,
+                'match_statistics' => $match_statistics
+
             ]);
         return $template;
     }
