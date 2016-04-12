@@ -170,4 +170,40 @@ $(function () {
             }
         });
     });
+
+    //open dialog
+    $( ".project-report-action" ).click(function () {
+        var $this = $(this);
+        var project_id = $this.attr("rel");
+        var report_action = $this.attr("action");
+        $("#project-report-action").text(report_action);
+        $("#project-report-action-project-id").val(project_id);
+        $("#project-report-action-dialog").dialog({
+            height: 300,
+            width: 700
+        });
+    });
+
+    $("#edi-project-report-action").click(function () {
+        var project_id           = $("#project-report-action-project-id").val();
+        var report_action = $("#project-report-action").val();
+        $.ajax({
+            type: "POST",
+            url: "/project/update-memo",
+            data: {
+                project_id: project_id,
+                report_action: report_action
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#project-report-action-dialog" ).dialog( "close" );
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
 });

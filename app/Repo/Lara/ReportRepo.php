@@ -1,8 +1,13 @@
 <?php namespace Backend\Repo\Lara;
 
 use Backend\Model\Eloquent\User;
+use Backend\Model\Eloquent\ProposeSolution;
+use Backend\Model\Eloquent\GroupMemberApplicant;
+use Backend\Model\Eloquent\ProjectMailExpert;
+use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
+use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
@@ -16,15 +21,21 @@ class ReportRepo implements ReportInterface
     use PaginateTrait;
 
     private $user_repo;
+    private $project_repo;
+    private $admin_repo;
     private $event_repo;
     private $questionnaire_repo;
 
     public function __construct(
         UserInterface               $user_repo,
+        ProjectInterface            $project_repo,
+        AdminerInterface            $admin_repo,
         EventApplicationInterface   $even_repo,
         EventQuestionnaireInterface $questionnaire_repo
     ) {
         $this->user_repo          = $user_repo;
+        $this->project_repo       = $project_repo;
+        $this->admin_repo         = $admin_repo;
         $this->event_repo         = $even_repo;
         $this->questionnaire_repo = $questionnaire_repo;
     }
@@ -100,6 +111,118 @@ class ReportRepo implements ReportInterface
 
         $users = $this->user_repo->byCollectionPage($users, $page, $per_page);
         return $users;
+    }
+
+    public function getProjectReport($input, $page, $per_page)
+    {
+        $projects = $this->project_repo->byUnionSearch($input, $page, $per_page);
+        return $projects;
+    }
+
+    public function getProjectMatchFromPM($projects, $dstart = null, $dend = null)
+    {
+        // end day add one day
+        if ($dend) {
+            $dend = Carbon::parse($dend)->addDay()->toDateString();
+        }
+        
+        $result      = [];
+        $project_ids = [];
+        $group_ids   = [];
+        // find pm, project id, project group id
+        $pms         = $this->user_repo->findHWTrekPM();
+        if ($projects) {
+            foreach ($projects as $project) {
+                $project_ids[] = $project->project_id;
+                if ($project->group) {
+                    foreach ($project->group as $group) {
+                        $group_ids[] = $group->group_id;
+                    }
+                }
+            }
+        }
+
+        if ($pms) {
+            foreach ($pms as $pm) {
+                $propose_model   = new ProposeSolution();
+                $applicant_model = new GroupMemberApplicant();
+                $email_out_model = new ProjectMailExpert();
+
+                $statistics_project_ids = [];
+
+                $propose_solutions = $propose_model
+                    ->where('proposer_id', $pm->user_id)
+                    ->whereIn('project_id', $project_ids)
+                    ->where('event', '!=', 'click');
+                if ($dstart) {
+                    $propose_solutions->where('propose_time', '>=', $dstart);
+                }
+                if ($dend) {
+                    $propose_solutions->where('propose_time', '<=', $dend);
+                }
+
+                $propose_solutions = $propose_solutions->get();
+                $propose_count     = $propose_solutions->count();
+                if ($propose_solutions) {
+                    foreach ($propose_solutions as $solution) {
+                        $statistics_project_ids[] = $solution->project_id;
+                    }
+                }
+
+                $recommend_count = 0;
+                $applicants = $applicant_model
+                    ->where('referral', $pm->user_id)
+                    ->whereIn('group_id', $group_ids);
+                if ($dstart) {
+                    $applicants->where('apply_date', '>=', $dstart);
+                }
+                if ($dend) {
+                    $applicants->where('apply_date', '<=', $dend);
+                }
+                $applicants = $applicants->get();
+                
+                if ($applicants) {
+                    foreach ($applicants as $applicant) {
+                        if ($applicant->user) {
+                            if ($applicant->user->isExpert()) {
+                                $additional_privileges = json_decode($applicant->additional_privileges, true);
+                                foreach ($additional_privileges as $privilege) {
+                                    if (in_array('project', $privilege)) {
+                                        $statistics_project_ids[] = $privilege[2];   // array index 2 is id
+                                    }
+                                }
+                                $recommend_count ++;
+                            }
+                        }
+                    }
+                }
+
+                $admin = $this->admin_repo->findHWTrekMember($pm->user_id);
+                if ($admin) {
+                    $email_out = $email_out_model
+                        ->where('admin_id', $admin->id)
+                        ->whereIn('project_id', $project_ids);
+                    if ($dstart) {
+                        $email_out->where('date_send', '>=', $dstart);
+                    }
+                    if ($dend) {
+                        $email_out->where('date_send', '<=', $dend);
+                    }
+                    $email_out = $email_out->get();
+                    if ($email_out) {
+                        foreach ($email_out as $item) {
+                            $statistics_project_ids[] = $item->project_id;
+                        }
+                    }
+                    $recommend_count = $recommend_count + count($email_out);
+                }
+                $result[$pm->user_name]['propose_count']   = $propose_count;
+                $result[$pm->user_name]['recommend_count'] = $recommend_count;
+                $result[$pm->user_name]['project_count']   = count(array_unique($statistics_project_ids));
+                $result[$pm->user_name]['total_count']     = $propose_count + $recommend_count;
+            }
+        }
+        return $result;
     }
     
     public function getEventReport($event_id, $complete, $input, $page, $per_page)

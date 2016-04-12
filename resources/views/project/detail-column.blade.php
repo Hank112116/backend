@@ -8,20 +8,33 @@
 		<div class="col-md-10 col-md-offset-1 clearfix">
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Project Title',
+                    'label' => 'Project Title*',
                     'content' => e($project->textTitle())
                 ])
 
+                @include('modules.detail-half-column', [
+                    'label' => 'Statistics',
+                    'content' => 'Community:'. $project->getPageViewCount() .
+                    ', Staff Referrals:' . $project->getStaffReferredCount() .
+                    ', Collaborators:' . $project->getCollaboratorsCount()
+
+                ])
+            </div>
+            <div class="clearfix">
+                @include('modules.detail-half-column', [
+                    'label' => 'Project Category*',
+                    'content' => e($project->textCategory())
+                ])
                 @include('modules.detail-half-column', [
                     'label' => 'Project Type',
                     'content' => $project->textInnovationType()
                 ])
             </div>
 			<div class="clearfix">
-			    @include('modules.detail-half-column', [
-			        'label' => 'Project Category',
-			        'content' => e($project->textCategory())
-			    ])
+                @include('modules.detail-half-column', [
+                    'label' => 'Project Status',
+                    'content' => $project->profile->text_status . ($project->is_deleted? ' | Deleted (' .$project->deleted_date. ')' : '')
+                ])
 
 			    @include('modules.detail-half-column', [
 			        'label' => 'Owner',
@@ -34,72 +47,60 @@
 
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Country',
+			        'label' => 'Country*',
 			        'content' => e($project->project_country)
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'City',
+			        'label' => 'City*',
 			        'content' => e($project->project_city)
 			    ])
 			</div>
 
 			<div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Current Stage (initial launch)',
+			        'label' => 'Current Stage (initial launch)*',
 			        'content' => $project->textProgress()
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'Shipping Quantity',
+			        'label' => 'Shipping Quantity*',
 			        'content' => $project->firstBatchQuantity()
 			    ])
 			</div>
 
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Target Markets',
+                    'label' => 'Target Markets*',
                     'content' => $project->textTargetMartket()
                 ])
 
                 @include('modules.detail-half-column', [
-                    'label' => 'Development Budget',
+                    'label' => 'Development Budget*',
                     'content' => $project->textBudget()
                 ])
             </div>
 
             <div class="clearfix">
 			    @include('modules.detail-half-column', [
-			        'label' => 'Target Price (MSRP)',
+			        'label' => 'Target Price (MSRP)*',
 			        'content' => $project->textMsrp()
 			    ])
 
 			    @include('modules.detail-half-column', [
-			        'label' => 'Target Shipping Date',
+			        'label' => 'Target Shipping Date*',
 			        'content' => $project->textLaunchDate()
 			    ])
             </div>
 
-			<div class="clearfix">
-			    @include('modules.detail-half-column', [
-			        'label' => 'Project Status',
-			        'content' => $project->profile->text_status . ($project->is_deleted? ' | Deleted (' .$project->deleted_date. ')' : '')
-			    ])
-
-			    @include('modules.detail-half-column', [
-			        'label' => 'Completed',
-			        'content' => $project->profile->text_project_submit
-			    ])
-			</div>
-
             <div class="clearfix">
                 @include('modules.detail-half-column', [
-                    'label' => 'Company Name',
+                    'label' => 'Company Name*',
                     'content' => link_to($project->textCompanyUrl(), $project->textCompanyName(), ['target' => '_blank'])
                 ])
 
                 @include('modules.detail-half-column', [
-                    'label' => 'Team Size',
+                    'label' => 'Team Size*',
                     'content' => $project->textTeamSize()
                 ])
             </div>
@@ -133,23 +134,23 @@
 
 	<div class="row">
         @include('modules.detail-panel', [
-            'column_title' => 'Project Summary',
+            'column_title' => 'Brief*',
             'column_content' => e($project->project_summary)
         ])
 
         @include('modules.detail-panel', [
-            'column_title' => 'Project Concept',
+            'column_title' => 'Project Concept*',
             'column_content' => Purifier::clean($project->description)
         ])
 	</div>
 
     @include('modules.detail-tag', [
-        'column_title' => 'Team Strengths',
+        'column_title' => 'Team Strengths*',
         'column_tags'  => $project->teamStrengths()
     ])
 
     @include('modules.detail-tag', [
-        'column_title' => 'Resource Required',
+        'column_title' => 'Resources Required*',
         'column_tags'  => $project->resourceRequirements()
     ])
 

@@ -21,7 +21,7 @@ class ProjectModifier implements ProjectModifierInterface
 
     private $update_memo_columns = [
         'description', 'schedule_note', 'schedule_note_grade',
-        'project_managers', 'tags'
+        'project_managers', 'tags', 'report_action'
     ];
 
     private $update_team_columns = [

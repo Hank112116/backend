@@ -139,7 +139,7 @@ class Project extends Eloquent
     ];
 
     private $founding_round_default = [
-        'rounds'        => null,
+        'round'         => null,
         'date'          => null,
         'investors'     => 'N/A',
         'url'           => 'N/A',
@@ -385,12 +385,12 @@ class Project extends Eloquent
 
     public function textMsrp()
     {
-        return $this->isMsrpUnsure() ? 'Unsure' : $this->msrp;
+        return $this->isMsrpUnsure() ? 'N/A' : $this->msrp;
     }
 
     public function textLaunchDate()
     {
-        return $this->isLaunchDateUnsure() ? 'Unsure' : $this->launch_date;
+        return $this->isLaunchDateUnsure() ? 'N/A' : $this->launch_date;
     }
 
     public function textProgress()
@@ -453,6 +453,7 @@ class Project extends Eloquent
             return 'N/A';
         }
     }
+
 
     public function textBudget()
     {
@@ -556,10 +557,10 @@ class Project extends Eloquent
         if ($funding_rounds) {
             foreach ($funding_rounds as $index => $funding_round) {
                 $tmp = array_merge($this->founding_round_default, $funding_round);
-                if (array_key_exists('rounds', $tmp)) {
-                    $tmp['rounds'] = $this->funding_round_map[$tmp['rounds']];
+                if (array_key_exists('round', $tmp)) {
+                    $tmp['round'] = $this->funding_round_map[$tmp['round']];
                 } else {
-                    $tmp['rounds'] = 'N/A';
+                    $tmp['round'] = 'N/A';
                 }
 
                 if (!is_null($tmp['date'])) {
@@ -615,6 +616,11 @@ class Project extends Eloquent
     public function isLaunchDateUnsure()
     {
         return !$this->launch_date;
+    }
+
+    public function profile()
+    {
+        return $this->getProfileAttribute();
     }
 
     /*
@@ -714,8 +720,12 @@ class Project extends Eloquent
         return $this->is_deleted;
     }
 
-    public function proposeSolutionCount($pm_ids = [])
+    public function proposeSolutionCount($pm_ids = [], $dstart = null, $dend = null)
     {
+        if ($dend) {
+            $dend = Carbon::parse($dend)->addDay()->toDateString();
+        }
+
         if (empty($pm_ids)) {
             $user_model = new User();
             $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
@@ -728,12 +738,27 @@ class Project extends Eloquent
         $propose_solution_model = new ProposeSolution();
         $internal_count = $propose_solution_model->where('project_id', $this->project_id)
             ->where('event', '!=', 'click')
-            ->whereIn('proposer_id', $pm_ids)
-            ->count();
+            ->whereIn('proposer_id', $pm_ids);
+        if (!empty($dstart)) {
+            $internal_count->where('propose_time', '>=', $dstart);
+        }
+
+        if (!empty($dend)) {
+            $internal_count->where('propose_time', '<', $dend);
+        }
+        $internal_count = $internal_count->count();
+
         $external_count = $propose_solution_model->where('project_id', $this->project_id)
             ->where('event', '!=', 'click')
-            ->whereNotIn('proposer_id', $pm_ids)
-            ->count();
+            ->whereNotIn('proposer_id', $pm_ids);
+        if (!empty($dstart)) {
+            $external_count->where('propose_time', '>=', $dstart);
+        }
+
+        if (!empty($dend)) {
+            $external_count->where('propose_time', '<', $dend);
+        }
+        $external_count = $external_count->count();
         $total_count    = $internal_count + $external_count;
         $result = [
             'internal_count' => $internal_count,
@@ -791,19 +816,34 @@ class Project extends Eloquent
         return (object) $result;
     }
 
-    public function proposeSolutionStatistics()
+    public function proposeSolutionStatistics($dstart = null, $dend = null)
     {
+        if ($dend) {
+            $dend = Carbon::parse($dend)->addDay()->toDateString();
+        }
         $internal_count = $external_count = 0;
         $internal_date  = $external_data  = [];
         $propose_solutions = $this->propose()->getResults();
         if ($propose_solutions) {
             foreach ($propose_solutions as $propose_solution) {
-                if ($propose_solution->event !== 'click' && $propose_solution->user  && $propose_solution->solution) {
+                if ($propose_solution->event !== 'click' && $propose_solution->user && $propose_solution->solution) {
+                    if ($dstart) {
+                        if ($propose_solution->propose_time < $dstart) {
+                            continue;
+                        }
+                    }
+                    if ($dend) {
+                        if ($propose_solution->propose_time > $dend) {
+                            continue;
+                        }
+                    }
+
                     $data['solution_id']    = $propose_solution->solution->solution_id;
                     $data['solution_url']   = $propose_solution->solution->textFrontLink();
                     $data['solution_title'] = $propose_solution->solution->textTitle();
                     $data['user_name']      = $propose_solution->user->textFullName();
                     $data['user_url']       = $propose_solution->user->textFrontLink();
+                    $data['at_time']        = Carbon::parse($propose_solution->propose_time)->toFormattedDateString();
                     if ($propose_solution->user->isHWTrekPM()) {
                         $internal_date[] = $data;
                         $internal_count ++;
@@ -818,12 +858,15 @@ class Project extends Eloquent
         $result['internal_data']  = $internal_date;
         $result['external_count'] = $external_count;
         $result['external_data']  = $external_data;
-        $result['total']          = $internal_count + $external_count;
+        $result['total_count']    = $internal_count + $external_count;
         return (object) $result;
     }
 
-    public function recommendExpertStatistics()
+    public function recommendExpertStatistics($dstart = null, $dend = null)
     {
+        if ($dend) {
+            $dend = Carbon::parse($dend)->addDay()->toDateString();
+        }
         $internal_count = $external_count = 0;
         $internal_date  = $external_data  = [];
         $groups = $this->group;
@@ -833,15 +876,34 @@ class Project extends Eloquent
                     foreach ($group->memberApplicant as $applicant) {
                         if ($applicant->user) {
                             if ($applicant->user->isExpert()) {
+                                if ($dstart) {
+                                    if ($applicant->apply_date < $dstart) {
+                                        continue;
+                                    }
+                                }
+                                if ($dend) {
+                                    if ($applicant->apply_date >= $dend) {
+                                        continue;
+                                    }
+                                }
                                 $data['user_id']      = $applicant->user_id;
                                 $data['profile_url']  = $applicant->user->textFrontLink();
                                 $data['user_name']    = $applicant->user->textFullName();
                                 $data['company_name'] = $applicant->user->company;
+                                $data['at_time']      = Carbon::parse($applicant->apply_date)->toFormattedDateString();
                                 $data['type']         = 'applicant';
                                 if ($applicant->referralUser) {
                                     $data['referral_user_name'] = $applicant->referralUser->textFullName();
                                     $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
                                     if ($applicant->referralUser->isHWTrekPM()) {
+                                        $internal_date[] = $data;
+                                        $internal_count++;
+                                    } else {
+                                        $external_data[] = $data;
+                                        $external_count++;
+                                    }
+                                } else {
+                                    if ($applicant->user->isHWTrekPM()) {
                                         $internal_date[] = $data;
                                         $internal_count++;
                                     } else {
@@ -857,16 +919,31 @@ class Project extends Eloquent
         }
 
         $recommend_experts = $this->recommendExperts()->getResults();
-
         if ($recommend_experts) {
             foreach ($recommend_experts as $recommend_expert) {
                 if ($recommend_expert->user) {
+                    if ($dstart) {
+                        if ($recommend_expert->date_send < $dstart) {
+                            continue;
+                        }
+                    }
+                    if ($dend) {
+                        if ($recommend_expert->date_send >= $dend) {
+                            continue;
+                        }
+                    }
                     $data['user_id']      = $recommend_expert->expert_id;
                     $data['profile_url']  = $recommend_expert->user->textFrontLink();
                     $data['user_name']    = $recommend_expert->user->textFullName();
                     $data['company_name'] = $recommend_expert->user->company;
+                    $data['at_time']      = Carbon::parse($recommend_expert->date_send)->toFormattedDateString();
                     if ($recommend_expert->adminer) {
-                        $data['referral_user_name'] = $recommend_expert->adminer->name;
+                        $frontend_user =  $recommend_expert->adminer->user;
+                        if ($frontend_user) {
+                            $data['referral_user_name'] = $frontend_user->textFullName();
+                        } else {
+                            $data['referral_user_name'] = $recommend_expert->adminer->name;
+                        }
                     } else {
                         $data['referral_user_name'] = 'Exception';
                     }
@@ -882,12 +959,56 @@ class Project extends Eloquent
         $result['external_data']  = $external_data;
         $result['total_count']    = $internal_count + $external_count;
         return (object) $result;
+    }
 
+    public function hasProposeSolution($dstart, $dend)
+    {
+        $propose_solution_model = new ProposeSolution();
+        $count = $propose_solution_model->where('project_id', $this->project_id)
+            ->where('event', '!=', 'click')
+            ->where('propose_time', '>=', $dstart)
+            ->where('propose_time', '<=', $dend)
+            ->count();
+        return $count > 0;
+    }
+
+    public function hasRecommendExpert($dstart, $dend)
+    {
+        $groups = $this->group;
+        if ($groups) {
+            foreach ($groups as $group) {
+                if ($group->memberApplicant) {
+                    foreach ($group->memberApplicant as $applicant) {
+                        if ($applicant->user) {
+                            if ($applicant->user->isExpert()) {
+                                if ($applicant->apply_date >= $dstart && $applicant->apply_date < $dend) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $recommend_experts = $this->recommendExperts()->getResults();
+        if ($recommend_experts) {
+            foreach ($recommend_experts as $recommend_expert) {
+                if ($recommend_expert->user) {
+                    if ($recommend_expert->date_send >= $dstart && $recommend_expert->date_send < $dend) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public function getPageViewCount()
     {
-        return $this->projectStatistic->page_view;
+        if ($this->projectStatistic) {
+            return $this->projectStatistic->page_view;
+        }
+        return 0;
     }
 
     public function getStaffReferredCount($pm_ids = [])
@@ -925,8 +1046,6 @@ class Project extends Eloquent
                 }
             }
         }
-
-
         return $count;
     }
 

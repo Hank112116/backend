@@ -126,6 +126,11 @@ class AuthController extends BaseController
         return $this->routeFilter($type = [ 'report_full', 'event_report' ]);
     }
 
+    public function reportProjectFilter()
+    {
+        return $this->routeFilter($type = [ 'report_full', 'project_report' ]);
+    }
+
     private function routeFilter($type)
     {
         if (Auth::check() and str_contains(Session::get('cert'), $type)) {
