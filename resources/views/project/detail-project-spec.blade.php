@@ -4,7 +4,7 @@
         <div class="row">
             <div class="option-power col-sm-6">
                 <span class="option-power--type">AC Power</span>
-                <span class="option-power--value">{{ $project->powerSpec()->ac->volt ? 100 : 0 }} V</span>
+                <span class="option-power--value">{{ $project->powerSpec()->ac->volt }} V</span>
                 <span class="option-power--value">{{ $project->powerSpec()->ac->ampere }} A</span>
             </div>
             <div class="option-power col-sm-6">
@@ -15,11 +15,6 @@
             <div class="option-power col-sm-6">
                 <span class="option-power--type">Battery</span>
                 <span class="option-power--value">{{ $project->powerSpec()->battery->capacity }} mAh</span>
-            </div>
-            <div class="option-power col-sm-6">
-                <span class="option-power--type">Wireless Charge</span>
-                <span class="option-power--value">{{ $project->powerSpec()->dc->volt }} V</span>
-                <span class="option-power--value">{{ $project->powerSpec()->dc->ampere }} A</span>
             </div>
             <div class="option-power col-sm-6">
                 <span class="option-power--type">Other</span>
