@@ -28,7 +28,7 @@
             {{ $projects->total() }} Results: {{ $projects->public_count }} Expert mode | {{ $projects->private_count }} Private mode | {{ $projects->draft_count }} Draft | {{ $projects->delete_count }} Deleted <br/><br/>
             @if ($match_statistics)
                 <?php $i = 1; ?>
-                [Referrals]
+                # Referrals:
                 @foreach($match_statistics as $name => $statistic)
                     {{ $name }}: {{ $statistic['recommend_count'] }} |
                     @if ($i % 7 == 0)
@@ -105,9 +105,9 @@
 
                         <td>
                             @if ($input['time_type'] == 'match')
-                                @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($pm_ids, $input['dstart'], $input['dend'])])
+                                @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($input['dstart'], $input['dend'])])
                             @else
-                                @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($pm_ids)])
+                                @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount()])
                             @endif
                         </td>
                         <td>

@@ -720,25 +720,15 @@ class Project extends Eloquent
         return $this->is_deleted;
     }
 
-    public function proposeSolutionCount($pm_ids = [], $dstart = null, $dend = null)
+    public function proposeSolutionCount($dstart = null, $dend = null)
     {
         if ($dend) {
             $dend = Carbon::parse($dend)->addDay()->toDateString();
         }
 
-        if (empty($pm_ids)) {
-            $user_model = new User();
-            $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
-            if ($hwtrek_pms) {
-                foreach ($hwtrek_pms as $pm) {
-                    $pm_ids[] = $pm->user_id;
-                }
-            }
-        }
         $propose_solution_model = new ProposeSolution();
         $internal_count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', '!=', 'click')
-            ->whereIn('proposer_id', $pm_ids);
+            ->where('event', 'suggest');
         if (!empty($dstart)) {
             $internal_count->where('propose_time', '>=', $dstart);
         }
@@ -749,8 +739,7 @@ class Project extends Eloquent
         $internal_count = $internal_count->count();
 
         $external_count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', '!=', 'click')
-            ->whereNotIn('proposer_id', $pm_ids);
+            ->where('event', '=', 'propose');
         if (!empty($dstart)) {
             $external_count->where('propose_time', '>=', $dstart);
         }
@@ -769,18 +758,9 @@ class Project extends Eloquent
         return (object) $result;
     }
 
-    public function recommendExpertCount($pm_ids = [])
+    public function recommendExpertCount()
     {
         $internal_count = $external_count = 0;
-        if (empty($pm_ids)) {
-            $user_model = new User();
-            $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
-            if ($hwtrek_pms) {
-                foreach ($hwtrek_pms as $pm) {
-                    $pm_ids[] = $pm->user_id;
-                }
-            }
-        }
 
         $groups = $this->group;
         if ($groups) {
@@ -788,19 +768,14 @@ class Project extends Eloquent
                 if ($group->memberApplicant) {
                     $member_applicant_model = new GroupMemberApplicant();
                     $internal_count += $member_applicant_model->where('group_id', $group->group_id)
-                        ->whereIn('referral', $pm_ids)
                         ->count();
                     $external_count += $member_applicant_model->where('group_id', $group->group_id)
-                        ->whereNotIn('referral', $pm_ids)
                         ->count();
-
                     $internal_count += $member_applicant_model->where('group_id', $group->group_id)
                         ->whereNull('referral')
-                        ->whereIn('user_id', $pm_ids)
                         ->count();
                     $external_count += $member_applicant_model->where('group_id', $group->group_id)
                         ->whereNull('referral')
-                        ->whereNotIn('user_id', $pm_ids)
                         ->count();
                 }
             }
@@ -844,10 +819,10 @@ class Project extends Eloquent
                     $data['user_name']      = $propose_solution->user->textFullName();
                     $data['user_url']       = $propose_solution->user->textFrontLink();
                     $data['at_time']        = Carbon::parse($propose_solution->propose_time)->toFormattedDateString();
-                    if ($propose_solution->user->isHWTrekPM()) {
+                    if ($propose_solution->event === 'suggest') {
                         $internal_date[] = $data;
                         $internal_count ++;
-                    } else {
+                    } elseif ($propose_solution->event === 'propose') {
                         $external_data[] = $data;
                         $external_count ++;
                     }

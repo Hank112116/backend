@@ -101,7 +101,7 @@
                 </td>
 
                 <td>
-                    @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($pm_ids)])
+                    @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount()])
                 </td>
                 <td>
                     @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics()])
