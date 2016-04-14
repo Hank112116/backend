@@ -72,7 +72,7 @@
             <div class="clearfix">
                 @include('modules.detail-half-column', [
                     'label' => 'Target Markets*',
-                    'content' => $project->textTargetMartket()
+                    'content' => $project->textTargetMarkets()
                 ])
 
                 @include('modules.detail-half-column', [

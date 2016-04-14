@@ -53,7 +53,7 @@
     <label for="team" class="col-md-3">Team Strengths*</label>
     <div class="col-md-9">
         <input type="text" id="strengths" name="strengths"
-                placeholder="Enter 'key component' then press [Enter]"
+                placeholder="Enter 'team strength' then press [Enter]"
                 value="{!! implode(',', $project->teamStrengths()) !!}" />
     </div>
 </div>
@@ -96,7 +96,7 @@
 <!-- Target Martket -->
 <div class="form-group">
     <label for="address" class="col-md-3">Target Markets</label>
-    <div class="col-md-5">{!! $project->textTargetMartket() !!}</div>
+    <div class="col-md-5">{!! $project->textTargetMarkets() !!}</div>
     <div class="col-md-5"></div>
 </div>
 

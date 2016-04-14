@@ -436,15 +436,15 @@ class Project extends Eloquent
         return $team_strengths ? $team_strengths : [];
     }
 
-    public function textTargetMartket()
+    public function textTargetMarkets()
     {
         $target_martkets = [];
-        if ($this->target_market) {
-            $target_martkets = json_decode($this->target_markets, true);
+        if ($this->target_markets) {
+            $target_markets = json_decode($this->target_markets, true);
         }
 
-        if ($target_martkets) {
-            return implode(',', $target_martkets);
+        if ($target_markets) {
+            return implode(',', $target_markets);
         } else {
             return 'N/A';
         }
