@@ -381,7 +381,7 @@ class Project extends Eloquent
 
     public function textMsrp()
     {
-        return $this->isMsrpUnsure() ? 'N/A' : $this->msrp;
+        return $this->msrp ? $this->msrp : 'N/A';
     }
 
     public function textLaunchDate()
@@ -438,7 +438,7 @@ class Project extends Eloquent
 
     public function textTargetMarkets()
     {
-        $target_martkets = [];
+        $target_markets = [];
         if ($this->target_markets) {
             $target_markets = json_decode($this->target_markets, true);
         }
