@@ -34,10 +34,18 @@ class EventApplicationRepo implements EventApplicationInterface
 
     public function findApproveEventUsers($event_id)
     {
-        return $this->event->where('event_id', $event_id)
+        $result = [];
+        $approve_event_users =  $this->event->where('event_id', $event_id)
             ->whereNotNull('approved_at')
-            ->groupBy('user_id')
+            ->where('user_id', '!=', 0)
             ->orderBy('id', 'DESC')->get();
+        $approve_event_users = $approve_event_users->groupBy('user_id');
+        if ($approve_event_users) {
+            foreach ($approve_event_users as $approve_event_user) {
+                $result[] = $approve_event_user[0];
+            }
+        }
+        return Collection::make($result);
     }
 
 
