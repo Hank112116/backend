@@ -371,12 +371,12 @@ class Project extends Eloquent
 
     public function textFrontLink()
     {
-        return FrontLinkGenerator::project($this->project_id);
+        return FrontLinkGenerator::project($this->uuid);
     }
 
     public function textFrontProjectLink()
     {
-        return FrontLinkGenerator::project($this->project_id);
+        return FrontLinkGenerator::project($this->uuid);
     }
 
     public function textMsrp()
