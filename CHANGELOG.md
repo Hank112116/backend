@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.1.1
+* [FIXED] fix tour form user project id null issue (@Hank)
+
 ## v2.1.0
 * [NEW] add event questionnaire summary (@Hank)
 * [CHANGE] adjust member view authorization of editor role (@Hank)
