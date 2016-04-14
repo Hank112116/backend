@@ -35,7 +35,6 @@ class ProjectController extends BaseController
         $this->user_repo    = $user;
     }
 
-
     public function showList()
     {
         $projects = $this->project_repo->byPage($this->page, $this->per_page);

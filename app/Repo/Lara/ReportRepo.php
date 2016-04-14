@@ -15,6 +15,7 @@ use Backend\Model\Eloquent\EventApplication;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Carbon;
+use UrlFilter;
 
 class ReportRepo implements ReportInterface
 {
@@ -216,10 +217,11 @@ class ReportRepo implements ReportInterface
                     }
                     $recommend_count = $recommend_count + count($email_out);
                 }
-                $result[$pm->user_name]['propose_count']   = $propose_count;
-                $result[$pm->user_name]['recommend_count'] = $recommend_count;
-                $result[$pm->user_name]['project_count']   = count(array_unique($statistics_project_ids));
-                $result[$pm->user_name]['total_count']     = $propose_count + $recommend_count;
+                $user_name = UrlFilter::filter($pm->user_name);
+                $result[$user_name]['propose_count']   = $propose_count;
+                $result[$user_name]['recommend_count'] = $recommend_count;
+                $result[$user_name]['project_count']   = count(array_unique($statistics_project_ids));
+                $result[$user_name]['total_count']     = $propose_count + $recommend_count;
             }
         }
         return $result;
@@ -392,6 +394,7 @@ class ReportRepo implements ReportInterface
 
     public function getQuestionnaireReport($event_id, $input, $page, $per_page)
     {
+        /* @var Collection $approve_event_users */
         $approve_event_users = $this->event_repo->findApproveEventUsers($event_id);
 
         if ($approve_event_users) {

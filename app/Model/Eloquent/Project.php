@@ -812,7 +812,6 @@ class Project extends Eloquent
                             continue;
                         }
                     }
-
                     $data['solution_id']    = $propose_solution->solution->solution_id;
                     $data['solution_url']   = $propose_solution->solution->textFrontLink();
                     $data['solution_title'] = $propose_solution->solution->textTitle();

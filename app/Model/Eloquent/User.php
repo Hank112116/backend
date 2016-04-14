@@ -140,7 +140,6 @@ class User extends Eloquent
 
     public function textRole()
     {
-
         return static::$roles[$this->user_role];
     }
 
