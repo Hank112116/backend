@@ -33,7 +33,7 @@ $(function () {
                             return;
                         }
                         Notifier.showTimedMessage("Update successful", "information", 2);
-                        window.location = "/report/questionnaires?event=" + event_id;
+                        window.location = "/report/tour-form?event=" + event_id;
                     }
                 });
             }
