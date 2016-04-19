@@ -17,6 +17,11 @@
                 <span class="option-power--value">{{ $project->powerSpec()->battery->capacity }} mAh</span>
             </div>
             <div class="option-power col-sm-6">
+                <span class="option-power--type">Wireless Charge</span>
+                <span class="option-power--value">{{ $project->powerSpec()->wireless->volt }} V</span>
+                <span class="option-power--value">{{ $project->powerSpec()->wireless->ampere }} A</span>
+            </div>
+            <div class="option-power col-sm-6">
                 <span class="option-power--type">Other</span>
                     <span class="option-power--value">
                         {{ $project->powerSpec()->other }}

@@ -117,6 +117,10 @@ class Project extends Eloquent
             'volt'   => 0,
             'ampere' => 0,
         ],
+        'wireless' => [
+            'volt'   => 0,
+            'ampere' => 0
+        ],
         'battery' => [
             'capacity' => 0
         ],
@@ -511,10 +515,11 @@ class Project extends Eloquent
         if (!$power_spec) {
             $power_spec = [];
         }
-        $power_spec            = array_merge($this->power_spec_default, $power_spec);
-        $power_spec['dc']      = array_merge($this->power_spec_default['dc'], $power_spec['dc']);
-        $power_spec['ac']      = array_merge($this->power_spec_default['ac'], $power_spec['ac']);
-        $power_spec['battery'] = array_merge($this->power_spec_default['battery'], $power_spec['battery']);
+        $power_spec             = array_merge($this->power_spec_default, $power_spec);
+        $power_spec['dc']       = array_merge($this->power_spec_default['dc'], $power_spec['dc']);
+        $power_spec['ac']       = array_merge($this->power_spec_default['ac'], $power_spec['ac']);
+        $power_spec['wireless'] = array_merge($this->power_spec_default['wireless'], $power_spec['wireless']);
+        $power_spec['battery']  = array_merge($this->power_spec_default['battery'], $power_spec['battery']);
 
         return json_decode(json_encode($power_spec));
     }
