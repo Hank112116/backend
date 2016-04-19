@@ -1,4 +1,4 @@
-@if (Auth::user()->role->hasCert('schedule_manager'))
+@if (Auth::user()->role->hasCert('schedule_manager') and Route::getCurrentRoute()->getPath() != 'report/project')
     @if(!$project->hasProjectManager())
         <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->project_id }}" pm="">
             <p class="hub-manages">

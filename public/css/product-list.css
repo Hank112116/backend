@@ -6495,14 +6495,10 @@ body {
   margin-bottom: 15px;
 }
 /* line 10, ../../front/sass/modules/_list-search.scss */
-.input-group .form-control {
-  height: auto;
-}
-/* line 14, ../../front/sass/modules/_list-search.scss */
 .input-group .date-input {
   width: 50%;
 }
-/* line 18, ../../front/sass/modules/_list-search.scss */
+/* line 14, ../../front/sass/modules/_list-search.scss */
 .input-group .sel-input {
   width: 31%;
 }

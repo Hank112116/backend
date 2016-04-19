@@ -41,6 +41,7 @@
                 <th>Statistics</th>
                 <th>Feature tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Internal description</th>
+                <th>Action</th>
                 <th>Last Update<br/><span class="table--text-light">By</span></th>
                 <th></th>
             </tr>
@@ -135,7 +136,19 @@
                         <a href="javascript:void(0)" class="btn-mini internal-description" rel="{!! $project->project_id !!}" description="">Add</a>
                     @endif
                 </td>
-
+                <td>
+                    @if ($project->internalProjectMemo)
+                        @if($project->internalProjectMemo->report_action)
+                            <a href="javascript:void(0)" class="project-report-action" rel="{!! $project->project_id !!}" action="{{ $project->internalProjectMemo->report_action }}">
+                                <i class="fa fa-pencil"></i>{{ mb_strimwidth($project->internalProjectMemo->report_action, 0, 130, mb_substr($project->internalProjectMemo->report_action, 0, 130) . '...') }}
+                            </a>
+                        @else
+                            <a href="javascript:void(0)" class="btn-mini project-report-action" rel="{!! $project->project_id !!}" action="{{ $project->internalProjectMemo->report_action }}">Action</a>
+                        @endif
+                    @else
+                        <a href="javascript:void(0)" class="btn-mini project-report-action" rel="{!! $project->project_id !!}" action="">Action</a>
+                    @endif
+                </td>
                 <td>
                     {{ $project->textLastUpdateTime() }} <br/>
                     @include('layouts.user', ['user' => $project->lastEditorUser])
@@ -168,6 +181,7 @@
     @include('project.dialog.schedule-manager-dialog')
     @include('project.dialog.propose-solution-dialog')
     @include('project.dialog.recommend-expert-dialog')
+    @include('report.dialog.project-report-action')
 </div>
 
 @if($show_paginate)

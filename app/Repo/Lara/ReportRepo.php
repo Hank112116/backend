@@ -127,9 +127,11 @@ class ReportRepo implements ReportInterface
             $dend = Carbon::parse($dend)->addDay()->toDateString();
         }
         
-        $result      = [];
-        $project_ids = [];
-        $group_ids   = [];
+        $result          = [];
+        $project_ids     = [];
+        $group_ids       = [];
+        $recommend_total = 0;
+        $propose_total   = 0;
         // find pm, project id, project group id
         $pms         = $this->user_repo->findHWTrekPM();
         if ($projects) {
@@ -148,7 +150,7 @@ class ReportRepo implements ReportInterface
                 $propose_model   = new ProposeSolution();
                 $applicant_model = new GroupMemberApplicant();
                 $email_out_model = new ProjectMailExpert();
-
+                $data = [];
                 $statistics_project_ids = [];
 
                 $propose_solutions = $propose_model
@@ -217,12 +219,17 @@ class ReportRepo implements ReportInterface
                     }
                     $recommend_count = $recommend_count + count($email_out);
                 }
-                $user_name = UrlFilter::filter($pm->user_name);
-                $result[$user_name]['propose_count']   = $propose_count;
-                $result[$user_name]['recommend_count'] = $recommend_count;
-                $result[$user_name]['project_count']   = count(array_unique($statistics_project_ids));
-                $result[$user_name]['total_count']     = $propose_count + $recommend_count;
+                $user_name = UrlFilter::filterNoHyphen($pm->user_name);
+                $data['propose_count']      = $propose_count;
+                $data['recommend_count']    = $recommend_count;
+                $data['project_count']      = count(array_unique($statistics_project_ids));
+                $data['total_count']        = $propose_count + $recommend_count;
+                $result['item'][$user_name] = $data;
+                $propose_total   = $propose_total + $propose_count;
+                $recommend_total = $recommend_total + $recommend_count;
             }
+            $result['propose_total']   = $propose_total;
+            $result['recommend_total'] = $recommend_total;
         }
         return $result;
     }
