@@ -3,6 +3,7 @@
 use Backend\Enums\EventEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Carbon;
 
 class EventApplication extends Model
 {
@@ -33,6 +34,24 @@ class EventApplication extends Model
     {
         $event_list = EventEnum::EVENT_NAME;
         return $event_list[$this->event_id];
+    }
+    
+    public function textApplyTime()
+    {
+        if ($this->applied_at) {
+            return Carbon::parse($this->applied_at)->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+    
+    public function textEnterTime()
+    {
+        if ($this->entered_at) {
+            return Carbon::parse($this->entered_at)->toFormattedDateString();
+        } else {
+            return null;
+        }
     }
 
     public function isCoincide()
@@ -71,7 +90,7 @@ class EventApplication extends Model
             ->where('id', '!=', $id)
             ->orderBy('id', 'DESC')
             ->first();
-        return $event ? $event->applied_at : null;
+        return $event ?  Carbon::parse($event->applied_at)->toFormattedDateString() : null;
     }
 
     public function getQuestionnaire()

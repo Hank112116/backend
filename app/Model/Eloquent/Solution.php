@@ -2,12 +2,12 @@
 
 namespace Backend\Model\Eloquent;
 
-use Backend\Model\Eloquent\ProjectCategory;
 use Backend\Model\ModelTrait\ProjectTagTrait;
-use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use UrlFilter;
+use Carbon;
+use Config;
 
 class Solution extends Eloquent
 {
@@ -295,7 +295,7 @@ class Solution extends Eloquent
             return 'Untitled';
         }
 
-        return UrlFilter::filter($this->solution_title);
+        return UrlFilter::filterNoHyphen($this->solution_title);
     }
 
     public function textUserName()
@@ -367,6 +367,24 @@ class Solution extends Eloquent
                 return 'N/A';
         }
 
+    }
+    
+    public function textLastUpdateDate()
+    {
+        if ($this->update_time) {
+            return Carbon::parse($this->update_time)->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+    
+    public function textApproveDate()
+    {
+        if ($this->approve_time) {
+            return Carbon::parse($this->approve_time)->toFormattedDateString();
+        } else {
+            return null;
+        }
     }
 
     public function galleries()

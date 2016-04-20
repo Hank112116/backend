@@ -103,9 +103,9 @@
                     @endif
                 </td>
 
-                <td>{!! HTML::date($solution->approve_time) !!}</td>
+                <td>{{ $solution->textApproveDate() }}</td>
 
-                <td>{!! HTML::time($solution->update_time) !!}</td>
+                <td>{{ $solution->textLastUpdateDate() }}</td>
 
                 <td>
                     @if($solution->is_manager_approved)
