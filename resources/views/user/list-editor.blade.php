@@ -55,7 +55,7 @@
                             <span class="table--text-light">{{ $user->business_id  }}</span>
                         </td>
                         <td>
-                            <span data-time="{!! $user->date_added !!}">{!! HTML::date($user->date_added) !!}</span>
+                            <span data-time="{!! $user->date_added !!}">{{ $user->textRegistedOn() }}</span>
                         </td>
                         <td>{!! $user->textEmailVerify() !!}</td>
                         <td>{!! $user->textActive() !!}</td>

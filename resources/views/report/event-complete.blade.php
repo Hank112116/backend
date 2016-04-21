@@ -122,9 +122,9 @@
                         </td>
 
                         <td class="table--width-limit">
-                            {{ HTML::date($event_user->applied_at) }}<br/>
+                            {{ $event_user->textApplyTime() }}<br/>
                             @if($event_user->user)
-                            <span class="table--text-light">{{ HTML::date($event_user->user->date_added) }}</span>
+                            <span class="table--text-light">{{ $event_user->user->textRegistedOn() }}</span>
                             @endif
                         </td>
 

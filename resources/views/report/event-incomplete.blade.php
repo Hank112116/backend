@@ -48,11 +48,11 @@
                         </td>
 
                         <td class="table--width-limit">
-                            {{ HTML::date($event_user->entered_at) }}<br/>
+                            {{ $event_user->textEnterTime() }}<br/>
                         </td>
 
                         <td class="table--width-limit">
-                            {{ HTML::date($event_user->getCompleteTime()) }}<br/>
+                            {{ $event_user->getCompleteTime() }}<br/>
                         </td>
 
                         <td>

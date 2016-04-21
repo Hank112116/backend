@@ -111,7 +111,7 @@
                     </td>
 
                     <td>
-                        <span data-time="{!! $user->date_added !!}">{!! HTML::date($user->date_added) !!}</span>
+                        <span data-time="{!! $user->date_added !!}">{{ $user->textRegistedOn() }}</span>
                         @if(!$is_restricted)
                             <br/><span class="table--text-light">{!! $user->signup_ip !!}</span>
                         @endif

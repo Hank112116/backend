@@ -4,6 +4,7 @@ namespace Backend\Model\Eloquent;
 
 use Config;
 use UrlFilter;
+use Carbon;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class User extends Eloquent
@@ -145,7 +146,7 @@ class User extends Eloquent
 
     public function textFullName()
     {
-        return UrlFilter::filter("{$this->user_name} {$this->last_name}");
+        return UrlFilter::filterNoHyphen("{$this->user_name} {$this->last_name}");
     }
 
     public function textFrontLink()
@@ -182,6 +183,15 @@ class User extends Eloquent
             return 'unknown';
         } else {
             return static::$actives[$this->active];
+        }
+    }
+
+    public function textRegistedOn()
+    {
+        if ($this->date_added) {
+            return Carbon::parse($this->date_added)->toFormattedDateString();
+        } else {
+            return null;
         }
     }
 

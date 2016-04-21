@@ -25,21 +25,33 @@
     </div>
     <div class="row text-center">
         <h4>
+            @if (Input::get('range'))
+                Showing Match Stats from {{ $input['dstart'] }} to {{ $input['dend'] }}
+            @else
+                Showing Search Results
+            @endif
+        </h4>
+    </div>
+    <div class="row text-center">
+        <h4>
             {{ $projects->total() }} Results: {{ $projects->public_count }} Expert mode | {{ $projects->private_count }} Private mode | {{ $projects->draft_count }} Draft | {{ $projects->delete_count }} Deleted <br/><br/>
             @if ($match_statistics)
                 <?php $i = 1; ?>
-                # Referrals:
-                @foreach($match_statistics as $name => $statistic)
+                {{ $match_statistics['recommend_total'] }} Referrals:
+                @foreach($match_statistics['item'] as $name => $statistic)
                     {{ $name }}: {{ $statistic['recommend_count'] }} |
                     @if ($i % 7 == 0)
                         <br/>
                     @endif
                     <?php $i++; ?>
                 @endforeach
+
             @endif
         </h4>
-        <button class="btn btn-primary match-statistics-btn" type="button">Match Statistics</button>
-        <input type="hidden" name="match-statistics" id="match-statistics" value="{{ json_encode($match_statistics) }}">
+        @if ($match_statistics)
+            <button class="btn btn-primary match-statistics-btn" type="button">Match Statistics</button>
+            <input type="hidden" name="match-statistics" id="match-statistics" value="{{ json_encode($match_statistics['item']) }}">
+        @endif
     </div><br/>
     <div class="row">
         <div class="col-md-12">
@@ -131,10 +143,10 @@
                                         <i class="fa fa-pencil"></i>{{ mb_strimwidth($project->internalProjectMemo->report_action, 0, 130, mb_substr($project->internalProjectMemo->report_action, 0, 130) . '...') }}
                                     </a>
                                 @else
-                                    <a href="javascript:void(0)" class="btn-mini project-report-action" rel="{!! $project->project_id !!}" action="{{ $project->internalProjectMemo->report_action }}">Add</a>
+                                    <a href="javascript:void(0)" class="btn-mini project-report-action" rel="{!! $project->project_id !!}" action="{{ $project->internalProjectMemo->report_action }}">Action</a>
                                 @endif
                             @else
-                                <a href="javascript:void(0)" class="btn-mini project-report-action" rel="{!! $project->project_id !!}" action="">Add</a>
+                                <a href="javascript:void(0)" class="btn-mini project-report-action" rel="{!! $project->project_id !!}" action="">Action</a>
                             @endif
                         </td>
 

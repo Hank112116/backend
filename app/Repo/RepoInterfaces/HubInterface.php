@@ -1,8 +1,15 @@
 <?php namespace Backend\Repo\RepoInterfaces;
 
+use Backend\Model\Eloquent\HubSchedule;
+
 interface HubInterface
 {
     public function findQuestionnaire($id);
+
+    /**
+     * @param $id
+     * @return HubSchedule
+     */
     public function findSchedule($id);
 
     public function allQuestionnaires();

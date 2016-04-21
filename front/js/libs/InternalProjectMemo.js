@@ -18,8 +18,8 @@ $(function () {
         $("#internal_tag_project_id").val(project_id);
         $("#tech-tag").text(tech_tag);
         $("#internal-tag-dialog").dialog({
-            height: 300,
-            width: 750
+            height: 350,
+            width: 1000
         });
     });
 
