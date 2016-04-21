@@ -102,8 +102,17 @@ class EmailSendController extends BaseController
         $contentData['expert2_link'] = $expert2[0]->textFrontLink();
         $contentData['expert1_corp'] = $expert1[0]->company;
         $contentData['expert2_corp'] = $expert2[0]->company;
-        $contentData['expert1_location'] = $expert1[0]->city.','.$expert1[0]->country;
-        $contentData['expert2_location'] = $expert2[0]->city.','.$expert2[0]->country;
+        if ($expert1[0]->city && $expert1[0]->country) {
+            $contentData['expert1_location'] = $expert1[0]->city.','.$expert1[0]->country;
+        } else {
+            $contentData['expert1_location'] = $expert1[0]->city . $expert1[0]->country;
+        }
+
+        if ($expert2[0]->city && $expert2[0]->country) {
+            $contentData['expert2_location'] = $expert2[0]->city.','.$expert2[0]->country;
+        } else {
+            $contentData['expert2_location'] = $expert2[0]->city . $expert2[0]->country;
+        }
         $contentData['expert1_business'] = $expert1[0]->business_id;
         $contentData['expert2_business'] = $expert2[0]->business_id;
         $expert1Tags = $expert1[0]->getIndustryArray();
@@ -118,6 +127,8 @@ class EmailSendController extends BaseController
         } else {
             $contentData['expert2_tag1'] = '';
         }
+        $contentData['hub_overview_link'] = 'https://' . Config::get('app.front_domain') . '/hub/project-overview/' . $project->project_id;
+
         //set email content
         $template = $this->findTemplate(EmailSend::HUB_SCHEDULE_RELEASE);
         $basicTemplate = view('email_template.hwtrek-inline');
