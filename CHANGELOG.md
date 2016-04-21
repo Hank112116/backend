@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v2.2.0 
+* [CHANGE] revise project function (@Hank)
+* [CHANGE] revise project search function (@Hank) 
+* [CHANGE] revise date time format (Apr 12, 2016) (@Hank)
+* [CHANGE] revise project tech tag system (@Hank) 
+* [NEW] add referrals & propose solution statistics (@Hank) 
+* [NEW] add project report function (@Hank)
+
+
 ## v2.1.1
 * [FIXED] fix tour form user project id null issue (@Hank)
 
