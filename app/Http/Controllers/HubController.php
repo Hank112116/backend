@@ -143,6 +143,10 @@ class HubController extends BaseController
     public function approveSchedule($id)
     {
         $schedule = $this->hub_repo->findSchedule($id);
+        if ($schedule->isDeleted()) {
+            Noty::warn('Permission deny');
+            return Redirect::action('ProjectController@showList');
+        }
         $schedule = $this->hub_repo->approveSchedule($schedule);
 
         $log_action = 'Approve project';

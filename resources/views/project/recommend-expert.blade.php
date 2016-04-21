@@ -1,5 +1,7 @@
 @if($project->hub_approve)
-    @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($project->date_added)))
+    @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($project->date_added))
+        and !$project->isDeleted()
+    )
         @if(!$project->recommendExpertTime())
             <a class="btn-mini btn-danger sendmail" href="javascript:void(0)" projectId="{{ $project->project_id }}"
                projectTitle="{{ $project->textTitle() }}" userId="{{ $project->user_id }}" PM="{!! $project->textProjectManagers() !!}">
@@ -16,7 +18,7 @@
             </span>
         @endif
     @else
-        <span class="table--text-center"><i class="fa fa-check"></i></span>
+        <i class="fa fa-times" aria-hidden="true"></i> <i class="fa fa-envelope fa-fw"></i>
     @endif
     @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
         <br/>
