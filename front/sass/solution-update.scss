@@ -1,20 +1,15 @@
 @import "common";
-
 @import "vendor/bootstrap/panels";
 @import "vendor/bootstrap/input-groups";
 @import "vendor/fronteed/icheck/blue";
 @import "vendor/redactor/redactor";
-
 @import "elements/cover-block";
-
 @import "modules/page-header-with-btn";
 @import "modules/update-owner";
 @import "modules/update-form";
-
 @import "pages/project/tag-component";
 @import "pages/project/tag-select";
 @import "pages/project/project-tag";
-
 @import "pages/solution/gallery";
 
 // Category
@@ -25,68 +20,57 @@
 .selected-category {
   width: 100%;
   height: 40px;
+  margin-bottom: 30px;
   padding: 5px;
-  line-height: 30px;
-
   border: 1px solid #ddd;
   border-radius: 2px;
-
   background: transparent;
-
-  margin-bottom: 30px;
+  line-height: 30px;
 }
 
 .category-options {
+  @include transition(max-height .5s, border-color .5s);
   position: absolute;
   top: 45px;
-
-  z-index: 10;
-  background: white;
   width: 95%;
-  border: 1px solid #fff;
+  max-height: 0;
   padding-left: 10px;
-
+  border: 1px solid #fff;
+  background: #fff;
   list-style: none;
-
   overflow: hidden;
-  max-height: 0px;
-  @include transition(max-height 0.5s, border-color 0.5s);
+  z-index: 10;
 
   &.active {
-    padding: 10px;
-    border-color:#ddd;
     max-height: 650px;
+    padding: 10px;
+    border-color: #ddd;
   }
 
   li {
-      position: relative;
-      cursor: pointer;
+    position: relative;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+    cursor: pointer;
 
-      padding: 10px 0px 10px;
-      border-bottom: 1px dashed #ddd;
+    &:hover {
+      color: $theme-color-blue-light;
+    }
 
-      &:hover {
-        color: $theme-color-blue-light;
+    &:active {
+      color: $theme-color-blue;
+
+      &::after {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        width: 10px;
+        height: 10px;
+        margin-top: -5px;
+        border-radius: 50%;
+        background: $theme-color-blue;
+        content: "";
       }
-  }
-
-  li.active {
-    color: $theme-color-blue;
-
-    &:after {
-      content: '';
-
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      margin-top: -5px;
-
-      width: 10px;
-      height: 10px;
-
-      background: $theme-color-blue;
-
-      border-radius: 50%;
     }
   }
 }
@@ -95,11 +79,9 @@
 
 .select-tags .tag-image {
   position: relative;
-
-  border-color: #ddd;
-  border-width: 1px;
-
   padding: 5px 20px;
+  border-width: 1px;
+  border-color: #ddd;
 
   img {
     height: 30px;
@@ -107,45 +89,118 @@
 }
 
 .tag-image.active::before {
-  content: '';
-
   position: absolute;
   top: 5px;
   left: 5px;
-
   width: 5px;
   height: 5px;
-  background-color: rgba(#00aeec, .5);
   border-radius: 50%;
+  background-color: rgba(#00aeec, .5);
+  content: "";
 }
 
 // Customer
-
 .customer {
   position: relative;
   margin-bottom: 10px;
 }
 
-.customer-customer-name, .customer-customer-url {
-  padding: 5px;
+.customer-customer-name {
   width: 40%;
+  margin-right: 10px;
+  padding: 5px;
 }
 
-.customer-customer-name {
-  margin-right: 10px;
+.customer-customer-url {
+  width: 40%;
+  padding: 5px;
 }
 
 .customer-delete {
+  @include transition(color .5s);
   position: absolute;
-  top: 0px;
+  top: 0;
   left: 85%;
-
   font-size: 1.5em;
   cursor: pointer;
 
-  @include transition(color 0.5s);
-
   &:hover {
     color: $theme-color-blue-light;
+  }
+}
+
+// scss-lint:disable all
+.redactor_editor,
+.redactor_editor:focus,
+.redactor_editor div,
+.redactor_editor p,
+.redactor_editor ul,
+.redactor_editor ol,
+.redactor_editor table,
+.redactor_editor dl,
+.redactor_editor blockquote,
+.redactor_editor pre,
+.redactor_editor h1,
+.redactor_editor h2,
+.redactor_editor h3,
+.redactor_editor h4,
+.redactor_editor h5,
+.redactor_editor h6 {
+  font-family: $font-family-base !important;
+}
+
+.redactor_editor {
+  // scss-lint:enable all
+  color: #333 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+
+  h3 {
+    color: #333 !important;
+    font-size: 24px !important;
+    font-weight: initial !important;
+    line-height: 30px !important;
+  }
+
+  h4 {
+    color: #333 !important;
+    font-size: 18px !important;
+    font-weight: initial !important;
+    line-height: 27px !important;
+  }
+
+  p {
+    min-height: 24px;
+    font-size: 16px !important;
+    line-height: 24px !important;
+  }
+
+  a {
+    color: #41acf8 !important;
+    text-decoration: none !important;
+  }
+
+  b,
+  strong {
+    font-weight: bold;
+  }
+
+  i,
+  em {
+    font-style: italic;
+  }
+
+  ul {
+    padding-left: 2em !important;
+    font-size: 16px;
+    line-height: 24px;
+    list-style: disc;
+  }
+
+  ol {
+    padding-left: 2em !important;
+    font-size: 16px;
+    line-height: 24px;
+    list-style: decimal;
   }
 }

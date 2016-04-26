@@ -7138,3 +7138,62 @@ body {
   width: 45%;
   float: left;
 }
+
+/* line 30, ../../front/sass/product-detail.scss */
+.rich-text-content {
+  color: #333 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 35, ../../front/sass/product-detail.scss */
+.rich-text-content img {
+  max-width: 100%;
+}
+/* line 39, ../../front/sass/product-detail.scss */
+.rich-text-content h3 {
+  color: #333 !important;
+  font-size: 24px !important;
+  font-weight: initial !important;
+  line-height: 30px !important;
+}
+/* line 46, ../../front/sass/product-detail.scss */
+.rich-text-content h4 {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-weight: initial !important;
+  line-height: 27px !important;
+}
+/* line 53, ../../front/sass/product-detail.scss */
+.rich-text-content p {
+  min-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 59, ../../front/sass/product-detail.scss */
+.rich-text-content a {
+  color: #41acf8 !important;
+  text-decoration: none !important;
+}
+/* line 64, ../../front/sass/product-detail.scss */
+.rich-text-content b,
+.rich-text-content strong {
+  font-weight: bold;
+}
+/* line 69, ../../front/sass/product-detail.scss */
+.rich-text-content i,
+.rich-text-content em {
+  font-style: italic;
+}
+/* line 74, ../../front/sass/product-detail.scss */
+.rich-text-content ul {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+  list-style: disc;
+}
+/* line 81, ../../front/sass/product-detail.scss */
+.rich-text-content ol {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+}

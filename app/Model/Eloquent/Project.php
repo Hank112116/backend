@@ -943,39 +943,48 @@ class Project extends Eloquent
 
     public function hasProposeSolution($dstart, $dend)
     {
-        $propose_solution_model = new ProposeSolution();
-        $count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', '!=', 'click')
-            ->where('propose_time', '>=', $dstart)
-            ->where('propose_time', '<=', $dend)
-            ->count();
-        return $count > 0;
+        $flag = false;
+        if ($this->propose) {
+            foreach ($this->propose as $propose) {
+                if ($propose->propose_time >= $dstart
+                    and $propose->propose_time < $dend
+                    and $propose->event != 'click'
+                ) {
+                    $flag = true;
+                    break;
+                }
+            }
+        }
+        return $flag;
     }
 
     public function hasRecommendExpert($dstart, $dend)
     {
-        $groups = $this->group;
-        if ($groups) {
-            foreach ($groups as $group) {
-                if ($group->memberApplicant) {
-                    foreach ($group->memberApplicant as $applicant) {
-                        if ($applicant->user) {
-                            if ($applicant->user->isExpert()) {
-                                if ($applicant->apply_date >= $dstart && $applicant->apply_date < $dend) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         $recommend_experts = $this->recommendExperts()->getResults();
         if ($recommend_experts) {
             foreach ($recommend_experts as $recommend_expert) {
                 if ($recommend_expert->user) {
                     if ($recommend_expert->date_send >= $dstart && $recommend_expert->date_send < $dend) {
                         return true;
+                    }
+                }
+            }
+        }
+
+        $groups = $this->group;
+        if ($groups) {
+            foreach ($groups as $group) {
+                $member_applicant = $group->memberApplicant;
+                if ($member_applicant) {
+                    foreach ($member_applicant as $applicant) {
+                        $user = $applicant->user;
+                        if ($user) {
+                            if ($user->isExpert()) {
+                                if ($applicant->apply_date >= $dstart && $applicant->apply_date < $dend) {
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
             }

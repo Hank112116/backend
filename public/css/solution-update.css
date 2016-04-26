@@ -8399,124 +8399,202 @@ body {
   border-color: #d9534f;
 }
 
-/* line 21, ../../front/sass/solution-update.scss */
+/* line 16, ../../front/sass/solution-update.scss */
 .category-list-wrapper {
   position: relative;
 }
 
-/* line 25, ../../front/sass/solution-update.scss */
+/* line 20, ../../front/sass/solution-update.scss */
 .selected-category {
   width: 100%;
   height: 40px;
+  margin-bottom: 30px;
   padding: 5px;
-  line-height: 30px;
   border: 1px solid #ddd;
   border-radius: 2px;
   background: transparent;
-  margin-bottom: 30px;
+  line-height: 30px;
 }
 
-/* line 39, ../../front/sass/solution-update.scss */
+/* line 31, ../../front/sass/solution-update.scss */
 .category-options {
-  position: absolute;
-  top: 45px;
-  z-index: 10;
-  background: white;
-  width: 95%;
-  border: 1px solid #fff;
-  padding-left: 10px;
-  list-style: none;
-  overflow: hidden;
-  max-height: 0px;
   -webkit-transition: max-height 0.5s, border-color 0.5s;
   transition: max-height 0.5s, border-color 0.5s;
+  position: absolute;
+  top: 45px;
+  width: 95%;
+  max-height: 0;
+  padding-left: 10px;
+  border: 1px solid #fff;
+  background: #fff;
+  list-style: none;
+  overflow: hidden;
+  z-index: 10;
 }
-/* line 55, ../../front/sass/solution-update.scss */
+/* line 44, ../../front/sass/solution-update.scss */
 .category-options.active {
+  max-height: 650px;
   padding: 10px;
   border-color: #ddd;
-  max-height: 650px;
 }
-/* line 61, ../../front/sass/solution-update.scss */
+/* line 50, ../../front/sass/solution-update.scss */
 .category-options li {
   position: relative;
-  cursor: pointer;
-  padding: 10px 0px 10px;
+  padding: 10px 0;
   border-bottom: 1px dashed #ddd;
+  cursor: pointer;
 }
-/* line 68, ../../front/sass/solution-update.scss */
+/* line 56, ../../front/sass/solution-update.scss */
 .category-options li:hover {
   color: #53d2ff;
 }
-/* line 73, ../../front/sass/solution-update.scss */
-.category-options li.active {
+/* line 60, ../../front/sass/solution-update.scss */
+.category-options li:active {
   color: #00AEEC;
 }
-/* line 76, ../../front/sass/solution-update.scss */
-.category-options li.active:after {
-  content: '';
+/* line 63, ../../front/sass/solution-update.scss */
+.category-options li:active::after {
   position: absolute;
-  right: 10px;
   top: 50%;
-  margin-top: -5px;
+  right: 10px;
   width: 10px;
   height: 10px;
-  background: #00AEEC;
+  margin-top: -5px;
   border-radius: 50%;
+  background: #00AEEC;
+  content: "";
 }
 
-/* line 96, ../../front/sass/solution-update.scss */
+/* line 80, ../../front/sass/solution-update.scss */
 .select-tags .tag-image {
   position: relative;
-  border-color: #ddd;
-  border-width: 1px;
   padding: 5px 20px;
+  border-width: 1px;
+  border-color: #ddd;
 }
-/* line 104, ../../front/sass/solution-update.scss */
+/* line 86, ../../front/sass/solution-update.scss */
 .select-tags .tag-image img {
   height: 30px;
 }
 
-/* line 109, ../../front/sass/solution-update.scss */
+/* line 91, ../../front/sass/solution-update.scss */
 .tag-image.active::before {
-  content: '';
   position: absolute;
   top: 5px;
   left: 5px;
   width: 5px;
   height: 5px;
-  background-color: rgba(0, 174, 236, 0.5);
   border-radius: 50%;
+  background-color: rgba(0, 174, 236, 0.5);
+  content: "";
 }
 
-/* line 124, ../../front/sass/solution-update.scss */
+/* line 103, ../../front/sass/solution-update.scss */
 .customer {
   position: relative;
   margin-bottom: 10px;
 }
 
-/* line 129, ../../front/sass/solution-update.scss */
-.customer-customer-name, .customer-customer-url {
-  padding: 5px;
-  width: 40%;
-}
-
-/* line 134, ../../front/sass/solution-update.scss */
+/* line 108, ../../front/sass/solution-update.scss */
 .customer-customer-name {
+  width: 40%;
   margin-right: 10px;
+  padding: 5px;
 }
 
-/* line 138, ../../front/sass/solution-update.scss */
+/* line 114, ../../front/sass/solution-update.scss */
+.customer-customer-url {
+  width: 40%;
+  padding: 5px;
+}
+
+/* line 119, ../../front/sass/solution-update.scss */
 .customer-delete {
+  -webkit-transition: color 0.5s;
+  transition: color 0.5s;
   position: absolute;
-  top: 0px;
+  top: 0;
   left: 85%;
   font-size: 1.5em;
   cursor: pointer;
-  -webkit-transition: color 0.5s;
-  transition: color 0.5s;
 }
-/* line 148, ../../front/sass/solution-update.scss */
+/* line 127, ../../front/sass/solution-update.scss */
 .customer-delete:hover {
   color: #53d2ff;
+}
+
+/* line 133, ../../front/sass/solution-update.scss */
+.redactor_editor,
+.redactor_editor:focus,
+.redactor_editor div,
+.redactor_editor p,
+.redactor_editor ul,
+.redactor_editor ol,
+.redactor_editor table,
+.redactor_editor dl,
+.redactor_editor blockquote,
+.redactor_editor pre,
+.redactor_editor h1,
+.redactor_editor h2,
+.redactor_editor h3,
+.redactor_editor h4,
+.redactor_editor h5,
+.redactor_editor h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+/* line 152, ../../front/sass/solution-update.scss */
+.redactor_editor {
+  color: #333 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 158, ../../front/sass/solution-update.scss */
+.redactor_editor h3 {
+  color: #333 !important;
+  font-size: 24px !important;
+  font-weight: initial !important;
+  line-height: 30px !important;
+}
+/* line 165, ../../front/sass/solution-update.scss */
+.redactor_editor h4 {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-weight: initial !important;
+  line-height: 27px !important;
+}
+/* line 172, ../../front/sass/solution-update.scss */
+.redactor_editor p {
+  min-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 178, ../../front/sass/solution-update.scss */
+.redactor_editor a {
+  color: #41acf8 !important;
+  text-decoration: none !important;
+}
+/* line 183, ../../front/sass/solution-update.scss */
+.redactor_editor b,
+.redactor_editor strong {
+  font-weight: bold;
+}
+/* line 188, ../../front/sass/solution-update.scss */
+.redactor_editor i,
+.redactor_editor em {
+  font-style: italic;
+}
+/* line 193, ../../front/sass/solution-update.scss */
+.redactor_editor ul {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+  list-style: disc;
+}
+/* line 200, ../../front/sass/solution-update.scss */
+.redactor_editor ol {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+  list-style: decimal;
 }

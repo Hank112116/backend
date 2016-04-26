@@ -15,3 +15,79 @@
 @import "modules/option";
 
 @import "pages/project/update";
+
+// scss-lint:disable all
+.redactor_editor,
+.redactor_editor:focus,
+.redactor_editor div,
+.redactor_editor p,
+.redactor_editor ul,
+.redactor_editor ol,
+.redactor_editor table,
+.redactor_editor dl,
+.redactor_editor blockquote,
+.redactor_editor pre,
+.redactor_editor h1,
+.redactor_editor h2,
+.redactor_editor h3,
+.redactor_editor h4,
+.redactor_editor h5,
+.redactor_editor h6 {
+  font-family: $font-family-base !important;
+}
+
+.redactor_editor {
+  // scss-lint:enable all
+  color: #333 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+
+  h3 {
+    color: #333 !important;
+    font-size: 24px !important;
+    font-weight: initial !important;
+    line-height: 30px !important;
+  }
+
+  h4 {
+    color: #333 !important;
+    font-size: 18px !important;
+    font-weight: initial !important;
+    line-height: 27px !important;
+  }
+
+  p {
+    min-height: 24px;
+    font-size: 16px !important;
+    line-height: 24px !important;
+  }
+
+  a {
+    color: #41acf8 !important;
+    text-decoration: none !important;
+  }
+
+  b,
+  strong {
+    font-weight: bold;
+  }
+
+  i,
+  em {
+    font-style: italic;
+  }
+
+  ul {
+    padding-left: 2em !important;
+    font-size: 16px;
+    line-height: 24px;
+    list-style: disc;
+  }
+
+  ol {
+    padding-left: 2em !important;
+    font-size: 16px;
+    line-height: 24px;
+    list-style: decimal;
+  }
+}

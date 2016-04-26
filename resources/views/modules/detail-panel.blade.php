@@ -1,7 +1,7 @@
 <div class="col-md-10 col-md-offset-1">
     <div class="panel panel-default">
       <div class="panel-heading">{!! $column_title !!}</div>
-      <div class="panel-body">
+      <div class="panel-body rich-text-content">
         {!! $column_content !!}
       </div>
     </div>
