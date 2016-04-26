@@ -148,7 +148,7 @@ $(function () {
         var managers = [];
         $("input[type=checkbox]").each(function () {
             if (this.checked) {
-                managers.push($(this).val());
+                managers.push(Number($(this).val()));
             }
         });
 
