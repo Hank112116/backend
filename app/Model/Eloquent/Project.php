@@ -212,6 +212,11 @@ class Project extends Eloquent
         return $this->hasOne(ProjectMember::class, 'project_id', 'project_id');
     }
 
+    public function projectManager()
+    {
+        return $this->hasMany(ProjectManager::class, 'project_id', 'project_id');
+    }
+
     // pending-for-approve products
     public function scopeQueryApprovePending(Builder $query)
     {
@@ -550,10 +555,10 @@ class Project extends Eloquent
 
     public function hasProjectManager()
     {
-        if (!$this->internalProjectMemo) {
+        if ($this->projectManager->count() == 0) {
             return false;
         }
-        return $this->internalProjectMemo->hasProjectManager();
+        return true;
     }
 
     public function fundingRounds()
@@ -676,33 +681,38 @@ class Project extends Eloquent
 
     public function getProjectManagers()
     {
-        return $this->internalProjectMemo ? $this->internalProjectMemo->project_managers : null;
+        $r = [];
+        if ($this->projectManager->count() > 0) {
+            foreach ($this->projectManager as $manager) {
+                $r[] = $manager->pm_id;
+            }
+        }
+        return json_encode($r);
     }
 
     public function getHubManagerNames()
     {
-        if (!$this->internalProjectMemo) {
+        if ($this->projectManager->count() == 0) {
             return [];
         }
 
-        if (!$this->internalProjectMemo->project_managers) {
-            return [];
+        $managers = [];
+        foreach ($this->projectManager as $manager) {
+            $managers[] = $manager->pm_id;
         }
-        $managers = json_decode($this->internalProjectMemo->project_managers, true);
 
         return Adminer::whereIn('hwtrek_member', $managers)->lists('name');
     }
 
     public function getDeletedHubManagerNames()
     {
-        if (!$this->internalProjectMemo) {
+        if ($this->projectManager->count() == 0) {
             return [];
         }
-
-        if (!$this->internalProjectMemo->project_managers) {
-            return [];
+        $managers = [];
+        foreach ($this->projectManager as $manager) {
+            $managers[] = $manager->pm_id;
         }
-        $managers = json_decode($this->internalProjectMemo->project_managers, true);
 
         return Adminer::onlyTrashed()->whereIn('hwtrek_member', $managers)->lists('name');
     }

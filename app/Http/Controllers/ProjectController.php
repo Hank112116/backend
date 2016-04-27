@@ -218,6 +218,21 @@ class ProjectController extends BaseController
 
         return Response::json($res);
     }
+    
+    public function updateManager()
+    {
+        $input = Input::all();
+        if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
+            $res   = ['status' => 'success'];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+        }
+
+        $log_action = 'Edit internal information';
+        Log::info($log_action, $input);
+
+        return Response::json($res);
+    }
 
     public function proposeSolution()
     {

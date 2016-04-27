@@ -160,4 +160,11 @@ interface ProjectInterface
      * @return boolean
      */
     public function updateInternalNote($project_id, $data);
+
+    /**
+     * @param $project_id
+     * @param $data
+     * @return boolean
+     */
+    public function updateProjectManager($project_id, $data);
 }

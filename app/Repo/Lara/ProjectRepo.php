@@ -457,6 +457,11 @@ class ProjectRepo implements ProjectInterface
         return $this->project_modifier->updateProjectMemo($project_id, $data);
     }
 
+    public function updateProjectManager($project_id, $data)
+    {
+        return $this->project_modifier->updateProjectManager($project_id, $data);
+    }
+
     private function getProjectStatistics(Collection $projects)
     {
         $result = [];

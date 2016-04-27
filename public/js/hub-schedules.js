@@ -185,7 +185,7 @@ $(function () {
 
         $.ajax({
             type: "POST",
-            url: "/project/update-memo",
+            url: "/project/update-project-manager",
             data: {
                 project_id: project_id,
                 project_managers: JSON.stringify(managers)

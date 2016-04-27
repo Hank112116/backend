@@ -49,7 +49,9 @@ class ModelServiceProvider extends ServiceProvider
                     new ProjectProfile(),
                     new \ImageUp(),
                     new \Backend\Model\Eloquent\InternalProjectMemo(),
-                    new \Backend\Model\Eloquent\ProjectTeam()
+                    new \Backend\Model\Eloquent\ProjectTeam(),
+                    new \Backend\Model\Eloquent\ProjectManager(),
+                    new \Backend\Model\Eloquent\Adminer()
                 );
             }
         );
