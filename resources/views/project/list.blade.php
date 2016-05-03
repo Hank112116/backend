@@ -102,14 +102,14 @@
                 </td>
 
                 <td>
-                    @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount()])
+                    @include('project.list-propose-statistic', ['propose_solution' => $project->getStatistic()])
                 </td>
                 <td>
-                    @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics()])
+                    @include('project.list-recommend-statistic', ['recommend_expert' => $project->getStatistic(), 'email_out_count' => $project->getEmailOutCount()])
                 </td>
                 <td>
                     Community:{{ $project->getPageViewCount() }}<br/>
-                    Staff Referrals:{{ $project->getStaffReferredCount($pm_ids) }} <br/>
+                    Staff Referrals:{{ $project->getStaffReferredCount() }} <br/>
                     Collaborators:{{ $project->getCollaboratorsCount() }}
                 </td>
                 <td>

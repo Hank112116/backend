@@ -506,6 +506,13 @@ $(function () {
         });
         return false;
     });
+
+    $("input").keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            $("form").submit();
+        }
+    });
 });
 
 },{"./libs/InternalProjectMemo.js":1,"./libs/ProjectProposeRecommend.js":2,"./libs/RecommendExpert.js":3,"./libs/SweetAlert":4}],6:[function(require,module,exports){

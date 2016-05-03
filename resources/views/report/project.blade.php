@@ -119,14 +119,14 @@
                             @if ($input['time_type'] == 'match')
                                 @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount($input['dstart'], $input['dend'])])
                             @else
-                                @include('project.list-propose-statistic', ['propose_solution' => $project->proposeSolutionCount()])
+                                @include('project.list-propose-statistic', ['propose_solution' => $project->getStatistic()])
                             @endif
                         </td>
                         <td>
                             @if ($input['time_type'] == 'match')
-                                @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics($input['dstart'], $input['dend'])])
+                                @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics($input['dstart'], $input['dend']), 'email_out_count' => 0])
                             @else
-                                @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics()])
+                                @include('project.list-recommend-statistic', ['recommend_expert' => $project->getStatistic(), 'email_out_count' => $project->getEmailOutCount()])
                             @endif
                         </td>
 
