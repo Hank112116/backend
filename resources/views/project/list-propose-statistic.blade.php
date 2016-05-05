@@ -1,3 +1,3 @@
-<a href="javascript:void(0)" title="PM Proposed Solutions" class="project_propose" propose="internal" rel="{{ $project->project_id }}">PM:{{ $propose_solution->staff_proposed }}</a><br/>
-<a href="javascript:void(0)" title="Expert Self Proposed Solution" class="project_propose" propose="external" rel="{{ $project->project_id }}">Experts:{{ $propose_solution->user_proposed }}</a><br/>
+<a href="javascript:void(0)" title="Proposed Solutions" class="project_propose" propose="internal" rel="{{ $project->project_id }}">PM:{{ $propose_solution->staff_proposed }}</a><br/>
+<a href="javascript:void(0)" title="Proposed Solutions" class="project_propose" propose="external" rel="{{ $project->project_id }}">Experts:{{ $propose_solution->user_proposed }}</a><br/>
 total: {{ $propose_solution->staff_proposed + $propose_solution->user_proposed }}

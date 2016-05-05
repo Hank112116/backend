@@ -744,7 +744,7 @@ class Project extends Eloquent
 
         $propose_solution_model = new ProposeSolution();
         $internal_count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', 'suggest');
+            ->where('event', ProposeSolution::EVENT_SUGGEST);
         if (!empty($dstart)) {
             $internal_count->where('propose_time', '>=', $dstart);
         }
@@ -755,7 +755,7 @@ class Project extends Eloquent
         $internal_count = $internal_count->count();
 
         $external_count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', '=', 'propose');
+            ->where('event', ProposeSolution::EVENT_PROPOSE);
         if (!empty($dstart)) {
             $external_count->where('propose_time', '>=', $dstart);
         }
@@ -817,7 +817,9 @@ class Project extends Eloquent
         $propose_solutions = $this->propose()->getResults();
         if ($propose_solutions) {
             foreach ($propose_solutions as $propose_solution) {
-                if ($propose_solution->event !== 'click' && $propose_solution->user && $propose_solution->solution) {
+                if ($propose_solution->event !== ProposeSolution::EVENT_CLICK
+                    and $propose_solution->user
+                    and $propose_solution->solution) {
                     if ($dstart) {
                         if ($propose_solution->propose_time < $dstart) {
                             continue;
@@ -834,10 +836,10 @@ class Project extends Eloquent
                     $data['user_name']      = $propose_solution->user->textFullName();
                     $data['user_url']       = $propose_solution->user->textFrontLink();
                     $data['at_time']        = Carbon::parse($propose_solution->propose_time)->toFormattedDateString();
-                    if ($propose_solution->event === 'suggest') {
+                    if ($propose_solution->event === ProposeSolution::EVENT_SUGGEST) {
                         $internal_date[] = $data;
                         $internal_count ++;
-                    } elseif ($propose_solution->event === 'propose') {
+                    } elseif ($propose_solution->event === ProposeSolution::EVENT_PROPOSE) {
                         $external_data[] = $data;
                         $external_count ++;
                     }
@@ -876,6 +878,8 @@ class Project extends Eloquent
                                         continue;
                                     }
                                 }
+                                $data                 = [];
+                                $data['applicant_id'] = $applicant->applicant_id;
                                 $data['user_id']      = $applicant->user_id;
                                 $data['profile_url']  = $applicant->user->textFrontLink();
                                 $data['user_name']    = $applicant->user->textFullName();
@@ -885,21 +889,14 @@ class Project extends Eloquent
                                 if ($applicant->referralUser) {
                                     $data['referral_user_name'] = $applicant->referralUser->textFullName();
                                     $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
-                                    if ($applicant->referralUser->isHWTrekPM()) {
-                                        $internal_date[] = $data;
-                                        $internal_count++;
-                                    } else {
-                                        $external_data[] = $data;
-                                        $external_count++;
-                                    }
+                                }
+                                if ($applicant->event == GroupMemberApplicant::REFERRAL_PM
+                                    or $applicant->event == GroupMemberApplicant::APPLY_PM) {
+                                    $internal_date[] = $data;
+                                    $internal_count++;
                                 } else {
-                                    if ($applicant->user->isHWTrekPM()) {
-                                        $internal_date[] = $data;
-                                        $internal_count++;
-                                    } else {
-                                        $external_data[] = $data;
-                                        $external_count++;
-                                    }
+                                    $external_data[] = $data;
+                                    $external_count++;
                                 }
                             }
                         }

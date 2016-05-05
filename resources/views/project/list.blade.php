@@ -76,9 +76,9 @@
                         <br/><span class="table--text-light">{{ $project->textSubmitTime() }}</span>
                     @endif
                     @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
-                        @if(!$project->profile->isDraft())
+                        @if(!$project->profile->isDraft() and !$project->isDeleted())
                             <br/><a href="{{ $project->textScheduleFrontEditLink() }}" target="_blank" class="btn-mini">Schedule</a>
-                            @if(!$project->hub_approve and !$project->isDeleted())
+                            @if(!$project->hub_approve)
                             <br/><a href="{!! action('HubController@approveSchedule', $project->project_id) !!}"
                                     class="btn-mini btn-danger js-approve"><i class="fa fa-pencil fa-fw"></i>APPROVE</a>
                             @endif
