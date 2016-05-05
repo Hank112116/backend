@@ -676,7 +676,14 @@ class Project extends Eloquent
 
     public function textProjectManagers()
     {
-        return $this->internalProjectMemo ? $this->internalProjectMemo->textProjectManagers() : null;
+        $r = [];
+        if ($this->projectManager->count() > 0) {
+            foreach ($this->projectManager as $manager) {
+                $r[] = $manager->pm_id;
+            }
+            return implode(',', $r);
+        }
+        return null;
     }
 
     public function getProjectManagers()

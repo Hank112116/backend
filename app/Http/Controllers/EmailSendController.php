@@ -6,10 +6,9 @@ use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Mews\Purifier\Purifier;
 use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
-use Config;
+use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
 use Input;
 use Log;
-use EmailSend;
 use Response;
 use Session;
 use Carbon;
@@ -21,6 +20,7 @@ class EmailSendController extends BaseController
     private $project_repo;
     private $mail_repo;
     private $pme_repo;
+    private $applicant_repo;
     private $purifier;
 
     public function __construct(
@@ -28,16 +28,18 @@ class EmailSendController extends BaseController
         AdminerInterface $adminer,
         MailTemplateInterface $mt,
         ProjectInterface $project,
-        ProjectMailExpertInterface $porjectMailExpert,
+        ProjectMailExpertInterface $projectMailExpert,
+        GroupMemberApplicantInterface $applicant,
         Purifier $purifier
     ) {
         parent::__construct();
-        $this->user_repo    = $user;
-        $this->adminer_repo = $adminer;
-        $this->project_repo = $project;
-        $this->mail_repo    = $mt;
-        $this->pme_repo     = $porjectMailExpert;
-        $this->purifier     = $purifier;
+        $this->user_repo      = $user;
+        $this->adminer_repo   = $adminer;
+        $this->project_repo   = $project;
+        $this->mail_repo      = $mt;
+        $this->pme_repo       = $projectMailExpert;
+        $this->applicant_repo = $applicant;
+        $this->purifier       = $purifier;
     }
     public function hubMailSend()
     {
@@ -80,8 +82,9 @@ class EmailSendController extends BaseController
             $data['project_id'] = $input['projectId'];
             $data['admin_id']   = Session::get('admin');
             $data['date_send']  = $date;
+            $this->applicant_repo->insertItem($data);
             $this->pme_repo->insertItem($data);
-
+            
         }
         $res   = ['status' => 'success'];
 

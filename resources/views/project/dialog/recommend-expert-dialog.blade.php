@@ -22,7 +22,7 @@
     <table class="table table-striped">
         <tr>
             <td class="col-md-4">
-                <label>User Requests and Referrals：</label>
+                <label>Requests / Referrals：</label>
             </td>
             <td></td>
         </tr>
