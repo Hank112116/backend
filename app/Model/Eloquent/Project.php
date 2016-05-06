@@ -985,6 +985,11 @@ class Project extends Eloquent
                 }
             }
         }
+
+        if (!$this->projectStatistic) {
+            return false;
+        }
+
         if (is_null(($this->projectStatistic->last_referral_time))) {
             return false;
         }
@@ -1020,7 +1025,11 @@ class Project extends Eloquent
     
     public function getStatistic()
     {
-        return $this->projectStatistic;
+        if ($this->projectStatistic) {
+            return $this->projectStatistic;
+        } else {
+            return (object) ProjectStatistic::DEFAULT_STATISTIC;
+        }
     }
     
     public function getEmailOutCount()
