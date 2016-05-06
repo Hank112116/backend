@@ -1,5 +1,5 @@
 <div id="output_all" class='header-output'>
-    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+    @if(Auth::user()->isAdmin())
         <a class="btn-mini header-output-link" href="{!! LinkGen::csv() !!}">
             CSV
         </a>

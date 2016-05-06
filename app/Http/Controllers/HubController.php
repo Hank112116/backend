@@ -134,34 +134,6 @@ class HubController extends BaseController
     }
 
     /**
-     * Approve a project schedule
-     * GET /hub/schedule/approve/{project_id}
-     *
-     * @param int $id project_id
-     * @return Redirect
-     */
-    public function approveSchedule($id)
-    {
-        $schedule = $this->hub_repo->findSchedule($id);
-        if ($schedule->isDeleted()) {
-            Noty::warn('Permission deny');
-            return Redirect::action('ProjectController@showList');
-        }
-        $schedule = $this->hub_repo->approveSchedule($schedule);
-
-        $log_action = 'Approve project';
-        $log_data   = [
-            'project' => $id,
-            'approve' => $schedule->hub_approve,
-        ];
-        Log::info($log_action, $log_data);
-
-        Noty::success("Project [{$schedule->project_title}] is approved");
-
-        return Redirect::action('ProjectController@showList');
-    }
-
-    /**
      * @param $expertId
      * @return mixed
      */

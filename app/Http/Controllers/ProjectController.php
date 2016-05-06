@@ -258,4 +258,35 @@ class ProjectController extends BaseController
         $result['user_referral']  = $statistics->external_data;
         return Response::json($result);
     }
+
+    /**
+     * Approve a project schedule
+     * GET /hub/schedule/approve/{project_id}
+     *
+     * @param int $id project_id
+     * @return Redirect
+     */
+    public function approveSchedule()
+    {
+        $id = Input::get('project_id');
+
+        $schedule = $this->hub_repo->findSchedule($id);
+        if ($schedule->isDeleted()) {
+            Noty::warn('Permission deny');
+            $res   = ['status' => 'fail', "msg" => "Permission deny"];
+            return Response::json($res);
+        }
+        $schedule = $this->hub_repo->approveSchedule($schedule);
+
+        $log_action = 'Approve project';
+        $log_data   = [
+            'project' => $id,
+            'approve' => $schedule->hub_approve,
+        ];
+        Log::info($log_action, $log_data);
+
+        $res   = ['status' => 'success'];
+
+        return Response::json($res);
+    }
 }
