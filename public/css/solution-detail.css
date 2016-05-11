@@ -7211,13 +7211,13 @@ body {
 
 /* line 21, ../../front/sass/solution-detail.scss */
 .solution-certification-list {
-  list-style: none;
   padding-left: 0;
+  list-style: none;
 }
 /* line 25, ../../front/sass/solution-detail.scss */
 .solution-certification-list li {
   display: inline-block;
-  margin: 0px 20px 20px 0px;
+  margin: 0 20px 20px 0;
 }
 
 /* line 31, ../../front/sass/solution-detail.scss */
@@ -7232,11 +7232,70 @@ body {
 
 /* line 39, ../../front/sass/solution-detail.scss */
 .solution-list {
-  list-style: none;
-  padding-left: 0;
   margin-bottom: 20px;
+  padding-left: 0;
+  list-style: none;
 }
 /* line 44, ../../front/sass/solution-detail.scss */
 .solution-list li {
   margin-bottom: 5px;
+}
+
+/* line 49, ../../front/sass/solution-detail.scss */
+.rich-text-content {
+  color: #333 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 54, ../../front/sass/solution-detail.scss */
+.rich-text-content img {
+  max-width: 100%;
+}
+/* line 58, ../../front/sass/solution-detail.scss */
+.rich-text-content h3 {
+  color: #333 !important;
+  font-size: 24px !important;
+  font-weight: initial !important;
+  line-height: 30px !important;
+}
+/* line 65, ../../front/sass/solution-detail.scss */
+.rich-text-content h4 {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-weight: initial !important;
+  line-height: 27px !important;
+}
+/* line 72, ../../front/sass/solution-detail.scss */
+.rich-text-content p {
+  min-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 78, ../../front/sass/solution-detail.scss */
+.rich-text-content a {
+  color: #41acf8 !important;
+  text-decoration: none !important;
+}
+/* line 83, ../../front/sass/solution-detail.scss */
+.rich-text-content b,
+.rich-text-content strong {
+  font-weight: bold;
+}
+/* line 88, ../../front/sass/solution-detail.scss */
+.rich-text-content i,
+.rich-text-content em {
+  font-style: italic;
+}
+/* line 93, ../../front/sass/solution-detail.scss */
+.rich-text-content ul {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+  list-style: disc;
+}
+/* line 100, ../../front/sass/solution-detail.scss */
+.rich-text-content ol {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
 }

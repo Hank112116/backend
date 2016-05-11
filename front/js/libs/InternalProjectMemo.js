@@ -147,13 +147,13 @@ $(function () {
         var managers   = [];
         $("input[type=checkbox]").each(function () {
             if (this.checked) {
-                managers.push($(this).val());
+                managers.push(Number($(this).val()));
             }
         });
-
+        
         $.ajax({
             type: "POST",
-            url: "/project/update-memo",
+            url: "/project/update-project-manager",
             data: {
                 project_id: project_id,
                 project_managers: JSON.stringify(managers)

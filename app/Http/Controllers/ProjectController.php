@@ -218,39 +218,75 @@ class ProjectController extends BaseController
 
         return Response::json($res);
     }
+    
+    public function updateManager()
+    {
+        $input = Input::all();
+        if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
+            $res   = ['status' => 'success'];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+        }
+
+        $log_action = 'Edit internal information';
+        Log::info($log_action, $input);
+
+        return Response::json($res);
+    }
 
     public function proposeSolution()
     {
         $project_id   = Input::get('project_id');
-        $propose_type = Input::get('propose_type');
         $dstart       = Input::get('dstart');
         $dend         = Input::get('dend');
 
-        $project = $this->project_repo->find($project_id);
-        $result = $project->proposeSolutionStatistics($dstart, $dend);
-        if ($propose_type == 'internal') {
-            return Response::json($result->internal_data);
-        } elseif ($propose_type == 'external') {
-            return Response::json($result->external_data);
-        } else {
-            return Response::json('', 400);
-        }
+        $project    = $this->project_repo->find($project_id);
+        $statistics = $project->proposeSolutionStatistics($dstart, $dend);
+        $result['staff_propose'] = $statistics->internal_data;
+        $result['user_propose']  = $statistics->external_data;
+        return Response::json($result);
     }
 
     public function recommendExpert()
     {
         $project_id     = Input::get('project_id');
-        $recommend_type = Input::get('recommend_type');
         $dstart         = Input::get('dstart');
         $dend           = Input::get('dend');
-        $project = $this->project_repo->find($project_id);
-        $result  = $project->recommendExpertStatistics($dstart, $dend);
-        if ($recommend_type == 'internal') {
-            return Response::json($result->internal_data);
-        } elseif ($recommend_type == 'external') {
-            return Response::json($result->external_data);
-        } else {
-            return Response::json('', 400);
+        $project     = $this->project_repo->find($project_id);
+        $statistics  = $project->recommendExpertStatistics($dstart, $dend);
+        $result['staff_referral'] = $statistics->internal_data;
+        $result['user_referral']  = $statistics->external_data;
+        return Response::json($result);
+    }
+
+    /**
+     * Approve a project schedule
+     * GET /hub/schedule/approve/{project_id}
+     *
+     * @param int $id project_id
+     * @return Redirect
+     */
+    public function approveSchedule()
+    {
+        $id = Input::get('project_id');
+
+        $schedule = $this->hub_repo->findSchedule($id);
+        if ($schedule->isDeleted()) {
+            Noty::warn('Permission deny');
+            $res   = ['status' => 'fail', "msg" => "Permission deny"];
+            return Response::json($res);
         }
+        $schedule = $this->hub_repo->approveSchedule($schedule);
+
+        $log_action = 'Approve project';
+        $log_data   = [
+            'project' => $id,
+            'approve' => $schedule->hub_approve,
+        ];
+        Log::info($log_action, $log_data);
+
+        $res   = ['status' => 'success'];
+
+        return Response::json($res);
     }
 }

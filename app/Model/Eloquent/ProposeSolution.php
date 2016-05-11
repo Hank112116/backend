@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class ProposeSolution extends Eloquent
 {
 
+    const EVENT_SUGGEST = 'suggest';
+    const EVENT_PROPOSE = 'propose';
+    const EVENT_CLICK   = 'click';
+    
     protected $table = 'log_propose_solution';
     protected $primaryKey = 'log_id';
 

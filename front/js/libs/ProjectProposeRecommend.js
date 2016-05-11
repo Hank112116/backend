@@ -5,69 +5,82 @@ $(function () {
     var $match_statistics_dialog = $("#project-match-statistics-dialog");
     var $dstart           = $("#statistic-start-date").val();
     var $dend             = $("#statistic-end-date").val();
+    var $pm_proposed      = $("#pm-proposed");
+    var $user_proposed    = $("#user-proposed");
     $( ".project_propose" ).click(function () {
-        $propose_dialog.html('');
+        $pm_proposed.html("");
+        $user_proposed.html("");
         var $this        = $(this);
         var title        = $this.attr("title");
         var project_id   = $this.attr("rel");
-        var propose_type = $this.attr("propose");
         $.ajax({
             type: "POST",
             url: "/project/propose-solution",
             data: {
                 project_id: project_id,
-                propose_type: propose_type,
                 dstart: $dstart,
                 dend: $dend
             },
             dataType: "JSON",
             success: function success(feeback) {
-                var propose_list = '';
-                $.each(feeback, function(index, value) {
-                    propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" +
+                var staff_propose_list = "";
+                var user_propose_list  = "";
+                $.each(feeback.staff_propose, function(index, value) {
+                    staff_propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" +
                         "#" + value.solution_id + ". " + "<a href='" + value.solution_url + "' target='_blank' style='color: #428bca'> " + value.solution_title +" </a>" +
                         " By " + "<a href='" + value.user_url + "' target='_blank' style='color: #428bca'> " + value.user_name + " </a>" +
                         " At " + value.at_time +
                         "</div>";
                 });
-                if (propose_list === "") {
-                    propose_list = "N/A";
+                $.each(feeback.user_propose, function(index, value) {
+                    user_propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" +
+                        "#" + value.solution_id + ". " + "<a href='" + value.solution_url + "' target='_blank' style='color: #428bca'> " + value.solution_title +" </a>" +
+                        " By " + "<a href='" + value.user_url + "' target='_blank' style='color: #428bca'> " + value.user_name + " </a>" +
+                        " At " + value.at_time +
+                        "</div>";
+                });
+                if (staff_propose_list === "") {
+                    staff_propose_list = "N/A";
                 }
-                $propose_dialog.html(propose_list);
+                if (user_propose_list === "") {
+                    user_propose_list = "N/A";
+                }
+                $pm_proposed.html(staff_propose_list);
+                $user_proposed.html(user_propose_list);
             }
         });
         $propose_dialog.dialog({
             title: title,
-            height: 400,
-            width: 700
+            height: 500,
+            width: 1100
         });
     });
 
-    var $recommend_email_out = $("#email-out-recommend");
-    var $recommend_applicant = $("#applicant-recommend");
+    var $recommend_email_out     = $("#email-out-recommend");
+    var $recommend_applicant     = $("#applicant-recommend");
+    var $user_referral_applicant = $("#applicant-user-referral");
     $( ".project_recommend" ).click(function () {
-        $recommend_email_out.html('');
-        $recommend_applicant.html('');
+        $recommend_email_out.html("");
+        $recommend_applicant.html("");
+        $user_referral_applicant.html("");
         var $this          = $(this);
         var title          = $this.attr("title");
         var project_id     = $this.attr("rel");
-        var recommend_type = $this.attr("recommend");
         $.ajax({
             type: "POST",
             url: "/project/recommend-expert",
             data: {
                 project_id: project_id,
-                recommend_type: recommend_type,
                 dstart: $dstart,
                 dend: $dend
             },
             dataType: "JSON",
             success: function success(feeback) {
-                var applicant_recommend_list = '';
-                var email_out_recommend_list = '';
-                $.each(feeback, function(index, value) {
-
-                    if (value.type == 'email-out') {
+                var applicant_recommend_list     = "";
+                var email_out_recommend_list     = "";
+                var applicant_user_referral_list = "";
+                $.each(feeback.staff_referral, function(index, value) {
+                    if (value.type == "email-out") {
                         email_out_recommend_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>";
                         if (value.company_name) {
                             email_out_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a> from " + value.company_name;
@@ -82,7 +95,7 @@ $(function () {
                         email_out_recommend_list += "</div>";
                     }
 
-                    if (value.type == 'applicant') {
+                    if (value.type == "applicant") {
                         applicant_recommend_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>";
                         if (value.company_name) {
                             applicant_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a> from " + value.company_name;
@@ -97,26 +110,42 @@ $(function () {
                         applicant_recommend_list += "</div>";
                     }
                 });
+
+                $.each(feeback.user_referral, function(index, value) {
+                    if (value.type == "applicant") {
+                        applicant_user_referral_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>";
+                        if (value.company_name) {
+                            applicant_user_referral_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a> from " + value.company_name;
+                        } else {
+                            applicant_user_referral_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a>";
+                        }
+
+                        if (value.referral_user_name) {
+                            applicant_user_referral_list += " By " + "<a href='" + value.referral_user_url + "' target='_blank' style='color: #428bca'> " + value.referral_user_name + " </a>";
+                        }
+                        applicant_user_referral_list += " At " + value.at_time;
+                        applicant_user_referral_list += "</div>";
+                    }
+                });
+
                 if (email_out_recommend_list === "") {
                     email_out_recommend_list = "N/A";
                 }
                 if (applicant_recommend_list === "") {
                     applicant_recommend_list = "N/A";
                 }
+                if (applicant_user_referral_list === "") {
+                    applicant_user_referral_list = "N/A";
+                }
                 $recommend_email_out.html(email_out_recommend_list);
                 $recommend_applicant.html(applicant_recommend_list);
+                $user_referral_applicant.html(applicant_user_referral_list);
             }
         });
 
-        if (recommend_type == "internal") {
-            $("#email-out-tr").show();
-        } else if (recommend_type == "external") {
-            $("#email-out-tr").hide();
-        }
-
         $recommend_dialog.dialog({
             title: title,
-            height: 400,
+            height: 680,
             width: 1100
         });
     });

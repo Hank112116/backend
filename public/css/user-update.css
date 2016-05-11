@@ -7752,36 +7752,108 @@ body .redactor_toolbar li a.redactor_btn_pre {
   margin: 0 0 10px;
 }
 
-/* line 11, ../../front/sass/user-update.scss */
+/* line 10, ../../front/sass/user-update.scss */
 .user-avatar {
   width: 110px;
   height: 110px;
   margin-bottom: 10px;
 }
 
-/* line 17, ../../front/sass/user-update.scss */
+/* line 16, ../../front/sass/user-update.scss */
 .iradio-lable {
+  margin-right: 15px;
+  padding-left: 15px !important;
   color: #666;
   font-size: 18px;
-  padding-left: 15px !important;
-  margin-right: 15px;
 }
 
-/* line 25, ../../front/sass/user-update.scss */
+/* line 23, ../../front/sass/user-update.scss */
 .industry {
   list-style: none;
 }
-/* line 27, ../../front/sass/user-update.scss */
+/* line 26, ../../front/sass/user-update.scss */
 .industry ul {
   list-style: none;
 }
-/* line 30, ../../front/sass/user-update.scss */
-.industry div.icheckbox {
-  margin-right: 3px;
+
+/* line 31, ../../front/sass/user-update.scss */
+.error {
+  color: #d9534f;
+  font-size: 18px;
 }
 
-/* line 35, ../../front/sass/user-update.scss */
-.error {
-  font-size: 18px;
-  color: #d9534f;
+/* line 37, ../../front/sass/user-update.scss */
+.redactor_editor,
+.redactor_editor:focus,
+.redactor_editor div,
+.redactor_editor p,
+.redactor_editor ul,
+.redactor_editor ol,
+.redactor_editor table,
+.redactor_editor dl,
+.redactor_editor blockquote,
+.redactor_editor pre,
+.redactor_editor h1,
+.redactor_editor h2,
+.redactor_editor h3,
+.redactor_editor h4,
+.redactor_editor h5,
+.redactor_editor h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+/* line 56, ../../front/sass/user-update.scss */
+.redactor_editor {
+  color: #333 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 62, ../../front/sass/user-update.scss */
+.redactor_editor h3 {
+  color: #333 !important;
+  font-size: 24px !important;
+  font-weight: initial !important;
+  line-height: 30px !important;
+}
+/* line 69, ../../front/sass/user-update.scss */
+.redactor_editor h4 {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-weight: initial !important;
+  line-height: 27px !important;
+}
+/* line 76, ../../front/sass/user-update.scss */
+.redactor_editor p {
+  min-height: 24px;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+/* line 82, ../../front/sass/user-update.scss */
+.redactor_editor a {
+  color: #41acf8 !important;
+  text-decoration: none !important;
+}
+/* line 87, ../../front/sass/user-update.scss */
+.redactor_editor b,
+.redactor_editor strong {
+  font-weight: bold;
+}
+/* line 92, ../../front/sass/user-update.scss */
+.redactor_editor i,
+.redactor_editor em {
+  font-style: italic;
+}
+/* line 97, ../../front/sass/user-update.scss */
+.redactor_editor ul {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+  list-style: disc;
+}
+/* line 104, ../../front/sass/user-update.scss */
+.redactor_editor ol {
+  padding-left: 2em !important;
+  font-size: 16px;
+  line-height: 24px;
+  list-style: decimal;
 }

@@ -212,6 +212,11 @@ class Project extends Eloquent
         return $this->hasOne(ProjectMember::class, 'project_id', 'project_id');
     }
 
+    public function projectManager()
+    {
+        return $this->hasMany(ProjectManager::class, 'project_id', 'project_id');
+    }
+
     // pending-for-approve products
     public function scopeQueryApprovePending(Builder $query)
     {
@@ -550,10 +555,10 @@ class Project extends Eloquent
 
     public function hasProjectManager()
     {
-        if (!$this->internalProjectMemo) {
+        if ($this->projectManager->count() == 0) {
             return false;
         }
-        return $this->internalProjectMemo->hasProjectManager();
+        return true;
     }
 
     public function fundingRounds()
@@ -671,38 +676,50 @@ class Project extends Eloquent
 
     public function textProjectManagers()
     {
-        return $this->internalProjectMemo ? $this->internalProjectMemo->textProjectManagers() : null;
+        $r = [];
+        if ($this->projectManager->count() > 0) {
+            foreach ($this->projectManager as $manager) {
+                $r[] = $manager->pm_id;
+            }
+            return implode(',', $r);
+        }
+        return null;
     }
 
     public function getProjectManagers()
     {
-        return $this->internalProjectMemo ? $this->internalProjectMemo->project_managers : null;
+        $r = [];
+        if ($this->projectManager->count() > 0) {
+            foreach ($this->projectManager as $manager) {
+                $r[] = $manager->pm_id;
+            }
+        }
+        return json_encode($r);
     }
 
     public function getHubManagerNames()
     {
-        if (!$this->internalProjectMemo) {
+        if ($this->projectManager->count() == 0) {
             return [];
         }
 
-        if (!$this->internalProjectMemo->project_managers) {
-            return [];
+        $managers = [];
+        foreach ($this->projectManager as $manager) {
+            $managers[] = $manager->pm_id;
         }
-        $managers = json_decode($this->internalProjectMemo->project_managers, true);
 
         return Adminer::whereIn('hwtrek_member', $managers)->lists('name');
     }
 
     public function getDeletedHubManagerNames()
     {
-        if (!$this->internalProjectMemo) {
+        if ($this->projectManager->count() == 0) {
             return [];
         }
-
-        if (!$this->internalProjectMemo->project_managers) {
-            return [];
+        $managers = [];
+        foreach ($this->projectManager as $manager) {
+            $managers[] = $manager->pm_id;
         }
-        $managers = json_decode($this->internalProjectMemo->project_managers, true);
 
         return Adminer::onlyTrashed()->whereIn('hwtrek_member', $managers)->lists('name');
     }
@@ -734,7 +751,7 @@ class Project extends Eloquent
 
         $propose_solution_model = new ProposeSolution();
         $internal_count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', 'suggest');
+            ->where('event', ProposeSolution::EVENT_SUGGEST);
         if (!empty($dstart)) {
             $internal_count->where('propose_time', '>=', $dstart);
         }
@@ -745,7 +762,7 @@ class Project extends Eloquent
         $internal_count = $internal_count->count();
 
         $external_count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', '=', 'propose');
+            ->where('event', ProposeSolution::EVENT_PROPOSE);
         if (!empty($dstart)) {
             $external_count->where('propose_time', '>=', $dstart);
         }
@@ -756,8 +773,8 @@ class Project extends Eloquent
         $external_count = $external_count->count();
         $total_count    = $internal_count + $external_count;
         $result = [
-            'internal_count' => $internal_count,
-            'external_count' => $external_count,
+            'staff_proposed' => $internal_count,
+            'user_proposed' => $external_count,
             'total_count'    => $total_count
         ];
 
@@ -807,7 +824,9 @@ class Project extends Eloquent
         $propose_solutions = $this->propose()->getResults();
         if ($propose_solutions) {
             foreach ($propose_solutions as $propose_solution) {
-                if ($propose_solution->event !== 'click' && $propose_solution->user && $propose_solution->solution) {
+                if ($propose_solution->event !== ProposeSolution::EVENT_CLICK
+                    and $propose_solution->user
+                    and $propose_solution->solution) {
                     if ($dstart) {
                         if ($propose_solution->propose_time < $dstart) {
                             continue;
@@ -824,19 +843,19 @@ class Project extends Eloquent
                     $data['user_name']      = $propose_solution->user->textFullName();
                     $data['user_url']       = $propose_solution->user->textFrontLink();
                     $data['at_time']        = Carbon::parse($propose_solution->propose_time)->toFormattedDateString();
-                    if ($propose_solution->event === 'suggest') {
+                    if ($propose_solution->event === ProposeSolution::EVENT_SUGGEST) {
                         $internal_date[] = $data;
                         $internal_count ++;
-                    } elseif ($propose_solution->event === 'propose') {
+                    } elseif ($propose_solution->event === ProposeSolution::EVENT_PROPOSE) {
                         $external_data[] = $data;
                         $external_count ++;
                     }
                 }
             }
         }
-        $result['internal_count'] = $internal_count;
+        $result['staff_proposed'] = $internal_count;
         $result['internal_data']  = $internal_date;
-        $result['external_count'] = $external_count;
+        $result['user_proposed']  = $external_count;
         $result['external_data']  = $external_data;
         $result['total_count']    = $internal_count + $external_count;
         return (object) $result;
@@ -866,6 +885,8 @@ class Project extends Eloquent
                                         continue;
                                     }
                                 }
+                                $data                 = [];
+                                $data['applicant_id'] = $applicant->applicant_id;
                                 $data['user_id']      = $applicant->user_id;
                                 $data['profile_url']  = $applicant->user->textFrontLink();
                                 $data['user_name']    = $applicant->user->textFullName();
@@ -875,21 +896,14 @@ class Project extends Eloquent
                                 if ($applicant->referralUser) {
                                     $data['referral_user_name'] = $applicant->referralUser->textFullName();
                                     $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
-                                    if ($applicant->referralUser->isHWTrekPM()) {
-                                        $internal_date[] = $data;
-                                        $internal_count++;
-                                    } else {
-                                        $external_data[] = $data;
-                                        $external_count++;
-                                    }
+                                }
+                                if ($applicant->event == GroupMemberApplicant::REFERRAL_PM
+                                    or $applicant->event == GroupMemberApplicant::APPLY_PM) {
+                                    $internal_date[] = $data;
+                                    $internal_count++;
                                 } else {
-                                    if ($applicant->user->isHWTrekPM()) {
-                                        $internal_date[] = $data;
-                                        $internal_count++;
-                                    } else {
-                                        $external_data[] = $data;
-                                        $external_count++;
-                                    }
+                                    $external_data[] = $data;
+                                    $external_count++;
                                 }
                             }
                         }
@@ -933,9 +947,9 @@ class Project extends Eloquent
                 }
             }
         }
-        $result['internal_count'] = $internal_count;
+        $result['staff_referral'] = $internal_count;
         $result['internal_data']  = $internal_date;
-        $result['external_count'] = $external_count;
+        $result['user_referral']  = $external_count;
         $result['external_data']  = $external_data;
         $result['total_count']    = $internal_count + $external_count;
         return (object) $result;
@@ -943,33 +957,24 @@ class Project extends Eloquent
 
     public function hasProposeSolution($dstart, $dend)
     {
-        $propose_solution_model = new ProposeSolution();
-        $count = $propose_solution_model->where('project_id', $this->project_id)
-            ->where('event', '!=', 'click')
-            ->where('propose_time', '>=', $dstart)
-            ->where('propose_time', '<=', $dend)
-            ->count();
-        return $count > 0;
+        if (!$this->projectStatistic) {
+            return false;
+        }
+
+        if (is_null(($this->projectStatistic->last_proposed_time))) {
+            return false;
+        }
+
+        if ($this->projectStatistic->last_proposed_time >= $dstart
+            and $this->projectStatistic->last_proposed_time < $dend
+        ) {
+            return true;
+        }
+        return false;
     }
 
     public function hasRecommendExpert($dstart, $dend)
     {
-        $groups = $this->group;
-        if ($groups) {
-            foreach ($groups as $group) {
-                if ($group->memberApplicant) {
-                    foreach ($group->memberApplicant as $applicant) {
-                        if ($applicant->user) {
-                            if ($applicant->user->isExpert()) {
-                                if ($applicant->apply_date >= $dstart && $applicant->apply_date < $dend) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         $recommend_experts = $this->recommendExperts()->getResults();
         if ($recommend_experts) {
             foreach ($recommend_experts as $recommend_expert) {
@@ -979,6 +984,20 @@ class Project extends Eloquent
                     }
                 }
             }
+        }
+
+        if (!$this->projectStatistic) {
+            return false;
+        }
+
+        if (is_null(($this->projectStatistic->last_referral_time))) {
+            return false;
+        }
+
+        if ($this->projectStatistic->last_referral_time >= $dstart
+            and $this->projectStatistic->last_referral_time < $dend
+        ) {
+            return true;
         }
         return false;
     }
@@ -991,46 +1010,34 @@ class Project extends Eloquent
         return 0;
     }
 
-    public function getStaffReferredCount($pm_ids = [])
+    public function getStaffReferredCount()
     {
-        $count = 0;
-        if (empty($pm_ids)) {
-            $user_model = new User();
-            $hwtrek_pms = $user_model->select(['user_id'])->where('is_hwtrek_pm', true)->get();
-            if ($hwtrek_pms) {
-                foreach ($hwtrek_pms as $pm) {
-                    $pm_ids[] = $pm->user_id;
-                }
-            }
+        if ($this->projectStatistic) {
+            return $this->projectStatistic->staff_referral;
         }
-
-        $groups = $this->group;
-        if ($groups) {
-            foreach ($groups as $group) {
-                if ($group->memberApplicant) {
-                    $member_applicant_model = new GroupMemberApplicant();
-                    $member_applicants = $member_applicant_model->where('group_id', $group->group_id)
-                        ->whereIn('referral', $pm_ids)
-                        ->whereNotNull('user_id')
-                        ->get();
-
-                    $member_applicants = $member_applicants->filter(function (GroupMemberApplicant $item) {
-                        if ($item->user) {
-                            if ($item->user->isExpert()) {
-                                return $item;
-                            }
-                        }
-                    });
-
-                    $count = $member_applicants->count();
-                }
-            }
-        }
-        return $count;
+        return 0;
     }
 
     public function getCollaboratorsCount()
     {
         return $this->projectMember()->count();
+    }
+    
+    public function getStatistic()
+    {
+        if ($this->projectStatistic) {
+            return $this->projectStatistic;
+        } else {
+            return (object) ProjectStatistic::DEFAULT_STATISTIC;
+        }
+    }
+    
+    public function getEmailOutCount()
+    {
+        if ($this->recommendExperts) {
+            return $this->recommendExperts->count();
+        } else {
+            return 0;
+        }
     }
 }

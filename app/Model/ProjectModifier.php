@@ -3,6 +3,8 @@
 use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\InternalProjectMemo;
 use Backend\Model\Eloquent\ProjectTeam;
+use Backend\Model\Eloquent\ProjectManager;
+use Backend\Model\Eloquent\Adminer;
 use ImageUp;
 use Carbon;
 use Backend\Model\Plain\ProjectProfile;
@@ -21,7 +23,7 @@ class ProjectModifier implements ProjectModifierInterface
 
     private $update_memo_columns = [
         'description', 'schedule_note', 'schedule_note_grade',
-        'project_managers', 'tags', 'report_action'
+        'tags', 'report_action'
     ];
 
     private $update_team_columns = [
@@ -33,19 +35,25 @@ class ProjectModifier implements ProjectModifierInterface
     private $project;
     private $project_memo;
     private $project_team;
+    private $project_manager;
+    private $adminer;
 
     public function __construct(
         Project $project,
         ProjectProfile $project_profile,
         ImageUp $image_uploader,
         InternalProjectMemo $project_memo,
-        ProjectTeam $project_team
+        ProjectTeam $project_team,
+        ProjectManager $project_manager,
+        Adminer $adminer
     ) {
         $this->project         = $project;
         $this->project_profile = $project_profile;
         $this->image_uploader  = $image_uploader;
         $this->project_memo    = $project_memo;
         $this->project_team    = $project_team;
+        $this->project_manager = $project_manager;
+        $this->adminer         = $adminer;
     }
 
     public function updateProject($project_id, $data)
@@ -129,6 +137,29 @@ class ProjectModifier implements ProjectModifierInterface
             $this->project_team->fill(array_only($data, $this->update_team_columns));
             return $this->project_team->save();
         }
+    }
+
+    public function updateProjectManager($project_id, $data)
+    {
+        $managers = $this->project_manager->where('project_id', $project_id)->get();
+        if ($managers->count() > 0) {
+            foreach ($managers as $manager) {
+                $manager->delete();
+            }
+        }
+        $project_managers = json_decode($data['project_managers'], true);
+
+        if ($project_managers) {
+            foreach ($project_managers as $manager) {
+                $adminer = $this->adminer->where('hwtrek_member', $manager)->first();
+                $manager_model = new ProjectManager();
+                $manager_model->project_id = $project_id;
+                $manager_model->pm_id      = $manager;
+                $manager_model->role_id    = $adminer->role_id;
+                $manager_model->save();
+            }
+        }
+        return true;
     }
 
     /**

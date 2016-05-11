@@ -8,15 +8,42 @@ $(function () {
     $(".js-approve").click(function (e) {
         e.preventDefault();
 
-        var link = this.href;
-
+        var $this      = $(this);
+        var project_id = $this.attr("rel");
         SweetAlert.alert({
             title: "Approve and release the Schedule?",
             desc: "Once confirmed, the Hub schedule will be released to the Project owner.",
             confirmButton: "Yes, Approve!",
-            handleOnConfirm: () => window.location = link
+            handleOnConfirm: () =>
+                approve_schedule(project_id)
 
         });
         return false;
+    });
+
+    function approve_schedule(project_id){
+        $.ajax({
+            type: "POST",
+            url: "/project/approve-schedule",
+            data: {
+                project_id: project_id
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    }
+
+    $("input").keypress(function(event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            $("form").submit();
+        }
     });
 });

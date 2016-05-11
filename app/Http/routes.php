@@ -86,6 +86,8 @@ Route::group(['before' => 'backend.project'], function () {
     Route::post('project/update-memo', 'ProjectController@updateMemo');
     Route::post('project/propose-solution', 'ProjectController@proposeSolution');
     Route::post('project/recommend-expert', 'ProjectController@recommendExpert');
+    Route::post('project/update-project-manager', 'ProjectController@updateManager');
+    Route::post('project/approve-schedule', 'ProjectController@approveSchedule');
 });
 
 // Solution
@@ -133,7 +135,6 @@ Route::group(['before' => 'backend.hub'], function () {
     Route::get('hub/schedules', 'HubController@indexSchedule');
     Route::get('hub/questionnaires/detail/{id}', 'HubController@showQuestionnaireDetail');
     Route::get('hub/schedule-manager/{id}', 'HubController@showUpdateScheduleManager');
-    Route::get('hub/questionnaires/approve/{project_id}', 'HubController@approveSchedule');
 
     Route::post('hub/update-schedule-manager/{id}', 'HubController@updateScheduleManager');
     Route::post('hub/get-expert', 'HubController@getExpert');
