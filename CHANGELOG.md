@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2.3.1
+* [CHANGE] modify solution search (@Hank)
+* [CHANGE] modify member search (@Hank)
+* [CHANGE] modify project report wording & add user referrals total number (@Hank)
+* [FIXED]  fix backend team creater user not has hwtrek member column (@Hank)
+
 ## v2.3.0
 * [CHANGE] optimization project report & project (@Hank)
 * [CHANGE] adjust proposed & referral dialog display (@Hank)

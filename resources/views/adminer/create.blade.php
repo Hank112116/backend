@@ -5,7 +5,7 @@
 @stop
 
 @section('js')
-  
+    <script type="text/javascript" src="/react/owner-select.js"></script>
 @stop
 
 @section('content')
@@ -13,50 +13,78 @@
     <h1>ADD NEW MEMBER</h1>
 </div>
 
-<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+<div class="form-container">
     {!! Form::open(['action' => 'AdminerController@create', 
-                   'method' => 'POST', 'class' => 'update-form', 'autocomplete'=>"off"]) !!}
+                   'method' => 'POST', 'class' => 'form-horizontal', 'autocomplete'=>"off"]) !!}
 
     <div class="form-group">
-        <label for="name">Name</label>
-        {!! Form::text('name', '',
-            ['placeholder' => 'Member name', 'class'=>'form-control', 'id' => 'name' ]) !!}
-         
-         <p class='error'>{!!  $errors->first('name') !!}</p>
-    </div>  
+        <label for="name" class="col-md-3">Name</label>
+
+        <div class="col-md-5">
+            {!! Form::text('name', '',
+            ['placeholder' => 'Enter Name', 'class'=>'form-control', 'id' => 'name']) !!}
+        </div>
+        <div class="col-md-5 error">{!! $errors->first('name') !!}</div>
+    </div>
 
     <div class="form-group">
-        <label for="mail">Email</label>
-        {!! Form::email('email', '',
-            ['placeholder' => 'Email', 'class'=>'form-control', 'id' => 'mail', "autocomplete"=>"off" ]) !!}
-        
-        <p class='error'>{!!  $errors->first('email') !!}</p>
-    </div>  
+        <label for="mail" class="col-md-3">Email</label>
+
+        <div class="col-md-5">
+            {!! Form::email('email', '',
+            ['placeholder' => 'Enter Email', 'class'=>'form-control', 'id' => 'mail']) !!}
+        </div>
+        <div class="col-md-5 error">{!! $errors->first('email') !!}</div>
+    </div>
 
     <div class="form-group">
-        <label for="password">Password</label>
-        {!! Form::password('password', 
-            ['placeholder' => 'Password', 'class'=>'form-control', 'id' => 'password', "autocomplete"=>"off"]) !!}
-       
-        <p class='error'>{!!  $errors->first('password') !!}</p>
-    </div>  
+        <label for="password" class="col-md-3">New Password</label>
+
+        <div class="col-md-5">
+            {!! Form::password('password', ['placeholder' => 'Enter New Password', 'class'=>'form-control', 'id' =>
+            'password' ]) !!}
+        </div>
+        <div class="col-md-5 error">{!! $errors->first('password') !!}</div>
+    </div>
 
     <div class="form-group">
-        <label for="confirm-password">Confirm Password</label>
-        {!! Form::password('password_confirmation', 
-                ['placeholder' => 'Confirm Password', 'class'=>'form-control', 'id' => 'confirm-password' ]) !!}
-    </div>  
+        <label for="confirm-password" class="col-md-3">Confirm Password</label>
+
+        <div class="col-md-5">
+            {!! Form::password('password_confirmation',
+            ['placeholder' => 'Confirm Password', 'class'=>'form-control', 'id' => 'confirm-password' ]) !!}
+        </div>
+        <div class="col-md-5 error"></div>
+    </div>
 
     <div class="form-group">
-        <label for="role">Role</label>
-        <select class="form-control" id="role" name="role_id">
-            @foreach($roles_options as $role_id => $role_option)
-                <option value="{!! $role_id !!}">{!! $role_option !!}</option>
-            @endforeach
-        </select>
-    </div>  
+        <label for="role" class="col-md-3">Role</label>
 
-    <button class='btn-sassy'>CREATE</button>
+        <div class="col-md-5">
+            <select class="form-control" id="role" name="role_id">
+                @foreach($roles_options as $role_id => $role_option)
+                    <option value="{!! $role_id !!}" >
+                        {!! $role_option !!}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-5 error"></div>
+    </div>
+
+    <!-- Front Member -->
+    <div class="form-group">
+        <label for="member" class="col-md-3">HWTrek Member</label>
+         <div id="owner-selector" class="col-md-5" data-user = ''></div>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="col-md-3"></label>
+
+        <div class="col-md-9">
+            <button class="btn-sassy btn-submit">CREATE</button>
+        </div>
+    </div>
     {!! Form::close() !!}
 </div>
 

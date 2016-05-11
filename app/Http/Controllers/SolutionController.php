@@ -82,36 +82,17 @@ class SolutionController extends BaseController
         return $this->showSolutions($solutions, $paginate = false);
     }
 
-    public function showSearch($search_by)
+    public function showSearch()
     {
-        switch ($search_by) {
-            case 'name':
-                $solutions = $this->solution_repo->byUserName(Input::get('name'));
-                break;
+        $projects = $this->solution_repo->byUnionSearch(Input::all(), $this->page, $this->per_page);
+        $log_action = 'Search solution';
+        Log::info($log_action, Input::all());
 
-            case 'title':
-                $solutions = $this->solution_repo->byTitle(Input::get('title'));
-                break;
-
-            default:
-                $solutions = new Collection();
-        }
-
-        $log_action = 'Search by '.$search_by;
-        $log_data   = [
-            'user_name' => Input::get('name'),
-            'title'     => Input::get('title'),
-            'result'    => sizeof($solutions)
-        ];
-        Log::info($log_action, $log_data);
-
-        if ($solutions->count() == 0) {
+        if ($projects->count() == 0) {
             Noty::warnLang('common.no-search-result');
-
-            return Redirect::action('SolutionController@showList');
         }
 
-        return $this->showSolutions($solutions, $paginate = false);
+        return $this->showSolutions($projects, $paginate = true);
     }
 
     public function showSolutions($solutions, $paginate = true, $title = '')

@@ -188,6 +188,91 @@ class UserRepo implements UserInterface
             ->get();
     }
 
+    public function byUnionSearch($input, $page, $per_page)
+    {
+        /* @var Collection $users */
+        $users = $this->user->orderBy('user_id', 'desc')->get();
+
+        if (!empty($input['user_name'])) {
+            $user_name = $input['user_name'];
+            $users = $users->filter(function (User $item) use ($user_name) {
+                if (stristr($item->textFullName(), $user_name)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['user_id'])) {
+            $user_id = $input['user_id'];
+            $users = $users->filter(function (User $item) use ($user_id) {
+                if ($item->user_id == $user_id) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['email'])) {
+            $email = $input['email'];
+            $users = $users->filter(function (User $item) use ($email) {
+                if (stristr($item->email, $email)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['company'])) {
+            $company = $input['company'];
+            $users = $users->filter(function (User $item) use ($company) {
+                if (stristr($item->company, $company)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['dstart'])) {
+            $dstart = $input['dstart'];
+
+            if (!empty($input['dend'])) {
+                $dend = Carbon::parse($input['dend'])->addDay()->toDateString();
+            } else {
+                $dend = Carbon::tomorrow()->toDateString();
+            }
+            $users = $users->filter(function (User $item) use ($dstart, $dend) {
+                $create_time = Carbon::parse($item->date_added)->toDateString();
+                if ($create_time < $dend && $create_time >= $dstart) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['status'])) {
+            if ($input['status'] != 'all') {
+                $status   = $input['status'];
+                $users = $users->filter(function (User $item) use ($status) {
+                    switch ($status) {
+                        case 'expert':
+                            if ($item->isExpert()) {
+                                return $item;
+                            }
+                            break;
+                        case 'creator':
+                            if ($item->isCreator()) {
+                                return $item;
+                            }
+                            break;
+                        case 'to-be-expert':
+                            if ($item->isToBeExpert() or $item->isApplyExpert()) {
+                                return $item;
+                            }
+                            break;
+                    }
+                });
+            }
+        }
+
+        return $this->getPaginateFromCollection($users, $page, $per_page);
+    }
+
     public function filterExpertsWithToBeExperts(Collection $users)
     {
         return $users->filter(

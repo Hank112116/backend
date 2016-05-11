@@ -1,64 +1,56 @@
-<div class="row">
+{!! Form::open(['action' => ['SolutionController@showSearch'], 'method' => 'GET']) !!}
+<div class="row search-bar">
+    <div class="col-md-2 col-md-offset-1">
+        <div class="input-group">
+            {!! Form::text('user_name', Input::get('user_name'), ['placeholder'=>"Owner", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('solution_title', Input::get('solution_title'), ['placeholder'=>"Solution Title", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('solution_id', Input::get('solution_id'), ['placeholder'=>"Solution ID", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+</div>
+
+<div class="row search-bar">
+
     <div class="col-md-4 col-md-offset-1">
-        {!! Form::open(['action' => ['SolutionController@showSearch', 'name'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('name', '', ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
+        <div class="input-group">
+            {!! Form::text('dstart', Input::get('dstart'),
+                ['placeholder'=>"Approve Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
+            {!! Form::text('dend', Input::get('dend'),
+                ['placeholder'=>"To", 'class'=>"form-control date-input", 'id' => 'js-datepicker-edate']) !!}
+
+        </div>
     </div>
 
-    <div class="col-md-4">
-        {!! Form::open(['action' => ['SolutionController@showSearch', 'title'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('title', '', ['placeholder'=>"Search by solution title", 'class'=>"form-control"]) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
+    <div class="col-md-2">
+        <div class="input-group">
+                {!! Form::select('status',[
+                    'all'              => 'All Type',
+                    'solution'         => 'Solution',
+                    'program'          => 'Program',
+                    'on-shelf'         => 'On Shelf',
+                    'off-shelf'        => 'Off Shelf',
+                    'pending-approve'  => 'Pending for Approve',
+                    'pending-program'  => 'Pending for Program',
+                    'pending-solution' => 'Pending for Solution'
+                ], Input::get('status'), ['class'=>'form-control']) !!}
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-11 col-md-offset-1">
-    @if(Auth::user()->isAdmin())
-        {!! link_to_action("SolutionController@showDraftSolutions", 'Drafts', '', ["class"=>"btn btn-mini btn-primary"]) !!}
-        {!! link_to_action("SolutionController@showDeletedSolutions", 'Deleted Solutions', '', ["class"=>"btn btn-mini btn-primary"]) !!}
-    @endif
-
-    @if($has_program)
-        {!! link_to_action("SolutionController@showProgram", 'Program', '',
-            ["class"=>"btn btn-mini btn-primary"] ) !!}
-    @else   
-        <a href="#" class="btn btn-mini btn-primary" disabled="disabled">Program</a>
-    @endif
-
-    @if($has_wait_approve_solutions)
-        {!! link_to_action("SolutionController@showWaitApproveSolutions", 'Approve Pending Solutions', '',
-            ["class"=>"btn btn-mini btn-warning"] ) !!}
-    @else   
-        <a href="#" class="btn btn-mini btn-warning" disabled="disabled">Approve Pending Solutions</a>
-    @endif
-    @if($has_pending_up_program)
-        {!! link_to_action("SolutionController@showPendingProgram", 'Pending Programs', '',
-            ["class"=>"btn btn-mini btn-warning"] ) !!}
-    @else   
-        <a href="#" class="btn btn-mini btn-warning" disabled="disabled">Pending Programs</a>
-    @endif
-    @if($has_pending_change_solution)
-        {!! link_to_action("SolutionController@showPendingSolution", 'Pending Solutions', '',
-            ["class"=>"btn btn-mini btn-warning"] ) !!}
-    @else   
-        <a href="#" class="btn btn-mini btn-warning" disabled="disabled">Pending Solutions</a>
-    @endif
-
-
+    <div class="col-md-2">
+        <span class="input-group-btn">
+                <button class="btn btn-primary js-btn-search" type="button">Go Search!</button>
+        </span>
     </div>
 </div>
 
-
-
-
+{!! Form::close() !!}

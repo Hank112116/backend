@@ -1,75 +1,66 @@
+{!! Form::open(['action' => ['UserController@showSearch'], 'method' => 'GET']) !!}
 <div class="row search-bar">
-
-    <div class="col-md-3">
-        {!! Form::open(['action' => ['UserController@showSearch', 'name'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('name', '', ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
+    <div class="col-md-2 col-md-offset-1">
+        <div class="input-group">
+            {!! Form::text('user_name', Input::get('user_name'), ['placeholder'=>"User Name", 'class'=>"form-control"]) !!}
+        </div>
     </div>
 
     <div class="col-md-2">
-        {!! Form::open(['action' => ['UserController@showSearch', 'user_id'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('user_id', '', ['placeholder'=>"Search by user id", 'class'=>"form-control"]) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
+        <div class="input-group">
+            {!! Form::text('user_id', Input::get('user_id'), ['placeholder'=>"User ID", 'class'=>"form-control"]) !!}
+        </div>
     </div>
 
-    <div class="col-md-3">
-        {!! Form::open(['action' => ['UserController@showSearch', 'email'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('email', '', ['placeholder'=>"Search by user email", 'class'=>"form-control"]) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('email', Input::get('email'), ['placeholder'=>"User Email", 'class'=>"form-control"]) !!}
+        </div>
     </div>
 
-    <div class="col-md-3">
-        {!! Form::open(['action' => ['UserController@showSearch', 'company'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('company', '', ['placeholder'=>"Search by user company", 'class'=>"form-control"]) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
-    </div>
-
-    <div class="col-md-4">
-        {!! Form::open(['action' => ['UserController@showSearch', 'date'], 'method' => 'GET']) !!}
-            <div class="input-group">
-                {!! Form::text('dstart', '', 
-                    ['placeholder'=>"Search From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
-                {!! Form::text('dend', '', 
-                    ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
-                <span class="input-group-btn">
-                    <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                </span>
-            </div>
-        {!! Form::close() !!}
-    </div>
-
-    <div class="col-md-7">
-        {!! link_to_action("UserController@showExperts", 'ALL EXPERT', '',["class"=>"btn btn-mini"]) !!}
-
-        @if((isset($is_restricted) and !$is_restricted))
-            {!! link_to_action("UserController@showCreators",'ALL CREATOR', '',["class"=>"btn btn-mini"]) !!}
-        @endif
-
-        @if(count($to_expert_ids) > 0)
-            {!! link_to_action("UserController@showToBeExperts", 'TO BE EXPERT','',["class"=>"btn btn-mini btn-warning"]) !!}
-        @else
-            <a href="#" class="btn btn-mini btn-warning btn-disable" disabled="disabled">TO BE EXPERT</a>
-        @endif
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('company', Input::get('company'), ['placeholder'=>"Company", 'class'=>"form-control"]) !!}
+        </div>
     </div>
 
 </div>
+
+<div class="row search-bar">
+
+    <div class="col-md-4 col-md-offset-1">
+        <div class="input-group">
+            {!! Form::text('dstart', Input::get('dstart'),
+                ['placeholder'=>"Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
+            {!! Form::text('dend', Input::get('dend'),
+                ['placeholder'=>"To", 'class'=>"form-control date-input", 'id' => 'js-datepicker-edate']) !!}
+
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="input-group">
+            @if((isset($is_restricted) and !$is_restricted))
+            {!! Form::select('status',[
+                'all'           => 'All Users',
+                'expert'        => 'Expert',
+                'creator'       => 'Creator',
+                'to-be-expert'  => 'To Be Expert'
+            ], Input::get('status'), ['class'=>'form-control']) !!}
+            @else
+            {!! Form::select('status',[
+                'expert'        => 'Expert',
+                'to-be-expert'  => 'To Be Expert'
+            ], Input::get('status'), ['class'=>'form-control']) !!}
+            @endif
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <span class="input-group-btn">
+                <button class="btn btn-primary js-btn-search" type="button">Go Search!</button>
+        </span>
+    </div>
+</div>
+
+{!! Form::close() !!}

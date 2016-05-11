@@ -102,56 +102,17 @@ class UserController extends BaseController
         return $this->showUsers($users, $paginate = false, $title = 'To-Be Expert Members');
     }
 
-    public function showSearch($search_by)
+    public function showSearch()
     {
-        switch ($search_by) {
-            case 'user_id':
-                $users = $this->user_repo->byId(Input::get('user_id'));
-                break;
-
-            case 'name':
-                $users = $this->user_repo->byName(Input::get('name'));
-                break;
-
-            case 'email':
-                $users = $this->user_repo->byMail(Input::get('email'));
-                break;
-
-            case 'company':
-                $users = $this->user_repo->byCompany(Input::get('company'));
-                break;
-
-            case 'date':
-                $users = $this->user_repo->byDateRange(Input::get('dstart'), Input::get('dend'));
-                break;
-
-            default:
-                $users = new Collection();
-        }
-
-        if ($this->is_restricted_adminer) {
-            $users = $this->user_repo->filterExperts($users);
-        }
-
-        $log_action = 'Search by '.$search_by;
-        $log_data   = [
-            'id'      => Input::get('user_id'),
-            'name'    => Input::get('name'),
-            'email'   => Input::get('email'),
-            'company' => Input::get('company'),
-            'dstart'  => Input::get('dstart'),
-            'dend'    => Input::get('dend'),
-            'result'  => sizeof($users)
-        ];
-        Log::info($log_action, $log_data);
+        $users = $this->user_repo->byUnionSearch(Input::all(), $this->page, $this->per_page);
+        $log_action = 'Search user';
+        Log::info($log_action, Input::all());
 
         if ($users->count() == 0) {
-            Noty::warn('No result');
-
-            return Redirect::action('UserController@showList');
-        } else {
-            return $this->showUsers($users, $paginate = false);
+            Noty::warnLang('common.no-search-result');
         }
+
+        return $this->showUsers($users, $paginate = true);
     }
 
     public function showUsers($users, $paginate = true, $title = '')

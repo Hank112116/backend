@@ -110,6 +110,14 @@ interface SolutionInterface
     public function byTitle($title);
 
     /**
+     * @param $input
+     * @param $page
+     * @param $per_page
+     * @return Collection|Solution[]
+     */
+    public function byUnionSearch($input, $page, $per_page);
+
+    /**
      * @return array
      */
     public function categoryOptions();

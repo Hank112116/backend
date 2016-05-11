@@ -98,6 +98,12 @@ interface UserInterface
     public function byDateRange($dstart, $dend);
 
     /**
+     * @param array $input
+     * @return Collection|User[]
+     */
+    public function byUnionSearch($input, $page, $per_page);
+    
+    /**
      * @param $id
      * @param $data
      * @return boolean
