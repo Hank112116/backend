@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v2.3.0
+* [CHANGE] optimization project report & project (@Hank)
+* [CHANGE] adjust proposed & referral dialog display (@Hank)
+* [CHANGE] adjust session life time 6 hours (@Hank)
+* [FIXED]  fix project referrals data error (@Hank)
+* [FIXED]  fix editor style same forntend (@Hank)
+* [FIXED]  fix member list & solution list search bug (@Hank)
+* [NEW]    recommend expert send mail add collaborate pending list (@Hank)
+
 ## v2.2.0 
 * [CHANGE] revise project function (@Hank)
 * [CHANGE] revise project search function (@Hank) 
