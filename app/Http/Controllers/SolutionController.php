@@ -84,15 +84,15 @@ class SolutionController extends BaseController
 
     public function showSearch()
     {
-        $projects = $this->solution_repo->byUnionSearch(Input::all(), $this->page, $this->per_page);
+        $solution   = $this->solution_repo->byUnionSearch(Input::all(), $this->page, $this->per_page);
         $log_action = 'Search solution';
         Log::info($log_action, Input::all());
 
-        if ($projects->count() == 0) {
+        if ($solution->count() == 0) {
             Noty::warnLang('common.no-search-result');
         }
 
-        return $this->showSolutions($projects, $paginate = true);
+        return $this->showSolutions($solution, $paginate = true);
     }
 
     public function showSolutions($solutions, $paginate = true, $title = '')
