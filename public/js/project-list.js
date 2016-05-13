@@ -531,6 +531,7 @@ $(function () {
         });
         return false;
     });
+    $("#user_referral_total").text($("#user_referral_count").val());
 
     function approve_schedule(project_id) {
         $.ajax({
@@ -550,13 +551,6 @@ $(function () {
             }
         });
     }
-
-    $("input").keypress(function (event) {
-        if (event.which == 13) {
-            event.preventDefault();
-            $("form").submit();
-        }
-    });
 });
 
 },{"./libs/InternalProjectMemo.js":1,"./libs/ProjectProposeRecommend.js":2,"./libs/RecommendExpert.js":3,"./libs/SweetAlert":4}],6:[function(require,module,exports){

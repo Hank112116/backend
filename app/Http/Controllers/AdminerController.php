@@ -72,7 +72,8 @@ class AdminerController extends BaseController
                 'backend_member' => $adminer->id,
                 'name'           => $data['name'],
                 'email'          => $data['email'],
-                'role'           => $data['role_id']
+                'role'           => $data['role_id'],
+                'hwtrek_member'  => $data['user_id']
             ];
             Log::info($log_action, $log_data);
 

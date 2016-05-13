@@ -34,10 +34,10 @@
     </div>
     <div class="row text-center">
         <h4>
-            {{ $projects->total() }} Results: {{ $projects->public_count }} Expert mode | {{ $projects->private_count }} Private mode | {{ $projects->draft_count }} Draft | {{ $projects->delete_count }} Deleted <br/><br/>
+            {{ $projects->total() }} Projects in This Period: {{ $projects->public_count }} Expert mode | {{ $projects->private_count }} Private mode | {{ $projects->draft_count }} Draft | {{ $projects->delete_count }} Deleted <br/><br/>
             @if ($match_statistics)
                 <?php $i = 1; ?>
-                {{ $match_statistics['recommend_total'] }} Referrals:
+                {{ $match_statistics['recommend_total'] }} Internal Referrals:
                 @foreach($match_statistics['item'] as $name => $statistic)
                     {{ $name }}: {{ $statistic['recommend_count'] }} |
                     @if ($i % 7 == 0)
@@ -45,8 +45,9 @@
                     @endif
                     <?php $i++; ?>
                 @endforeach
-
             @endif
+            <br/><br/>
+            <span id="user_referral_total"> </span> User Referrals
         </h4>
         @if ($match_statistics)
             <button class="btn btn-primary match-statistics-btn" type="button">Match Statistics</button>
@@ -69,7 +70,7 @@
                     <th>Action</th>
                     <th></th>
                 </tr>
-
+                <?php $user_referral_total = 0 ?>
                 @foreach($projects as $project)
                     <tr>
                         <td>{!! $project->project_id !!}</td>
@@ -124,9 +125,17 @@
                         </td>
                         <td>
                             @if ($input['time_type'] == 'match')
-                                @include('project.list-recommend-statistic', ['recommend_expert' => $project->recommendExpertStatistics($input['dstart'], $input['dend']), 'email_out_count' => 0])
+                                <?php
+                                    $recommend_expert    = $project->recommendExpertStatistics($input['dstart'], $input['dend']);
+                                    $user_referral_total = $user_referral_total + $recommend_expert->user_referral;
+                                ?>
+                                @include('project.list-recommend-statistic', ['recommend_expert' => $recommend_expert, 'email_out_count' => 0])
                             @else
-                                @include('project.list-recommend-statistic', ['recommend_expert' => $project->getStatistic(), 'email_out_count' => $project->getEmailOutCount()])
+                                <?php
+                                    $recommend_expert    = $project->getStatistic();
+                                    $user_referral_total = $user_referral_total + $recommend_expert->user_referral;
+                                ?>
+                                @include('project.list-recommend-statistic', ['recommend_expert' => $recommend_expert, 'email_out_count' => $project->getEmailOutCount()])
                             @endif
                         </td>
 
@@ -184,5 +193,6 @@
         <input type="hidden" id="statistic-start-date" value="">
         <input type="hidden" id="statistic-end-date" value="">
     @endif
+    <input type="hidden" id="user_referral_count" value="{{ $user_referral_total }}">
 @stop
 

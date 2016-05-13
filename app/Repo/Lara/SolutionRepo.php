@@ -1,6 +1,7 @@
 <?php namespace Backend\Repo\Lara;
 
 use ImageUp;
+use Carbon;
 use Backend\Model\Eloquent\Solution;
 use Backend\Model\Eloquent\Feature;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -195,6 +196,105 @@ class SolutionRepo implements SolutionInterface
         }
 
         return $this->configApprove($solutions->get());
+    }
+
+    public function byUnionSearch($input, $page, $per_page)
+    {
+        /* @var Collection $solutions */
+        $solutions = $this->solution->orderBy('solution_id', 'desc')->get();
+
+        if (!empty($input['user_name'])) {
+            $user_name = $input['user_name'];
+            $solutions = $solutions->filter(function (Solution $item) use ($user_name) {
+                if (stristr($item->user->textFullName(), $user_name)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['solution_title'])) {
+            $solution_title = $input['solution_title'];
+            $solutions      = $solutions->filter(function (Solution $item) use ($solution_title) {
+                if (stristr($item->solution_title, $solution_title)) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['solution_id'])) {
+            $solution_id = $input['solution_id'];
+            $solutions   = $solutions->filter(function (Solution $item) use ($solution_id) {
+                if ($item->solution_id == $solution_id) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['dstart'])) {
+            $dstart = $input['dstart'];
+
+            if (!empty($input['dend'])) {
+                $dend = Carbon::parse($input['dend'])->addDay()->toDateString();
+            } else {
+                $dend = Carbon::tomorrow()->toDateString();
+            }
+            $solutions = $solutions->filter(function (Solution $item) use ($dstart, $dend) {
+                $approve_time = Carbon::parse($item->approve_time)->toDateString();
+                if ($approve_time < $dend
+                    and $approve_time >= $dstart
+                    and !is_null($item->approve_time)
+                ) {
+                    return $item;
+                }
+            });
+        }
+
+        if (!empty($input['status'])) {
+            if ($input['status'] != 'all') {
+                $status   = $input['status'];
+                $solutions = $solutions->filter(function (Solution $item) use ($status) {
+                    switch ($status) {
+                        case 'solution':
+                            if ($item->isSolution()) {
+                                return $item;
+                            }
+                            break;
+                        case 'program':
+                            if ($item->isProgram()) {
+                                return $item;
+                            }
+                            break;
+                        case 'on-shelf':
+                            if ($item->isOnShelf()) {
+                                return $item;
+                            }
+                            break;
+                        case 'off-shelf':
+                            if ($item->isOffShelf()) {
+                                return $item;
+                            }
+                            break;
+                        case 'pending-approve':
+                            if ($item->isWaitApprove()) {
+                                return $item;
+                            }
+                            break;
+                        case 'pending-program':
+                            if ($item->isPendingProgram()) {
+                                return $item;
+                            }
+                            break;
+                        case 'pending-solution':
+                            if ($item->isPendingSolution()) {
+                                return $item;
+                            }
+                            break;
+                    }
+                });
+            }
+        }
+
+        return $this->getPaginateFromCollection($solutions, $page, $per_page);
     }
 
     public function configApprove($solutions)

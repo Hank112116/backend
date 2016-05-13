@@ -108,6 +108,13 @@ function init() {
     });
 }
 
+$("input").keypress(function (event) {
+    if (event.which == 13) {
+        event.preventDefault();
+        $("form").submit();
+    }
+});
+
 },{}],5:[function(require,module,exports){
 module.exports={
 	"version": "2015a",

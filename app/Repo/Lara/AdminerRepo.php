@@ -93,12 +93,13 @@ class AdminerRepo implements AdminerInterface
     public function create($input)
     {
         $adminer           = new Adminer();
-        $adminer->name     = $input[ 'name' ];
-        $adminer->email    = $input[ 'email' ];
-        $adminer->password = bcrypt($input[ 'password' ]);
+        $adminer->name     = $input['name'];
+        $adminer->email    = $input['email'];
+        $adminer->password = bcrypt($input['password']);
         $adminer->remember_token = bcrypt($adminer->email);
+        $adminer->hwtrek_member  = $input['user_id'];
 
-        $role = $this->role->find($input[ 'role_id' ]);
+        $role = $this->role->find($input['role_id']);
         $adminer->role()->associate($role);
 
         $adminer->save();
@@ -111,7 +112,7 @@ class AdminerRepo implements AdminerInterface
         $adminer = $this->adminer->find($id);
 
         if ($input[ 'email' ] == $adminer->email) {
-            unset($this->rules[ 'email' ]);
+            unset($this->rules['email']);
         }
 
         if (!array_get($input, 'password')) {
@@ -132,20 +133,20 @@ class AdminerRepo implements AdminerInterface
     public function update($id, $input)
     {
         $adminer        = $this->adminer->find($id);
-        $adminer->name  = $input[ 'name' ];
-        $adminer->email = $input[ 'email' ];
+        $adminer->name  = $input['name'];
+        $adminer->email = $input[ 'email'];
 
-        $role = $this->role->find($input[ 'role_id' ]);
+        $role = $this->role->find($input['role_id']);
         $adminer->role()->associate($role);
 
         if (array_get($input, 'user_id')) {
-            $adminer->hwtrek_member = $input[ 'user_id' ];
+            $adminer->hwtrek_member = $input['user_id'];
         } else {
             $adminer->hwtrek_member = null;
         }
 
         if (array_get($input, 'password')) {
-            $adminer->password = bcrypt($input[ 'password' ]);
+            $adminer->password = bcrypt($input['password']);
         }
 
         return $adminer->save();
