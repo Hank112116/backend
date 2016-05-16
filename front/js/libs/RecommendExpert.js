@@ -87,7 +87,8 @@ $(function () {
                     }
                     $( "#email-recommend-expert-dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Send mail successful", "information", 2);
-                    location.reload();
+                    var $project_row =  $("#row-" + projectId);
+                    $project_row.html(feeback.view);
                 }
             });
         }else{

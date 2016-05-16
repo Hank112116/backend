@@ -7,7 +7,7 @@ $(function () {
     var $dend             = $("#statistic-end-date").val();
     var $pm_proposed      = $("#pm-proposed");
     var $user_proposed    = $("#user-proposed");
-    $( ".project_propose" ).click(function () {
+    $(document).on("click", ".project_propose", function () {
         $pm_proposed.html("");
         $user_proposed.html("");
         var $this        = $(this);
@@ -59,7 +59,7 @@ $(function () {
     var $recommend_email_out     = $("#email-out-recommend");
     var $recommend_applicant     = $("#applicant-recommend");
     var $user_referral_applicant = $("#applicant-user-referral");
-    $( ".project_recommend" ).click(function () {
+    $(document).on("click", ".project_recommend", function () {
         $recommend_email_out.html("");
         $recommend_applicant.html("");
         $user_referral_applicant.html("");

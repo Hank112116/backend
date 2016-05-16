@@ -36,7 +36,8 @@ $(function () {
                     return;
                 }
                 Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
+                var $project_row =  $("#row-" + project_id);
+                $project_row.html(feeback.view);
             }
         });
     }

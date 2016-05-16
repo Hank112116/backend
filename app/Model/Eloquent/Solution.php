@@ -380,7 +380,7 @@ class Solution extends Eloquent
     
     public function textApproveDate()
     {
-        if ($this->approve_time) {
+        if ($this->approve_time and $this->approve_time != '0000-00-00 00:00:00') {
             return Carbon::parse($this->approve_time)->toFormattedDateString();
         } else {
             return null;

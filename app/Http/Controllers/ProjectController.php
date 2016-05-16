@@ -12,6 +12,8 @@ use Noty;
 use Redirect;
 use Log;
 use Response;
+use View;
+use Request;
 
 class ProjectController extends BaseController
 {
@@ -209,7 +211,17 @@ class ProjectController extends BaseController
     {
         $input = Input::all();
         if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
-            $res   = ['status' => 'success'];
+            $project = $this->project_repo->find($input['project_id']);
+            if ($input['route_path'] === 'report/project') {
+                // make report project row view
+                $view = View::make('report.project-row')
+                    ->with(['project' => $project, 'input' => $input, 'user_referral_total' => 0])
+                    ->render();
+            } else {
+                // make project row view
+                $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+            }
+            $res  = ['status' => 'success', 'view' => $view];
         } else {
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
         }
@@ -224,7 +236,9 @@ class ProjectController extends BaseController
     {
         $input = Input::all();
         if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
-            $res   = ['status' => 'success'];
+            $project = $this->project_repo->find($input['project_id']);
+            $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+            $res  = ['status' => 'success', 'view' => $view];
         } else {
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
         }
@@ -286,7 +300,8 @@ class ProjectController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        $res   = ['status' => 'success'];
+        $view = View::make('project.row')->with(['project' => $schedule, 'tag_tree' => TagNode::tags()])->render();
+        $res  = ['status' => 'success', 'view' => $view];
 
         return Response::json($res);
     }
