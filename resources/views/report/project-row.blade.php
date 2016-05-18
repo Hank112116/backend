@@ -52,13 +52,11 @@
     @if ($input['time_type'] == 'match')
         <?php
         $recommend_expert    = $project->recommendExpertStatistics($input['dstart'], $input['dend']);
-        $user_referral_total = $user_referral_total + $recommend_expert->user_referral;
         ?>
         @include('project.list-recommend-statistic', ['recommend_expert' => $recommend_expert, 'email_out_count' => 0])
     @else
         <?php
         $recommend_expert    = $project->getStatistic();
-        $user_referral_total = $user_referral_total + $recommend_expert->user_referral;
         ?>
         @include('project.list-recommend-statistic', ['recommend_expert' => $recommend_expert, 'email_out_count' => $project->getEmailOutCount()])
     @endif

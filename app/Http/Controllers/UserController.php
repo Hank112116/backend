@@ -2,13 +2,13 @@
 
 namespace Backend\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
+use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
 use Backend\Model\Eloquent\Industry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Input;
@@ -19,9 +19,7 @@ use Redirect;
 use Auth;
 use Response;
 use Log;
-use Curl\Curl;
 use Request;
-use RSA;
 
 class UserController extends BaseController
 {
@@ -33,6 +31,7 @@ class UserController extends BaseController
     private $expertise_repo;
     private $user_api;
     private $apply_msg_repo;
+    private $attachment_api;
 
     public function __construct(
         UserInterface $user,
@@ -40,7 +39,8 @@ class UserController extends BaseController
         SolutionInterface $solution,
         ExpertiseInterface $expertise,
         UserApiInterface $user_api,
-        ApplyExpertMessageInterface $apply_expert_message
+        ApplyExpertMessageInterface $apply_expert_message,
+        AttachmentApiInterface $attachment_api
     ) {
         parent::__construct();
 
@@ -50,6 +50,7 @@ class UserController extends BaseController
         $this->expertise_repo = $expertise;
         $this->user_api       = $user_api;
         $this->apply_msg_repo = $apply_expert_message;
+        $this->attachment_api = $attachment_api;
     }
 
     public function showList()
@@ -178,7 +179,7 @@ class UserController extends BaseController
             return Redirect::action('UserController@showList');
         }
 
-        $attachments = $this->getUserAttachment($id);
+        $attachments = $this->attachment_api->getAttachment($user);
 
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
@@ -224,7 +225,7 @@ class UserController extends BaseController
             return Redirect::action('UserController@showUpdate', [$id]);
         }
 
-        $attachments  = $this->getUserAttachment($id);
+        $attachments = $this->attachment_api->getAttachment($user);
         $front_domain = Config::get('app.front_domain');
 
         $data = [
@@ -283,7 +284,7 @@ class UserController extends BaseController
                 foreach ($attachment_data['delete_items'] as $row) {
                     $attachments['delete'][] = $row;
                 }
-                $this->updateAttachment($id, $attachments);
+                $this->attachment_api->updateAttachment($user, $attachments);
             }
         }
 
@@ -331,23 +332,6 @@ class UserController extends BaseController
     }
 
     /**
-     * Get web service profile api return attachments information
-     *
-     * @param $user_id
-     * @return object attachments
-     */
-    private function getUserAttachment($user_id)
-    {
-        $front_domain = Config::get('app.front_domain');
-        $curl = new Curl();
-        $curl->setReferrer('https://' . $front_domain);
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $r = $curl->get("https://{$front_domain}/apis/users/{$user_id}/profile");
-        return $r->attachments;
-    }
-
-    /**
      * Put attachment to web service backend api
      *
      * @param              $user_id
@@ -356,70 +340,10 @@ class UserController extends BaseController
      */
     public function putAttachment()
     {
-        $front_domain   = Config::get('app.front_domain');
-        $backend_domain = Config::get('app.backend_domain');
-        $user_id = Request::get('user_id');
-        $file    = Request::file()[0];
-        $upload_dir = '/tmp/';
-
-        $file->move($upload_dir, $file->getClientOriginalName());
-
-        $file_path = $upload_dir . $file->getClientOriginalName();
-        $fp        = fopen($file_path, "r");
-
-        $curl = new Curl();
-        $curl->setReferrer('https://' . $backend_domain);
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-        $curl->setHeader('Content-Type', 'multipart/form-data');
-        $curl->setHeader('Accept', 'application/json');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $curl->setOpt(CURLOPT_INFILE, $fp);
-        $curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
-
-        $curl->put("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
-            'file'      => "@{$file_path}",
-            'pass_code' =>  RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'))
-        ]);
-
-        fclose($fp);
-        unlink($file_path);
-
-        if ($curl->error) {
-            return Response::json([], $curl->errorCode);
-        }
-        $response = $curl->response;
-        $curl->close();
-        return json_encode($response);
-    }
-
-    /**
-     * Update attachment to web service backend api
-     *
-     * @param $user_id
-     * @param $attachments
-     * @return int
-     */
-    private function updateAttachment($user_id, $attachments)
-    {
-        $front_domain   = Config::get('app.front_domain');
-        $backend_domain = Config::get('app.backend_domain');
-        $curl = new Curl();
-        $curl->setReferrer('https://' . $backend_domain);
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-        $curl->setHeader('Content-Type', 'application/json');
-        $curl->setHeader('Accept', 'application/json');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $data['attachments'] = $attachments;
-        $data['pass_code']   = RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'));
-        $curl->patch("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", json_encode($data));
-        if ($curl->error) {
-            $info['message'] =  'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage;
-            Log::error('attachment update error', $info);
-            $http_code = $curl->errorCode;
-        } else {
-            $http_code =  $curl->httpStatusCode;
-        }
-        $curl->close();
-        return $http_code;
+        $user = $this->user_repo->find(Request::get('user_id'));
+        $file = Request::file()[0];
+        $r    = $this->attachment_api->putAttachment($user, $file);
+        Log::info('Upload attachment', (array) $r);
+        return json_encode($r);
     }
 }

@@ -47,7 +47,7 @@
                 @endforeach
             @endif
             <br/><br/>
-            <span id="user_referral_total"> </span> User Referrals
+            {{ $projects->user_referrals }} User Referrals
         </h4>
         @if ($match_statistics)
             <button class="btn btn-primary match-statistics-btn" type="button">Match Statistics</button>
@@ -95,7 +95,6 @@
         <input type="hidden" id="statistic-end-date" value="">
         <input type="hidden" id="time_type" value="">
     @endif
-    <input type="hidden" id="user_referral_count" value="{{ $user_referral_total }}">
     <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
 @stop
 

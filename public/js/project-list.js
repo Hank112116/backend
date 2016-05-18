@@ -553,7 +553,6 @@ $(function () {
         });
         return false;
     });
-    $("#user_referral_total").text($("#user_referral_count").val());
 
     function approve_schedule(project_id) {
         $.ajax({

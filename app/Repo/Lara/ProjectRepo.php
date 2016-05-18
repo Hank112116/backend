@@ -3,6 +3,9 @@
 use Carbon;
 use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\ProjectCategory;
+use Backend\Model\Eloquent\ProposeSolution;
+use Backend\Model\Eloquent\GroupMemberApplicant;
+use Backend\Model\Eloquent\ProjectMailExpert;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -11,7 +14,6 @@ use Backend\Model\ModelInterfaces\ProjectTagBuilderInterface;
 use Backend\Model\ModelInterfaces\ProjectModifierInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Str;
 
 class ProjectRepo implements ProjectInterface
 {
@@ -89,7 +91,7 @@ class ProjectRepo implements ProjectInterface
         return $projects;
     }
 
-    public function byUnionSearch($input, $page, $per_page)
+    public function byUnionSearch($input, $page, $per_page, $do_statistics = false)
     {
         /* @var Collection $projects */
         $projects = $this->project->with($this->with_relations)->orderBy('project_id', 'desc')->get();
@@ -266,9 +268,17 @@ class ProjectRepo implements ProjectInterface
                 }
             });
         }
-        $statistics = $this->getProjectStatistics($projects);
-        $projects   = $this->getPaginateFromCollection($projects, $page, $per_page);
-        $projects   = $this->appendStatistics($projects, $statistics);
+        $search_projects = $projects;
+        $projects        = $this->getPaginateFromCollection($projects, $page, $per_page);
+
+        if ($do_statistics) {
+            $statistics = $this->getProjectStatistics($search_projects);
+            $match          = $this->getProjectMatchFromPM($search_projects, $input['dstart'], $input['dend']);
+            $user_referrals = $this->getUserReferralsTotal($search_projects, $input['dstart'], $input['dend']);
+            $projects       = $this->appendStatistics($projects, $statistics);
+            $projects->match_statistics = $match;
+            $projects->user_referrals = $user_referrals;
+        }
         return $projects;
     }
 
@@ -460,6 +470,162 @@ class ProjectRepo implements ProjectInterface
     public function updateProjectManager($project_id, $data)
     {
         return $this->project_modifier->updateProjectManager($project_id, $data);
+    }
+
+    private function getProjectMatchFromPM($projects, $dstart = null, $dend = null)
+    {
+        // end day add one day
+        if ($dend) {
+            $dend = Carbon::parse($dend)->addDay()->toDateString();
+        }
+
+        $result          = [];
+        $project_ids     = [];
+        $group_ids       = [];
+        $recommend_total = 0;
+        $propose_total   = 0;
+        // find pm, project id, project group id
+        $pms         = $this->user_repo->findHWTrekPM();
+        if ($projects) {
+            foreach ($projects as $project) {
+                $project_ids[] = $project->project_id;
+                if ($project->group) {
+                    foreach ($project->group as $group) {
+                        $group_ids[] = $group->group_id;
+                    }
+                }
+            }
+        }
+
+        if ($pms) {
+            foreach ($pms as $pm) {
+                $propose_model   = new ProposeSolution();
+                $applicant_model = new GroupMemberApplicant();
+                $email_out_model = new ProjectMailExpert();
+                $data = [];
+                $statistics_project_ids = [];
+
+                $propose_solutions = $propose_model
+                    ->where('proposer_id', $pm->user_id)
+                    ->whereIn('project_id', $project_ids)
+                    ->where('event', '!=', 'click');
+                if ($dstart) {
+                    $propose_solutions->where('propose_time', '>=', $dstart);
+                }
+                if ($dend) {
+                    $propose_solutions->where('propose_time', '<=', $dend);
+                }
+
+                $propose_solutions = $propose_solutions->get();
+                $propose_count     = $propose_solutions->count();
+                if ($propose_solutions) {
+                    foreach ($propose_solutions as $solution) {
+                        $statistics_project_ids[] = $solution->project_id;
+                    }
+                }
+
+                $recommend_count = 0;
+                $applicants = $applicant_model
+                    ->where('referral', $pm->user_id)
+                    ->whereIn('group_id', $group_ids);
+                if ($dstart) {
+                    $applicants->where('apply_date', '>=', $dstart);
+                }
+                if ($dend) {
+                    $applicants->where('apply_date', '<=', $dend);
+                }
+                $applicants = $applicants->get();
+
+                if ($applicants) {
+                    foreach ($applicants as $applicant) {
+                        if ($applicant->user) {
+                            if ($applicant->user->isExpert()) {
+                                $additional_privileges = json_decode($applicant->additional_privileges, true);
+                                foreach ($additional_privileges as $privilege) {
+                                    if (in_array('project', $privilege)) {
+                                        $statistics_project_ids[] = $privilege[2];   // array index 2 is id
+                                    }
+                                }
+                                $recommend_count ++;
+                            }
+                        }
+                    }
+                }
+
+                $admin = $this->adminer->findHWTrekMember($pm->user_id);
+                if ($admin) {
+                    $email_out = $email_out_model
+                        ->where('admin_id', $admin->id)
+                        ->whereIn('project_id', $project_ids);
+                    if ($dstart) {
+                        $email_out->where('date_send', '>=', $dstart);
+                    }
+                    if ($dend) {
+                        $email_out->where('date_send', '<=', $dend);
+                    }
+                    $email_out = $email_out->get();
+                    if ($email_out) {
+                        foreach ($email_out as $item) {
+                            $statistics_project_ids[] = $item->project_id;
+                        }
+                    }
+                    $recommend_count = $recommend_count + count($email_out);
+                }
+                $user_name = \UrlFilter::filterNoHyphen($pm->user_name);
+                $data['propose_count']      = $propose_count;
+                $data['recommend_count']    = $recommend_count;
+                $data['project_count']      = count(array_unique($statistics_project_ids));
+                $data['total_count']        = $propose_count + $recommend_count;
+                $result['item'][$user_name] = $data;
+                $propose_total   = $propose_total + $propose_count;
+                $recommend_total = $recommend_total + $recommend_count;
+            }
+            $result['propose_total']   = $propose_total;
+            $result['recommend_total'] = $recommend_total;
+        }
+        return $result;
+    }
+
+    private function getUserReferralsTotal($projects, $dstart = null, $dend = null)
+    {
+        // end day add one day
+        if ($dend) {
+            $dend = Carbon::parse($dend)->addDay()->toDateString();
+        }
+
+        $group_ids       = [];
+        // find pm, project id, project group id
+        if ($projects) {
+            foreach ($projects as $project) {
+                if ($project->group) {
+                    foreach ($project->group as $group) {
+                        $group_ids[] = $group->group_id;
+                    }
+                }
+            }
+        }
+
+        $applicant_model = new GroupMemberApplicant();
+        $applicants = $applicant_model->whereIn('group_id', $group_ids)
+        ->whereIn('event', [GroupMemberApplicant::APPLY_USER, GroupMemberApplicant::REFERRAL_USER]);
+        if ($dstart) {
+            $applicants->where('apply_date', '>=', $dstart);
+        }
+        if ($dend) {
+            $applicants->where('apply_date', '<=', $dend);
+        }
+
+        $applicants = $applicants->get();
+
+
+        $applicants = $applicants->filter(function (GroupMemberApplicant $item) {
+            if ($item->user) {
+                if ($item->user->isExpert()) {
+                    return $item;
+                }
+            }
+        });
+        return $applicants->count();
     }
 
     private function getProjectStatistics(Collection $projects)
