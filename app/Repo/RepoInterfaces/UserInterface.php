@@ -188,10 +188,10 @@ interface UserInterface
 
     /**
      * @param $user_id
-     * @param $is_hwtrek_pm
+     * @param $user_type
      * @return void
      */
-    public function changeHWTrekPM($user_id, $is_hwtrek_pm);
+    public function changeUserType($user_id, $user_type);
 
     /**
      * @return mixed

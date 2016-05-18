@@ -312,20 +312,20 @@ class UserController extends BaseController
         return $this->user_api->basicColumns($user_id);
     }
 
-    public function changeHWTrekPM()
+    public function changeUserType()
     {
         if (Auth::user()->isAdmin()) {
-            $user_id      = Input::get('user_id');
-            $is_hwtrek_pm = Input::get('is_hwtrek_pm');
-            $user = $this->user_repo->find($user_id);
+            $user_id   = Input::get('user_id');
+            $user_type = Input::get('user_type');
+            $user      = $this->user_repo->find($user_id);
             if (count($user) > 0) {
-                $this->user_repo->changeHWTrekPM($user_id, $is_hwtrek_pm);
-                $res   = ['status' => 'success'];
+                $this->user_repo->changeUserType($user_id, $user_type);
+                $res = [ 'status' => 'success' ];
             } else {
-                $res   = ['status' => 'fail', 'msg'=>'Not found user id!'];
+                $res = [ 'status' => 'fail', 'msg' => 'Not found user id!' ];
             }
         } else {
-            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+            $res = [ 'status' => 'fail', 'msg' => 'Permissions denied!' ];
         }
         return Response::json($res);
     }

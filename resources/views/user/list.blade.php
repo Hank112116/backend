@@ -71,14 +71,17 @@
                             </span>
                         @else
                             <span class="user-sub-category">
-                                <input type="checkbox"  class="change_user" rel="{!! $user->user_id !!}"> To User
+                                <input type="checkbox"  class="change_creator" rel="{!! $user->user_id !!}"> To Creator
+                            </span>
+                            <span class="user-sub-category">
+                                <input type="checkbox"  class="change_expert" rel="{!! $user->user_id !!}"> To Expert
                             </span>
                         @endif
                     </td>
                     @endif
 
                     @if(Auth::user()->isAdmin() && $user->isHWTrekPM())
-                        <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
+                        <td>{!! $user->textHWTrekPM() !!}</td>
                     @else
                         <td>
                             @if($user->isToBeExpert() or $user->isApplyExpert())

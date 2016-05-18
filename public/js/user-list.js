@@ -39,19 +39,31 @@ $(function () {
             title: "Change User to HWTrek PM?",
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_data(user_id, "/user/change-hwtrek-pm-type", 1);
+                return post_data(user_id, "/user/change-hwtrek-pm-type", 'pm');
             }
         });
     });
-    //change user type to user checkbox
-    $(document).on("ifChecked", ".change_user", function (e) {
+    //change user type to creator checkbox
+    $(document).on("ifChecked", ".change_creator", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         SweetAlert.alert({
-            title: "Change HWTrek PM to User?",
+            title: "Change HWTrek PM to Creator?",
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm() {
-                return post_data(user_id, "/user/change-hwtrek-pm-type", 0);
+                return post_data(user_id, "/user/change-hwtrek-pm-type", 'creator');
+            }
+        });
+    });
+    //change user type to expert checkbox
+    $(document).on("ifChecked", ".change_expert", function (e) {
+        e.preventDefault();
+        var user_id = $(this).attr("rel");
+        SweetAlert.alert({
+            title: "Change HWTrek PM to Expert?",
+            confirmButton: "Yes!",
+            handleOnConfirm: function handleOnConfirm() {
+                return post_data(user_id, "/user/change-hwtrek-pm-type", 'expert');
             }
         });
     });
@@ -74,13 +86,13 @@ $(function () {
         });
     });
 
-    function post_data(user_id, url, is_hwtrek_pm) {
+    function post_data(user_id, url, user_type) {
         $.ajax({
             type: "POST",
             url: url,
             data: {
                 user_id: user_id,
-                is_hwtrek_pm: is_hwtrek_pm
+                user_type: user_type
             },
             dataType: "JSON",
             success: function success(feeback) {

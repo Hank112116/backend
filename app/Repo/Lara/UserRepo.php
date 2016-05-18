@@ -389,6 +389,7 @@ class UserRepo implements UserInterface
 
     public function update($id, $data)
     {
+        /** @var User $user */
         $user = $this->user->find($id);
         $is_type_change = isset($data['user_type']) && $user->user_type !== $data['user_type'];
         $user->fill(array_only($data, self::$update_columns));
@@ -421,16 +422,26 @@ class UserRepo implements UserInterface
         $user->save();
     }
 
-    public function changeHWTrekPM($id, $is_hwtrek_pm)
+    public function changeUserType($id, $user_type)
     {
         $user = $this->user->find($id);
-        $user->is_hwtrek_pm = $is_hwtrek_pm;
+        switch ($user_type) {
+            case User::TYPE_CREATOR:
+                $user->user_type = User::TYPE_CREATOR;
+                break;
+            case User::TYPE_EXPERT:
+                $user->user_type = User::TYPE_EXPERT;
+                break;
+            case User::TYPE_PM:
+                $user->user_type = User::TYPE_PM;
+                break;
+        }
         $user->save();
     }
 
     public function findHWTrekPM()
     {
-        return $this->user->where('is_hwtrek_pm', true)->get();
+        return $this->user->where('user_type', User::TYPE_PM)->get();
     }
 
     /*
