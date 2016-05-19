@@ -1,13 +1,14 @@
 /* jshint quotmark: false */
 $(function () {
+    var $document                = $(document);
     var $propose_dialog          = $("#propose-solution-dialog");
     var $recommend_dialog        = $("#recommend-expert-dialog");
     var $match_statistics_dialog = $("#project-match-statistics-dialog");
-    var $dstart           = $("#statistic-start-date").val();
-    var $dend             = $("#statistic-end-date").val();
-    var $pm_proposed      = $("#pm-proposed");
-    var $user_proposed    = $("#user-proposed");
-    $(document).on("click", ".project_propose", function () {
+    var $dstart                  = $("#statistic-start-date").val();
+    var $dend                    = $("#statistic-end-date").val();
+    var $pm_proposed             = $("#pm-proposed");
+    var $user_proposed           = $("#user-proposed");
+    $document.on("click", ".project_propose", function () {
         $pm_proposed.html("");
         $user_proposed.html("");
         var $this        = $(this);
@@ -59,7 +60,7 @@ $(function () {
     var $recommend_email_out     = $("#email-out-recommend");
     var $recommend_applicant     = $("#applicant-recommend");
     var $user_referral_applicant = $("#applicant-user-referral");
-    $(document).on("click", ".project_recommend", function () {
+    $document.on("click", ".project_recommend", function () {
         $recommend_email_out.html("");
         $recommend_applicant.html("");
         $user_referral_applicant.html("");

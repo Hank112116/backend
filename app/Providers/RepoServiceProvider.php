@@ -1,5 +1,7 @@
 <?php namespace Backend\Providers;
 
+use Backend\Model\Eloquent\GroupMemberApplicant;
+use Backend\Model\Eloquent\ProjectMailExpert;
 use Backend\Model\Plain\SolutionCategory;
 use Backend\Model\Plain\SolutionCertification;
 
@@ -50,7 +52,10 @@ class RepoServiceProvider extends ServiceProvider
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
                     $app->make('Backend\Model\ModelInterfaces\TagBuilderInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface')
+                    $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface'),
+                    new \Backend\Model\Eloquent\ProposeSolution(),
+                    new \Backend\Model\Eloquent\GroupMemberApplicant(),
+                    new \Backend\Model\Eloquent\ProjectMailExpert()
                 );
             }
         );

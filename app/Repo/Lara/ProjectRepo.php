@@ -28,6 +28,9 @@ class ProjectRepo implements ProjectInterface
     private $tag_builder;
     private $project_tag_builder;
     private $project_modifier;
+    private $propose_solution;
+    private $group_member_applicant;
+    private $project_mail_expert;
 
     public function __construct(
         AdminerInterface $adminer,
@@ -36,15 +39,21 @@ class ProjectRepo implements ProjectInterface
         UserInterface $user,
         TagBuilderInterface $tag_builder,
         ProjectTagBuilderInterface $project_tag_builder,
-        ProjectModifierInterface $project_modifier
+        ProjectModifierInterface $project_modifier,
+        ProposeSolution $propose_solution,
+        GroupMemberApplicant $group_member_applicant,
+        ProjectMailExpert $project_mail_expert
     ) {
-        $this->adminer             = $adminer;
-        $this->project             = $project;
-        $this->category            = $category;
-        $this->user_repo           = $user;
-        $this->tag_builder         = $tag_builder;
-        $this->project_tag_builder = $project_tag_builder;
-        $this->project_modifier    = $project_modifier;
+        $this->adminer                = $adminer;
+        $this->project                = $project;
+        $this->category               = $category;
+        $this->user_repo              = $user;
+        $this->tag_builder            = $tag_builder;
+        $this->project_tag_builder    = $project_tag_builder;
+        $this->project_modifier       = $project_modifier;
+        $this->propose_solution       = $propose_solution;
+        $this->group_member_applicant = $group_member_applicant;
+        $this->project_mail_expert    = $project_mail_expert;
     }
 
     public function find($id)
@@ -499,9 +508,9 @@ class ProjectRepo implements ProjectInterface
 
         if ($pms) {
             foreach ($pms as $pm) {
-                $propose_model   = new ProposeSolution();
-                $applicant_model = new GroupMemberApplicant();
-                $email_out_model = new ProjectMailExpert();
+                $propose_model   = $this->propose_solution;
+                $applicant_model = $this->group_member_applicant;
+                $email_out_model = $this->project_mail_expert;
                 $data = [];
                 $statistics_project_ids = [];
 

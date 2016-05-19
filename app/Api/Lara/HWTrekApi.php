@@ -5,6 +5,7 @@ namespace Backend\Api\Lara;
 use Backend\Enums\GrantTypeRegistry;
 use Backend\Enums\URI\API\HWTrekApiEnum;
 use Illuminate\Http\Response;
+use Guzzle\Http\Exception\CurlException;
 use Curl\Curl;
 use Config;
 use Log;
@@ -36,12 +37,14 @@ class HWTrekApi
     {
         $client_id       = Config::get('api.hwtrek_client_id');
         $client_secret   = Config::get('api.hwtrek_client_secret');
-        $client_password = base64_encode($client_id . ':'. $client_secret);
         $url             = 'https://' .  $this->front_domain . HWTrekApiEnum::OAUTH_TOKEN;
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $curl->setHeader('Authorization', "Basic {$client_password}");
+        $curl->setBasicAuthentication($client_id, $client_secret);
         $curl->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
-        $curl->setHeader('Authorization', "Bearer {$curl->response->access_token}");
+        if ($curl->error) {
+            throw new CurlException($curl->errorMessage);
+        }
+        $curl->setHeader('Authorization', "{$curl->response->token_type} {$curl->response->access_token}");
         $curl->setHeader('Content-Type', 'application/json');
         return $curl;
     }

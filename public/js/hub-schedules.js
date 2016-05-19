@@ -34,6 +34,7 @@ $(function () {
 "use strict";
 
 $(function () {
+    var $document = $(document);
     var $internal_tag_input = $("#internal-tag");
     $internal_tag_input.tagsinput({
         confirmKeys: [13],
@@ -42,7 +43,7 @@ $(function () {
     });
 
     //open dialog
-    $(document).on("click", ".internal-tag", function () {
+    $document.on("click", ".internal-tag", function () {
         var $this = $(this);
         var tech_tag = $this.attr("tech-tags");
         var internal_tag = $this.attr("tags");
@@ -57,7 +58,7 @@ $(function () {
         });
     });
 
-    $(document).on("click", "#add-tags", function () {
+    $document.on("click", "#add-tags", function () {
         var project_id = $("#internal_tag_project_id").val();
         var tags = $internal_tag_input.val();
         var route_path = $("#route-path").val();
@@ -83,7 +84,7 @@ $(function () {
         });
     });
 
-    $(document).on("click", ".grade", function () {
+    $document.on("click", ".grade", function () {
         var $this = $(this);
         var project_id = $this.attr("rel");
         var note = $this.attr("note");
@@ -97,7 +98,7 @@ $(function () {
         });
     });
 
-    $(document).on("click", "#edit_grade", function () {
+    $document.on("click", "#edit_grade", function () {
         var project_id = $("#grade_project_id").val();
         var note = $("#grade_note").val();
         var grade = $("#grade").val();
@@ -126,7 +127,7 @@ $(function () {
     });
 
     //open dialog
-    $(document).on("click", ".internal-description", function () {
+    $document.on("click", ".internal-description", function () {
         var $this = $(this);
         var project_id = $this.attr("rel");
         var internal_description = $this.attr("description");
@@ -138,7 +139,7 @@ $(function () {
         });
     });
 
-    $(document).on("click", "#edit_internal_description", function () {
+    $document.on("click", "#edit_internal_description", function () {
         var project_id = $("#internal_description_project_id").val();
         var internal_description = $("#internal_description").val();
         var route_path = $("#route-path").val();
@@ -165,7 +166,7 @@ $(function () {
     });
 
     //open dialog
-    $(document).on("click", ".schedule-manager", function () {
+    $document.on("click", ".schedule-manager", function () {
         var $this = $(this);
         var project_id = $this.attr("rel");
         var pm = $this.attr("pm");
@@ -183,7 +184,7 @@ $(function () {
         });
     });
 
-    $(document).on("click", "#update-schedule-manager", function () {
+    $document.on("click", "#update-schedule-manager", function () {
         var project_id = $("#schedule_manager_project_id").val();
         var managers = [];
         $("input[type=checkbox]").each(function () {
@@ -214,7 +215,7 @@ $(function () {
     });
 
     //open dialog
-    $(document).on("click", ".project-report-action", function () {
+    $document.on("click", ".project-report-action", function () {
         var $this = $(this);
         var project_id = $this.attr("rel");
         var report_action = $this.attr("action");
@@ -226,7 +227,7 @@ $(function () {
         });
     });
 
-    $(document).on("click", "#edi-project-report-action", function () {
+    $document.on("click", "#edi-project-report-action", function () {
         var project_id = $("#project-report-action-project-id").val();
         var report_action = $("#project-report-action").val();
         var route_path = $("#route-path").val();
