@@ -5,33 +5,51 @@ $(function () {
     $(document).on("ifChecked", ".change_pm", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change User to HWTrek PM?",
             confirmButton: "Yes!",
-            handleOnConfirm: () =>
-                post_data(user_id, "/user/change-hwtrek-pm-type", 'pm')
+            handleOnConfirm: (is_confirm) => {
+                if(is_confirm){
+                    post_data(user_id, "/user/change-hwtrek-pm-type", 'pm');
+                }else{
+                    self.iCheck('uncheck');
+                }
+            }
         });
     });
     //change user type to creator checkbox
     $(document).on("ifChecked", ".change_creator", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change HWTrek PM to Creator?",
             confirmButton: "Yes!",
-            handleOnConfirm: () =>
-                post_data(user_id, "/user/change-hwtrek-pm-type", 'creator')
+            handleOnConfirm: (is_confirm) =>{
+                if(is_confirm){
+                    post_data(user_id, "/user/change-hwtrek-pm-type", 'creator');
+                }else{
+                    self.iCheck('uncheck');
+                }
+            }
         });
     });
     //change user type to expert checkbox
     $(document).on("ifChecked", ".change_expert", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change HWTrek PM to Expert?",
             confirmButton: "Yes!",
-            handleOnConfirm: () =>
-                post_data(user_id, "/user/change-hwtrek-pm-type", 'expert')
+            handleOnConfirm: (is_confirm) =>{
+                if(is_confirm){
+                    post_data(user_id, "/user/change-hwtrek-pm-type", 'expert');
+                }else{
+                    self.iCheck('uncheck');
+                }
+            }
         });
     });
 

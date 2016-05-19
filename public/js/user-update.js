@@ -262,7 +262,9 @@ function alert(param) {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: param.confirmButton || "Yes!!",
         closeOnConfirm: true
-    }, param.handleOnConfirm);
+    }, function (is_confirm) {
+        param.handleOnConfirm(is_confirm);
+    });
 }
 
 },{"../vendor/sweetalert/sweetalert.es6.js":14}],4:[function(require,module,exports){

@@ -18,7 +18,9 @@ function alert(param) {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: param.confirmButton || "Yes!!",
         closeOnConfirm: true
-    }, param.handleOnConfirm);
+    }, function (is_confirm) {
+        param.handleOnConfirm(is_confirm);
+    });
 }
 
 },{"../vendor/sweetalert/sweetalert.es6.js":11}],2:[function(require,module,exports){
@@ -35,11 +37,16 @@ $(function () {
     $(document).on("ifChecked", ".change_pm", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change User to HWTrek PM?",
             confirmButton: "Yes!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_data(user_id, "/user/change-hwtrek-pm-type", 'pm');
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    post_data(user_id, "/user/change-hwtrek-pm-type", 'pm');
+                } else {
+                    self.iCheck('uncheck');
+                }
             }
         });
     });
@@ -47,11 +54,16 @@ $(function () {
     $(document).on("ifChecked", ".change_creator", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change HWTrek PM to Creator?",
             confirmButton: "Yes!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_data(user_id, "/user/change-hwtrek-pm-type", 'creator');
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    post_data(user_id, "/user/change-hwtrek-pm-type", 'creator');
+                } else {
+                    self.iCheck('uncheck');
+                }
             }
         });
     });
@@ -59,11 +71,16 @@ $(function () {
     $(document).on("ifChecked", ".change_expert", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change HWTrek PM to Expert?",
             confirmButton: "Yes!",
-            handleOnConfirm: function handleOnConfirm() {
-                return post_data(user_id, "/user/change-hwtrek-pm-type", 'expert');
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    post_data(user_id, "/user/change-hwtrek-pm-type", 'expert');
+                } else {
+                    self.iCheck('uncheck');
+                }
             }
         });
     });

@@ -13,6 +13,7 @@ export function alert(param) {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: param.confirmButton || "Yes!!",
         closeOnConfirm: true
-    }, param.handleOnConfirm);
-    
+    }, (is_confirm) => {
+        param.handleOnConfirm(is_confirm);
+    });
 }
