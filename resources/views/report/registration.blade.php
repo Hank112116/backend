@@ -102,7 +102,7 @@
                                 {{ $user->textFullName() }}</a>
                         </td>
                         @if($is_super_admin && $user->isHWTrekPM())
-                            <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
+                            <td>{!! $user->textHWTrekPM() !!}</td>
                         @else
                             <td>{!! ($user->isToBeExpert() or $user->isApplyExpert())?"<font color='red'>{$user->textType()}</font>":$user->textType()  !!}</td>
                         @endif

@@ -29,8 +29,9 @@ class User extends Eloquent
         self::ROLE_ADMIN   => 'Admin'
     ];
 
-    const TYPE_CREATOR = '0';
-    const TYPE_EXPERT  = '1';
+    const TYPE_CREATOR = 'creator';
+    const TYPE_EXPERT  = 'expert';
+    const TYPE_PM      = 'pm';
 
     private static $types = [
         self::TYPE_CREATOR => 'Creator',
@@ -105,7 +106,7 @@ class User extends Eloquent
 
     public function scopeQueryPM($query)
     {
-        return $query->where('is_hwtrek_pm', true);
+        return $query->where('user_type', self::TYPE_PM);
     }
 
     public function getPrimaryKey()
@@ -134,6 +135,8 @@ class User extends Eloquent
             return 'Sign up to Be Expert';
         } elseif ($this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
             return 'Apply to Be Expert';
+        } elseif ($this->isHWTrekPM()) {
+            return 'HWTrek PM';
         } else {
             return 'Undefine';
         }
@@ -316,7 +319,7 @@ class User extends Eloquent
 
     public function isHWTrekPM()
     {
-        return $this->is_hwtrek_pm;
+        return $this->user_type === self::TYPE_PM;
     }
 
     public function isApplyExpert()

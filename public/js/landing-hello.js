@@ -32,14 +32,9 @@ var reduce = require('reduce');
  * Root reference for iframes.
  */
 
-var root;
-if (typeof window !== 'undefined') { // Browser window
-  root = window;
-} else if (typeof self !== 'undefined') { // Web Worker
-  root = self;
-} else { // Other environments
-  root = this;
-}
+var root = 'undefined' == typeof window
+  ? (this || self)
+  : window;
 
 /**
  * Noop.
@@ -375,20 +370,6 @@ Response.prototype.setHeaderProperties = function(header){
 };
 
 /**
- * Force given parser
- * 
- * Sets the body parser no matter type.
- * 
- * @param {Function}
- * @api public
- */
-
-Response.prototype.parse = function(fn){
-  this.parser = fn;
-  return this;
-};
-
-/**
  * Parse the given body `str`.
  *
  * Used for auto-parsing of bodies. Parsers
@@ -400,7 +381,7 @@ Response.prototype.parse = function(fn){
  */
 
 Response.prototype.parseBody = function(str){
-  var parse = this.parser || request.parse[this.type];
+  var parse = request.parse[this.type];
   return parse && str && (str.length || str instanceof Object)
     ? parse(str)
     : null;
@@ -436,7 +417,7 @@ Response.prototype.setStatusProperties = function(status){
   var type = status / 100 | 0;
 
   // status / class
-  this.status = this.statusCode = status;
+  this.status = status;
   this.statusType = type;
 
   // basics

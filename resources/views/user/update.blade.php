@@ -85,12 +85,12 @@
 
             <div class="col-md-5">
                 <div>
-                    {!! Form::radio('user_type', '0', $user->user_type==0, ["id"=>"user_type_0"]) !!}
+                    {!! Form::radio('user_type', 'creator', $user->user_type=='creator', ["id"=>"user_type_0"]) !!}
                     <label for="user_type_0" class='iradio-lable'>Creator</label>
                 </div>
 
                 <div>
-                    {!! Form::radio('user_type', '1', $user->user_type==1, ["id"=>"user_type_1"]) !!}
+                    {!! Form::radio('user_type', 'expert', $user->user_type=='expert', ["id"=>"user_type_1"]) !!}
                     <label for="user_type_1" class='iradio-lable'>Expert</label>
                 </div>
             </div>

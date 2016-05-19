@@ -6946,13 +6946,18 @@ body {
   text-align: right;
 }
 
-/* line 10, ../../front/sass/user-list.scss */
+/* line 9, ../../front/sass/user-list.scss */
 .pagination-container {
   text-align: center;
 }
 
-/* line 14, ../../front/sass/user-list.scss */
+/* line 13, ../../front/sass/user-list.scss */
 .search-bar-btns {
   margin-bottom: 1em;
   margin-left: 0;
+}
+
+/* line 18, ../../front/sass/user-list.scss */
+.user-sub-category {
+  display: inline-block;
 }
