@@ -427,10 +427,10 @@ class UserRepo implements UserInterface
         $user = $this->user->find($id);
         switch ($user_type) {
             case User::TYPE_CREATOR:
-                $user->user_type = User::TYPE_CREATOR;
-                break;
             case User::TYPE_EXPERT:
-                $user->user_type = User::TYPE_EXPERT;
+                $user->user_type             = $user_type;
+                $user->is_sign_up_as_expert  = 0;
+                $user->is_apply_to_be_expert = 0;
                 break;
             case User::TYPE_PM:
                 $user->user_type = User::TYPE_PM;
