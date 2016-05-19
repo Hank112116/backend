@@ -547,16 +547,9 @@ class ProjectRepo implements ProjectInterface
 
                 if ($applicants) {
                     foreach ($applicants as $applicant) {
-                        if ($applicant->user) {
-                            if ($applicant->user->isExpert()) {
-                                $additional_privileges = json_decode($applicant->additional_privileges, true);
-                                foreach ($additional_privileges as $privilege) {
-                                    if (in_array('project', $privilege)) {
-                                        $statistics_project_ids[] = $privilege[2];   // array index 2 is id
-                                    }
-                                }
-                                $recommend_count ++;
-                            }
+                        if ($applicant->isRecommendExpert()) {
+                            $statistics_project_ids[] = $applicant->getAppliedProjectId();
+                            $recommend_count ++;
                         }
                     }
                 }

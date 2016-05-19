@@ -15,9 +15,7 @@ class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
     public function getAttachment(User $user)
     {
         $url = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::BACKEND . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::ATTACHMENT;
-        $r   = $this->get($url);
-        $this->curl->close();
-        return $r;
+        return $this->get($url);
     }
 
     /**
@@ -26,9 +24,7 @@ class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
     public function updateAttachment(User $user, array $attachments)
     {
         $url = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::BACKEND . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::ATTACHMENT;
-        $r   = $this->patch($url, ['attachments' => $attachments]);
-        $this->curl->close();
-        return $r;
+        return $this->patch($url, ['attachments' => $attachments]);
     }
 
     /**
@@ -48,7 +44,6 @@ class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
         $r = $this->put($url, ['file' => "@{$file_path}"]);
         fclose($fp);
         unlink($file_path);
-        $this->curl->close();
         return $r;
     }
 }

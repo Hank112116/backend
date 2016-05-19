@@ -28,6 +28,11 @@ class HWTrekApi
         $this->curl         = $curl;
 
     }
+    
+    public function __destruct()
+    {
+        $this->curl->close();
+    }
 
     /**
      * @param Curl $curl
