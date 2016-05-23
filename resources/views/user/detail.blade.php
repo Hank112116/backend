@@ -30,11 +30,7 @@
 		<div class="col-md-7 clearfix">
 			<div class="data-group">
 			  <span class="label">Name</span>
-			  <span class="content">{{ $user->textFullName() }}
-				  @if ($user->isSuspended())
-					  ( <font color="red">{{ $user->textStatus() }}</font> )
-				  @endif
-			  </span>
+			  <span class="content">{{ $user->textFullName() }}</span>
 			</div>
 
 			<div class="data-group">
@@ -62,8 +58,8 @@
 
 			@if (!$is_restricted)
 			<div class="data-group group-half">
-			  <span class="label">Active</span>
-			  <span class="content">{!! $user->textActive() !!} ( Email : {!! $user->textEmailVerify() !!} )</span>
+			  <span class="label">Status</span>
+			  <span class="content">{!! $user->textStatus() !!} ( Email : {!! $user->textEmailVerify() !!} )</span>
 			</div>
 			@endif
 		</div>		

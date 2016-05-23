@@ -191,6 +191,10 @@ class User extends Eloquent
 
     public function textActive()
     {
+        if ($this->isSuspended()) {
+            return 'N';
+        }
+
         if (!array_key_exists($this->active, static::$actives)) {
             return 'unknown';
         } else {
@@ -211,9 +215,17 @@ class User extends Eloquent
     {
         if ($this->isSuspended()) {
             return 'Suspended';
-        } else {
-            return 'Not suspend';
         }
+
+        if (!$this->isActive()) {
+            return 'Inactive';
+        }
+
+        if (!$this->isEmailVerify()) {
+            return 'Not email verify';
+        }
+
+        return 'Active';
     }
 
     public function getCompanyLink()

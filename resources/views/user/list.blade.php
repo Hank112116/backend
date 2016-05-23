@@ -61,7 +61,7 @@
                     <td>{{ $user->user_id }}</td>
                     <td>
                         @if ($user->isSuspended())
-                            {{ $user->textFullName() }} ( <font color="red">{{ $user->textStatus() }}</font>  )
+                            {{ $user->textFullName() }} ( {{ $user->textStatus() }} )
                         @else
                             <a href="{!! $user->textFrontLink() !!}" target="_blank">{{ $user->textFullName() }}</a>
                         @endif

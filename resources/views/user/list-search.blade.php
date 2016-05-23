@@ -40,7 +40,7 @@
 
     <div class="col-md-2">
         <div class="input-group">
-            @if((isset($is_restricted) and !$is_restricted))
+            @if((!isset($is_restricted) or !$is_restricted))
             {!! Form::select('status',[
                 'all'            => 'All Users',
                 'expert'         => 'Expert',
