@@ -11,7 +11,25 @@
 
 @section('content')
 	<div class="page-header">
-	    <h1>{{ $user->textFullName() }}</h1>
+	    <h1>{{ $user->textFullName() }}
+            @if ($user->isSuspended())
+                ({{ $user->textStatus() }})
+            @endif
+        </h1>
+        @if(Auth::user()->isAdmin())
+
+            @if($user->isSuspended())
+            <button
+               class="btn-mini btn-flat-blue js-enable-user" rel="{{ $user->user_id }}">
+                <i class="fa fa-unlock fa-fw"></i>Unsuspend
+            </button>
+            @else
+            <button
+               class="btn-mini btn-flat-red js-disable-user" rel="{{ $user->user_id }}">
+                <i class="fa fa-lock fa-fw"></i>Suspend
+            </button>
+            @endif
+        @endif
 	</div>
 
 	<div class="form-container">
@@ -64,7 +82,7 @@
 
                 <div>
                     {!! Form::radio('active', '0', $user->active==0, ["id"=>"active_0"]) !!}
-                    <label for="active_0" class='iradio-lable'>Suspend</label>
+                    <label for="active_0" class='iradio-lable'>InActive</label>
                 </div>
             </div>
             <div class="col-md-5"></div>
@@ -92,6 +110,11 @@
                 <div>
                     {!! Form::radio('user_type', 'expert', $user->user_type=='expert', ["id"=>"user_type_1"]) !!}
                     <label for="user_type_1" class='iradio-lable'>Expert</label>
+                </div>
+
+                <div>
+                    {!! Form::radio('user_type', 'premium-expert', $user->user_type=='premium-expert', ["id"=>"user_type_2"]) !!}
+                    <label for="user_type_2" class='iradio-lable'>Premium Expert</label>
                 </div>
             </div>
         </div>

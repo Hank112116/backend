@@ -265,6 +265,11 @@ class UserRepo implements UserInterface
                                 return $item;
                             }
                             break;
+                        case 'premium-expert':
+                            if ($item->isPremiumExpert()) {
+                                return $item;
+                            }
+                            break;
                     }
                 });
             }

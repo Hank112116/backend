@@ -9,6 +9,7 @@ use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
 use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
+use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Model\Eloquent\Industry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Input;
@@ -32,6 +33,7 @@ class UserController extends BaseController
     private $user_api;
     private $apply_msg_repo;
     private $attachment_api;
+    private $profile_api;
 
     public function __construct(
         UserInterface $user,
@@ -40,7 +42,8 @@ class UserController extends BaseController
         ExpertiseInterface $expertise,
         UserApiInterface $user_api,
         ApplyExpertMessageInterface $apply_expert_message,
-        AttachmentApiInterface $attachment_api
+        AttachmentApiInterface $attachment_api,
+        ProfileApiInterface $profile_api
     ) {
         parent::__construct();
 
@@ -51,6 +54,7 @@ class UserController extends BaseController
         $this->user_api       = $user_api;
         $this->apply_msg_repo = $apply_expert_message;
         $this->attachment_api = $attachment_api;
+        $this->profile_api    = $profile_api;
     }
 
     public function showList()
@@ -180,7 +184,7 @@ class UserController extends BaseController
         }
 
         $attachments = $this->attachment_api->getAttachment($user);
-
+        
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
@@ -345,5 +349,29 @@ class UserController extends BaseController
         $r    = $this->attachment_api->putAttachment($user, $file);
         Log::info('Upload attachment', (array) $r);
         return json_encode($r);
+    }
+
+    public function disable()
+    {
+        if (!Auth::user()->isAdmin()) {
+            Noty::warnLang('common.no-permission');
+
+            return Redirect::action('UserController@showList');
+        }
+        $user_id = Input::get('user_id');
+        $user    = $this->user_repo->find($user_id);
+        return $this->profile_api->disable($user);
+    }
+
+    public function enable()
+    {
+        if (!Auth::user()->isAdmin()) {
+            Noty::warnLang('common.no-permission');
+
+            return Redirect::action('UserController@showList');
+        }
+        $user_id = Input::get('user_id');
+        $user    = $this->user_repo->find($user_id);
+        return $this->profile_api->enable($user);
     }
 }

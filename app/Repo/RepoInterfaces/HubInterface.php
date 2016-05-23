@@ -1,6 +1,7 @@
 <?php namespace Backend\Repo\RepoInterfaces;
 
 use Backend\Model\Eloquent\HubSchedule;
+use Backend\Model\Eloquent\Project;
 
 interface HubInterface
 {
@@ -18,5 +19,5 @@ interface HubInterface
     public function dummySchedule();
 
     public function updateScheduleManagers(\Backend\Model\Eloquent\HubSchedule $schedule, $data);
-    public function approveSchedule(\Backend\Model\Eloquent\HubSchedule $schedule);
+    public function approveSchedule(Project $schedule);
 }

@@ -539,21 +539,23 @@ require("./libs/InternalProjectMemo.js");
 require("./libs/ProjectProposeRecommend.js");
 
 $(function () {
-    $(".js-approve").click(function (e) {
+    var $document = $(document);
+    $document.on("click", ".js-approve", function (e) {
         e.preventDefault();
-
         var $this = $(this);
         var project_id = $this.attr("rel");
         SweetAlert.alert({
             title: "Approve and release the Schedule?",
             desc: "Once confirmed, the Hub schedule will be released to the Project owner.",
             confirmButton: "Yes, Approve!",
-            handleOnConfirm: function handleOnConfirm() {
-                return approve_schedule(project_id);
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    approve_schedule(project_id);
+                } else {
+                    return false;
+                }
             }
-
         });
-        return false;
     });
 
     function approve_schedule(project_id) {

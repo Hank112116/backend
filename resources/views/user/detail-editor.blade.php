@@ -30,7 +30,11 @@
         <div class="col-md-7 clearfix">
             <div class="data-group">
                 <span class="label">Name</span>
-                <span class="content">{{ $user->textFullName() }}</span>
+                <span class="content">{{ $user->textFullName() }}
+                    @if ($user->isSuspended())
+                        ( <font color="red">{{ $user->textStatus() }}</font> )
+                    @endif
+                </span>
             </div>
             <div class="data-group group-half">
                 <span class="label">Role</span>

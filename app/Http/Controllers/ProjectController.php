@@ -243,7 +243,7 @@ class ProjectController extends BaseController
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
         }
 
-        $log_action = 'Edit internal information';
+        $log_action = 'Edit project manager';
         Log::info($log_action, $input);
 
         return Response::json($res);
@@ -285,22 +285,22 @@ class ProjectController extends BaseController
     {
         $id = Input::get('project_id');
 
-        $schedule = $this->hub_repo->findSchedule($id);
-        if ($schedule->isDeleted()) {
+        $project = $this->project_repo->find($id);
+        if ($project->isDeleted()) {
             Noty::warn('Permission deny');
             $res   = ['status' => 'fail', "msg" => "Permission deny"];
             return Response::json($res);
         }
-        $schedule = $this->hub_repo->approveSchedule($schedule);
+        $project = $this->hub_repo->approveSchedule($project);
 
         $log_action = 'Approve project';
         $log_data   = [
             'project' => $id,
-            'approve' => $schedule->hub_approve,
+            'approve' => $project->hub_approve,
         ];
         Log::info($log_action, $log_data);
 
-        $view = View::make('project.row')->with(['project' => $schedule, 'tag_tree' => TagNode::tags()])->render();
+        $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
         $res  = ['status' => 'success', 'view' => $view];
 
         return Response::json($res);

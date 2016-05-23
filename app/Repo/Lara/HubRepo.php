@@ -2,6 +2,7 @@
 
 use Backend\Model\Eloquent\HubQuestionnaire;
 use Backend\Model\Eloquent\HubSchedule;
+use Backend\Model\Eloquent\Project;
 use Config;
 use Requests;
 use Backend\Repo\RepoInterfaces\HubInterface;
@@ -110,7 +111,7 @@ class HubRepo implements HubInterface
         return $allSchedules;
     }
 
-    public function approveSchedule(HubSchedule $schedule)
+    public function approveSchedule(Project $schedule)
     {
         $schedule->hub_approve      = 1;
         $schedule->hub_approve_time = $this->recordApproveVersion($schedule);

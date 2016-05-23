@@ -33,8 +33,9 @@ var _libsSweetAlert = require("./libs/SweetAlert");
 var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
 $(function () {
+    var $document = $(document);
     //change user type to pm checkbox
-    $(document).on("ifChecked", ".change_pm", function (e) {
+    $document.on("ifChecked", ".change_pm", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         var self = $(this);
@@ -43,15 +44,15 @@ $(function () {
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
-                    post_data(user_id, "/user/change-hwtrek-pm-type", 'pm');
+                    post_data(user_id, "/user/change-hwtrek-pm-type", "pm");
                 } else {
-                    self.iCheck('uncheck');
+                    self.iCheck("uncheck");
                 }
             }
         });
     });
     //change user type to creator checkbox
-    $(document).on("ifChecked", ".change_creator", function (e) {
+    $document.on("ifChecked", ".change_creator", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         var self = $(this);
@@ -60,15 +61,15 @@ $(function () {
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
-                    post_data(user_id, "/user/change-hwtrek-pm-type", 'creator');
+                    post_data(user_id, "/user/change-hwtrek-pm-type", "creator");
                 } else {
-                    self.iCheck('uncheck');
+                    self.iCheck("uncheck");
                 }
             }
         });
     });
     //change user type to expert checkbox
-    $(document).on("ifChecked", ".change_expert", function (e) {
+    $document.on("ifChecked", ".change_expert", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         var self = $(this);
@@ -77,9 +78,9 @@ $(function () {
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
-                    post_data(user_id, "/user/change-hwtrek-pm-type", 'expert');
+                    post_data(user_id, "/user/change-hwtrek-pm-type", "expert");
                 } else {
-                    self.iCheck('uncheck');
+                    self.iCheck("uncheck");
                 }
             }
         });

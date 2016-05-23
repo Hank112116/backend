@@ -29,14 +29,10 @@ class User extends Eloquent
         self::ROLE_ADMIN   => 'Admin'
     ];
 
-    const TYPE_CREATOR = 'creator';
-    const TYPE_EXPERT  = 'expert';
-    const TYPE_PM      = 'pm';
-
-    private static $types = [
-        self::TYPE_CREATOR => 'Creator',
-        self::TYPE_EXPERT  => 'Expert',
-    ];
+    const TYPE_CREATOR        = 'creator';
+    const TYPE_EXPERT         = 'expert';
+    const TYPE_PM             = 'pm';
+    const TYPE_PREMIUM_EXPERT = 'premium-expert';
 
     const EMAIL_VERIFY_NONE     = '1';
     const EMAIL_VERIFY          = '2';
@@ -74,6 +70,12 @@ class User extends Eloquent
         'is_apply_to_be_expert' => 1
     ];
 
+    const IS_PREMIUM_EXPERT_STATUS = [
+        'user_type'             => self::TYPE_PREMIUM_EXPERT,
+        'is_sign_up_as_expert'  => 0,
+        'is_apply_to_be_expert' => 0
+    ];
+
     // active in database may be ''(empty string), 1, 0
     private static $actives = ['0' => 'N', '1' => 'Y'];
 
@@ -108,6 +110,11 @@ class User extends Eloquent
     {
         return $query->where('user_type', self::TYPE_PM);
     }
+    
+    public function scopeQueryPremiumExpert($query)
+    {
+        return $query->where('user_type', self::TYPE_PREMIUM_EXPERT);
+    }
 
     public function getPrimaryKey()
     {
@@ -127,16 +134,18 @@ class User extends Eloquent
 
     public function textType()
     {
-        if ($this->isStatus(self::IS_CREATOR_STATUS)) {
+        if ($this->isType(self::IS_CREATOR_STATUS)) {
             return 'Creator';
-        } elseif ($this->isStatus(self::IS_EXPERT_STATUS)) {
+        } elseif ($this->isType(self::IS_EXPERT_STATUS)) {
             return 'Expert';
-        } elseif ($this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
+        } elseif ($this->isType(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
             return 'Sign up to Be Expert';
-        } elseif ($this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
+        } elseif ($this->isType(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
             return 'Apply to Be Expert';
         } elseif ($this->isHWTrekPM()) {
             return 'HWTrek PM';
+        } elseif ($this->isPremiumExpert()) {
+            return 'Premium Expert';
         } else {
             return 'Undefine';
         }
@@ -195,6 +204,15 @@ class User extends Eloquent
             return Carbon::parse($this->date_added)->toFormattedDateString();
         } else {
             return null;
+        }
+    }
+    
+    public function textStatus()
+    {
+        if ($this->isSuspended()) {
+            return 'Suspended';
+        } else {
+            return 'Not suspend';
         }
     }
 
@@ -304,17 +322,17 @@ class User extends Eloquent
 
     public function isCreator()
     {
-        return $this->isStatus(self::IS_CREATOR_STATUS);
+        return $this->isType(self::IS_CREATOR_STATUS);
     }
 
     public function isExpert()
     {
-        return $this->isStatus(self::IS_EXPERT_STATUS);
+        return $this->isType(self::IS_EXPERT_STATUS);
     }
 
     public function isToBeExpert()
     {
-        return $this->isStatus(self::IS_PENDING_TO_BE_EXPERT_STATUS);
+        return $this->isType(self::IS_PENDING_TO_BE_EXPERT_STATUS);
     }
 
     public function isHWTrekPM()
@@ -322,9 +340,14 @@ class User extends Eloquent
         return $this->user_type === self::TYPE_PM;
     }
 
+    public function isPremiumExpert()
+    {
+        return $this->isType(self::IS_PREMIUM_EXPERT_STATUS);
+    }
+
     public function isApplyExpert()
     {
-        return $this->isStatus(self::IS_APPLY_TO_BE_EXPERT_STATUS);
+        return $this->isType(self::IS_APPLY_TO_BE_EXPERT_STATUS);
     }
 
     public function isActive()
@@ -342,7 +365,16 @@ class User extends Eloquent
         return $this->email_verify == self::EMAIL_VERIFY;
     }
 
-    private function isStatus($status)
+    public function isSuspended()
+    {
+        if (is_null($this->suspended_at)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private function isType($status)
     {
         foreach ($status as $key => $status_flag) {
             if ($this->getAttributeValue($key) != $status_flag) {

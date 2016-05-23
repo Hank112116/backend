@@ -19,7 +19,12 @@
             <div class="col-md-7">
                 <div class="data-group group-half">
                     <span class="label">Name</span>
-                    <span class="content">{{ $user->last_name }} {{ $user->user_name }}</span>
+                    <span class="content">
+                        {{ $user->textFullName() }}
+                        @if ($user->isSuspended())
+                            ( <font color="red">{{ $user->textStatus() }}</font>)
+                        @endif
+                    </span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Email</span>

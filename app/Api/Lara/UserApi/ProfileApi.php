@@ -4,6 +4,7 @@ namespace Backend\Api\Lara\UserApi;
 
 use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Api\Lara\HWTrekApi;
+use Backend\Enums\URI\API\HWTrekApiEnum;
 use Backend\Model\Eloquent\User;
 
 class ProfileApi extends HWTrekApi implements ProfileApiInterface
@@ -13,7 +14,9 @@ class ProfileApi extends HWTrekApi implements ProfileApiInterface
      */
     public function disable(User $user)
     {
-        // TODO: Implement disable() method.
+        $url = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::PRIVILEGE;
+        $r   = $this->delete($url);
+        return $this->response((array) $r);
     }
 
     /**
@@ -21,6 +24,8 @@ class ProfileApi extends HWTrekApi implements ProfileApiInterface
      */
     public function enable(User $user)
     {
-        // TODO: Implement enable() method.
+        $url = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::PRIVILEGE;
+        $r   = $this->post($url);
+        return $this->response((array) $r);
     }
 }

@@ -60,8 +60,11 @@
                 <tr>
                     <td>{{ $user->user_id }}</td>
                     <td>
-                        <a href="{!! $user->textFrontLink() !!}" target="_blank">
-                            {{ $user->textFullName() }}</a>
+                        @if ($user->isSuspended())
+                            {{ $user->textFullName() }} ( <font color="red">{{ $user->textStatus() }}</font>  )
+                        @else
+                            <a href="{!! $user->textFrontLink() !!}" target="_blank">{{ $user->textFullName() }}</a>
+                        @endif
                     </td>
                     @if(Auth::user()->isAdmin())
                     <td>{!! $user->textHWTrekPM() !!}<br>

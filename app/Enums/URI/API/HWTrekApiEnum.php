@@ -10,4 +10,5 @@ class HWTrekApiEnum
     const BACKEND    = '/backend';
     const USER       = '/users';
     const ATTACHMENT = '/attachments';
+    const PRIVILEGE  = '/privilege';
 }
