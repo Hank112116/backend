@@ -283,6 +283,34 @@ class UserRepo implements UserInterface
             }
         }
 
+        if (!empty($input['tag'])) {
+            $search_tag = $input['tag'];
+            $users   = $users->filter(function (User $item) use ($search_tag) {
+                $internal_tag = [];
+
+                if ($item->internalUserMemo) {
+                    if ($item->internalUserMemo->tags) {
+                        $internal_tag = explode(',', $item->internalUserMemo->tags);
+                    }
+                    if ($internal_tag) {
+                        foreach ($internal_tag as $tag) {
+                            if (stristr($tag, $search_tag)) {
+                                return $item;
+                            }
+                        }
+                    }
+                }
+                if ($item->expertises) {
+                    $expertise_tags = $this->expertise->getDisplayTags(explode(',', $item->expertises));
+                    foreach ($expertise_tags as $tag) {
+                        if (stristr($tag, $search_tag)) {
+                            return $item;
+                        }
+                    }
+                }
+            });
+        }
+
         return $this->getPaginateFromCollection($users, $page, $per_page);
     }
 

@@ -53,7 +53,7 @@
                 </th>
                 <th>Email<br/>Verify</th>
                 <th>Active</th>
-                <th>Feature tags<br/><span class="table--text-light">Internal tags</span></th>
+                <th>Expertise tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Internal description</th>
                 <th>Action</th>
                 <th></th>

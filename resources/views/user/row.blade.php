@@ -66,39 +66,13 @@
 <td>{!! $user->textEmailVerify() !!}</td>
 <td>{!! $user->textActive() !!}</td>
 <td>
-    {{ implode(' / ', $user->getMappingTag($tag_tree, 2)) }} <br/>
-    @if ($user->internalUserMemo)
-        <span class="table--text-light"> {{ str_replace(',', ' / ', $user->internalUserMemo->tags) }} </span><br/>
-        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $user->user_id !!}" tags="{{ $user->internalUserMemo->tags }}" expertise-tags="{{ implode(' / ', $user->getMappingTag($tag_tree)) }}">Add</a>
-    @else
-        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $user->user_id !!}" tags="" expertise-tags="{{ implode(' / ', $user->getMappingTag($tag_tree)) }}">Add</a>
-    @endif
+    @include('user.component.list-expertise-tag', ['user' => $user , 'tag_tree' => $tag_tree])
 </td>
 <td>
-    @if ($user->internalUserMemo)
-        @if($user->internalUserMemo->description)
-            <a href="javascript:void(0)" class="internal-description" rel="{!! $user->user_id !!}" description="{{ $user->internalUserMemo->description }}">
-                <i class="fa fa-pencil"></i>{{ mb_strimwidth($user->internalUserMemo->description, 0, 130, mb_substr($user->internalUserMemo->description, 0, 130) . '...') }}
-            </a>
-        @else
-            <a href="javascript:void(0)" class="btn-mini internal-description" rel="{!! $user->user_id !!}" description="{{ $user->internalUserMemo->description }}">Add</a>
-        @endif
-    @else
-        <a href="javascript:void(0)" class="btn-mini internal-description" rel="{!! $user->user_id !!}" description="">Add</a>
-    @endif
+    @include('user.component.list-internal-description', ['user' => $user])
 </td>
 <td>
-    @if ($user->internalUserMemo)
-        @if($user->internalUserMemo->report_action)
-            <a href="javascript:void(0)" class="user-report-action" rel="{!! $user->user_id !!}" action="{{ $user->internalUserMemo->report_action }}">
-                <i class="fa fa-pencil"></i>{{ mb_strimwidth($user->internalUserMemo->report_action, 0, 130, mb_substr($user->internalUserMemo->report_action, 0, 130) . '...') }}
-            </a>
-        @else
-            <a href="javascript:void(0)" class="btn-mini user-report-action" rel="{!! $user->user_id !!}" action="{{ $user->internalUserMemo->report_action }}">Action</a>
-        @endif
-    @else
-        <a href="javascript:void(0)" class="btn-mini user-report-action" rel="{!! $user->user_id !!}" action="">Action</a>
-    @endif
+    @include('report.component.user-action', ['user' => $user])
 </td>
 <td>
     {!! link_to_action(
