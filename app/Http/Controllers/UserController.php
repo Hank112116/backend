@@ -21,19 +21,20 @@ use Auth;
 use Response;
 use Log;
 use Request;
+use View;
+use App;
 
 class UserController extends BaseController
 {
     protected $cert = 'user';
 
+    private $auth;
     private $user_repo;
     private $project_repo;
     private $solution_repo;
     private $expertise_repo;
     private $user_api;
     private $apply_msg_repo;
-    private $attachment_api;
-    private $profile_api;
 
     public function __construct(
         UserInterface $user,
@@ -41,20 +42,16 @@ class UserController extends BaseController
         SolutionInterface $solution,
         ExpertiseInterface $expertise,
         UserApiInterface $user_api,
-        ApplyExpertMessageInterface $apply_expert_message,
-        AttachmentApiInterface $attachment_api,
-        ProfileApiInterface $profile_api
+        ApplyExpertMessageInterface $apply_expert_message
     ) {
         parent::__construct();
-
+        $this->auth           = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
         $this->user_repo      = $user;
         $this->project_repo   = $project;
         $this->solution_repo  = $solution;
         $this->expertise_repo = $expertise;
         $this->user_api       = $user_api;
         $this->apply_msg_repo = $apply_expert_message;
-        $this->attachment_api = $attachment_api;
-        $this->profile_api    = $profile_api;
     }
 
     public function showList()
@@ -137,6 +134,7 @@ class UserController extends BaseController
         } else {
             $view                  = 'user.list';
             $data['is_restricted'] = $this->is_restricted_adminer;
+            $data['tag_tree']      = $this->expertise_repo->getTags();
         }
 
         $template = view($view)->with($data);
@@ -182,8 +180,9 @@ class UserController extends BaseController
 
             return Redirect::action('UserController@showList');
         }
+        $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
 
-        $attachments = $this->attachment_api->getAttachment($user);
+        $attachments = $attachment_api->getAttachment();
         
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
@@ -228,8 +227,8 @@ class UserController extends BaseController
             Noty::warn('No access permission');
             return Redirect::action('UserController@showUpdate', [$id]);
         }
-
-        $attachments = $this->attachment_api->getAttachment($user);
+        $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
+        $attachments  = $attachment_api->getAttachment();
         $front_domain = Config::get('app.front_domain');
 
         $data = [
@@ -288,7 +287,8 @@ class UserController extends BaseController
                 foreach ($attachment_data['delete_items'] as $row) {
                     $attachments['delete'][] = $row;
                 }
-                $this->attachment_api->updateAttachment($user, $attachments);
+                $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
+                $attachment_api->updateAttachment($attachments);
             }
         }
 
@@ -319,19 +319,28 @@ class UserController extends BaseController
 
     public function changeUserType()
     {
-        if (Auth::user()->isAdmin()) {
-            $user_id   = Input::get('user_id');
-            $user_type = Input::get('user_type');
-            $user      = $this->user_repo->find($user_id);
-            if (count($user) > 0) {
-                $this->user_repo->changeUserType($user_id, $user_type);
-                $res = [ 'status' => 'success' ];
-            } else {
-                $res = [ 'status' => 'fail', 'msg' => 'Not found user id!' ];
-            }
-        } else {
+        if (!Auth::user()->isAdmin()) {
             $res = [ 'status' => 'fail', 'msg' => 'Permissions denied!' ];
+            return Response::json($res);
         }
+        $user_id   = Input::get('user_id');
+        $user_type = Input::get('user_type');
+        $user      = $this->user_repo->find($user_id);
+        if (!$user) {
+            $res = [ 'status' => 'fail', 'msg' => 'Not found user id!' ];
+            return Response::json($res);
+        }
+
+        $this->user_repo->changeUserType($user_id, $user_type);
+        $user = $this->user_repo->find($user_id);
+        $view = View::make('user.row')->with(
+            [
+                'user'          => $user,
+                'is_restricted' => $this->is_restricted_adminer,
+                'tag_tree'      => $this->expertise_repo->getTags()
+            ]
+        )->render();
+        $res = [ 'status' => 'success', 'view' => $view ];
         return Response::json($res);
     }
 
@@ -346,7 +355,8 @@ class UserController extends BaseController
     {
         $user = $this->user_repo->find(Request::get('user_id'));
         $file = Request::file()[0];
-        $r    = $this->attachment_api->putAttachment($user, $file);
+        $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
+        $r    = $attachment_api->putAttachment($file);
         Log::info('Upload attachment', (array) $r);
         return json_encode($r);
     }
@@ -360,7 +370,8 @@ class UserController extends BaseController
         }
         $user_id = Input::get('user_id');
         $user    = $this->user_repo->find($user_id);
-        return $this->profile_api->disable($user);
+        $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+        return $profile_api->disable();
     }
 
     public function enable()
@@ -372,6 +383,39 @@ class UserController extends BaseController
         }
         $user_id = Input::get('user_id');
         $user    = $this->user_repo->find($user_id);
-        return $this->profile_api->enable($user);
+        $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+        return $profile_api->enable();
+    }
+
+    public function updateMemo()
+    {
+        $input = Input::all();
+        if ($this->user_repo->updateInternalMemo($input['user_id'], $input)) {
+            $user = $this->user_repo->find($input['user_id']);
+            if ($input['route_path'] === 'report/registration') {
+                // make report project row view
+                $view = View::make('report.user-row')
+                    ->with(['user' => $user, 'input' => $input,'is_super_admin' => $this->auth])
+                    ->render();
+            } else {
+                // make project row view
+                $view = View::make('user.row')->with(
+                    [
+                        'user'          => $user,
+                        'is_restricted' => $this->is_restricted_adminer,
+                        'tag_tree'      => $this->expertise_repo->getTags()
+                    ]
+                )->render();
+            }
+
+            $res  = ['status' => 'success', 'view' => $view];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+        }
+
+        $log_action = 'Edit user internal memo';
+        Log::info($log_action, $input);
+
+        return Response::json($res);
     }
 }

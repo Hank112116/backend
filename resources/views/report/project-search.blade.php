@@ -1,4 +1,4 @@
-{!! Form::open(['action' => ['ReportController@showProjectReport'], 'method' => 'GET']) !!}
+{!! Form::open(['action' => ['ReportController@showProjectReport'], 'method' => 'GET', 'name' => 'search-form']) !!}
 
 <div class="row">
     <div class="col-md-2 col-md-offset-1">

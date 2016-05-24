@@ -198,4 +198,11 @@ interface UserInterface
      * @return Collection|User[]
      */
     public function findHWTrekPM();
+
+    /**
+     * @param $user_id
+     * @param $data
+     * @return boolean
+     */
+    public function updateInternalMemo($user_id, $data);
 }

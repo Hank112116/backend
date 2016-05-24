@@ -109,11 +109,11 @@ function init() {
         $this.closest("form").submit();
     });
 
-    $("input").keypress(function (event) {
+    $(".search-bar :input").keypress(function (event) {
         if (event.which == 13) {
             event.preventDefault();
             $(".js-btn-search").html("<i class='fa fa-refresh fa-spin'></i> Searching!");
-            $("form").submit();
+            $("form[name='search-form']").submit();
         }
     });
 }

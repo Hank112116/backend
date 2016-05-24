@@ -8,22 +8,19 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 interface AttachmentApiInterface
 {
     /**
-     * @param User $user
      * @return mixed
      */
-    public function getAttachment(User $user);
+    public function getAttachment();
 
     /**
-     * @param User $user
      * @param array $attachments
      * @return mixed
      */
-    public function updateAttachment(User $user, array $attachments);
+    public function updateAttachment(array $attachments);
 
     /**
-     * @param User $user
      * @param UploadedFile $file
      * @return mixed
      */
-    public function putAttachment(User $user, UploadedFile $file);
+    public function putAttachment(UploadedFile $file);
 }

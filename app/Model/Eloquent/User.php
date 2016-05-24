@@ -96,6 +96,11 @@ class User extends Eloquent
         return $this->hasMany(ApplyExpertMessage::class)->where('message', '!=', '')->orderBy('id', 'desc');
     }
 
+    public function internalUserMemo()
+    {
+        return $this->hasOne(InternalUserMemo::class, 'id', 'user_id');
+    }
+
     public function scopeQueryExperts($query)
     {
         return $query->where('user_type', self::TYPE_EXPERT);
@@ -405,6 +410,28 @@ class User extends Eloquent
         }
 
         return in_array($tag_id, $this->expertise_tags);
+    }
+
+    public function getMappingTag($tag_tree = [], $amount = 0)
+    {
+        $mapping   = [];
+        $expertises = explode(',', $this->expertises);
+        if (empty($expertises)) {
+            return [];
+        }
+
+        foreach ($tag_tree as $parent_tree) {
+            foreach ($parent_tree['children'] as $tag) {
+                if (in_array($tag['expertise_id'], $expertises)) {
+                    $mapping[] = $tag['short_name'];
+                }
+            }
+        }
+        if ($amount === 0) {
+            return $mapping;
+        } else {
+            return array_slice($mapping, 0, $amount);
+        }
     }
 
     public function toBasicArray()

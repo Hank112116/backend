@@ -9,23 +9,31 @@ use Backend\Model\Eloquent\User;
 
 class ProfileApi extends HWTrekApi implements ProfileApiInterface
 {
+    private $user;
+    private $url;
+
+    public function __construct(User $user)
+    {
+        parent::__construct();
+        $this->user = $user;
+        $this->url  = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::PRIVILEGE;
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function disable(User $user)
+    public function disable()
     {
-        $url = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::PRIVILEGE;
-        $r   = $this->delete($url);
+        $r = $this->delete($this->url);
         return $this->response((array) $r);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function enable(User $user)
+    public function enable()
     {
-        $url = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::PRIVILEGE;
-        $r   = $this->post($url);
+        $r = $this->post($this->url);
         return $this->response((array) $r);
     }
 }

@@ -48,7 +48,7 @@ Route::group(['before' => 'backend.user'], function () {
     Route::post('user/enable', 'UserController@enable');
     Route::post('user/update/{id}', 'UserController@update');
     Route::post('user/change-hwtrek-pm-type', 'UserController@changeUserType');
-
+    Route::post('user/update-memo', 'UserController@updateMemo');
     Route::post('user/put-attachment', 'UserController@putAttachment');
 });
 

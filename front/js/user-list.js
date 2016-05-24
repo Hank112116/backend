@@ -1,4 +1,6 @@
 "use strict";
+require("./libs/InternalUserMemo.js");
+import * as icheck from "./modules/icheck";
 import * as SweetAlert from "./libs/SweetAlert";
 $(function () {
     var $document = $(document);
@@ -73,12 +75,14 @@ $(function () {
     });
 
     function post_data(user_id, url, user_type){
+        var route_path = $("#route-path").val();
         $.ajax({
             type: "POST",
             url: url,
             data: {
                 user_id: user_id,
-                user_type: user_type
+                user_type: user_type,
+                route_path: route_path
             },
             dataType: "JSON",
             success: function success(feeback) {
@@ -87,7 +91,9 @@ $(function () {
                     return;
                 }
                 Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
+                var $user_row =  $("#row-" + user_id);
+                $user_row.html(feeback.view);
+                icheck.init();
             }
         });
     }

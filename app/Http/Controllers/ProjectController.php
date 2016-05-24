@@ -226,7 +226,7 @@ class ProjectController extends BaseController
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
         }
 
-        $log_action = 'Edit internal information';
+        $log_action = 'Edit internal project memo';
         Log::info($log_action, $input);
 
         return Response::json($res);

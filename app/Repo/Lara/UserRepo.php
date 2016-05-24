@@ -1,6 +1,7 @@
 <?php namespace Backend\Repo\Lara;
 
 use Backend\Model\Eloquent\User;
+use Backend\Model\Eloquent\InternalUserMemo;
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use ImageUp;
 use Validator;
@@ -16,6 +17,7 @@ class UserRepo implements UserInterface
 
     private $error;
     private $user;
+    private $user_memo;
     private $expertise;
     private $apply_expert_msg_repo;
     private $image_uplodaer;
@@ -27,13 +29,19 @@ class UserRepo implements UserInterface
         'user_about', 'expertises',
     ];
 
+    private $update_memo_columns = [
+        'description', 'tags', 'report_action'
+    ];
+
     public function __construct(
         User $user,
+        InternalUserMemo $user_memo,
         ExpertiseInterface $expertise,
         ApplyExpertMessageInterface $apply_expert_msg_repo,
         ImageUp $image_uploader
     ) {
         $this->user                  = $user;
+        $this->user_memo             = $user_memo;
         $this->expertise             = $expertise;
         $this->apply_expert_msg_repo = $apply_expert_msg_repo;
         $this->image_uplodaer        = $image_uploader;
@@ -447,6 +455,19 @@ class UserRepo implements UserInterface
     public function findHWTrekPM()
     {
         return $this->user->where('user_type', User::TYPE_PM)->get();
+    }
+
+    public function updateInternalMemo($user_id, $data)
+    {
+        $memo = $this->user_memo->find($user_id);
+        if ($memo) {
+            $memo->fill(array_only($data, $this->update_memo_columns));
+            return $memo->save();
+        } else {
+            $this->user_memo->id = $user_id;
+            $this->user_memo->fill(array_only($data, $this->update_memo_columns));
+            return $this->user_memo->save();
+        }
     }
 
     /*

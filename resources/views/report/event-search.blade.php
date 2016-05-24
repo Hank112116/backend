@@ -29,7 +29,7 @@
 
     @if($complete)
         <!--<div class="col-md-1">
-            {!! Form::open(['action' => ['ReportController@showEventReport', 'approve'], 'method' => 'GET']) !!}
+            {!! Form::open(['action' => ['ReportController@showEventReport', 'approve'], 'method' => 'GET', 'name' => 'search-form']) !!}
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                 @if($approve == 'approved')
                     Selected
@@ -55,7 +55,7 @@
         </div>-->
     @endif
 
-    {!! Form::open(['action' => ['ReportController@showEventReport', $event_id], 'method' => 'GET']) !!}
+    {!! Form::open(['action' => ['ReportController@showEventReport', $event_id], 'method' => 'GET', 'name' => 'search-form']) !!}
     @if($complete)
     <div class="col-md-1">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
