@@ -292,6 +292,17 @@ class UserRepo implements UserInterface
             }
         }
 
+        if (!empty($input['description'])) {
+            $description = $input['description'];
+            $users = $users->filter(function (User $item) use ($description) {
+                if ($item->internalUserMemo) {
+                    if (stristr($item->internalUserMemo->description, $description)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
         if (!empty($input['tag'])) {
             $search_tag = $input['tag'];
             $users   = $users->filter(function (User $item) use ($search_tag) {
