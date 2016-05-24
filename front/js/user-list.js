@@ -55,8 +55,7 @@ $(function () {
             }
         });
     });
-
-    $(".fa-commenting-o").click(function(){
+    $document.on("click", ".fa-commenting-o", function() {
         var user_id = $(this).attr("rel");
         $.ajax({
             type: "POST",

@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @include('layouts.macro')
-
+@section('jqui')
+    @include('layouts.jqui')
+@stop
 @section('css')
     <link rel="stylesheet" href="/css/user-list.css">
 @stop
@@ -45,15 +47,17 @@
                 </tr>
 
                 @foreach($users as $user)
-                    <tr>
-
+                    <tr id="row-{{ $user->user_id }}">
+                        @include('user.editor-row', ['user' => $user])
                     </tr>
                 @endforeach
             </table>
         </div>
     </div>
-
+    <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
     @include('layouts.paginate', ['collection' => $users, 'per_page' => isset($per_page)? $per_page : ''])
-
+    @include('user.dialog.add-tags-dialog')
+    @include('user.dialog.description-dialog')
+    @include('report.dialog.user-report-action')
 @stop
 

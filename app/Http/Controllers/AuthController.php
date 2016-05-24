@@ -49,7 +49,7 @@ class AuthController extends BaseController
         Session::put('admin', $user->id);
         Noty::success('Welcome, ' . $user->name . ". Login success");
 
-        return redirect('/user/all');
+        return redirect('/');
     }
 
     public function logout()

@@ -15,6 +15,8 @@ class UserRepo implements UserInterface
 {
     use PaginateTrait;
 
+    protected $with_relations = ['internalUserMemo'];
+
     private $error;
     private $user;
     private $user_memo;
@@ -121,7 +123,9 @@ class UserRepo implements UserInterface
 
     public function byPage($page = 1, $limit = 20)
     {
-        $users = $this->modelBuilder($this->user, $page, $limit)->get();
+        $users = $this->modelBuilder($this->user, $page, $limit)
+            ->with($this->with_relations)
+            ->get();
         return $this->getPaginateContainer($this->user, $page, $limit, $users);
     }
 
@@ -275,6 +279,11 @@ class UserRepo implements UserInterface
                             break;
                         case 'premium-expert':
                             if ($item->isPremiumExpert()) {
+                                return $item;
+                            }
+                            break;
+                        case 'pm':
+                            if ($item->isHWTrekPM()) {
                                 return $item;
                             }
                             break;

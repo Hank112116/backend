@@ -66,13 +66,13 @@
 <td>{!! $user->textEmailVerify() !!}</td>
 <td>{!! $user->textActive() !!}</td>
 <td>
-    @include('user.component.list-expertise-tag', ['user' => $user , 'tag_tree' => $tag_tree])
+    @include('user.component.list-expertise-tag', ['user' => $user, 'memo' => $user->internalUserMemo])
 </td>
 <td>
-    @include('user.component.list-internal-description', ['user' => $user])
+    @include('user.component.list-internal-description', ['user' => $user, 'memo' => $user->internalUserMemo])
 </td>
 <td>
-    @include('report.component.user-action', ['user' => $user])
+    @include('report.component.user-action', ['user' => $user, 'memo' => $user->internalUserMemo])
 </td>
 <td>
     {!! link_to_action(

@@ -2,6 +2,7 @@
 
 namespace Backend\Model\Eloquent;
 
+use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Config;
 use UrlFilter;
 use Carbon;
@@ -412,21 +413,14 @@ class User extends Eloquent
         return in_array($tag_id, $this->expertise_tags);
     }
 
-    public function getMappingTag($tag_tree = [], $amount = 0)
+    public function getMappingTag($amount = 0)
     {
-        $mapping   = [];
-        $expertises = explode(',', $this->expertises);
-        if (empty($expertises)) {
+        if (!$this->expertises) {
             return [];
         }
+        $expertise_repo = \App::make(ExpertiseInterface::class);
+        $mapping = $expertise_repo->getDisplayTags(explode(',', $this->expertises))->toArray();
 
-        foreach ($tag_tree as $parent_tree) {
-            foreach ($parent_tree['children'] as $tag) {
-                if (in_array($tag['expertise_id'], $expertises)) {
-                    $mapping[] = $tag['short_name'];
-                }
-            }
-        }
         if ($amount === 0) {
             return $mapping;
         } else {

@@ -134,7 +134,6 @@ class UserController extends BaseController
         } else {
             $view                  = 'user.list';
             $data['is_restricted'] = $this->is_restricted_adminer;
-            $data['tag_tree']      = $this->expertise_repo->getTags();
         }
 
         $template = view($view)->with($data);
@@ -398,8 +397,13 @@ class UserController extends BaseController
                     ->with(['user' => $user, 'input' => $input,'is_super_admin' => $this->auth])
                     ->render();
             } else {
+                if ($this->is_limitied_editor) {
+                    $view = 'user.editor-row';
+                } else {
+                    $view = 'user.row';
+                }
                 // make project row view
-                $view = View::make('user.row')->with(
+                $view = View::make($view)->with(
                     [
                         'user'          => $user,
                         'is_restricted' => $this->is_restricted_adminer,

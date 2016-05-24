@@ -51,7 +51,8 @@
                 'expert'         => 'Expert',
                 'creator'        => 'Creator',
                 'premium-expert' => 'Premium Expert',
-                'to-be-expert'   => 'To Be Expert'
+                'to-be-expert'   => 'To Be Expert',
+                'pm'             => 'HWTrek PM'
             ], Input::get('status'), ['class'=>'form-control']) !!}
             @else
             {!! Form::select('status',[
