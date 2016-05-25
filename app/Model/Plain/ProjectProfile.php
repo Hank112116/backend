@@ -1,5 +1,6 @@
 <?php namespace Backend\Model\Plain;
 
+use Backend\Enums\DeleteReason;
 use Backend\Model\Eloquent\Project;
 use Carbon;
 
@@ -12,6 +13,8 @@ class ProjectProfile
 
     public $text_status;
     public $text_project_submit;
+
+    private $project;
 
     /**
      * Project-Status $draft_project, $private_project, $public_project
@@ -34,6 +37,12 @@ class ProjectProfile
         'public_draft'         => 1,
         'is_project_submitted' => 1,
         'is_deleted'           => 0
+    ];
+
+    private $deleted_reason_map = [
+        DeleteReason::BY_OWNER     => 'by owner',
+        DeleteReason::BY_BACKEND   => 'by backend',
+        DeleteReason::USER_SUSPEND => 'by user suspend'
     ];
 
     public function setProject(Project $project)
@@ -96,6 +105,15 @@ class ProjectProfile
                 " ( {$this->project->total_days} Days )";
     }
 
+    public function textDeleteReason()
+    {
+        if (!array_key_exists($this->project->deleted_reason, $this->deleted_reason_map)) {
+            return null;
+        }
+
+        return $this->deleted_reason_map[$this->project->deleted_reason];
+    }
+
     private function isFundEnd()
     {
         $end_date       = Carbon::parse($this->project->end_date);
@@ -147,7 +165,8 @@ class ProjectProfile
             case $this->isDraft():
                 return 'Unfinished Draft';
             case $this->isDeleted():
-                return 'Deleted';
+                $deleted_reason = $this->textDeleteReason();
+                return 'Deleted ' . $deleted_reason;
             default:  //   !$project->isProjectSubmitted()
                 return 'N/A';
         }

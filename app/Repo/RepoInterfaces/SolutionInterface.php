@@ -45,6 +45,13 @@ interface SolutionInterface
      * @param $limit
      * @return \Illuminate\Pagination\LengthAwarePaginator|Solution[]
      */
+    public function byPage($page, $limit);
+    
+    /**
+     * @param $page
+     * @param $limit
+     * @return \Illuminate\Pagination\LengthAwarePaginator|Solution[]
+     */
     public function approvedSolutions($page, $limit);
 
     /**

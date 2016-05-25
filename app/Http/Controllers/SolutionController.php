@@ -35,7 +35,7 @@ class SolutionController extends BaseController
 
     public function showList()
     {
-        $solutions = $this->solution_repo->approvedSolutions($this->page, $this->per_page);
+        $solutions = $this->solution_repo->byPage($this->page, $this->per_page);
 
         return $this->showSolutions($solutions);
     }

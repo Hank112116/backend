@@ -37,11 +37,13 @@
                     'all'              => 'All Type',
                     'solution'         => 'Solution',
                     'program'          => 'Program',
+                    'unfinished'       => 'Unfinished',
                     'on-shelf'         => 'On Shelf',
                     'off-shelf'        => 'Off Shelf',
                     'pending-approve'  => 'Pending for Approve',
                     'pending-program'  => 'Pending for Program',
-                    'pending-solution' => 'Pending for Solution'
+                    'pending-solution' => 'Pending for Solution',
+                    'deleted'          => 'Deleted'
                 ], Input::get('status'), ['class'=>'form-control']) !!}
         </div>
     </div>
