@@ -25,7 +25,7 @@
     </div>
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('tag', Input::get('tag'), ['placeholder'=>"Expertise Tags", 'class'=>"form-control"]) !!}
+            {!! Form::text('tag', Input::get('tag'), ['placeholder'=>"Tags", 'class'=>"form-control"]) !!}
         </div>
     </div>
 

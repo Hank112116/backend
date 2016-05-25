@@ -1,13 +1,13 @@
-<div id="internal-tag-dialog" class="ui-widget" title="Expertise Tags" style="display:none">
+<div id="internal-tag-dialog" class="ui-widget" title="Tags" style="display:none">
     <table class="table table-striped">
         <tr>
-            <td class="col-md-4"><label for="expertise-tags">Tags</label></td>
+            <td class="col-md-4"><label for="expertise-tags">On <Profile></Profile></label></td>
             <td>
                 <span id="expertise-tags"></span>
             </td>
         </tr>
         <tr>
-            <td class="col-md-4"><label for="internal-tag">Internal Tags</label></td>
+            <td class="col-md-4"><label for="internal-tag">Internal</label></td>
             <td>
                 <div>
                     <input type="text" id="internal-tag" name="internal-tag" size="35"
