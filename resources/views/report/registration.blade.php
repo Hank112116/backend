@@ -1,11 +1,14 @@
 @extends('layouts.master')
 @include('layouts.macro')
-
+@section('jqui')
+    @include('layouts.jqui')
+@stop
 @section('css')
     <link rel="stylesheet" href="/css/user-list.css">
 @stop
 @section('js')
     <script src='/js/list.js'></script>
+    <script src='/js/user-list.js'></script>
 @stop
 
 
@@ -91,65 +94,13 @@
                     </th>
                     <th>Email<br/>Verify</th>
                     <th>Active</th>
+                    <th>Action</th>
                     <th></th>
                 </tr>
 
                 @foreach($users as $user)
-                    <tr>
-                        <td>{!! $user->user_id !!}</td>
-                        <td>
-                            <a href="{!! $user->textFrontLink() !!}" target="_blank">
-                                {{ $user->textFullName() }}</a>
-                        </td>
-                        @if($is_super_admin && $user->isHWTrekPM())
-                            <td>{!! $user->textHWTrekPM() !!}</td>
-                        @else
-                            <td>{!! ($user->isToBeExpert() or $user->isApplyExpert())?"<font color='red'>{$user->textType()}</font>":$user->textType()  !!}</td>
-                        @endif
-
-
-                        @if($is_super_admin)
-                            <td class="table--user-mail">
-                                {{ $user->email }}
-                                @if('facebook' === $user->social)
-                                    <i class="fa fa-facebook-square"></i>
-                                @elseif('linkedin' === $user->social)
-                                    <i class="fa fa-linkedin-square"></i>
-                                @endif
-                            </td>
-                        @endif
-                        <td>{{ $user->country }}<br/>{{ $user->city }}</td>
-
-                        <td class="table--width-limit">
-                            {{ $user->company }}<br/>
-                            <span class="table--text-light">{{ $user->business_id  }}</span>
-                        </td>
-
-                        <td>
-                            <span data-time="{!! $user->date_added !!}">{{ $user->textRegistedOn() }}</span>
-                            @if($is_super_admin)
-                                <br/><span class="table--text-light">{!! $user->signup_ip !!}</span>
-                            @endif
-                        </td>
-
-                        <td>{!! $user->textEmailVerify() !!}</td>
-                        <td>{!! $user->textActive() !!}</td>
-
-                        <td>
-                            {!! link_to_action(
-                                    'UserController@showDetail', 'DETAIL',
-                                    $user->user_id, ['class' => 'btn-mini']) !!}
-
-                            @if($is_super_admin and ($user->isApplyExpert() or $user->isToBeExpert()))
-                                {!! link_to_action(
-                                        'UserController@showUpdate', 'EDIT & To-Expert',
-                                        $user->user_id, ['class' => 'btn-mini btn-danger']) !!}
-                            @else
-                                {!! link_to_action(
-                                        'UserController@showUpdate', 'EDIT',
-                                        $user->user_id, ['class' => 'btn-mini']) !!}
-                            @endif
-                        </td>
+                    <tr id="row-{{ $user->user_id }}">
+                        @include('report.user-row', ['user' => $user])
                     </tr>
                 @endforeach
             </table>
@@ -158,6 +109,7 @@
     <div class="text-center">
         {!! $users->appends(Input::all())->render() !!}
     </div>
-
+    @include('report.dialog.user-report-action')
+    <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
 @stop
 

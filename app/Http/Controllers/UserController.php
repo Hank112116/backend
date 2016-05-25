@@ -2,13 +2,14 @@
 
 namespace Backend\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Api\ApiInterfaces\UserApiInterface;
+use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
+use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Model\Eloquent\Industry;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Input;
@@ -19,14 +20,15 @@ use Redirect;
 use Auth;
 use Response;
 use Log;
-use Curl\Curl;
 use Request;
-use RSA;
+use View;
+use App;
 
 class UserController extends BaseController
 {
     protected $cert = 'user';
 
+    private $auth;
     private $user_repo;
     private $project_repo;
     private $solution_repo;
@@ -43,7 +45,7 @@ class UserController extends BaseController
         ApplyExpertMessageInterface $apply_expert_message
     ) {
         parent::__construct();
-
+        $this->auth           = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
         $this->user_repo      = $user;
         $this->project_repo   = $project;
         $this->solution_repo  = $solution;
@@ -177,9 +179,10 @@ class UserController extends BaseController
 
             return Redirect::action('UserController@showList');
         }
+        $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
 
-        $attachments = $this->getUserAttachment($id);
-
+        $attachments = $attachment_api->getAttachment();
+        
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
@@ -223,8 +226,8 @@ class UserController extends BaseController
             Noty::warn('No access permission');
             return Redirect::action('UserController@showUpdate', [$id]);
         }
-
-        $attachments  = $this->getUserAttachment($id);
+        $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
+        $attachments  = $attachment_api->getAttachment();
         $front_domain = Config::get('app.front_domain');
 
         $data = [
@@ -283,7 +286,8 @@ class UserController extends BaseController
                 foreach ($attachment_data['delete_items'] as $row) {
                     $attachments['delete'][] = $row;
                 }
-                $this->updateAttachment($id, $attachments);
+                $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
+                $attachment_api->updateAttachment($attachments);
             }
         }
 
@@ -314,37 +318,29 @@ class UserController extends BaseController
 
     public function changeUserType()
     {
-        if (Auth::user()->isAdmin()) {
-            $user_id   = Input::get('user_id');
-            $user_type = Input::get('user_type');
-            $user      = $this->user_repo->find($user_id);
-            if (count($user) > 0) {
-                $this->user_repo->changeUserType($user_id, $user_type);
-                $res = [ 'status' => 'success' ];
-            } else {
-                $res = [ 'status' => 'fail', 'msg' => 'Not found user id!' ];
-            }
-        } else {
+        if (!Auth::user()->isAdmin()) {
             $res = [ 'status' => 'fail', 'msg' => 'Permissions denied!' ];
+            return Response::json($res);
         }
-        return Response::json($res);
-    }
+        $user_id   = Input::get('user_id');
+        $user_type = Input::get('user_type');
+        $user      = $this->user_repo->find($user_id);
+        if (!$user) {
+            $res = [ 'status' => 'fail', 'msg' => 'Not found user id!' ];
+            return Response::json($res);
+        }
 
-    /**
-     * Get web service profile api return attachments information
-     *
-     * @param $user_id
-     * @return object attachments
-     */
-    private function getUserAttachment($user_id)
-    {
-        $front_domain = Config::get('app.front_domain');
-        $curl = new Curl();
-        $curl->setReferrer('https://' . $front_domain);
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $r = $curl->get("https://{$front_domain}/apis/users/{$user_id}/profile");
-        return $r->attachments;
+        $this->user_repo->changeUserType($user_id, $user_type);
+        $user = $this->user_repo->find($user_id);
+        $view = View::make('user.row')->with(
+            [
+                'user'          => $user,
+                'is_restricted' => $this->is_restricted_adminer,
+                'tag_tree'      => $this->expertise_repo->getTags()
+            ]
+        )->render();
+        $res = [ 'status' => 'success', 'view' => $view ];
+        return Response::json($res);
     }
 
     /**
@@ -356,70 +352,74 @@ class UserController extends BaseController
      */
     public function putAttachment()
     {
-        $front_domain   = Config::get('app.front_domain');
-        $backend_domain = Config::get('app.backend_domain');
-        $user_id = Request::get('user_id');
-        $file    = Request::file()[0];
-        $upload_dir = '/tmp/';
-
-        $file->move($upload_dir, $file->getClientOriginalName());
-
-        $file_path = $upload_dir . $file->getClientOriginalName();
-        $fp        = fopen($file_path, "r");
-
-        $curl = new Curl();
-        $curl->setReferrer('https://' . $backend_domain);
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-        $curl->setHeader('Content-Type', 'multipart/form-data');
-        $curl->setHeader('Accept', 'application/json');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $curl->setOpt(CURLOPT_INFILE, $fp);
-        $curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
-
-        $curl->put("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", [
-            'file'      => "@{$file_path}",
-            'pass_code' =>  RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'))
-        ]);
-
-        fclose($fp);
-        unlink($file_path);
-
-        if ($curl->error) {
-            return Response::json([], $curl->errorCode);
-        }
-        $response = $curl->response;
-        $curl->close();
-        return json_encode($response);
+        $user = $this->user_repo->find(Request::get('user_id'));
+        $file = Request::file()[0];
+        $attachment_api = App::make(AttachmentApiInterface::class, ['user' => $user]);
+        $r    = $attachment_api->putAttachment($file);
+        Log::info('Upload attachment', (array) $r);
+        return json_encode($r);
     }
 
-    /**
-     * Update attachment to web service backend api
-     *
-     * @param $user_id
-     * @param $attachments
-     * @return int
-     */
-    private function updateAttachment($user_id, $attachments)
+    public function disable()
     {
-        $front_domain   = Config::get('app.front_domain');
-        $backend_domain = Config::get('app.backend_domain');
-        $curl = new Curl();
-        $curl->setReferrer('https://' . $backend_domain);
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-        $curl->setHeader('Content-Type', 'application/json');
-        $curl->setHeader('Accept', 'application/json');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
-        $data['attachments'] = $attachments;
-        $data['pass_code']   = RSA::encryption(Config::get('app.pass_code'), Config::get('front-public-key'));
-        $curl->patch("https://{$front_domain}/apis/backend/users/{$user_id}/attachments", json_encode($data));
-        if ($curl->error) {
-            $info['message'] =  'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage;
-            Log::error('attachment update error', $info);
-            $http_code = $curl->errorCode;
-        } else {
-            $http_code =  $curl->httpStatusCode;
+        if (!Auth::user()->isAdmin()) {
+            Noty::warnLang('common.no-permission');
+
+            return Redirect::action('UserController@showList');
         }
-        $curl->close();
-        return $http_code;
+        $user_id = Input::get('user_id');
+        $user    = $this->user_repo->find($user_id);
+        $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+        return $profile_api->disable();
+    }
+
+    public function enable()
+    {
+        if (!Auth::user()->isAdmin()) {
+            Noty::warnLang('common.no-permission');
+
+            return Redirect::action('UserController@showList');
+        }
+        $user_id = Input::get('user_id');
+        $user    = $this->user_repo->find($user_id);
+        $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+        return $profile_api->enable();
+    }
+
+    public function updateMemo()
+    {
+        $input = Input::all();
+        if ($this->user_repo->updateInternalMemo($input['user_id'], $input)) {
+            $user = $this->user_repo->find($input['user_id']);
+            if ($input['route_path'] === 'report/registration') {
+                // make report project row view
+                $view = View::make('report.user-row')
+                    ->with(['user' => $user, 'input' => $input,'is_super_admin' => $this->auth])
+                    ->render();
+            } else {
+                if ($this->is_limitied_editor) {
+                    $view = 'user.editor-row';
+                } else {
+                    $view = 'user.row';
+                }
+                // make project row view
+                $view = View::make($view)->with(
+                    [
+                        'user'          => $user,
+                        'is_restricted' => $this->is_restricted_adminer,
+                        'tag_tree'      => $this->expertise_repo->getTags()
+                    ]
+                )->render();
+            }
+
+            $res  = ['status' => 'success', 'view' => $view];
+        } else {
+            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+        }
+
+        $log_action = 'Edit user internal memo';
+        Log::info($log_action, $input);
+
+        return Response::json($res);
     }
 }

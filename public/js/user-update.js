@@ -267,7 +267,229 @@ function alert(param) {
     });
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":14}],4:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":16}],4:[function(require,module,exports){
+/* jshint quotmark: false */
+"use strict";
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+var _libsSweetAlert = require("../libs/SweetAlert");
+
+var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
+
+$(function () {
+    check_attachment_amount();
+    var user_id = $("#user_id").val();
+
+    var put_items = [];
+    var delete_items = [];
+
+    var attachment_items = {
+        put_items: put_items,
+        delete_items: delete_items
+    };
+
+    // Variable to store your files
+    var files;
+
+    // Add events
+    $("#attachment_upload").on("change", function (event) {
+        var $this = $(this);
+        files = event.target.files;
+        event.stopPropagation(); // Stop stuff happening
+        event.preventDefault(); // Totally stop stuff happening
+
+        // Create a form data object and add the files
+        var data = new FormData();
+        $.each(files, function (key, value) {
+            data.append(key, value);
+        });
+        data.append("user_id", user_id);
+        $("#attachment_upload").attr("disabled", "disabled");
+        $(".btn-submit").attr("disabled", "disabled");
+        $(".panel-body-attachment").append("<i class='fa fa-refresh fa-spin'></i>");
+        $.ajax({
+            url: "/user/put-attachment",
+            type: "POST",
+            data: data,
+            cache: false,
+            dataType: "json",
+            processData: false, // Don't process the files
+            contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+            statusCode: {
+                200: function _($data) {
+                    put_items.push($data);
+                    //console.log(put_items);
+                    $("#attachments").val(JSON.stringify(attachment_items));
+
+                    $(".panel-body-attachment-list").append("<div class='photo-preview'>" + "<div style='background-image:url(/images/attachment-previews/attach-cover-1.png);' class='photo-thumb'></div>" + "<div class='file-info'>" + "<span>" + $data.name + "</span><span> (</span><span>" + formatBytes($data.size, 2) + "</span><span>)</span>" + "<i style='cursor:pointer' class='fa fa-trash-o attachment-trash-put' attachment='" + JSON.stringify($data) + "'></i>" + "</div>" + "</div>");
+
+                    Notifier.showTimedMessage("Upload success", "information", 2);
+                    $(".fa-refresh").remove();
+                    $this.val("");
+                    check_attachment_amount();
+                    $(".btn-submit").removeAttr("disabled");
+                },
+                400: function _() {
+                    Notifier.showTimedMessage("Update fail", "warning", 2);
+                    $(".fa-refresh").remove();
+                },
+                500: function _() {
+                    Notifier.showTimedMessage("Server error", "warning", 2);
+                    $(".fa-refresh").remove();
+                }
+            }
+        });
+    });
+
+    $(".panel-body-attachment-list").on("click", ".attachment-trash-put", function () {
+        var $this = $(this);
+        var attachment = JSON.parse($this.attr("attachment"));
+        SweetAlert.alert({
+            title: "Delete attachment?",
+            confirmButton: "Yes!",
+            handleOnConfirm: function handleOnConfirm() {
+                return delete_put_attachment(attachment, $this);
+            }
+        });
+    });
+
+    $(".attachment-trash").click(function () {
+        var $this = $(this);
+        var attachment = $this.attr("attachment");
+        SweetAlert.alert({
+            title: "Delete attachment?",
+            confirmButton: "Yes!",
+            handleOnConfirm: function handleOnConfirm() {
+                return delete_attachment(attachment, $this);
+            }
+        });
+    });
+
+    function delete_put_attachment(attachment, $this) {
+        put_items.map(function (obj, index) {
+            if (attachment.key == obj.key) {
+                put_items.splice(index, 1);
+            }
+        });
+        $this.parent().parent().remove();
+        $("#attachments").val(JSON.stringify(attachment_items));
+        check_attachment_amount();
+    }
+
+    function delete_attachment(attachment, $this) {
+        delete_items.push(JSON.parse(attachment));
+        $this.parent().parent().remove();
+        $("#attachments").val(JSON.stringify(attachment_items));
+        check_attachment_amount();
+    }
+
+    function check_attachment_amount() {
+        var attachment_count = $(".photo-preview").length;
+        console.log(attachment_count);
+        if (attachment_count >= 3) {
+            $("#attachment_upload").attr("disabled", "disabled");
+        } else {
+            $("#attachment_upload").removeAttr("disabled");
+        }
+    }
+
+    function formatBytes(bytes, decimals) {
+        if (bytes === 0) {
+            return "0 Byte";
+        }
+        var k = 1000;
+        var dm = decimals + 1 || 3;
+        var sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toPrecision(dm) + " " + sizes[i];
+    }
+});
+
+},{"../libs/SweetAlert":3}],5:[function(require,module,exports){
+/* jshint quotmark: false */
+'use strict';
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+var _libsSweetAlert = require("../libs/SweetAlert");
+
+var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
+
+$(function () {
+    var $document = $(document);
+
+    $document.on('click', '.js-disable-user', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var user_id = $this.attr("rel");
+        SweetAlert.alert({
+            title: "Sure suspend this user?",
+            confirmButton: "Yes!",
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    $this.html("<i class='fa fa-refresh fa-spin'></i> Suspend");
+                    post_data(user_id, "/user/disable");
+                } else {
+                    return false;
+                }
+            }
+        });
+    });
+
+    $document.on('click', '.js-enable-user', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var user_id = $this.attr("rel");
+        SweetAlert.alert({
+            title: "Sure unsuspend this user?",
+            confirmButton: "Yes!",
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    $this.html("<i class='fa fa-refresh fa-spin'></i> Unsuspend");
+                    post_data(user_id, "/user/enable");
+                } else {
+                    return false;
+                }
+            }
+        });
+    });
+
+    function post_data(user_id, url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                user_id: user_id
+            },
+            dataType: "JSON",
+            success: function success() {
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.href = "/user/detail/" + user_id;
+            },
+            statusCode: {
+                400: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                401: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                500: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                }
+            }
+        });
+    }
+});
+
+},{"../libs/SweetAlert":3}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -288,7 +510,7 @@ function initRadio() {
     });
 }
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -303,152 +525,23 @@ var _modulesIcheck = require("./modules/icheck");
 
 var icheck = _interopRequireWildcard(_modulesIcheck);
 
-var _libsSweetAlert = require("./libs/SweetAlert");
-
-var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
-
 var _libsProjectUpdater = require("./libs/ProjectUpdater");
 
 var _libsProjectUpdater2 = _interopRequireDefault(_libsProjectUpdater);
 
+require("./libs/UserAttachment.js");
+require("./libs/UserSuspend.js");
+
 $(function () {
     icheck.initRadio();
-
     FormUtility.locationSelector($("#country"));
     FormUtility.locationSelector($("#city"));
 
     FormUtility.editor();
     new _libsProjectUpdater2["default"]().initSelectTag($("[data-select-tags=expertises]"));
-    check_attachment_amount();
 });
 
-var user_id = $("#user_id").val();
-
-var put_items = [];
-var delete_items = [];
-
-var attachment_items = {
-    put_items: put_items,
-    delete_items: delete_items
-};
-
-// Variable to store your files
-var files;
-
-// Add events
-$("#attachment_upload").on("change", function (event) {
-    var $this = $(this);
-    files = event.target.files;
-    event.stopPropagation(); // Stop stuff happening
-    event.preventDefault(); // Totally stop stuff happening
-
-    // Create a form data object and add the files
-    var data = new FormData();
-    $.each(files, function (key, value) {
-        data.append(key, value);
-    });
-    data.append("user_id", user_id);
-    $("#attachment_upload").attr("disabled", "disabled");
-    $(".btn-submit").attr("disabled", "disabled");
-    $(".panel-body-attachment").append("<i class='fa fa-refresh fa-spin'></i>");
-    $.ajax({
-        url: "/user/put-attachment",
-        type: "POST",
-        data: data,
-        cache: false,
-        dataType: "json",
-        processData: false, // Don't process the files
-        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-        statusCode: {
-            200: function _($data) {
-                put_items.push($data);
-                //console.log(put_items);
-                $("#attachments").val(JSON.stringify(attachment_items));
-
-                $(".panel-body-attachment-list").append("<div class='photo-preview'>" + "<div style='background-image:url(/images/attachment-previews/attach-cover-1.png);' class='photo-thumb'></div>" + "<div class='file-info'>" + "<span>" + $data.name + "</span><span> (</span><span>" + formatBytes($data.size, 2) + "</span><span>)</span>" + "<i style='cursor:pointer' class='fa fa-trash-o attachment-trash-put' attachment='" + JSON.stringify($data) + "'></i>" + "</div>" + "</div>");
-
-                Notifier.showTimedMessage("Upload success", "information", 2);
-                $(".fa-refresh").remove();
-                $this.val("");
-                check_attachment_amount();
-                $(".btn-submit").removeAttr("disabled");
-            },
-            400: function _() {
-                Notifier.showTimedMessage("Update fail", "warning", 2);
-                $(".fa-refresh").remove();
-            },
-            500: function _() {
-                Notifier.showTimedMessage("Server error", "warning", 2);
-                $(".fa-refresh").remove();
-            }
-        }
-    });
-});
-
-$(".panel-body-attachment-list").on("click", ".attachment-trash-put", function () {
-    var $this = $(this);
-    var attachment = JSON.parse($this.attr("attachment"));
-    SweetAlert.alert({
-        title: "Delete attachment?",
-        confirmButton: "Yes!",
-        handleOnConfirm: function handleOnConfirm() {
-            return delete_put_attachment(attachment, $this);
-        }
-    });
-});
-
-$(".attachment-trash").click(function () {
-    var $this = $(this);
-    var attachment = $this.attr("attachment");
-    SweetAlert.alert({
-        title: "Delete attachment?",
-        confirmButton: "Yes!",
-        handleOnConfirm: function handleOnConfirm() {
-            return delete_attachment(attachment, $this);
-        }
-    });
-});
-
-function delete_put_attachment(attachment, $this) {
-    put_items.map(function (obj, index) {
-        if (attachment.key == obj.key) {
-            put_items.splice(index, 1);
-        }
-    });
-    $this.parent().parent().remove();
-    $("#attachments").val(JSON.stringify(attachment_items));
-    check_attachment_amount();
-}
-
-function delete_attachment(attachment, $this) {
-    delete_items.push(JSON.parse(attachment));
-    $this.parent().parent().remove();
-    $("#attachments").val(JSON.stringify(attachment_items));
-    check_attachment_amount();
-}
-
-function check_attachment_amount() {
-    var attachment_count = $(".photo-preview").length;
-    console.log(attachment_count);
-    if (attachment_count >= 3) {
-        $("#attachment_upload").attr("disabled", "disabled");
-    } else {
-        $("#attachment_upload").removeAttr("disabled");
-    }
-}
-
-function formatBytes(bytes, decimals) {
-    if (bytes === 0) {
-        return "0 Byte";
-    }
-    var k = 1000;
-    var dm = decimals + 1 || 3;
-    var sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    var i = Math.floor(Math.log(bytes) / Math.log(k));
-    return (bytes / Math.pow(k, i)).toPrecision(dm) + " " + sizes[i];
-}
-
-},{"./libs/FormUtility":1,"./libs/ProjectUpdater":2,"./libs/SweetAlert":3,"./modules/icheck":4}],6:[function(require,module,exports){
+},{"./libs/FormUtility":1,"./libs/ProjectUpdater":2,"./libs/UserAttachment.js":4,"./libs/UserSuspend.js":5,"./modules/icheck":6}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -480,7 +573,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -613,7 +706,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":8,"./handle-swal-dom":10,"./utils":13}],8:[function(require,module,exports){
+},{"./handle-dom":10,"./handle-swal-dom":12,"./utils":15}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -786,7 +879,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -867,7 +960,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":8,"./handle-swal-dom":10}],10:[function(require,module,exports){
+},{"./handle-dom":10,"./handle-swal-dom":12}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1020,7 +1113,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":6,"./handle-dom":8,"./injected-html":11,"./utils":13}],11:[function(require,module,exports){
+},{"./default-params":8,"./handle-dom":10,"./injected-html":13,"./utils":15}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1061,7 +1154,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1281,7 +1374,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":8,"./handle-swal-dom":10,"./utils":13}],13:[function(require,module,exports){
+},{"./handle-dom":10,"./handle-swal-dom":12,"./utils":15}],15:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1356,7 +1449,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1626,4 +1719,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":6,"./modules/handle-click":7,"./modules/handle-dom":8,"./modules/handle-key":9,"./modules/handle-swal-dom":10,"./modules/set-params":12,"./modules/utils":13}]},{},[5]);
+},{"./modules/default-params":8,"./modules/handle-click":9,"./modules/handle-dom":10,"./modules/handle-key":11,"./modules/handle-swal-dom":12,"./modules/set-params":14,"./modules/utils":15}]},{},[7]);

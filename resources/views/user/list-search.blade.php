@@ -1,4 +1,4 @@
-{!! Form::open(['action' => ['UserController@showSearch'], 'method' => 'GET']) !!}
+{!! Form::open(['action' => ['UserController@showSearch'], 'method' => 'GET', 'name' => 'search-form']) !!}
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">
@@ -23,12 +23,23 @@
             {!! Form::text('company', Input::get('company'), ['placeholder'=>"Company", 'class'=>"form-control"]) !!}
         </div>
     </div>
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('tag', Input::get('tag'), ['placeholder'=>"Tags", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
 
 </div>
 
 <div class="row search-bar">
 
-    <div class="col-md-4 col-md-offset-1">
+    <div class="col-md-2 col-md-offset-1">
+        <div class="input-group">
+            {!! Form::text('description', Input::get('description'), ['placeholder'=>"Internal description", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="col-md-4">
         <div class="input-group">
             {!! Form::text('dstart', Input::get('dstart'),
                 ['placeholder'=>"Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
@@ -40,17 +51,20 @@
 
     <div class="col-md-2">
         <div class="input-group">
-            @if((isset($is_restricted) and !$is_restricted))
+            @if((!isset($is_restricted) or !$is_restricted))
             {!! Form::select('status',[
-                'all'           => 'All Users',
-                'expert'        => 'Expert',
-                'creator'       => 'Creator',
-                'to-be-expert'  => 'To Be Expert'
+                'all'            => 'All Users',
+                'expert'         => 'Expert',
+                'creator'        => 'Creator',
+                'premium-expert' => 'Premium Expert',
+                'to-be-expert'   => 'To Be Expert',
+                'pm'             => 'HWTrek PM'
             ], Input::get('status'), ['class'=>'form-control']) !!}
             @else
             {!! Form::select('status',[
-                'expert'        => 'Expert',
-                'to-be-expert'  => 'To Be Expert'
+                'expert'         => 'Expert',
+                'premium-expert' => 'Premium Expert',
+                'to-be-expert'   => 'To Be Expert'
             ], Input::get('status'), ['class'=>'form-control']) !!}
             @endif
         </div>

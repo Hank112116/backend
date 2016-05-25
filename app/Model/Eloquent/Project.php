@@ -3,13 +3,13 @@
 namespace Backend\Model\Eloquent;
 
 use Backend\Enums\ProjectCategoryEnum;
-use Illuminate\Database\Eloquent\Model as Eloquent;
-use FrontLinkGenerator;
-use Illuminate\Database\Eloquent\Builder;
 use Backend\Model\ModelTrait\TagTrait;
+use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use App;
 use Config;
 use Carbon;
+use FrontLinkGenerator;
 use UrlFilter;
 
 class Project extends Eloquent

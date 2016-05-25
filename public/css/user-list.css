@@ -6946,18 +6946,126 @@ body {
   text-align: right;
 }
 
-/* line 9, ../../front/sass/user-list.scss */
+/* line 1, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  display: inline-block;
+  padding: 4px 6px;
+  color: #555;
+  vertical-align: middle;
+  border-radius: 4px;
+  max-width: 100%;
+  line-height: 22px;
+  cursor: text;
+}
+
+/* line 14, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput input {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0 6px;
+  margin: 0;
+  width: auto !important;
+  max-width: inherit;
+}
+
+/* line 24, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput.form-control input::-moz-placeholder {
+  color: #777;
+  opacity: 1;
+}
+
+/* line 28, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+  color: #777;
+}
+
+/* line 31, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+  color: #777;
+}
+
+/* line 34, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput input:focus {
+  border: none;
+  box-shadow: none;
+}
+
+/* line 38, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag {
+  margin-right: 2px;
+  color: white;
+}
+
+/* line 42, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* line 46, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  content: "x";
+  padding: 0px 2px;
+}
+
+/* line 50, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* line 53, ../../front/sass/vendor/bootstrap-tagsinput/_bootstrap-tagsinput.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+/* line 3, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput {
+  width: 100%;
+  padding: 10px 5px;
+}
+/* line 7, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput .tag {
+  position: relative;
+  color: #53d2ff;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  padding: 5px 30px;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid #53d2ff;
+  color: #53d2ff;
+}
+/* line 24, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  position: absolute;
+  top: 0px;
+  right: 3px;
+}
+/* line 29, ../../front/sass/pages/project/_tag-component.scss */
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  font: normal normal normal 14px/1 FontAwesome;
+  content: "\f014";
+  font-size: 10px;
+}
+
+/* line 10, ../../front/sass/user-list.scss */
 .pagination-container {
   text-align: center;
 }
 
-/* line 13, ../../front/sass/user-list.scss */
+/* line 14, ../../front/sass/user-list.scss */
 .search-bar-btns {
   margin-bottom: 1em;
   margin-left: 0;
 }
 
-/* line 18, ../../front/sass/user-list.scss */
+/* line 19, ../../front/sass/user-list.scss */
 .user-sub-category {
   display: inline-block;
 }

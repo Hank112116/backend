@@ -63,7 +63,7 @@ interface ProjectInterface
      * @param array $input
      * @return Collection|Project[]
      */
-    public function byUnionSearch($input, $page, $per_page);
+    public function byUnionSearch($input, $page, $per_page, $do_statistics = false);
 
     /**
      * @param $project_id

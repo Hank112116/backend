@@ -44,7 +44,7 @@
             </div>
             <div class="data-group group-half">
                 <span class="label">Active</span>
-                <span class="content">{!! $user->textActive() !!} ( Email : {!! $user->textEmailVerify() !!} )</span>
+                <span class="content">{!! $user->textStatus() !!} ( Email : {!! $user->textEmailVerify() !!} )</span>
             </div>
         </div>
     </div> 

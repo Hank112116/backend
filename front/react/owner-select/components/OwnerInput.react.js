@@ -30,7 +30,7 @@ var OwnerInput = React.createClass({
 
 	render: function() {
 		return (
-			<input type="text" id="member" name="user_id" ref="user"
+			<input type="number" id="member" name="user_id" ref="user"
 				value={this.state.user_id}
 				onChange={this.switchOwner}
 			/>

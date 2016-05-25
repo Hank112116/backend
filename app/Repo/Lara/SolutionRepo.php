@@ -93,6 +93,19 @@ class SolutionRepo implements SolutionInterface
     {
         return $this->solution->all();
     }
+    
+    public function byPage($page = 1, $limit = 20)
+    {
+        $this->setPaginateTotal($this->all()->count());
+
+        $collection = $this->modelBuilder($this->solution, $page, $limit)
+            ->with('user')
+            ->get();
+
+        $collection = $this->configApprove($collection);
+
+        return $this->getPaginateContainer($this->solution, $page, $limit, $collection);
+    }
 
     public function approvedSolutions($page = 1, $limit = 20)
     {
@@ -264,6 +277,11 @@ class SolutionRepo implements SolutionInterface
                                 return $item;
                             }
                             break;
+                        case 'unfinished':
+                            if ($item->isDraft()) {
+                                return $item;
+                            }
+                            break;
                         case 'on-shelf':
                             if ($item->isOnShelf()) {
                                 return $item;
@@ -286,6 +304,11 @@ class SolutionRepo implements SolutionInterface
                             break;
                         case 'pending-solution':
                             if ($item->isPendingSolution()) {
+                                return $item;
+                            }
+                            break;
+                        case 'deleted':
+                            if ($item->isDeleted()) {
                                 return $item;
                             }
                             break;

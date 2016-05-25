@@ -226,12 +226,6 @@ class ReportController extends BaseController
         }
 
         $projects = $this->report_repo->getProjectReport($input, $this->page, $this->per_page);
-        if ($input['time_type'] == 'match') {
-            $match_statistics = $this->report_repo->getProjectMatchFromPM($projects, $input['dstart'], $input['dend']);
-        } else {
-            $match_statistics = $this->report_repo->getProjectMatchFromPM($projects);
-        }
-
         $template = view('report.project')
             ->with([
                 'title'            => 'Project Report',
@@ -240,8 +234,7 @@ class ReportController extends BaseController
                 'is_super_admin'   => $this->auth,
                 'pm_ids'           => $pm_ids,
                 'input'            => $input,
-                'match_statistics' => $match_statistics
-
+                'match_statistics' => $projects->match_statistics
             ]);
         return $template;
     }

@@ -104,16 +104,19 @@ exports.init = init;
 
 function init() {
     $(".js-btn-search").click(function () {
-        $(this).closest("form").submit();
+        var $this = $(this);
+        $this.html("<i class='fa fa-refresh fa-spin'></i> Searching!");
+        $this.closest("form").submit();
+    });
+
+    $(".search-bar :input").keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            $(".js-btn-search").html("<i class='fa fa-refresh fa-spin'></i> Searching!");
+            $("form[name='search-form']").submit();
+        }
     });
 }
-
-$("input").keypress(function (event) {
-    if (event.which == 13) {
-        event.preventDefault();
-        $("form").submit();
-    }
-});
 
 },{}],5:[function(require,module,exports){
 module.exports={

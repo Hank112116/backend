@@ -4,14 +4,16 @@ use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
-use Mews\Purifier\Purifier;
 use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
+use Backend\Model\Plain\TagNode;
+use Mews\Purifier\Purifier;
 use Input;
 use Log;
 use Response;
 use Session;
 use Carbon;
+use View;
 
 class EmailSendController extends BaseController
 {
@@ -47,7 +49,7 @@ class EmailSendController extends BaseController
             $res   = ['status' => 'fail', 'msg' => 'Permissions denied'];
             return Response::json($res);
         }
-        $env = env('APP_ENV');
+
         //PM user_id
         $frontPM = [];
         $backPM  = [];
@@ -64,7 +66,7 @@ class EmailSendController extends BaseController
             $res   = ['status' => 'fail', 'msg' => 'Error expert id!'];
             return Response::json($res);
         }
-        $user    = $this->user_repo->find($input['userId']);
+
         $project = $this->project_repo->find($input['projectId']);
 
         $log_action = 'Send approved mail';
@@ -86,7 +88,8 @@ class EmailSendController extends BaseController
             $this->pme_repo->insertItem($data);
             
         }
-        $res   = ['status' => 'success'];
+        $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+        $res   = ['status' => 'success', 'view'=> $view];
 
         return Response::json($res);
     }

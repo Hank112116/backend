@@ -2,6 +2,7 @@
 
 namespace Backend\Model\Eloquent;
 
+use Backend\Enums\DeleteReason;
 use Backend\Model\ModelTrait\ProjectTagTrait;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -46,49 +47,55 @@ class Solution extends Eloquent
     private $project_category = null;
 
     public $draft_status = [
-        'solution_draft' => '0',
-        'active'         => '0'
+        'solution_draft' => 0,
+        'active'         => 0
     ];
 
     public $wait_approve_status = [
-        'solution_draft'      => '1',
-        'active'              => '0',
-        'previously_approved' => '0'
+        'solution_draft'      => 1,
+        'active'              => 0,
+        'previously_approved' => 0
     ];
 
     public $on_shelf_status = [
-        'solution_draft'      => '1',
-        'active'              => '1',
-        'previously_approved' => '1'
+        'solution_draft'      => 1,
+        'active'              => 1,
+        'previously_approved' => 1
     ];
 
     public $off_shelf_status = [
-        'solution_draft'      => '1',
-        'active'              => '0',
-        'previously_approved' => '1'
+        'solution_draft'      => 1,
+        'active'              => 0,
+        'previously_approved' => 1
     ];
     public $is_solution_status = [
-        'is_program'                       => '0',
-        'is_manager_upgrade_to_program'    => '0',
-        'is_manager_downgrade_to_solution' => '0'
+        'is_program'                       => 0,
+        'is_manager_upgrade_to_program'    => 0,
+        'is_manager_downgrade_to_solution' => 0
     ];
     public $is_program_status = [
-        'is_program'                       => '1',
-        'is_manager_upgrade_to_program'    => '0',
-        'is_manager_downgrade_to_solution' => '0'
+        'is_program'                       => 1,
+        'is_manager_upgrade_to_program'    => 0,
+        'is_manager_downgrade_to_solution' => 0
     ];
     public $is_pending_solution_status = [
-        'is_program'                       => '1',
-        'is_manager_upgrade_to_program'    => '0',
-        'is_manager_downgrade_to_solution' => '1'
+        'is_program'                       => 1,
+        'is_manager_upgrade_to_program'    => 0,
+        'is_manager_downgrade_to_solution' => 1
     ];
     public $is_pending_program_status = [
-        'is_program'                       => '0',
-        'is_manager_upgrade_to_program'    => '1',
-        'is_manager_downgrade_to_solution' => '0'
+        'is_program'                       => 0,
+        'is_manager_upgrade_to_program'    => 1,
+        'is_manager_downgrade_to_solution' => 0
     ];
 
     public $after_submitted_status = ['solution_draft' => '1'];
+
+    private $deleted_reason_map = [
+        DeleteReason::BY_OWNER     => 'by owner',
+        DeleteReason::BY_BACKEND   => 'by backend',
+        DeleteReason::USER_SUSPEND => 'by user suspend'
+    ];
 
     public function getPrimaryKey()
     {
@@ -196,27 +203,27 @@ class Solution extends Eloquent
 
     public function isDraft()
     {
-        return $this->isStatus($this->draft_status);
+        return $this->isStatus($this->draft_status) and !$this->isDeleted();
     }
 
     public function isWaitApprove()
     {
-        return $this->isStatus($this->wait_approve_status);
+        return $this->isStatus($this->wait_approve_status) and !$this->isDeleted();
     }
 
     public function isOnShelf()
     {
-        return $this->isStatus($this->on_shelf_status);
+        return $this->isStatus($this->on_shelf_status) and !$this->isDeleted();
     }
 
     public function isOffShelf()
     {
-        return $this->isStatus($this->off_shelf_status);
+        return $this->isStatus($this->off_shelf_status) and !$this->isDeleted();
     }
 
     public function isOngoing()
     {
-        return $this->isOnShelf() or $this->isOffShelf();
+        return $this->isOnShelf() or $this->isOffShelf() and !$this->isDeleted();
     }
 
     public function isSolution()
@@ -237,6 +244,11 @@ class Solution extends Eloquent
     public function isPendingProgram()
     {
         return $this->isStatus($this->is_pending_program_status);
+    }
+
+    public function isDeleted()
+    {
+        return $this->is_deleted;
     }
     
     
@@ -307,6 +319,15 @@ class Solution extends Eloquent
         return $this->user->textFullName();
     }
 
+    public function textDeleteReason()
+    {
+        if (!array_key_exists($this->deleted_reason, $this->deleted_reason_map)) {
+            return null;
+        }
+
+        return $this->deleted_reason_map[$this->deleted_reason];
+    }
+
     public function textStatus()
     {
         switch (true) {
@@ -321,6 +342,11 @@ class Solution extends Eloquent
 
             case $this->isDraft():
                 return 'Unfinished Solution';
+
+            case $this->isDeleted():
+                $deleted_reason = $this->textDeleteReason();
+                return 'Deleted ' . $deleted_reason;
+
             default:
                 return 'N/A';
         }
@@ -380,8 +406,17 @@ class Solution extends Eloquent
     
     public function textApproveDate()
     {
-        if ($this->approve_time) {
+        if ($this->approve_time and $this->approve_time != '0000-00-00 00:00:00') {
             return Carbon::parse($this->approve_time)->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+
+    public function textDeletedTime()
+    {
+        if ($this->deleted_date) {
+            return Carbon::parse($this->deleted_date)->toFormattedDateString();
         } else {
             return null;
         }

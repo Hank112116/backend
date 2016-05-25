@@ -1,4 +1,149 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/* jshint quotmark: false */
+"use strict";
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+var _modulesIcheck = require("../modules/icheck");
+
+var icheck = _interopRequireWildcard(_modulesIcheck);
+
+$(function () {
+    var $document = $(document);
+    var $internal_tag_input = $("#internal-tag");
+    $internal_tag_input.tagsinput({
+        confirmKeys: [13],
+        allowDuplicates: false,
+        tagClass: "bootstrap-tagsinput--tag"
+    });
+
+    //open dialog
+    $document.on("click", ".internal-tag", function () {
+        var $this = $(this);
+        var expertise_tags = $this.attr("expertise-tags");
+        var internal_tag = $this.attr("tags");
+        var user_id = $this.attr("rel");
+        $internal_tag_input.tagsinput('removeAll');
+        $internal_tag_input.tagsinput('add', internal_tag);
+        $("#internal_tag_user_id").val(user_id);
+        $("#expertise-tags").text(expertise_tags);
+        $("#internal-tag-dialog").dialog({
+            height: 350,
+            width: 1000
+        });
+    });
+
+    $document.on("click", "#add-tags", function () {
+        var user_id = $("#internal_tag_user_id").val();
+        var tags = $internal_tag_input.val();
+        var route_path = $("#route-path").val();
+        $.ajax({
+            type: "POST",
+            url: "/user/update-memo",
+            data: {
+                user_id: user_id,
+                tags: tags,
+                route_path: route_path
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#internal-tag-dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                var $user_row = $("#row-" + user_id);
+                $user_row.html(feeback.view);
+                icheck.init();
+            }
+        });
+    });
+
+    //open dialog
+    $document.on("click", ".internal-description", function () {
+        var $this = $(this);
+        var user_id = $this.attr("rel");
+        var internal_description = $this.attr("description");
+        $("#internal_description").val(internal_description);
+        $("#internal_description_user_id").val(user_id);
+        $("#internal-description-dialog").dialog({
+            height: 300,
+            width: 700
+        });
+    });
+
+    $document.on("click", "#edit_internal_description", function () {
+        var user_id = $("#internal_description_user_id").val();
+        var internal_description = $("#internal_description").val();
+        var route_path = $("#route-path").val();
+        $.ajax({
+            type: "POST",
+            url: "/user/update-memo",
+            data: {
+                user_id: user_id,
+                description: internal_description,
+                route_path: route_path
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#internal-description-dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                var $user_row = $("#row-" + user_id);
+                $user_row.html(feeback.view);
+                icheck.init();
+            }
+        });
+    });
+
+    //open dialog
+    $document.on("click", ".user-report-action", function () {
+        var $this = $(this);
+        var user_id = $this.attr("rel");
+        var report_action = $this.attr("action");
+        $("#user-report-action").val(report_action);
+        $("#user-report-action-user-id").val(user_id);
+        $("#user-report-action-dialog").dialog({
+            height: 300,
+            width: 700
+        });
+    });
+
+    $document.on("click", "#edit-user-report-action", function () {
+        var user_id = $("#user-report-action-user-id").val();
+        var report_action = $("#user-report-action").val();
+        var route_path = $("#route-path").val();
+        var time_type = $("#time_type").val();
+        $.ajax({
+            type: "POST",
+            url: "/user/update-memo",
+            data: {
+                user_id: user_id,
+                report_action: report_action,
+                route_path: route_path,
+                time_type: time_type
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#user-report-action-dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                var $user_row = $("#row-" + user_id);
+                $user_row.html(feeback.view);
+                icheck.init();
+            }
+        });
+    });
+});
+
+},{"../modules/icheck":3}],2:[function(require,module,exports){
 // jshint unused: false
 "use strict";
 
@@ -23,18 +168,46 @@ function alert(param) {
     });
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":11}],2:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":13}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.init = init;
+exports.initRadio = initRadio;
+
+function init() {
+    $("input[type=checkbox]").iCheck({
+        checkboxClass: "icheckbox_minimal-blue icheckbox"
+    });
+}
+
+function initRadio() {
+    $("input[type=radio]").iCheck({
+        radioClass: "iradio_minimal-blue iradio"
+    });
+}
+
+},{}],4:[function(require,module,exports){
 "use strict";
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+var _modulesIcheck = require("./modules/icheck");
+
+var icheck = _interopRequireWildcard(_modulesIcheck);
 
 var _libsSweetAlert = require("./libs/SweetAlert");
 
 var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
+require("./libs/InternalUserMemo.js");
+
 $(function () {
+    var $document = $(document);
     //change user type to pm checkbox
-    $(document).on("ifChecked", ".change_pm", function (e) {
+    $document.on("ifChecked", ".change_pm", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         var self = $(this);
@@ -43,15 +216,15 @@ $(function () {
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
-                    post_data(user_id, "/user/change-hwtrek-pm-type", 'pm');
+                    post_data(user_id, "/user/change-hwtrek-pm-type", "pm");
                 } else {
-                    self.iCheck('uncheck');
+                    self.iCheck("uncheck");
                 }
             }
         });
     });
     //change user type to creator checkbox
-    $(document).on("ifChecked", ".change_creator", function (e) {
+    $document.on("ifChecked", ".change_creator", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         var self = $(this);
@@ -60,15 +233,15 @@ $(function () {
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
-                    post_data(user_id, "/user/change-hwtrek-pm-type", 'creator');
+                    post_data(user_id, "/user/change-hwtrek-pm-type", "creator");
                 } else {
-                    self.iCheck('uncheck');
+                    self.iCheck("uncheck");
                 }
             }
         });
     });
     //change user type to expert checkbox
-    $(document).on("ifChecked", ".change_expert", function (e) {
+    $document.on("ifChecked", ".change_expert", function (e) {
         e.preventDefault();
         var user_id = $(this).attr("rel");
         var self = $(this);
@@ -77,15 +250,14 @@ $(function () {
             confirmButton: "Yes!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
-                    post_data(user_id, "/user/change-hwtrek-pm-type", 'expert');
+                    post_data(user_id, "/user/change-hwtrek-pm-type", "expert");
                 } else {
-                    self.iCheck('uncheck');
+                    self.iCheck("uncheck");
                 }
             }
         });
     });
-
-    $(".fa-commenting-o").click(function () {
+    $document.on("click", ".fa-commenting-o", function () {
         var user_id = $(this).attr("rel");
         $.ajax({
             type: "POST",
@@ -104,12 +276,14 @@ $(function () {
     });
 
     function post_data(user_id, url, user_type) {
+        var route_path = $("#route-path").val();
         $.ajax({
             type: "POST",
             url: url,
             data: {
                 user_id: user_id,
-                user_type: user_type
+                user_type: user_type,
+                route_path: route_path
             },
             dataType: "JSON",
             success: function success(feeback) {
@@ -118,13 +292,15 @@ $(function () {
                     return;
                 }
                 Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
+                var $user_row = $("#row-" + user_id);
+                $user_row.html(feeback.view);
+                icheck.init();
             }
         });
     }
 });
 
-},{"./libs/SweetAlert":1}],3:[function(require,module,exports){
+},{"./libs/InternalUserMemo.js":1,"./libs/SweetAlert":2,"./modules/icheck":3}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -156,7 +332,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -289,7 +465,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],5:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9,"./utils":12}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -462,7 +638,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -543,7 +719,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7}],7:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -696,7 +872,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":3,"./handle-dom":5,"./injected-html":8,"./utils":10}],8:[function(require,module,exports){
+},{"./default-params":5,"./handle-dom":7,"./injected-html":10,"./utils":12}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -737,7 +913,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -957,7 +1133,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":5,"./handle-swal-dom":7,"./utils":10}],10:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9,"./utils":12}],12:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1032,7 +1208,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1302,4 +1478,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":3,"./modules/handle-click":4,"./modules/handle-dom":5,"./modules/handle-key":6,"./modules/handle-swal-dom":7,"./modules/set-params":9,"./modules/utils":10}]},{},[2]);
+},{"./modules/default-params":5,"./modules/handle-click":6,"./modules/handle-dom":7,"./modules/handle-key":8,"./modules/handle-swal-dom":9,"./modules/set-params":11,"./modules/utils":12}]},{},[4]);

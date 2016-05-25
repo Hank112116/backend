@@ -1,4 +1,4 @@
-{!! Form::open(['action' => ['ProjectController@showSearch'], 'method' => 'GET']) !!}
+{!! Form::open(['action' => ['ProjectController@showSearch'], 'method' => 'GET', 'name' => 'search-form']) !!}
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">

@@ -44,9 +44,11 @@ Route::group(['before' => 'backend.user'], function () {
     Route::get('user/comments/professions/delete/{comment_id}', 'CommentController@delete');
     Route::get('user/comments/professions/private/{comment_id}', 'CommentController@togglePrivate');
 
+    Route::post('user/disable', 'UserController@disable');
+    Route::post('user/enable', 'UserController@enable');
     Route::post('user/update/{id}', 'UserController@update');
     Route::post('user/change-hwtrek-pm-type', 'UserController@changeUserType');
-
+    Route::post('user/update-memo', 'UserController@updateMemo');
     Route::post('user/put-attachment', 'UserController@putAttachment');
 });
 

@@ -98,8 +98,8 @@
 
                 <td>
                     {!! $solution->textStatus() !!}
-                    @if($solution->is_deleted)
-                        <br/>Deleted ({{$solution->deleted_date}})
+                    @if($solution->isDeleted())
+                        <br/><i class="fa fa-trash" title="deleted"></i> <span class="table--text-light">{{ $solution->textDeletedTime() }}</span>
                     @endif
                 </td>
 

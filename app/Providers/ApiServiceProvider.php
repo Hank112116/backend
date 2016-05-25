@@ -22,5 +22,15 @@ class ApiServiceProvider extends ServiceProvider
                 );
             }
         );
+        
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface',
+            'Backend\Api\Lara\UserApi\ProfileApi'
+        );
+
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface',
+            'Backend\Api\Lara\UserApi\AttachmentApi'
+        );
     }
 }
