@@ -348,8 +348,10 @@ $(function () {
         SweetAlert.alert({
             title: "Delete attachment?",
             confirmButton: "Yes!",
-            handleOnConfirm: function handleOnConfirm() {
-                return delete_put_attachment(attachment, $this);
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    delete_put_attachment(attachment, $this);
+                }
             }
         });
     });
@@ -360,8 +362,10 @@ $(function () {
         SweetAlert.alert({
             title: "Delete attachment?",
             confirmButton: "Yes!",
-            handleOnConfirm: function handleOnConfirm() {
-                return delete_attachment(attachment, $this);
+            handleOnConfirm: function handleOnConfirm(is_confirm) {
+                if (is_confirm) {
+                    delete_attachment(attachment, $this);
+                }
             }
         });
     });

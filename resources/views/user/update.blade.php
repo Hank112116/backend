@@ -116,6 +116,11 @@
                     {!! Form::radio('user_type', 'premium-expert', $user->user_type=='premium-expert', ["id"=>"user_type_2"]) !!}
                     <label for="user_type_2" class='iradio-lable'>Premium Expert</label>
                 </div>
+
+                <div>
+                    {!! Form::radio('user_type', 'pm', $user->user_type=='pm', ["id"=>"user_type_3"]) !!}
+                    <label for="user_type_3" class='iradio-lable'>PM</label>
+                </div>
             </div>
         </div>
         @endif
