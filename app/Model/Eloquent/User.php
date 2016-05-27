@@ -345,7 +345,9 @@ class User extends Eloquent
 
     public function isExpert()
     {
-        return $this->isType(self::IS_EXPERT_STATUS);
+        return $this->isType(self::IS_EXPERT_STATUS)
+        or $this->isPremiumExpert()
+        or $this->isHWTrekPM();
     }
 
     public function isToBeExpert()

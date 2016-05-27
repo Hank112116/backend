@@ -7752,14 +7752,19 @@ body .redactor_toolbar li a.redactor_btn_pre {
   margin: 0 0 10px;
 }
 
-/* line 10, ../../front/sass/user-update.scss */
+/* line 1, ../../front/sass/modules/_attachment.scss */
+.file-info {
+  word-break: break-all;
+}
+
+/* line 11, ../../front/sass/user-update.scss */
 .user-avatar {
   width: 110px;
   height: 110px;
   margin-bottom: 10px;
 }
 
-/* line 16, ../../front/sass/user-update.scss */
+/* line 17, ../../front/sass/user-update.scss */
 .iradio-lable {
   margin-right: 15px;
   padding-left: 15px !important;
@@ -7767,22 +7772,22 @@ body .redactor_toolbar li a.redactor_btn_pre {
   font-size: 18px;
 }
 
-/* line 23, ../../front/sass/user-update.scss */
+/* line 24, ../../front/sass/user-update.scss */
 .industry {
   list-style: none;
 }
-/* line 26, ../../front/sass/user-update.scss */
+/* line 27, ../../front/sass/user-update.scss */
 .industry ul {
   list-style: none;
 }
 
-/* line 31, ../../front/sass/user-update.scss */
+/* line 32, ../../front/sass/user-update.scss */
 .error {
   color: #d9534f;
   font-size: 18px;
 }
 
-/* line 37, ../../front/sass/user-update.scss */
+/* line 38, ../../front/sass/user-update.scss */
 .redactor_editor,
 .redactor_editor:focus,
 .redactor_editor div,
@@ -7802,55 +7807,55 @@ body .redactor_toolbar li a.redactor_btn_pre {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
-/* line 56, ../../front/sass/user-update.scss */
+/* line 57, ../../front/sass/user-update.scss */
 .redactor_editor {
   color: #333 !important;
   font-size: 16px !important;
   line-height: 24px !important;
 }
-/* line 62, ../../front/sass/user-update.scss */
+/* line 63, ../../front/sass/user-update.scss */
 .redactor_editor h3 {
   color: #333 !important;
   font-size: 24px !important;
   font-weight: initial !important;
   line-height: 30px !important;
 }
-/* line 69, ../../front/sass/user-update.scss */
+/* line 70, ../../front/sass/user-update.scss */
 .redactor_editor h4 {
   color: #333 !important;
   font-size: 18px !important;
   font-weight: initial !important;
   line-height: 27px !important;
 }
-/* line 76, ../../front/sass/user-update.scss */
+/* line 77, ../../front/sass/user-update.scss */
 .redactor_editor p {
   min-height: 24px;
   font-size: 16px !important;
   line-height: 24px !important;
 }
-/* line 82, ../../front/sass/user-update.scss */
+/* line 83, ../../front/sass/user-update.scss */
 .redactor_editor a {
   color: #41acf8 !important;
   text-decoration: none !important;
 }
-/* line 87, ../../front/sass/user-update.scss */
+/* line 88, ../../front/sass/user-update.scss */
 .redactor_editor b,
 .redactor_editor strong {
   font-weight: bold;
 }
-/* line 92, ../../front/sass/user-update.scss */
+/* line 93, ../../front/sass/user-update.scss */
 .redactor_editor i,
 .redactor_editor em {
   font-style: italic;
 }
-/* line 97, ../../front/sass/user-update.scss */
+/* line 98, ../../front/sass/user-update.scss */
 .redactor_editor ul {
   padding-left: 2em !important;
   font-size: 16px;
   line-height: 24px;
   list-style: disc;
 }
-/* line 104, ../../front/sass/user-update.scss */
+/* line 105, ../../front/sass/user-update.scss */
 .redactor_editor ol {
   padding-left: 2em !important;
   font-size: 16px;

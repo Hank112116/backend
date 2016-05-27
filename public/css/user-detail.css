@@ -6825,6 +6825,11 @@ body {
   padding-left: 0.2em;
 }
 
+/* line 1, ../../front/sass/modules/_attachment.scss */
+.file-info {
+  word-break: break-all;
+}
+
 /* line 9, ../../front/sass/user-detail.scss */
 .user-avatar {
   width: 110px;
