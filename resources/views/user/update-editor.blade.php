@@ -47,7 +47,7 @@
         </div>
         <div class="form-group">
             <label for="role" class="col-md-3">
-                Type
+                Role
             </label>
             <div class="col-md-5">
                 @if($user->isToBeExpert() or $user->isApplyExpert())
@@ -108,7 +108,7 @@
                 </div>
             </div>
         @endif
-        @if ($attachments)
+        @if ($attachments != 'null')
             <div class="form-group">
                 <label for="industry" class="col-md-3">Attachments</label>
                 <div class="col-md-9 industry">

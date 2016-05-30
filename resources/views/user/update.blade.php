@@ -102,25 +102,29 @@
             </label>
 
             <div class="col-md-5">
-                <div>
-                    {!! Form::radio('user_type', 'creator', $user->user_type=='creator', ["id"=>"user_type_0"]) !!}
-                    <label for="user_type_0" class='iradio-lable'>Creator</label>
-                </div>
+                @if(Auth::user()->isAdmin())
+                    <div>
+                        {!! Form::radio('user_type', 'creator', $user->user_type=='creator', ["id"=>"user_type_0"]) !!}
+                        <label for="user_type_0" class='iradio-lable'>Creator</label>
+                    </div>
 
-                <div>
-                    {!! Form::radio('user_type', 'expert', $user->user_type=='expert', ["id"=>"user_type_1"]) !!}
-                    <label for="user_type_1" class='iradio-lable'>Expert</label>
-                </div>
+                    <div>
+                        {!! Form::radio('user_type', 'expert', $user->user_type=='expert', ["id"=>"user_type_1"]) !!}
+                        <label for="user_type_1" class='iradio-lable'>Expert</label>
+                    </div>
 
-                <div>
-                    {!! Form::radio('user_type', 'premium-expert', $user->user_type=='premium-expert', ["id"=>"user_type_2"]) !!}
-                    <label for="user_type_2" class='iradio-lable'>Premium Expert</label>
-                </div>
+                    <div>
+                        {!! Form::radio('user_type', 'premium-expert', $user->user_type=='premium-expert', ["id"=>"user_type_2"]) !!}
+                        <label for="user_type_2" class='iradio-lable'>Premium Expert</label>
+                    </div>
 
-                <div>
-                    {!! Form::radio('user_type', 'pm', $user->user_type=='pm', ["id"=>"user_type_3"]) !!}
-                    <label for="user_type_3" class='iradio-lable'>PM</label>
-                </div>
+                    <div>
+                        {!! Form::radio('user_type', 'pm', $user->user_type=='pm', ["id"=>"user_type_3"]) !!}
+                        <label for="user_type_3" class='iradio-lable'>PM</label>
+                    </div>
+                @else
+                    {{ $user->textType() }}
+                @endif
             </div>
         </div>
         @endif
