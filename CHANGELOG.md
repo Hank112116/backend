@@ -1,10 +1,19 @@
 # CHANGELOG
 
+## v2.4.0 
+* [NEW]    New user_type premium-expert (@Hank) 
+* [NEW]    New user internal memo function (@Hank)
+* [NEW]    New hwtrek service api interface (@Hank)
+* [NEW]    New user suspend function (@Hank)
+* [CHANGE] Use string enum as user_type (@Keven)
+* [CHANGE] modify project & member update behavior (@Hank) 
+* [FIXED]  fix solution list data error (@Hank)
+
 ## v2.3.1
 * [CHANGE] modify solution search (@Hank)
 * [CHANGE] modify member search (@Hank)
 * [CHANGE] modify project report wording & add user referrals total number (@Hank)
-* [FIXED]  fix backend team creater user not has hwtrek member column (@Hank)
+* [FIXED]  fix backend team creator user not has hwtrek member column (@Hank)
 
 ## v2.3.0
 * [CHANGE] optimization project report & project (@Hank)
