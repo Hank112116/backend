@@ -15,12 +15,6 @@
                 <i class="fa fa-user fa-fw"></i> {!! $manager !!}
             </p>
         @endforeach
-
-        @foreach($project->getDeletedHubManagerNames() as $manager)
-            <p class="hub-manages">
-                <i class="fa fa-flash fa-fw"></i> {!! $manager !!}
-            </p>
-        @endforeach
         </a>
     @endif
 
@@ -33,12 +27,6 @@
         @foreach($project->getHubManagerNames() as $manager)
             <p class="hub-manages">
                 <i class="fa fa-user fa-fw"></i> {!! $manager !!}
-            </p>
-        @endforeach
-
-        @foreach($project->getDeletedHubManagerNames() as $manager)
-            <p class="hub-manages">
-                <i class="fa fa-flash fa-fw"></i> {!! $manager !!}
             </p>
         @endforeach
     @endif

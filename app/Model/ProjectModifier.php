@@ -141,12 +141,8 @@ class ProjectModifier implements ProjectModifierInterface
 
     public function updateProjectManager($project_id, $data)
     {
-        $managers = $this->project_manager->where('project_id', $project_id)->get();
-        if ($managers->count() > 0) {
-            foreach ($managers as $manager) {
-                $manager->delete();
-            }
-        }
+        $this->project_manager->where('project_id', $project_id)->delete();
+
         $project_managers = json_decode($data['project_managers'], true);
 
         if ($project_managers) {
