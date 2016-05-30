@@ -123,7 +123,19 @@
                         <label for="user_type_3" class='iradio-lable'>PM</label>
                     </div>
                 @else
-                    {{ $user->textType() }}
+                    @if($user->isHWTrekPM() or $user->isPremiumExpert())
+                        {{ $user->textType() }}
+                    @else
+                        <div>
+                            {!! Form::radio('user_type', 'creator', $user->user_type=='creator', ["id"=>"user_type_0"]) !!}
+                            <label for="user_type_0" class='iradio-lable'>Creator</label>
+                        </div>
+
+                        <div>
+                            {!! Form::radio('user_type', 'expert', $user->user_type=='expert', ["id"=>"user_type_1"]) !!}
+                            <label for="user_type_1" class='iradio-lable'>Expert</label>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
