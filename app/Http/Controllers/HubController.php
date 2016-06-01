@@ -141,9 +141,8 @@ class HubController extends BaseController
     {
         $input  = Input::all();
         $expert = $this->user_repo->findExpert($input["expertId"]);
-
-        if (sizeof($expert) >0) {
-            $res   = ['msg' => "{$expert[0]->user_name} ({$expert[0]->company})"];
+        if ($expert) {
+            $res   = ['msg' => "{$expert->user_name} ({$expert->company})"];
         } else {
             $res   = ['msg' => 'no expert'];
         }
