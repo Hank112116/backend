@@ -1,7 +1,8 @@
 /* jshint quotmark: false */
 $(function () {
+    var $document = $(document);
     //open dialog
-    $( ".sendmail" ).click(function () {
+    $document.on("click", ".sendmail", function() {
         var $this = $(this);
         $("#expert1").val("") ;
         $("#expert2").val("");
@@ -21,7 +22,7 @@ $(function () {
         });
     });
     //search expert info
-    $("#expert1").change(function () {
+    $document.on("change", "#expert1", function() {
         var $expert1Info = $("#expert1Info");
         $expert1Info.empty();
         $expert1Info.append('<i class="fa fa-refresh fa-spin"></i>');
@@ -39,7 +40,7 @@ $(function () {
             }
         });
     });
-    $("#expert2").change(function () {
+    $document.on("change", "#expert2", function() {
         var $expert2Info = $("#expert2Info");
         $expert2Info.empty();
         $expert2Info.append('<i class="fa fa-refresh fa-spin"></i>');
@@ -58,7 +59,7 @@ $(function () {
         });
     });
     //send mail
-    $("#sendMail").click(function(){
+    $document.on("click", "#sendMail", function() {
         var expert1 = $("#expert1").val();
         var expert2 = $("#expert2").val();
         var projectId = $("#projectId").val();

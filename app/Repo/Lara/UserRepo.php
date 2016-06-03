@@ -87,7 +87,13 @@ class UserRepo implements UserInterface
 
     public function findExpert($id)
     {
-        return $this->user->where('user_id', $id)->where('user_type', User::TYPE_EXPERT)->get();
+        return $this->user->where('user_id', $id)
+            ->whereIn('user_type', [
+                User::TYPE_EXPERT,
+                User::TYPE_PREMIUM_EXPERT,
+                User::TYPE_PM
+            ])
+            ->first();
     }
 
     public function creators($page = 1, $limit = 20)
