@@ -2,10 +2,7 @@
 @include('layouts.macro')
 
 @section('css')
-<link rel="stylesheet" href="/css/questionnaire-detail.css">
-@stop
-
-@section('js')
+<link rel="stylesheet" href="{{ LinkGen::assets('css/questionnaire-detail.css') }}">
 @stop
 
 @section('content')

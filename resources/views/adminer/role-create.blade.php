@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('css')
-<link rel="stylesheet" href="/css/adminer-update.css">
+<link rel="stylesheet" href="{{ LinkGen::assets('css/adminer-update.css') }}">
 @stop
 
 @section('content')

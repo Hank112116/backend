@@ -1,11 +1,8 @@
 <?php namespace Backend\Providers;
 
-use Backend\Model\Eloquent\GroupMemberApplicant;
-use Backend\Model\Eloquent\ProjectMailExpert;
+use Backend\Repo\Lara;
 use Backend\Model\Plain\SolutionCategory;
 use Backend\Model\Plain\SolutionCertification;
-
-use Backend\Repo\Lara;
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider
@@ -88,11 +85,6 @@ class RepoServiceProvider extends ServiceProvider
                     new \ImageUp()
                 );
             }
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\MailTemplateInterface',
-            'Backend\Repo\Lara\MailTemplateRepo'
         );
 
         $this->app->bind(

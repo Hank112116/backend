@@ -4,12 +4,12 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    <link rel="stylesheet" href="/css/product-list.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/product-list.css') }}">
 @stop
 
 @section('js')
-    <script src='/js/list.js'></script>
-    <script src='/js/project-list.js'></script>
+    <script src="{{ LinkGen::assets('js/list.js') }}"></script>
+    <script src="{{ LinkGen::assets('js/project-list.js') }}"></script>
 @stop
 
 @section('content')

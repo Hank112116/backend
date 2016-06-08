@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('css')
-    <link rel="stylesheet" href="/css/user-update.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/user-update.css') }}">
 @stop
 
 @section('js')
     <script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en'></script>
-    <script src='/js/user-update.js'></script>
+    <script src="{{ LinkGen::assets('js/user-update.js') }}"></script>
 @stop
 
 @section('content')

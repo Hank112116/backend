@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-    <link rel="stylesheet" href="/css/adminer-list.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/adminer-list.css') }}">
 @stop
 
 @section('js')
-    <script src='/js/adminer-list.js'></script>
+    <script src="{{ LinkGen::assets('js/adminer-list.js') }}"></script>
 @stop
 
 @section('content')

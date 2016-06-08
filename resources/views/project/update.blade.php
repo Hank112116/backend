@@ -1,13 +1,14 @@
 @extends('layouts.master')
 
 @section('css')
-    <link rel="stylesheet" href="/css/project-update.css">
+
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/project-update.css') }}">
 @stop
 
 @section('js')
     <script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en'></script>
-    <script type="text/javascript" src="/react/owner-select.js"></script>
-    <script src='/js/project-update.js'></script>
+    <script src="{{ LinkGen::assets('react/owner-select.js') }}"></script>
+    <script src="{{ LinkGen::assets('js/project-update.js') }}"></script>
 @stop
 
 @section('content')

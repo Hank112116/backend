@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-    <link rel="stylesheet" href="/css/comments.css">    
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/comments.css') }}">
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/react/comment.js"></script>
+    <script type="text/javascript" src="{{ LinkGen::assets('react/comment.js') }}"></script>
 @stop
 
 @section('content')
