@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.4.1
+* [CHANGE] Change favicon.ico (@Hank)
+* [FIXED]  Fix editor role browse member detail view error (@Hank)
+
 ## v2.4.0 
 * [NEW]    New user_type premium-expert (@Hank) 
 * [NEW]    New user internal memo function (@Hank)
