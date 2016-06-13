@@ -102,7 +102,7 @@
             </label>
 
             <div class="col-md-5">
-                @if(Auth::user()->isAdmin())
+                @if(Auth::user()->isAdmin() or Auth::user()->isManagerHead())
                     <div>
                         {!! Form::radio('user_type', 'creator', $user->user_type=='creator', ["id"=>"user_type_0"]) !!}
                         <label for="user_type_0" class='iradio-lable'>Creator</label>
