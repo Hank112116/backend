@@ -124,8 +124,12 @@ class ProjectModifier implements ProjectModifierInterface
 
     public function updateProjectTeam($project_id, $data)
     {
-        if (array_key_exists('strengths', $data) and $data['strengths'] !== null) {
-            $data['strengths'] = json_encode(explode(',', $data['strengths']));
+        if (array_key_exists('strengths', $data)) {
+            if (empty($data['strengths'])) {
+                $data['strengths'] = null;
+            } else {
+                $data['strengths'] = json_encode(explode(',', $data['strengths']));
+            }
         }
 
         $team = $this->project_team->find($project_id);

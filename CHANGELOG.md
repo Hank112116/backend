@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.4.3
+* [FIXED] Fix project update occur strengths column data format error (@Hank)
+
 ## v2.4.2
 * [CHANGE] Revise manager head can change PM and Premium expert user type (@Hank)
 
