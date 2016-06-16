@@ -94,10 +94,17 @@
             </div>
 
             <div class="clearfix">
-                @include('modules.detail-half-column', [
-                    'label' => 'Company Name*',
-                    'content' => link_to($project->textCompanyUrl(), $project->textCompanyName(), ['target' => '_blank'])
-                ])
+                @if(empty($project->textCompanyUrl()))
+                    @include('modules.detail-half-column', [
+                        'label' => 'Company Name*',
+                        'content' => $project->textCompanyName() ? $project->textCompanyName() : 'N/A'
+                    ])
+                @else
+                    @include('modules.detail-half-column', [
+                        'label' => 'Company Name*',
+                        'content' => link_to($project->textCompanyUrl(), $project->textCompanyName() ? $project->textCompanyName() : 'N/A', ['target' => '_blank'])
+                    ])
+                @endif
 
                 @include('modules.detail-half-column', [
                     'label' => 'Team Size*',

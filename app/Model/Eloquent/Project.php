@@ -360,7 +360,7 @@ class Project extends Eloquent
         if (!$this->projectTeam) {
             return null;
         }
-        return $this->projectTeam->company_name ? $this->projectTeam->company_name : 'N/A';
+        return $this->projectTeam->company_name;
     }
 
     public function textCompanyUrl()
@@ -368,7 +368,7 @@ class Project extends Eloquent
         if (!$this->projectTeam) {
             return null;
         }
-        return $this->projectTeam->company_url ? $this->projectTeam->company_url : '';
+        return $this->projectTeam->company_url;
     }
 
     public function textTeamSize()
