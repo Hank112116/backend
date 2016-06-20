@@ -70,20 +70,32 @@ class ProjectModifier implements ProjectModifierInterface
             $project->launch_date = null;
         }
 
-        if (array_key_exists('cover', $data) and $data[ 'cover' ] !== null) {
-            $project->image = $this->image_uploader->uploadImage($data[ 'cover' ]);
+        if (array_key_exists('cover', $data)) {
+            if (empty($data['cover'])) {
+                $project->image = null;
+            } else {
+                $project->image = $this->image_uploader->uploadImage($data['cover']);
+            }
         }
 
         if ($project->is_deleted) {
             $project->deleted_date = Carbon::now();
         }
 
-        if (array_key_exists('tags', $data) and $data[ 'tags' ] !== null) {
-            $project->tags = json_encode(explode(',', $project->tags));
+        if (array_key_exists('tags', $data)) {
+            if (empty($data['tags'])) {
+                $project->tags = null;
+            } else {
+                $project->tags = json_encode(explode(',', $project->tags));
+            }
         }
 
-        if (array_key_exists('resource', $data) and $data[ 'resource' ] !== null) {
-            $project->resource = json_encode(explode(',', $project->resource));
+        if (array_key_exists('resource', $data)) {
+            if (empty($data['resource'])) {
+                $project->resource = null;
+            } else {
+                $project->resource = json_encode(explode(',', $project->resource));
+            }
         }
 
         $this->update($project);
@@ -124,8 +136,12 @@ class ProjectModifier implements ProjectModifierInterface
 
     public function updateProjectTeam($project_id, $data)
     {
-        if (array_key_exists('strengths', $data) and $data['strengths'] !== null) {
-            $data['strengths'] = json_encode(explode(',', $data['strengths']));
+        if (array_key_exists('strengths', $data)) {
+            if (empty($data['strengths'])) {
+                $data['strengths'] = null;
+            } else {
+                $data['strengths'] = json_encode(explode(',', $data['strengths']));
+            }
         }
 
         $team = $this->project_team->find($project_id);
