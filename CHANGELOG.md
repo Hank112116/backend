@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.4.4
+* [FIXED] Fix landing expert unable to update expert list (#32)
+
 ## v2.4.3
 * [FIXED] Fix project update occur strengths column data format error (@Hank)
 * [FIXED] Fix project update occur tag and resource column data format error (@Hank)

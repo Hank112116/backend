@@ -13,8 +13,10 @@ use Response;
 
 class LandingController extends BaseController
 {
-
     protected $cert = 'marketing';
+
+    private $expert;
+    private $feature;
 
     public function __construct(
         LandingFeatureInterface $feature,
@@ -70,6 +72,7 @@ class LandingController extends BaseController
 
         return Response::json(['status' => 'success',]);
     }
+    
     public function showExpert()
     {
         $experts = $this->expert->getExpertList();
@@ -78,18 +81,19 @@ class LandingController extends BaseController
             ->with('types', $types)
             ->with('experts', $experts);
     }
+
     public function findExpertEntity($type)
     {
         $id = Input::get('id');
         $user = $this->expert->getExpert($id);
         if (sizeof($user) >0) {
             $block = view('landing.expert-block')
-                ->with('user', $user[0])
-                ->with('description', "")
+                ->with('user', $user)
+                ->with('description', '')
                 ->render();
             $res   = ['status' => 'success', 'newBlock' => $block];
         } else {
-            $res   = ['status' => 'fail', "msg" => "No Expert Id!"];
+            $res   = ['status' => 'fail', 'msg' => 'No Expert Id!'];
         }
 
         return Response::json($res);
