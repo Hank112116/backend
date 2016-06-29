@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.4.5
+* [FIXED] Fix project assigned PM search error (#33)
+
 ## v2.4.4
 * [FIXED] Fix landing expert unable to update expert list (#32)
 
