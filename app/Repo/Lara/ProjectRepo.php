@@ -136,8 +136,8 @@ class ProjectRepo implements ProjectInterface
         if (!empty($input['assigned_pm'])) {
             $assigned_pm = explode(',', $input['assigned_pm']);
             $projects = $projects->filter(function (Project $item) use ($assigned_pm) {
-                if ($item->internalProjectMemo) {
-                    $project_managers = json_decode($item->internalProjectMemo->project_managers, true);
+                if ($item->hasProjectManager()) {
+                    $project_managers = json_decode($item->getProjectManagers(), true);
                     if ($project_managers) {
                         $adminers = $this->adminer->findAssignedProjectPM($assigned_pm);
                         if ($adminers) {
