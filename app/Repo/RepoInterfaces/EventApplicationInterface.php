@@ -50,7 +50,7 @@ interface EventApplicationInterface
      * @param $note
      * @return boolean
      */
-    public function updateEventNote($id, $note);
+    public function updateEventMemo($id, $input);
 
     /**
      * @param $user_id

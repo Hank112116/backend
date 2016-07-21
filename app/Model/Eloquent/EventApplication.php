@@ -41,7 +41,7 @@ class EventApplication extends Model
         if ($this->applied_at) {
             return Carbon::parse($this->applied_at)->toFormattedDateString();
         } else {
-            return null;
+            return Carbon::parse($this->entered_at)->toFormattedDateString();
         }
     }
     
@@ -73,9 +73,27 @@ class EventApplication extends Model
         return isset($this->applied_at);
     }
 
+    public function isDropped()
+    {
+        if (is_null($this->applied_at) and $this->entered_at) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function isSelected()
     {
         return isset($this->approved_at);
+    }
+
+    public function isTour()
+    {
+        if ($this->user->isCreator() and !$this->user->isPendingExpert() or $this->project_id) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getCompleteTime()
@@ -109,5 +127,109 @@ class EventApplication extends Model
             ->where('applied_at', '!=', '')
             ->count();
         return $count;
+    }
+
+    public function hasGuestJoin()
+    {
+        $memo = json_decode($this->message, true);
+        $other_join = $memo['other_join'];
+        if ($other_join['email'] or $other_join['full_name'] or $other_join['job_title']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getMessage()
+    {
+        $memo = json_decode($this->message, true);
+        return $memo['message'];
+    }
+
+    public function getGuestInfo()
+    {
+        $memo = json_decode($this->message, true);
+        return $memo['other_join'];
+    }
+
+    public function getTripParticipation()
+    {
+        $memo = json_decode($this->message, true);
+        return $memo['trip_participation'];
+    }
+
+    public function getNote()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['note'];
+    }
+
+    public function getFollowPM()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['follow_pm'];
+    }
+
+    public function getInternalSetStatus()
+    {
+        $memo = json_decode($this->note, true);
+
+        return $memo['internal_set_status']['status'];
+    }
+
+    public function getTextInternalSetStatus()
+    {
+        switch($this->getInternalSetStatus()) {
+            case 'selected':
+                return 'Selected';
+            break;
+            case 'considering':
+                return 'Considering';
+            break;
+            case 'rejected':
+                return 'Rejected';
+            break;
+            default:
+                return 'N/A';
+        }
+    }
+
+    public function getInternalSetStatusOperator()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['internal_set_status']['operator'];
+    }
+
+    public function getInternalSetStatusUpdatedAt()
+    {
+        $memo = json_decode($this->note, true);
+
+        if ($memo['internal_set_status']['updated_at']) {
+            return Carbon::parse($memo['internal_set_status']['updated_at'])->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+
+    public function getTextTicketType()
+    {
+        if ($this->isTour()) {
+            return 'AIT';
+        } else {
+            $trips = $this->getTripParticipation();
+            if (empty($trips)) {
+                return null;
+            } else {
+                $data = [];
+                foreach ($trips as $trip) {
+                    if ($trip === 'shenzhen') {
+                        array_push($data, 'Meetup SZ');
+                    } elseif ($trip === 'osaka') {
+                        array_push($data, 'Meetup Osaka');
+                    }
+                }
+                return implode('<br/>', $data);
+            }
+        }
     }
 }

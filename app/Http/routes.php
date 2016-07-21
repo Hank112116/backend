@@ -173,7 +173,9 @@ Route::group([ 'before' => 'backend.reportEvent' ], function () {
     Route::get('report/events', 'ReportController@showEventReport');
     Route::get('report/events/{event_id}', 'ReportController@showEventReport');
     Route::get('report/tour-form', 'ReportController@showQuestionnaire');
-    Route::post('report/events/update-note', 'ReportController@updateEventNote');
+    Route::get('report/event-registration', 'ReportController@showEventRegistration');
+    Route::get('report/event-participation', 'ReportController@showEventParticipation');
+    Route::post('report/events/update-memo', 'ReportController@updateEventMemo');
     Route::post('report/events/approve-user', 'ReportController@approveEventUser');
     Route::post('report/events/user-questionnaire', 'ReportController@showUserQuestionnaire');
 });

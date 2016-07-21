@@ -16,11 +16,6 @@
         <h1>{{ $title or 'Registration Report' }}</h1>
     </div>
     @include ('report.event-search')
-    <div class="row text-center">
-        <h4>
-            Total {{ $event_users->total() }} Interests | {{ $event_users->complete_count }} Completed | {{ $event_users->unique_complete_count }} Unique Completed
-        </h4>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped">
@@ -78,6 +73,6 @@
     <div class="text-center">
         {!! $event_users->appends(Input::all())->render() !!}
     </div>
-    @include ('report.event-note-dialog')
+    @include ('report.dialog.event-note-dialog')
 @stop
 

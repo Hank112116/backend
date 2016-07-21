@@ -185,5 +185,5 @@
             </tr>
         </table>
     </div>
-    @include ('report.event-note-dialog')
+    @include ('report.dialog.event-note-dialog')
 @stop

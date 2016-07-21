@@ -120,24 +120,28 @@ class ReportRepo implements ReportInterface
         return $projects;
     }
     
-    public function getEventReport($event_id, $complete, $input, $page, $per_page)
+    public function getEventReport($event_id, $input, $page, $per_page)
     {
         /* @var Collection $join_event_users */
         $join_event_users = $this->event_repo->findByEventId($event_id);
 
+        $summary = $this->getEventSummary($join_event_users, $input);
+
         // filter complete & incomplete
-        if ($complete) {
-            $join_event_users = $join_event_users->filter(function (EventApplication $item) {
-                if ($item->isFinished()) {
-                    return $item;
-                }
-            });
-        } else {
-            $join_event_users = $join_event_users->filter(function (EventApplication $item) {
-                if (!$item->isFinished()) {
-                    return $item;
-                }
-            });
+        if (!empty($input['complete'])) {
+            if ($input['complete'] == true) {
+                $join_event_users = $join_event_users->filter(function (EventApplication $item) {
+                    if ($item->isFinished()) {
+                        return $item;
+                    }
+                });
+            } elseif ($input['complete'] == false) {
+                $join_event_users = $join_event_users->filter(function (EventApplication $item) {
+                    if (!$item->isFinished()) {
+                        return $item;
+                    }
+                });
+            }
         }
 
         if (!empty($input['approve'])) {
@@ -234,55 +238,9 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        $statistics       = $this->getEventStatistics($complete, $join_event_users);
         $join_event_users = $this->event_repo->byCollectionPage($join_event_users, $page, $per_page);
-        $join_event_users = $this->appendStatistics($join_event_users, $statistics);
+        $join_event_users = $this->appendStatistics($join_event_users, $summary);
         return $join_event_users;
-    }
-
-    private function getEventStatistics($complete, Collection $join_event_users)
-    {
-        $result = [];
-        if ($complete) {
-            $creator_users = $result['creator_count'] = $join_event_users->filter(function (EventApplication $item) {
-                if ($item->user->isCreator()) {
-                    return $item;
-                }
-            });
-            $result['creator_count']        = $creator_users->count();
-            $result['unique_creator_count'] = $creator_users->unique('user_id')->count();
-
-            $expert_users = $join_event_users->filter(function (EventApplication $item) {
-                if ($item->user->isExpert()) {
-                    return $item;
-                }
-            });
-            $result['expert_count']        = $expert_users->count();
-            $result['unique_expert_count'] = $expert_users->unique('user_id')->count();
-
-            $result['approved_count'] = $join_event_users->filter(function (EventApplication $item) {
-                if ($item->isFinished()) {
-                    return $item;
-                }
-            })->count();
-        } else {
-            $result['complete_count'] = $join_event_users->filter(function (EventApplication $item) {
-                if ($item->getCompleteTime()) {
-                    return $item;
-                }
-            })->count();
-
-            $complete_users = $join_event_users->filter(function (EventApplication $item) {
-                if ($item->getCompleteTime()) {
-                    return $item;
-                }
-            });
-
-            $result['complete_count']        = $complete_users->count();
-            $result['unique_complete_count'] = $complete_users->unique('email')->count();
-
-        }
-        return $result;
     }
 
     public function getQuestionnaireReport($event_id, $input, $page, $per_page)
@@ -421,5 +379,110 @@ class ReportRepo implements ReportInterface
             $object->$key = $row;
         }
         return $object;
+    }
+
+    private function getEventSummary(Collection $join_event_users, $input)
+    {
+        $summary = [
+            'ait_applied'               => 0,
+            'meetup_sz_applied'         => 0,
+            'meetup_osaka_applied'      => 0,
+            'ait_dropped'               => 0,
+            'meetup_dropped'            => 0,
+            'ait_form_sent'             => 0,
+            'ait_selected'              => 0,
+            'ait_considering'           => 0,
+            'ait_rejected'              => 0,
+            'meetup_sz_selected'        => 0,
+            'meetup_sz_considering'     => 0,
+            'meetup_sz_rejected'        => 0,
+            'meetup_osaka_selected'     => 0,
+            'meetup_osaka_considering'  => 0,
+            'meetup_osaka_rejected'     => 0,
+        ];
+
+        // filter entered at time
+        if (!empty($input['entered_at_start'])) {
+            $entered_at_start =  $input['entered_at_start'];
+            if (!empty($input['entered_at_end'])) {
+                $entered_at_end = $input['entered_at_end'];
+            } else {
+                $entered_at_end = Carbon::now()->toDateString();
+            }
+
+            $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($entered_at_start, $entered_at_end) {
+                $entered_at = Carbon::parse($item->entered_at)->toDateString();
+                if ($entered_at <= $entered_at_end && $entered_at >= $entered_at_start) {
+                    return $item;
+                }
+            });
+        }
+
+        /* @var EventApplication $event_user */
+        foreach ($join_event_users as $event_user) {
+            // tour | meetup
+            if ($event_user->isTour()) {
+                if ($event_user->isDropped()) {
+                    $summary['ait_dropped'] = $summary['ait_dropped'] + 1;
+                } else {
+                    $summary['ait_applied'] = $summary['ait_applied'] + 1;
+                }
+
+                if ($event_user->isSelected()) {
+                    $summary['ait_form_sent'] = $summary['ait_form_sent'] + 1;
+                }
+
+                switch ($event_user->getInternalSetStatus()) {
+                    case 'selected':
+                        $summary['ait_selected'] = $summary['ait_selected'] + 1;
+                        break;
+                    case 'considering':
+                        $summary['ait_considering'] = $summary['ait_considering'] + 1;
+                        break;
+                    case 'rejected':
+                        $summary['ait_rejected'] = $summary['ait_rejected'] + 1;
+                        break;
+                }
+
+            } else {
+                if ($event_user->isDropped()) {
+                    $summary['meetup_dropped'] = $summary['meetup_dropped'] + 1;
+                } else {
+                    if ($event_user->getTripParticipation()) {
+                        foreach ($event_user->getTripParticipation() as $trip_participation) {
+                            if ($trip_participation == 'shenzhen') {
+                                $summary['meetup_sz_applied'] = $summary['meetup_sz_applied'] + 1;
+                                switch ($event_user->getInternalSetStatus()) {
+                                    case 'selected':
+                                        $summary['meetup_sz_selected'] = $summary['meetup_sz_selected'] + 1;
+                                        break;
+                                    case 'considering':
+                                        $summary['meetup_sz_considering'] = $summary['meetup_sz_considering'] + 1;
+                                        break;
+                                    case 'rejected':
+                                        $summary['meetup_sz_rejected'] = $summary['meetup_sz_rejected'] + 1;
+                                        break;
+                                }
+                            } elseif ($trip_participation == 'osaka') {
+                                $summary['meetup_osaka_applied'] = $summary['meetup_osaka_applied'] + 1;
+
+                                switch ($event_user->getInternalSetStatus()) {
+                                    case 'selected':
+                                        $summary['meetup_osaka_selected'] = $summary['meetup_osaka_selected'] + 1;
+                                        break;
+                                    case 'considering':
+                                        $summary['meetup_osaka_considering'] = $summary['meetup_osaka_considering'] + 1;
+                                        break;
+                                    case 'rejected':
+                                        $summary['meetup_osaka_rejected'] = $summary['meetup_osaka_rejected'] + 1;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $summary;
     }
 }

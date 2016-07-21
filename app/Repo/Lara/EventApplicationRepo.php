@@ -66,25 +66,31 @@ class EventApplicationRepo implements EventApplicationInterface
         return $this->getPaginateFromCollection($collection, $page, $per_page);
     }
 
-    public function updateEventNote($id, $note)
+    public function updateEventMemo($id, $input)
     {
         // if event complete update same user note, else update event row note
         $event_user = $this->event->find($id);
+        $memo = json_decode($event_user->note, true);
 
-        if ($event_user->user_id === 0) {
-            $event_user->note = $note;
-            return $event_user->save();
+        if (array_key_exists('note', $input)) {
+            $memo['note'] = $input['note'];
         }
 
-        $same_event_users = $this->findByUserId($event_user->user_id);
-
-        if ($same_event_users) {
-            foreach ($same_event_users as $user) {
-                $user->note = $note;
-                $user->save();
+        if (array_key_exists('internal_selection', $input)) {
+            if (!\Auth::user()) {
+                return false;
             }
+            $memo['internal_set_status']['status']     = $input['internal_selection'];
+            $memo['internal_set_status']['operator']   = \Auth::user()->name;
+            $memo['internal_set_status']['updated_at'] = Carbon::now()->toDateTimeString();
         }
-        return true;
+
+        if (array_key_exists('follow_pm', $input)) {
+            $memo['follow_pm']     = $input['follow_pm'];
+        }
+
+        $event_user->note = json_encode($memo);
+        return $event_user->save();
     }
 
     public function approveEventUser($user_id)

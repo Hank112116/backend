@@ -5,11 +5,16 @@ namespace Backend\Enums;
 class EventEnum
 {
     const TYPE_AIT_2016_Q1 = 1;
+    const TYPE_AIT_2016_Q4 = 2;
 
     const EVENT_NAME = [
         self::TYPE_AIT_2016_Q1 => [
             'orig'  => 'Asia Innovation Tour 2016 Q1',
-            'short' => '2016 Q1'
+            'short' => '2016 AIT Q1'
+        ],
+        self::TYPE_AIT_2016_Q4 => [
+            'orig'  => 'Asia Innovation Tour 2016 Q4',
+            'short' => '2016 AIT Q4'
         ],
     ];
 
