@@ -1,4 +1,5 @@
-<div class="row text-center search-bar" style="margin-left: 0px;">
+{!! Form::open(['action' => ['ReportController@showEventReport', $event_id], 'method' => 'GET', 'name' => 'search-form']) !!}
+<div class="row text-center search-bar col-md-offset-0">
     <div class="col-md-1">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">{!! $event_short_name !!}
             <span class="caret"></span>
@@ -9,72 +10,69 @@
                 {!! link_to_action('ReportController@showEventReport', $event['short'], $key, null) !!}
             </li>
         @endforeach
+            <li>
+                {!! link_to_action('ReportController@showQuestionnaire','Tour Form', ['event' => $event_id], null) !!}
+            </li>
         </ul>
     </div>
-
-    {!! Form::open(['action' => ['ReportController@showEventReport', $event_id], 'method' => 'GET', 'name' => 'search-form']) !!}
 
     <div class="col-md-1">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-            @if(Input::get('role') == 'expert')
-                Expert
-            @elseif(Input::get('role') == 'creator')
-                Creator
-            @else
-                All
-            @endif
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li>
-                {!! link_to_action('ReportController@showEventReport', 'All', [ 'event' => $event_id,  'role' => 'all'], null) !!}
-            </li>
-            <li>
-                {!! link_to_action('ReportController@showEventReport', 'Expert', ['event' => $event_id,  'role' => 'expert'] , null) !!}
-            </li>
-            <li>
-                {!! link_to_action('ReportController@showEventReport', 'Creator', ['event' => $event_id, 'role' => 'creator'] , null) !!}
-            </li>
-        </ul>
+        <div class="input-group">
+            {!! Form::select('role',[
+                'all'     => 'All Role',
+                'creator'  => 'Creator',
+                'expert' => 'Expert',
+            ], Input::get('role'), ['class'=>'form-control']) !!}
+        </div>
     </div>
-
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('email', '', ['placeholder'=>"Email", 'class'=>"form-control"]) !!}
-            <span class="input-group-btn">
-                <button class="btn btn-default js-btn-search" type="button">Go!</button>
-            </span>
+            {!! Form::text('project', Input::get('project'), ['title' => 'Project Title or ID' ,'placeholder'=>"Project Title or ID", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('user_name', '', ['placeholder'=>"Name", 'class'=>"form-control"]) !!}
-            <span class="input-group-btn">
-            <button class="btn btn-default js-btn-search" type="button">Go!</button>
-        </span>
+            {!! Form::text('user', Input::get('user'), ['title' => 'User Title or ID', 'placeholder'=>"User Name or ID", 'class'=>"form-control"]) !!}
         </div>
     </div>
+
+    <div class="col-md-1">
+        <div class="input-group">
+            {!! Form::text('company', Input::get('company'), ['title' => 'Company Name', 'placeholder'=>"Company", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('user_id', '', ['placeholder'=>"ID", 'class'=>"form-control"]) !!}
-            <span class="input-group-btn">
-                <button class="btn btn-default js-btn-search" type="button">Go!</button>
-            </span>
-        </div>
-     </div>
-
-    <div class="col-md-4">
-        <div class="input-group">
-            {!! Form::text('applied_at_start', '',
-                ['placeholder'=>"Apply Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
-            {!! Form::text('applied_at_end', '',
-                ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
-            <span class="input-group-btn">
-                <button class="btn btn-default js-btn-search" type="button">Go!</button>
-            </span>
+            {!! Form::text('assigned_pm', Input::get('assigned_pm'), ['title' => 'Assigned PM or Follow PM', 'placeholder'=>"Assigned PM", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
-    {!! Form::close() !!}
+    <div class="col-md-1">
+        <div class="input-group">
+            {!! Form::text('email', Input::get('email'), ['placeholder'=>"Email", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
 </div>
+<div class="row search-bar col-md-offset-0">
+
+    <div class="col-md-2">
+        <h4>Showing Scope Date</h4>
+        <div class="input-group">
+
+            {!! Form::text('dstart', $dstart,
+                ['placeholder'=>"Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
+            {!! Form::text('dend', $dend,
+                ['placeholder'=>"To", 'class'=>"form-control date-input", 'id' => 'js-datepicker-edate']) !!}
+
+        </div>
+    </div>
+    <div class="col-md-2">
+        <span class="input-group-btn">
+                <button class="btn btn-primary js-btn-search" type="button" style="margin-top: 39px;">Go Search!</button>
+        </span>
+    </div>
+</div>
+{!! Form::close() !!}

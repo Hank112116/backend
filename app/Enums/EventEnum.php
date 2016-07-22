@@ -7,6 +7,8 @@ class EventEnum
     const TYPE_AIT_2016_Q1 = 1;
     const TYPE_AIT_2016_Q4 = 2;
 
+    const AIT_Q4_START_DATE = '2016-07-10';
+
     const EVENT_NAME = [
         self::TYPE_AIT_2016_Q1 => [
             'orig'  => 'Asia Innovation Tour 2016 Q1',
@@ -39,6 +41,7 @@ class EventEnum
     ];
 
     const QUESTIONNAIRE_VIEWS = [
-        self::TYPE_AIT_2016_Q1 => 'report.questionnaires.asia-innovation-tour-q1'
+        self::TYPE_AIT_2016_Q1 => 'report.questionnaires.asia-innovation-tour-q1',
+        self::TYPE_AIT_2016_Q4 => 'report.questionnaires.asia-innovation-tour-q4'
     ];
 }

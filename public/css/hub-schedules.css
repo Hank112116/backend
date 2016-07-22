@@ -275,6 +275,11 @@ th {
   color: #5bc0de;
 }
 
+/* line 16, ../../front/sass/elements/_fonts.scss */
+.color-red {
+  color: #d9534f;
+}
+
 @font-face {
   font-family: 'HWTrek-Icon';
   src: url("/fonts/HWTrek-Icon.eot");
@@ -661,7 +666,7 @@ th {
 }
 
 /* line 1, ../../front/sass/elements/_buttons.scss */
-.btn-sassy, .btn-mini {
+.btn-sassy, .btn-mini, .btn-main {
   -webkit-transition: background 0.5s;
   transition: background 0.5s;
   border: 0;
@@ -672,7 +677,7 @@ th {
   white-space: nowrap;
 }
 /* line 11, ../../front/sass/elements/_buttons.scss */
-.btn-sassy:hover, .btn-mini:hover, .btn-sassy:focus, .btn-mini:focus {
+.btn-sassy:hover, .btn-mini:hover, .btn-main:hover, .btn-sassy:focus, .btn-mini:focus, .btn-main:focus {
   outline: none;
   background: #5697d0;
   color: #fff;
@@ -702,31 +707,41 @@ th {
 }
 
 /* line 43, ../../front/sass/elements/_buttons.scss */
+.btn-main {
+  display: inline-block;
+  margin-right: .5em;
+  margin-bottom: 3px;
+  padding: 3px 5px;
+  letter-spacing: .1em;
+  text-transform: none;
+}
+
+/* line 54, ../../front/sass/elements/_buttons.scss */
 .btn-flat-green {
   background: #1abc9c;
 }
 
-/* line 47, ../../front/sass/elements/_buttons.scss */
+/* line 58, ../../front/sass/elements/_buttons.scss */
 .btn-flat-green:hover {
   background: #3ee4c4;
 }
 
-/* line 51, ../../front/sass/elements/_buttons.scss */
+/* line 62, ../../front/sass/elements/_buttons.scss */
 .btn-flat-purple {
-  background: #9b59b6;
+  background: #61578a;
 }
 
-/* line 55, ../../front/sass/elements/_buttons.scss */
+/* line 66, ../../front/sass/elements/_buttons.scss */
 .btn-flat-purple:hover {
-  background: #bb8ecd;
+  background: #887fae;
 }
 
-/* line 59, ../../front/sass/elements/_buttons.scss */
+/* line 70, ../../front/sass/elements/_buttons.scss */
 .btn-flat-red {
   background: #f33;
 }
 
-/* line 64, ../../front/sass/elements/_buttons.scss */
+/* line 74, ../../front/sass/elements/_buttons.scss */
 .btn-flat-red:hover {
   background: #ff8080;
 }
@@ -6090,6 +6105,11 @@ body.stop-scrolling {
   display: inline-block;
   min-width: 6em;
   text-align: right;
+}
+
+/* line 31, ../../front/sass/modules/_list-table.scss */
+thead {
+  background-color: #f5f5f5;
 }
 
 /* line 4, ../../front/sass/hub-schedules.scss */

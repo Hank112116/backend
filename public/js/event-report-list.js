@@ -87,6 +87,11 @@ $(function () {
             }
         });
     });
+
+    $(".float-thead").floatThead({
+        position: "fixed",
+        zIndex: 100
+    });
 });
 
 },{"./libs/EventNote.js":2,"./libs/SweetAlert":3}],2:[function(require,module,exports){
@@ -168,8 +173,8 @@ $(function () {
         var $this = $(this);
         var id = $this.attr("rel");
         var note = $this.attr("note");
-        $("#note").text(note);
-        $("#id").val(id);
+        $("#note").val(note);
+        $("#note_id").val(id);
         $("#note_dialog").dialog({
             height: 270,
             width: 500
@@ -177,7 +182,7 @@ $(function () {
     });
 
     $("#edit_note").click(function () {
-        var id = $("#id").val();
+        var id = $("#note_id").val();
         var note = $("#note").val();
         $.ajax({
             type: "POST",

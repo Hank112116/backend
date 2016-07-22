@@ -151,16 +151,16 @@
                             @endif
                         </td>
                         <td>
-                            @if(!empty($approve_user->note))
+                            @if(!empty($approve_user->getNote()))
                                 <a href="javascript:void(0)"
-                                   class="note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->note }}">
+                                   class="note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->getNote() }}">
                                     <i class="fa fa-pencil"></i>
-                                    {{ mb_strimwidth($approve_user->note, 0, 130, mb_substr($approve_user->note, 0, 130) . '...') }}
+                                    {{ mb_strimwidth($approve_user->getNote(), 0, 130, mb_substr($approve_user->getNote(), 0, 130) . '...') }}
                                 </a>
                             @else
                                 <div class="process-btns">
                                     <a href="javascript:void(0)"
-                                       class="btn-mini btn-danger note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->note }}" >
+                                       class="btn-mini btn-danger note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->getNote() }}" >
                                         <i class="fa fa-pencil fa-fw"></i>NOTE</a>
                                 </div>
                             @endif
@@ -185,5 +185,5 @@
             </tr>
         </table>
     </div>
-    @include ('report.dialog.event-note-dialog')
+    @include ('report.dialog.event-note')
 @stop

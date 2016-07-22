@@ -6,7 +6,7 @@
         <ul class="dropdown-menu">
             @foreach($event_list as $key => $event)
                 <li>
-                    {!! link_to_action('ReportController@showQuestionnaire', $event['short'], ['event_id' => $key], null) !!}
+                    {!! link_to_action('ReportController@showEventReport', $event['short'], $key, null) !!}
                 </li>
             @endforeach
         </ul>

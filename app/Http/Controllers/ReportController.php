@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Enums\EventEnum;
 use Backend\Http\Requests;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
@@ -109,7 +110,8 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $approve  = Input::get('approve') ? Input::get('approve') : null;
+        $dstart  = Input::get('dstart') ? Input::get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dend    = Input::get('dend') ? Input::get('dend') : Carbon::now()->toDateString();
 
         $view     = 'report.event.event-list';
 
@@ -128,10 +130,11 @@ class ReportController extends BaseController
                 'event_users'      => $join_event_users,
                 'event_list'       => $event_list,
                 'event_id'         => $event_id,
-                'approve'          => $approve,
                 'is_super_admin'   => $this->auth,
                 'begin_number'     => $begin_number,
-                'admins'           => $admins
+                'admins'           => $admins,
+                'dstart'           => $dstart,
+                'dend'             => $dend
             ]);
         return $template;
     }

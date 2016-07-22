@@ -7,6 +7,10 @@ use Carbon;
 
 class EventApplication extends Model
 {
+    const INTERNAL_SELECTED_STATUS    = 'selected';
+    const INTERNAL_CONSIDERING_STATUS = 'considering';
+    const INTERNAL_REJECTED_STATUS    = 'rejected';
+
     protected $table   = 'event_application';
     public $timestamps = false;
 
@@ -27,7 +31,11 @@ class EventApplication extends Model
 
     public function textFullName()
     {
-        return "{$this->user_name} {$this->last_name}";
+        if ($this->last_name) {
+            return "{$this->user_name} {$this->last_name}";
+        } else {
+            return $this->user_name;
+        }
     }
 
     public function textEventName()
@@ -82,18 +90,37 @@ class EventApplication extends Model
         }
     }
 
-    public function isSelected()
+    public function isFormSent()
     {
         return isset($this->approved_at);
     }
 
     public function isTour()
     {
+        if (!$this->user) {
+            return false;
+        }
+
         if ($this->user->isCreator() and !$this->user->isPendingExpert() or $this->project_id) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public function isInternalSelected()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_SELECTED_STATUS ? true : false;
+    }
+
+    public function isInternalConsidering()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_CONSIDERING_STATUS ? true : false;
+    }
+
+    public function isInternalRejected()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_REJECTED_STATUS ? true : false;
     }
 
     public function getCompleteTime()
@@ -155,6 +182,9 @@ class EventApplication extends Model
     public function getTripParticipation()
     {
         $memo = json_decode($this->message, true);
+        if (is_null($memo)) {
+            return [];
+        }
         return $memo['trip_participation'];
     }
 
@@ -180,13 +210,13 @@ class EventApplication extends Model
     public function getTextInternalSetStatus()
     {
         switch($this->getInternalSetStatus()) {
-            case 'selected':
+            case self::INTERNAL_SELECTED_STATUS:
                 return 'Selected';
             break;
-            case 'considering':
+            case self::INTERNAL_CONSIDERING_STATUS:
                 return 'Considering';
             break;
-            case 'rejected':
+            case self::INTERNAL_REJECTED_STATUS:
                 return 'Rejected';
             break;
             default:

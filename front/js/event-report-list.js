@@ -29,7 +29,7 @@ $(function () {
                             Notifier.showTimedMessage("Update successful", "information", 2);
                             window.location = "/report/tour-form?event=" + event_id;
                         }
-                    })
+                    });
                 }else{
                     $this.iCheck("uncheck");
                 }
@@ -78,5 +78,10 @@ $(function () {
                 });
             }
         });
+    });
+
+    $(".float-thead").floatThead({
+        position: "fixed",
+        zIndex: 100
     });
 });

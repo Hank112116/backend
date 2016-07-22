@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Collection;
 
 class EventApplicationRepo implements EventApplicationInterface
 {
+    const DEFAULT_INTERNAL_MEMO = [
+        'note'      => null,
+        'follow_pm' => null,
+        'internal_set_status' => [
+            'status'     => null,
+            'operator'   => null,
+            'updated_at' => null
+        ]
+    ];
     use PaginateTrait;
 
     private $event;
@@ -71,6 +80,10 @@ class EventApplicationRepo implements EventApplicationInterface
         // if event complete update same user note, else update event row note
         $event_user = $this->event->find($id);
         $memo = json_decode($event_user->note, true);
+
+        if (empty($memo)) {
+            $memo = self::DEFAULT_INTERNAL_MEMO;
+        }
 
         if (array_key_exists('note', $input)) {
             $memo['note'] = $input['note'];

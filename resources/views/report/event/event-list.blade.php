@@ -10,17 +10,14 @@
     <script src="{{ LinkGen::assets('js/list.js') }}"></script>
     <script src="{{ LinkGen::assets('js/event-report-list.js') }}"></script>
 @stop
-
 @section('content')
-    <div class="page-header">
-        <h1>{{ $title or 'Registration Report' }}</h1>
-    </div>
+    <div class="page-header"></div>
     @include ('report.event.event-search')
     @include ('report.event.event-summary')
-    <hr>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped">
+            <table class="table table-striped float-thead">
+                <thead>
                 <tr>
                     <th>U.ID</th>
                     <th>Attendee</th>
@@ -52,12 +49,13 @@
                     </th>
                     <th>Note</th>
                 </tr>
-
+                </thead>
+                <tbody>
                 @foreach($event_users as $event_user)
                     <tr>
                         <td>
                             @if($event_user->isDropped())
-                                <i class="fa fa-times fa-2x"></i>
+                                <i class="fa fa-times fa-2x color-red"></i>
                             @endif
                             @if($event_user->user)
                             <a href="{!! $event_user->user->textFrontLink() !!}" target="_blank">
@@ -67,26 +65,25 @@
                         </td>
 
                         <td>
-                            @if($event_user->user)
-
+                            @if($event_user->isDropped())
+                                @if($event_user->user)
+                                    {{ $event_user->user->textFullName() }}
+                                @endif
+                            @else
                                 {{ $event_user->textFullName() }}
-
                                 @if(!$event_user->isCoincide())
                                     <i class="fa fa-pencil-square-o" title="Different from profile."></i>
                                 @endif
-
                                 @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                                     <br>
                                     @if(!$event_user->approved_at)
-                                    <span class="user-sub-category">
+                                        <span class="user-sub-category">
                                         <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}" title="approve event user"> Select
                                     </span>
                                     @else
                                         <label for="active_1" class='iradio-lable'>Selected</label>
                                     @endif
                                 @endif
-                            @else
-                                {{ $event_user->textFullName() }}
                             @endif
                         </td>
 
@@ -151,9 +148,8 @@
                                 </a>
                             @else
                                 <div class="process-btns">
-                                    <a href="javascript:void(0)"
-                                       class="btn-mini btn-danger follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}" >
-                                        <i class="fa fa-pencil fa-fw"></i>Follow Up</a>
+                                    <button class="btn-main btn-flat-purple follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}" >
+                                        <i class="fa fa-pencil fa-fw"></i>Follow Up</button>
                                 </div>
                             @endif
                         </td>
@@ -197,6 +193,7 @@
                         </td>
                     </tr>
                 @endforeach
+                </tbody>
             </table>
         </div>
     </div>
