@@ -29,7 +29,8 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-striped">
+        <table class="table table-striped float-thead">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
@@ -58,12 +59,14 @@
                 <th>Action</th>
                 <th></th>
             </tr>
-
+            </thead>
+            <tbody>
             @foreach($users as $user)
                 <tr id="row-{{ $user->user_id }}">
                     @include('user.row', ['user' => $user, 'is_restricted' => $is_restricted])
                 </tr>
             @endforeach
+            </tbody>
             <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
         </table>
     </div>

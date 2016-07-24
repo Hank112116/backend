@@ -15,4 +15,9 @@ $(() => {
         var $self = $(block);
         $self.html(Moment.ago($self.data("ago")));
     });
+
+    $(".float-thead").floatThead({
+        position: "fixed",
+        zIndex: 100
+    });
 });

@@ -97,7 +97,11 @@
                         </td>
 
                         <td class="table--width-limit">
-                            {{ $event_user->company }}<br/>
+                            {{ $event_user->company }}
+                            @if($event_user->getEstablishedSince())
+                                <i class="fa fa-info-circle fa-2x established-since" rel="{{ $event_user->getEstablishedSince() }}"></i>
+                            @endif
+                            <br/>
                             <span class="table--text-light">{{ $event_user->job_title  }}</span>
                         </td>
 

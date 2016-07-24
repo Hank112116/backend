@@ -188,6 +188,16 @@ class EventApplication extends Model
         return $memo['trip_participation'];
     }
 
+    public function getEstablishedSince()
+    {
+        $memo = json_decode($this->message, true);
+
+        if (is_null($memo)) {
+            return null;
+        }
+        return $memo['established_since'];
+    }
+
     public function getNote()
     {
         $memo = json_decode($this->note, true);

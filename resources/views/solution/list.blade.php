@@ -34,7 +34,8 @@
 
     <div class="col-md-12">
 
-        <table class="table table-striped">
+        <table class="table table-striped float-thead">
+            <thead>
             <tr>
                 <th>#</th>
                 <th class='table--name'>Title</th>
@@ -48,7 +49,9 @@
                 <th>Manager<br/>Approved</th>
                 <th></th>
             </tr>
+            </thead>
 
+            <tbody>
             @foreach($solutions as $solution)
             <tr>
                 <td>{!! $solution->solution_id !!}</td>
@@ -150,6 +153,7 @@
                 </td>
             </tr>
             @endforeach
+            </tbody>
         </table>
 
     </div>

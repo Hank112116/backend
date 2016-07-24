@@ -68,6 +68,11 @@ $(function () {
         var $self = $(block);
         $self.html(_libsMoment2["default"].ago($self.data("ago")));
     });
+
+    $(".float-thead").floatThead({
+        position: "fixed",
+        zIndex: 100
+    });
 });
 
 },{"./libs/Moment":1,"./modules/date-picker":3,"./modules/search-list":4}],3:[function(require,module,exports){

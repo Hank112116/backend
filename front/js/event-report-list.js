@@ -37,15 +37,34 @@ $(function () {
         });
     });
 
-    $(".fa-commenting-o").click(function(){
-        var message = $(this).attr("rel");
-        var $dialog =  $("#dialog");
-        $dialog.text(message);
-        $dialog.dialog({
-            height: 270,
-            width: 600
+    var $dialog =  $("#dialog");
+    $(".fa-commenting-o")
+        .mouseover(function(){
+            var message = $(this).attr("rel");
+
+            $dialog.text(message);
+            $dialog.dialog({
+                height: 270,
+                width: 600
+            });
+        })
+        .mouseout(function(){
+            $dialog.dialog( "close" );
         });
-    });
+
+    $(".established-since")
+        .mouseover(function(){
+            var message = $(this).attr("rel");
+
+            $dialog.text(message);
+            $dialog.dialog({
+                height: 270,
+                width: 600
+            });
+        })
+        .mouseout(function(){
+            $dialog.dialog( "close" );
+        });
 
     $(".fa-user-plus").click(function(){
         var guest_info = JSON.parse($(this).attr("rel"));
@@ -78,10 +97,5 @@ $(function () {
                 });
             }
         });
-    });
-
-    $(".float-thead").floatThead({
-        position: "fixed",
-        zIndex: 100
     });
 });
