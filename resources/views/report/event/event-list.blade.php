@@ -47,7 +47,7 @@
                         <span class="table--text-light">City</span>
                     </th>
                     <th class="table--width-limit">
-                        Apply by + Time
+                        Apply Time
                     </th>
                     <th>Note</th>
                 </tr>
@@ -148,17 +148,19 @@
                                 @endif
                             @endif
 
-                            @if($event_user->getFollowPM())
-                                <a href="javascript:void(0)"
-                                   class="follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}">
-                                    <i class="fa fa-pencil"></i>
-                                    {{ $event_user->getFollowPM() }}
-                                </a>
-                            @else
-                                <div class="process-btns">
-                                    <button class="btn-main btn-flat-purple follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}" >
-                                        <i class="fa fa-pencil fa-fw"></i>Follow Up</button>
-                                </div>
+                            @if(!$event_user->isDropped())
+                                @if($event_user->getFollowPM())
+                                    <a href="javascript:void(0)"
+                                       class="follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}">
+                                        <i class="fa fa-pencil"></i>
+                                        {{ $event_user->getFollowPM() }}
+                                    </a>
+                                @else
+                                    <div class="process-btns">
+                                        <button class="btn-main btn-flat-purple follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}" >
+                                            <i class="fa fa-pencil fa-fw"></i>Follow Up</button>
+                                    </div>
+                                @endif
                             @endif
                         </td>
                         <td>

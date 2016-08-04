@@ -1,7 +1,7 @@
 {!! Form::open(['action' => ['ReportController@showEventReport', $event_id], 'method' => 'GET', 'name' => 'search-form']) !!}
 <div class="row search-bar col-md-offset-0">
-    <div class="col-md-1">
-        <h5>Search Result:</h5>
+    <div class="col-md-2">
+        <h5>Search For:</h5>
     </div>
 </div>
 <div class="row search-bar col-md-offset-0">
