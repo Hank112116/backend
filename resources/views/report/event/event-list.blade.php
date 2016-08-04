@@ -117,20 +117,22 @@
                         </td>
 
                         <td>
-                            @if($event_user->getInternalSetStatus())
-                                <a href="javascript:void(0)"
-                                   class="internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" tour="{{ $event_user->isTour() }}">
-                                    <i class="fa fa-pencil"></i>
-                                    {{ $event_user->getTextInternalSetStatus() }}
-                                </a><br/>
-                                <span class="table--text-light">{{ $event_user->getInternalSetStatusOperator() }}</span><br/>
-                                <span class="table--text-light">{{ $event_user->getInternalSetStatusUpdatedAt() }}</span>
-                            @else
-                                <div class="process-btns">
+                            @if(!$event_user->isDropped())
+                                @if($event_user->getInternalSetStatus())
                                     <a href="javascript:void(0)"
-                                       class="btn-mini btn-danger internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" tour="{{ $event_user->isTour() }}">
-                                        <i class="fa fa-pencil fa-fw"></i>ADD</a>
-                                </div>
+                                       class="internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" tour="{{ $event_user->isTour() }}">
+                                        <i class="fa fa-pencil"></i>
+                                        {{ $event_user->getTextInternalSetStatus() }}
+                                    </a><br/>
+                                    <span class="table--text-light">{{ $event_user->getInternalSetStatusOperator() }}</span><br/>
+                                    <span class="table--text-light">{{ $event_user->getInternalSetStatusUpdatedAt() }}</span>
+                                @else
+                                    <div class="process-btns">
+                                        <a href="javascript:void(0)"
+                                           class="btn-mini btn-danger internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" tour="{{ $event_user->isTour() }}">
+                                            <i class="fa fa-pencil fa-fw"></i>ADD</a>
+                                    </div>
+                                @endif
                             @endif
                         </td>
                         <td>
@@ -148,19 +150,17 @@
                                 @endif
                             @endif
 
-                            @if(!$event_user->isDropped())
-                                @if($event_user->getFollowPM())
-                                    <a href="javascript:void(0)"
-                                       class="follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}">
-                                        <i class="fa fa-pencil"></i>
-                                        {{ $event_user->getFollowPM() }}
-                                    </a>
-                                @else
-                                    <div class="process-btns">
-                                        <button class="btn-main btn-flat-purple follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}" >
-                                            <i class="fa fa-pencil fa-fw"></i>Follow Up</button>
-                                    </div>
-                                @endif
+                            @if($event_user->getFollowPM())
+                                <a href="javascript:void(0)"
+                                   class="follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}">
+                                    <i class="fa fa-pencil"></i>
+                                    {{ $event_user->getFollowPM() }}
+                                </a>
+                            @else
+                                <div class="process-btns">
+                                    <button class="btn-main btn-flat-purple follow-pm" rel="{!! $event_user->id !!}" pm="{{ $event_user->getFollowPM() }}" >
+                                        <i class="fa fa-pencil fa-fw"></i>Follow Up</button>
+                                </div>
                             @endif
                         </td>
                         <td>
