@@ -2,11 +2,11 @@
 @include('layouts.macro')
 
 @section('css')
-	<link rel="stylesheet" href="/css/user-detail.css">
+	<link rel="stylesheet" href="{{ LinkGen::assets('css/user-detail.css') }}">
 @stop
 
 @section('js')
-	<script src='/js/user-detail.js'></script>
+	<script src="{{ LinkGen::assets('js/user-detail.js') }}"></script>
 @stop
 
 @section('content')

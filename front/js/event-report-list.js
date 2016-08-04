@@ -7,34 +7,72 @@ $(function () {
     //change user type to user checkbox
     $(document).on("ifChecked", ".approve_event_user", function (e) {
         e.preventDefault();
-        var user_id = $(this).attr("rel");
+        var $this   = $(this);
+        var user_id = $this.attr("rel");
         SweetAlert.alert({
             title: "Select this user?",
             confirmButton: "Yes!",
-            handleOnConfirm: () =>
-                $.ajax({
-                    type: "POST",
-                    url: "/report/events/approve-user",
-                    data: {
-                        user_id: user_id
-                    },
-                    dataType: "JSON",
-                    success: function success(feeback) {
-                        if (feeback.status === "fail") {
-                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                            return;
+            handleOnConfirm: (is_confirm) => {
+                if(is_confirm){
+                    $.ajax({
+                        type: "POST",
+                        url: "/report/events/approve-user",
+                        data: {
+                            user_id: user_id
+                        },
+                        dataType: "JSON",
+                        success: function success(feeback) {
+                            if (feeback.status === "fail") {
+                                Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                                return;
+                            }
+                            Notifier.showTimedMessage("Update successful", "information", 2);
+                            window.location = "/report/tour-form?event=" + event_id;
                         }
-                        Notifier.showTimedMessage("Update successful", "information", 2);
-                        window.location = "/report/tour-form?event=" + event_id;
-                    }
-                })
+                    });
+                }else{
+                    $this.iCheck("uncheck");
+                }
+            }
         });
     });
 
-    $(".fa-commenting-o").click(function(){
-        var message = $(this).attr("rel");
-        var $dialog =  $("#dialog");
-        $dialog.text(message);
+    var $dialog =  $("#dialog");
+    $(".fa-commenting-o")
+        .mouseover(function(){
+            var message = $(this).attr("rel");
+
+            $dialog.text(message);
+            $dialog.dialog({
+                height: 270,
+                width: 600
+            });
+        })
+        .mouseout(function(){
+            $dialog.dialog( "close" );
+        });
+
+    $(".established-since")
+        .mouseover(function(){
+            var message = $(this).attr("rel");
+
+            $dialog.text(message);
+            $dialog.dialog({
+                height: 270,
+                width: 600
+            });
+        })
+        .mouseout(function(){
+            $dialog.dialog( "close" );
+        });
+
+    $(".fa-user-plus").click(function(){
+        var guest_info = JSON.parse($(this).attr("rel"));
+        $("#guest_full_name").text(guest_info.full_name);
+        $("#guest_job_title").text(guest_info.job_title);
+        $("#guest_email").text(guest_info.email);
+
+        var $dialog =  $("#guest_info_dialog");
         $dialog.dialog({
             height: 270,
             width: 600

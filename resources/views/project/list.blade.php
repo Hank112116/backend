@@ -4,12 +4,12 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    <link rel="stylesheet" href="/css/product-list.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/product-list.css') }}">
 @stop
 
 @section('js')
-    <script src='/js/list.js'></script>
-    <script src='/js/project-list.js'></script>
+    <script src="{{ LinkGen::assets('js/list.js') }}"></script>
+    <script src="{{ LinkGen::assets('js/project-list.js') }}"></script>
 @stop
 
 @section('content')
@@ -28,7 +28,8 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-striped">
+        <table class="table table-striped float-thead">
+            <thead>
             <tr>
                 <th>#</th>
                 <th class="table--name">Project Title<br/><span class="table--text-light">Category</span></th>
@@ -45,12 +46,15 @@
                 <th>Last Update<br/><span class="table--text-light">By</span></th>
                 <th></th>
             </tr>
+            </thead>
 
+            <tbody>
             @foreach($projects as $project)
                 <tr id="row-{{ $project->project_id }}">
                 @include('project.row', ['project' => $project])
                 </tr>
             @endforeach
+            </tbody>
         </table>
 
     </div>

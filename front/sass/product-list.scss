@@ -1,15 +1,14 @@
 @import "common";
-@import "vendor/bootstrap/pagination";
-
 @import "elements/pagination";
-
 @import "modules/page-header-with-btn";
 @import "modules/list-search";
 @import "modules/list-table";
-@import "vendor/fronteed/icheck/blue";
 @import "modules/list-icon";
 @import "modules/detail-tags";
 @import "pages/project/tag-component";
+@import "vendor/bootstrap-sass-datepicker/datepicker";
+@import "vendor/fronteed/icheck/blue";
+@import "vendor/bootstrap/pagination";
 
 .adminer-tag {
   display: inline-block;

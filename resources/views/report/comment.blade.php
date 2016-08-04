@@ -2,10 +2,10 @@
 @include('layouts.macro')
 
 @section('css')
-    <link rel="stylesheet" href="/css/user-list.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/user-list.css') }}">
 @stop
 @section('js')
-    <script src='/js/list.js'></script>
+    <script src="{{ LinkGen::assets('js/list.js') }}"></script>
 @stop
 
 
@@ -69,14 +69,17 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped">
+            <table class="table table-striped float-thead">
+                <thead>
                 <tr>
                     <th>#</th>
                     <th>Name</th>
                     <th>Role</th>
                     <th>{!! isset($range)? "Last $range days comment":"Custom interval comment" !!}</th>
                 </tr>
+                </thead>
 
+                <tbody>
                 @foreach($users as $user)
                     <tr>
                         <td>{!! $user->user_id !!}</td>
@@ -92,6 +95,7 @@
                         <td><span style="font-size:1.3em">{!! $user->commentCount !!}</span> <span> of total {!! $user->totalCommentCount !!}.</span></td>
                     </tr>
                 @endforeach
+                </tbody>
             </table>
         </div>
     </div>

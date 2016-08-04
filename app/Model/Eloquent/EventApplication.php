@@ -7,6 +7,12 @@ use Carbon;
 
 class EventApplication extends Model
 {
+    const INTERNAL_SELECTED_STATUS    = 'selected';
+    const INTERNAL_CONSIDERING_STATUS = 'considering';
+    const INTERNAL_REJECTED_STATUS    = 'rejected';
+    const INTERNAL_PREMIUM_STATUS     = 'premium';
+    const INTERNAL_EXPERT_STATUS      = 'expert';
+
     protected $table   = 'event_application';
     public $timestamps = false;
 
@@ -27,7 +33,11 @@ class EventApplication extends Model
 
     public function textFullName()
     {
-        return "{$this->user_name} {$this->last_name}";
+        if ($this->last_name) {
+            return "{$this->user_name} {$this->last_name}";
+        } else {
+            return $this->user_name;
+        }
     }
 
     public function textEventName()
@@ -41,7 +51,7 @@ class EventApplication extends Model
         if ($this->applied_at) {
             return Carbon::parse($this->applied_at)->toFormattedDateString();
         } else {
-            return null;
+            return Carbon::parse($this->entered_at)->toFormattedDateString();
         }
     }
     
@@ -73,9 +83,56 @@ class EventApplication extends Model
         return isset($this->applied_at);
     }
 
-    public function isSelected()
+    public function isDropped()
+    {
+        if (is_null($this->applied_at) and $this->entered_at) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isFormSent()
     {
         return isset($this->approved_at);
+    }
+
+    public function isTour()
+    {
+        if (!$this->user) {
+            return false;
+        }
+
+        if ($this->user->isCreator() and !$this->user->isPendingExpert() or $this->project_id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isInternalSelected()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_SELECTED_STATUS ? true : false;
+    }
+
+    public function isInternalConsidering()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_CONSIDERING_STATUS ? true : false;
+    }
+
+    public function isInternalRejected()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_REJECTED_STATUS ? true : false;
+    }
+
+    public function isInternalPremium()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_PREMIUM_STATUS ? true : false;
+    }
+
+    public function isInternalExpert()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_EXPERT_STATUS ? true : false;
     }
 
     public function getCompleteTime()
@@ -109,5 +166,145 @@ class EventApplication extends Model
             ->where('applied_at', '!=', '')
             ->count();
         return $count;
+    }
+
+    public function hasGuestJoin()
+    {
+        $memo = json_decode($this->message, true);
+        $other_join = $memo['other_join'];
+        if ($other_join['email'] or $other_join['full_name'] or $other_join['job_title']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getMessage()
+    {
+        $memo = json_decode($this->message, true);
+        return $memo['message'];
+    }
+
+    public function getGuestInfo()
+    {
+        $memo = json_decode($this->message, true);
+        return $memo['other_join'];
+    }
+
+    public function getTripParticipation()
+    {
+        $memo = json_decode($this->message, true);
+        if (is_null($memo)) {
+            return [];
+        }
+        return $memo['trip_participation'];
+    }
+
+    public function getEstablishedSince()
+    {
+        $memo = json_decode($this->message, true);
+
+        if (is_null($memo)) {
+            return null;
+        }
+        return $memo['established_since'];
+    }
+
+    public function getNote()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['note_info']['note'];
+    }
+
+    public function getNoteOperator()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['note_info']['operator'];
+    }
+
+    public function getNoteUpdatedAt()
+    {
+        $memo = json_decode($this->note, true);
+
+        if ($memo['note_info']['updated_at']) {
+            return Carbon::parse($memo['note_info']['updated_at'])->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+
+    public function getFollowPM()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['follow_pm'];
+    }
+
+    public function getInternalSetStatus()
+    {
+        $memo = json_decode($this->note, true);
+
+        return $memo['internal_set_status']['status'];
+    }
+
+    public function getTextInternalSetStatus()
+    {
+        switch($this->getInternalSetStatus()) {
+            case self::INTERNAL_SELECTED_STATUS:
+                return 'Selected';
+            break;
+            case self::INTERNAL_CONSIDERING_STATUS:
+                return 'Considering';
+            break;
+            case self::INTERNAL_REJECTED_STATUS:
+                return 'Rejected';
+            break;
+            case self::INTERNAL_PREMIUM_STATUS:
+                return 'Premium';
+            break;
+            case self::INTERNAL_EXPERT_STATUS:
+                return 'Expert';
+            break;
+            default:
+                return 'N/A';
+        }
+    }
+
+    public function getInternalSetStatusOperator()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['internal_set_status']['operator'];
+    }
+
+    public function getInternalSetStatusUpdatedAt()
+    {
+        $memo = json_decode($this->note, true);
+
+        if ($memo['internal_set_status']['updated_at']) {
+            return Carbon::parse($memo['internal_set_status']['updated_at'])->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+
+    public function getTextTicketType()
+    {
+        if ($this->isTour()) {
+            return 'AIT';
+        } else {
+            $trips = $this->getTripParticipation();
+            if (empty($trips)) {
+                return null;
+            } else {
+                $data = [];
+                foreach ($trips as $trip) {
+                    if ($trip === 'shenzhen') {
+                        array_push($data, 'Meetup SZ');
+                    } elseif ($trip === 'osaka') {
+                        array_push($data, 'Meetup Osaka');
+                    }
+                }
+                return implode('<br/>', $data);
+            }
+        }
     }
 }

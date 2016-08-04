@@ -5,6 +5,6 @@ interface ReportInterface
     public function getCommentReport($filter, $input, $page, $per_page);
     public function getRegistrationReport($filter, $input, $page, $per_page);
     public function getProjectReport($input, $page, $per_page);
-    public function getEventReport($event_id, $complete, $input, $page, $per_page);
+    public function getEventReport($event_id, $input, $page, $per_page);
     public function getQuestionnaireReport($event_id, $input, $page, $per_page);
 }

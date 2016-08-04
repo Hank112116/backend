@@ -5,6 +5,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface AdminerInterface
 {
+    /**
+     * @return Collection|Adminer[]
+     */
     public function all();
 
     public function allDeleted();

@@ -2,6 +2,7 @@ var paths = require('./paths');
 
 module.exports = [
     './node_modules/lodash/lodash.js',
+    './node_modules/floatthead/dist/jquery.floatThead.js',
 
     paths.src.js_vendor + 'redactor/redactor.js',
     paths.src.js_vendor + 'fronteed/icheck.js',

@@ -2,11 +2,11 @@
 @include('layouts.macro')
 
 @section('css')
-    <link rel="stylesheet" href="/css/inbox.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/inbox.css') }}">
 @stop
 
 @section('js')
-    <script type="text/javascript" src="/react/inbox.js"></script>
+    <script src="{{ LinkGen::assets('react/inbox.js') }}"></script>
 @stop
 
 @section('content')

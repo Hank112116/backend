@@ -2,7 +2,7 @@
 @include('layouts.macro')
 
 @section('css')
-    <link rel="stylesheet" href="/css/product-detail.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/product-detail.css') }}">
 @stop
 
 @section('content')

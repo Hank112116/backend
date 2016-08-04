@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-<link rel="stylesheet" href="/css/adminer-update.css">
+<link rel="stylesheet" href="{{LinkGen::assets('css/adminer-update.css')}}">
 @stop
 
 @section('js')
-<script type="text/javascript" src="/react/owner-select.js"></script>
+<script src="{{LinkGen::assets('react/owner-select.js')}}"></script>
 @stop
 
 @section('content')

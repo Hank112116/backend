@@ -159,20 +159,6 @@ Route::group(['before' => 'backend.landing'], function () {
     Route::post('landing/update-expert', 'LandingController@updateExpert');
 });
 
-// Email Template
-Route::group(['before' => 'backend.mail'], function () {
-    Route::get('mail/all', 'MailTemplateController@showList');
-    Route::get('mail/disactive', 'MailTemplateController@showDisactiveList');
-    Route::get('mail/detail/{id}', 'MailTemplateController@showDetail');
-    Route::get('mail/create', 'MailTemplateController@showCreate');
-    Route::get('mail/update/{id}', 'MailTemplateController@showUpdate');
-    Route::get('mail/trigger-active/{id}', 'MailTemplateController@triggerActive');
-    Route::get('mail/template', 'MailTemplateController@fetchHtmlTemplate');
-
-    Route::post('mail/create', 'MailTemplateController@create');
-    Route::post('mail/update/{id}', 'MailTemplateController@update');
-});
-
 // Report
 Route::group([ 'before' => 'backend.reportRegistration' ], function () {
     Route::get('report/registration', 'ReportController@showRegistrationReport');
@@ -187,7 +173,7 @@ Route::group([ 'before' => 'backend.reportEvent' ], function () {
     Route::get('report/events', 'ReportController@showEventReport');
     Route::get('report/events/{event_id}', 'ReportController@showEventReport');
     Route::get('report/tour-form', 'ReportController@showQuestionnaire');
-    Route::post('report/events/update-note', 'ReportController@updateEventNote');
+    Route::post('report/events/update-memo', 'ReportController@updateEventMemo');
     Route::post('report/events/approve-user', 'ReportController@approveEventUser');
     Route::post('report/events/user-questionnaire', 'ReportController@showUserQuestionnaire');
 });

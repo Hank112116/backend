@@ -2,7 +2,9 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Enums\EventEnum;
 use Backend\Http\Requests;
+use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
@@ -18,6 +20,7 @@ class ReportController extends BaseController
 {
     protected $cert = "report";
     private $auth;
+    private $adminer_repo;
     private $user_repo;
     private $report_repo;
     private $filter;
@@ -25,6 +28,7 @@ class ReportController extends BaseController
     private $questionnaire_repo;
 
     public function __construct(
+        AdminerInterface            $adminer_repo,
         UserInterface               $user_repo,
         ReportInterface             $report_repo,
         EventApplicationInterface   $event_repo,
@@ -32,6 +36,7 @@ class ReportController extends BaseController
     ) {
         parent::__construct();
         $this->auth               = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
+        $this->adminer_repo       = $adminer_repo;
         $this->user_repo          = $user_repo;
         $this->report_repo        = $report_repo;
         $this->event_repo         = $event_repo;
@@ -105,21 +110,18 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        if (is_null(Input::get('complete'))) {
-            $complete = 1;
-        } else {
-            $complete = Input::get('complete');
-        }
+        $dstart  = Input::get('dstart') ? Input::get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dend    = Input::get('dend') ? Input::get('dend') : Carbon::now()->toDateString();
 
-        $approve  = Input::get('approve') ? Input::get('approve') : null;
-
-        $view     = $complete ? 'report.event-complete' : 'report.event-incomplete';
+        $view     = 'report.event.event-list';
 
         $event_list       = $this->event_repo->getEvents();
 
-        $join_event_users = $this->report_repo->getEventReport($event_id, $complete, Input::all(), $this->page, $this->per_page);
+        $join_event_users = $this->report_repo->getEventReport($event_id, Input::all(), $this->page, $this->per_page);
 
         $begin_number = $join_event_users->total() - (($this->page -1) * $this->per_page);
+
+        $admins = $this->adminer_repo->all();
 
         $template = view($view)
             ->with([
@@ -128,17 +130,18 @@ class ReportController extends BaseController
                 'event_users'      => $join_event_users,
                 'event_list'       => $event_list,
                 'event_id'         => $event_id,
-                'complete'         => $complete,
-                'approve'          => $approve,
                 'is_super_admin'   => $this->auth,
-                'begin_number'     => $begin_number
+                'begin_number'     => $begin_number,
+                'admins'           => $admins,
+                'dstart'           => $dstart,
+                'dend'             => $dend
             ]);
         return $template;
     }
 
-    public function updateEventNote()
+    public function updateEventMemo()
     {
-        if ($this->event_repo->updateEventNote(Input::get('id'), Input::get('note'))) {
+        if ($this->event_repo->updateEventMemo(Input::get('id'), Input::get())) {
             $result['status'] = 'success';
         } else {
             $result['status'] = 'fail';
@@ -158,11 +161,12 @@ class ReportController extends BaseController
 
     public function showQuestionnaire()
     {
-        if (Input::get('event_id')) {
-            $event_id = Input::get('event_id');
+        if (Input::get('event')) {
+            $event_id = Input::get('event');
         } else {
             $event_id = $this->event_repo->getDefaultEvent();
         }
+
         $event_list     = $this->event_repo->getEvents();
         $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, Input::all(), $this->page, $this->per_page);
         $view           = $this->questionnaire_repo->getView($event_id);
@@ -183,7 +187,7 @@ class ReportController extends BaseController
         $questionnaire = $this->questionnaire_repo->find(Input::get('questionnaire_id'));
         $questionnaire_column = $this->questionnaire_repo->getQuestionnaireColumn($questionnaire->subject_id);
         $questionnaire_items  = json_decode($questionnaire->detail, true);
-        $template = view('report.event-questionnaire')
+        $template = view('report.event.event-questionnaire')
             ->with([
                 'questionnaire_column' => $questionnaire_column,
                 'questionnaire_items'  => $questionnaire_items

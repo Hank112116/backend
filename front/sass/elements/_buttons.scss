@@ -40,6 +40,17 @@
   letter-spacing: .1em;
 }
 
+.btn-main {
+  @extend %btn-base;
+
+  display: inline-block;
+  margin-right: .5em;
+  margin-bottom: 3px;
+  padding: 3px 5px;
+  letter-spacing: .1em;
+  text-transform: none;
+}
+
 .btn-flat-green {
   background: #1abc9c;
 }
@@ -49,17 +60,16 @@
 }
 
 .btn-flat-purple {
-  background: #9b59b6;
+  background: #61578a;
 }
 
 .btn-flat-purple:hover {
-  background: lighten(#9b59b6, 15%);
+  background: lighten(#61578a, 15%);
 }
 
 .btn-flat-red {
   background: #f33;
 }
-
 
 .btn-flat-red:hover {
   background: lighten(#f33, 15%);

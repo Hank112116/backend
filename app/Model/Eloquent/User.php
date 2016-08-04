@@ -48,9 +48,7 @@ class User extends Eloquent
     ];
 
     const IS_CREATOR_STATUS = [
-        'user_type'             => self::TYPE_CREATOR,
-        'is_sign_up_as_expert'  => 0,
-        'is_apply_to_be_expert' => 0
+        'user_type'             => self::TYPE_CREATOR
     ];
 
     const IS_EXPERT_STATUS = [
@@ -140,9 +138,7 @@ class User extends Eloquent
 
     public function textType()
     {
-        if ($this->isType(self::IS_CREATOR_STATUS)) {
-            return 'Creator';
-        } elseif ($this->isType(self::IS_EXPERT_STATUS)) {
+        if ($this->isType(self::IS_EXPERT_STATUS)) {
             return 'Expert';
         } elseif ($this->isType(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
             return 'Sign up to Be Expert';
@@ -152,6 +148,8 @@ class User extends Eloquent
             return 'HWTrek PM';
         } elseif ($this->isPremiumExpert()) {
             return 'Premium Expert';
+        } elseif ($this->isType(self::IS_CREATOR_STATUS)) {
+            return 'Creator';
         } else {
             return 'Undefine';
         }

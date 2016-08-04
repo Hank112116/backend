@@ -5,6 +5,5 @@ module.exports = [
     'cropper',
     'bug-reporter',
     'solution-update',
-    'email-template-editor',
     'inbox'
 ];

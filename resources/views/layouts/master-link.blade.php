@@ -95,15 +95,6 @@
                     </a>
                 </li>
                 @endif
-
-                @if(Auth::user()->isShowLink('email_template'))
-                <li>
-                    <a href="{!! action('MailTemplateController@showList') !!}">
-                        <i class="fa fa-envelope fa-fw"></i>
-                        Emails
-                    </a>
-                </li>
-                @endif
                 <?php //print_r(Auth::user()->isShowLink('marketing_full')); die();?>
                 @if(Auth::user()->isShowLink('marketing'))
                 <li>

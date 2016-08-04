@@ -1,0 +1,21 @@
+@import "common";
+@import "vendor/bootstrap/pagination";
+@import "vendor/fronteed/icheck/blue";
+@import "vendor/bootstrap-sass-datepicker/datepicker";
+@import "modules/page-header-with-btn";
+@import "modules/list-search";
+@import "modules/list-table";
+@import "pages/project/tag-component";
+
+.pagination-container {
+  text-align: center;
+}
+
+.search-bar-btns {
+  margin-bottom: 1em;
+  margin-left: 0;
+}
+
+.user-sub-category {
+  display: inline-block;
+}

@@ -3,11 +3,11 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    <link rel="stylesheet" href="/css/hub-schedules.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/hub-schedules.css') }}">
 @stop
 
 @section('js')
-    <script src='/js/hub-schedules.js'></script>
+    <script src="{{ LinkGen::assets('js/hub-schedules.js') }}"></script>
 @stop
 
 @section('content')

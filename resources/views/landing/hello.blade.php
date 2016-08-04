@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
-    <link rel="stylesheet" href="/css/landing-hello.css">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/landing-hello.css') }}">
 @stop
 
 @section('js')
-    <script src='/js/landing-hello.js'></script>
+    <script src="{{ LinkGen::assets('js/landing-hello.js') }}"></script>
 @stop
 
 @section('content')
