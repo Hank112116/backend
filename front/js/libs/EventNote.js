@@ -4,17 +4,27 @@ $(function () {
         var $this = $(this);
         var id = $this.attr("rel");
         var status = $this.attr("status");
-        $("#internal_select_status").val(status);
-        $("#id").val(id);
-        $("#internal_selection_dialog").dialog({
-            height: 200,
-            width: 500
-        });
+        var isTour = $this.attr("tour");
+        if (isTour) {
+            $("#internal_select_tour_status").val(status);
+            $("#internal-selection-tour-id").val(id);
+            $("#internal_selection_tour_dialog").dialog({
+                height: 200,
+                width: 500
+            });
+        } else {
+            $("#internal_select_meetup_status").val(status);
+            $("#internal-selection-meetup-id").val(id);
+            $("#internal_selection_meetup_dialog").dialog({
+                height: 200,
+                width: 500
+            });
+        }
     });
 
-    $("#edit_internal_selection").click(function(){
-        var id = $("#id").val();
-        var status = $("#internal_select_status").val();
+    $("#edit_internal_selection_tour").click(function(){
+        var id = $("#internal-selection-tour-id").val();
+        var status = $("#internal_select_tour_status").val();
         $.ajax({
             type: "POST",
             url: "/report/events/update-memo",
@@ -28,7 +38,30 @@ $(function () {
                     Notifier.showTimedMessage(feeback.msg, "warning", 2);
                     return;
                 }
-                $( "#internal_selection_dialog" ).dialog( "close" );
+                $( "#internal_selection_tour_dialog" ).dialog( "close" );
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
+
+    $("#edit_internal_selection_meetup").click(function(){
+        var id = $("#internal-selection-meetup-id").val();
+        var status = $("#internal_select_meetup_status").val();
+        $.ajax({
+            type: "POST",
+            url: "/report/events/update-memo",
+            data: {
+                id: id,
+                internal_selection: status
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $( "#internal_selection_meetup_dialog" ).dialog( "close" );
                 Notifier.showTimedMessage("Update successful", "information", 2);
                 location.reload();
             }

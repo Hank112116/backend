@@ -88,26 +88,26 @@
 
                 <td>
                     {!! link_to_action('ReportController@showEventReport',
-                    $event_users->meetup_sz_selected . ' Selected', [
-                        $event_id,
-                        'ticket'          => 'meetup-sz',
-                        'internal_status' => 'selected',
-                        'dstart' => $dstart,
-                        'dend'   => $dend,
-                    ], ['target' => '_blank']) !!} |
-                    {!! link_to_action('ReportController@showEventReport',
-                    $event_users->meetup_sz_considering . ' Considering', [
-                        $event_id,
-                        'ticket'          => 'meetup-sz',
-                        'internal_status' => 'considering',
-                        'dstart' => $dstart,
-                        'dend'   => $dend,
-                    ], ['target' => '_blank']) !!} |
-                    {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sz_rejected . ' Rejected', [
                         $event_id,
                         'ticket'          => 'meetup-sz',
                         'internal_status' => 'rejected',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_sz_premium . ' Premium', [
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'premium',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_sz_expert . ' Expert', [
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'expert',
                         'dstart' => $dstart,
                         'dend'   => $dend,
                     ], ['target' => '_blank']) !!}
@@ -128,28 +128,27 @@
                     ], ['target' => '_blank']) !!}
                 </td>
                 <td>
-
-                    {!! link_to_action('ReportController@showEventReport',
-                    $event_users->meetup_osaka_selected . ' Selected', [
-                        $event_id,
-                        'ticket'          => 'meetup-osaka',
-                        'internal_status' => 'selected',
-                        'dstart' => $dstart,
-                        'dend'   => $dend,
-                    ], ['target' => '_blank']) !!} |
-                    {!! link_to_action('ReportController@showEventReport',
-                    $event_users->meetup_osaka_considering . ' Considering', [
-                        $event_id,
-                        'ticket'          => 'meetup-osaka',
-                        'internal_status' => 'considering',
-                        'dstart' => $dstart,
-                        'dend'   => $dend,
-                    ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_osaka_rejected . ' Rejected', [
                         $event_id,
                         'ticket'          => 'meetup-osaka',
                         'internal_status' => 'rejected',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_osaka_premium . ' Premium', [
+                        $event_id,
+                        'ticket'          => 'meetup-osaka',
+                        'internal_status' => 'premium',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_osaka_expert . ' Expert', [
+                        $event_id,
+                        'ticket'          => 'meetup-osaka',
+                        'internal_status' => 'expert',
                         'dstart' => $dstart,
                         'dend'   => $dend,
                     ], ['target' => '_blank']) !!}

@@ -10,6 +10,8 @@ class EventApplication extends Model
     const INTERNAL_SELECTED_STATUS    = 'selected';
     const INTERNAL_CONSIDERING_STATUS = 'considering';
     const INTERNAL_REJECTED_STATUS    = 'rejected';
+    const INTERNAL_PREMIUM_STATUS     = 'premium';
+    const INTERNAL_EXPERT_STATUS      = 'expert';
 
     protected $table   = 'event_application';
     public $timestamps = false;
@@ -123,6 +125,16 @@ class EventApplication extends Model
         return $this->getInternalSetStatus() === self::INTERNAL_REJECTED_STATUS ? true : false;
     }
 
+    public function isInternalPremium()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_PREMIUM_STATUS ? true : false;
+    }
+
+    public function isInternalExpert()
+    {
+        return $this->getInternalSetStatus() === self::INTERNAL_EXPERT_STATUS ? true : false;
+    }
+
     public function getCompleteTime()
     {
         $email    = $this->email;
@@ -201,7 +213,24 @@ class EventApplication extends Model
     public function getNote()
     {
         $memo = json_decode($this->note, true);
-        return $memo['note'];
+        return $memo['note_info']['note'];
+    }
+
+    public function getNoteOperator()
+    {
+        $memo = json_decode($this->note, true);
+        return $memo['note_info']['operator'];
+    }
+
+    public function getNoteUpdatedAt()
+    {
+        $memo = json_decode($this->note, true);
+
+        if ($memo['note_info']['updated_at']) {
+            return Carbon::parse($memo['note_info']['updated_at'])->toFormattedDateString();
+        } else {
+            return null;
+        }
     }
 
     public function getFollowPM()
@@ -228,6 +257,12 @@ class EventApplication extends Model
             break;
             case self::INTERNAL_REJECTED_STATUS:
                 return 'Rejected';
+            break;
+            case self::INTERNAL_PREMIUM_STATUS:
+                return 'Premium';
+            break;
+            case self::INTERNAL_EXPERT_STATUS:
+                return 'Expert';
             break;
             default:
                 return 'N/A';

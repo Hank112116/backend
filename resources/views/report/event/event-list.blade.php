@@ -12,8 +12,9 @@
 @stop
 @section('content')
     <div class="page-header"></div>
-    @include ('report.event.event-search')
+    @include ('report.event.event-time-search')
     @include ('report.event.event-summary')
+    @include ('report.event.event-search')
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped float-thead">
@@ -26,6 +27,7 @@
                         Company<br/>
                         <span class="table--text-light">Position</span>
                     </th>
+                    <th>Established Since</th>
                     <th class="table--width-limit">
                         Project<br/>
                         <span class="table--text-light">Category</span>
@@ -55,7 +57,7 @@
                     <tr>
                         <td>
                             @if($event_user->isDropped())
-                                <i class="fa fa-times fa-2x color-red"></i>
+                                <i class="fa fa-thumbs-o-down fa-2x" title="Incomplete"></i>
                             @endif
                             @if($event_user->user)
                             <a href="{!! $event_user->user->textFrontLink() !!}" target="_blank">
@@ -98,11 +100,13 @@
 
                         <td class="table--width-limit">
                             {{ $event_user->company }}
-                            @if($event_user->getEstablishedSince())
-                                <i class="fa fa-info-circle fa-2x established-since" rel="{{ $event_user->getEstablishedSince() }}"></i>
-                            @endif
                             <br/>
                             <span class="table--text-light">{{ $event_user->job_title  }}</span>
+                        </td>
+                        <td>
+                            @if($event_user->getEstablishedSince())
+                                {{ $event_user->getEstablishedSince() }}
+                            @endif
                         </td>
 
                         <td>
@@ -115,7 +119,7 @@
                         <td>
                             @if($event_user->getInternalSetStatus())
                                 <a href="javascript:void(0)"
-                                   class="internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}">
+                                   class="internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" tour="{{ $event_user->isTour() }}">
                                     <i class="fa fa-pencil"></i>
                                     {{ $event_user->getTextInternalSetStatus() }}
                                 </a><br/>
@@ -124,7 +128,7 @@
                             @else
                                 <div class="process-btns">
                                     <a href="javascript:void(0)"
-                                       class="btn-mini btn-danger internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" >
+                                       class="btn-mini btn-danger internal-selection" rel="{!! $event_user->id !!}" status="{{ $event_user->getInternalSetStatus() }}" tour="{{ $event_user->isTour() }}">
                                         <i class="fa fa-pencil fa-fw"></i>ADD</a>
                                 </div>
                             @endif
@@ -160,7 +164,7 @@
                         <td>
                             {!! $event_user->getTextTicketType() !!} <br/>
                             @if ($event_user->hasGuestJoin())
-                            <i style="cursor:pointer" class="fa fa-user-plus fa-2x" rel="{{ json_encode($event_user->getGuestInfo()) }}"></i>
+                            <i style="cursor:pointer" class="fa fa-user-plus fa-2x" title="Has Guest" rel="{{ json_encode($event_user->getGuestInfo()) }}"></i>
                             @endif
                         </td>
                         <td class="table--user-mail">
@@ -186,6 +190,9 @@
                                    class="note" rel="{!! $event_user->id !!}" note="{{ $event_user->getNote() }}">
                                     <i class="fa fa-pencil"></i>
                                     {{ mb_strimwidth($event_user->getNote(), 0, 130, mb_substr($event_user->getNote(), 0, 130) . '...') }}
+                                    <br/>
+                                    <span class="table--text-light">{{ $event_user->getNoteOperator() }}</span><br/>
+                                    <span class="table--text-light">{{ $event_user->getNoteUpdatedAt() }}</span>
                                 </a>
                             @else
                             <div class="process-btns">
@@ -208,7 +215,8 @@
     <div id="dialog" class="ui-widget" title="Apply messages" style="display:none"></div>
     @include ('report.dialog.event-note')
     @include ('report.dialog.event-questionnaire')
-    @include ('report.dialog.event-internal-selection')
+    @include ('report.dialog.event-internal-selection-tour')
+    @include ('report.dialog.event-internal-selection-meetup')
     @include ('report.dialog.event-follow-pm')
     @include ('report.dialog.event-guest-info')
 @stop

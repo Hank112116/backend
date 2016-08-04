@@ -9,7 +9,11 @@ use Illuminate\Database\Eloquent\Collection;
 class EventApplicationRepo implements EventApplicationInterface
 {
     const DEFAULT_INTERNAL_MEMO = [
-        'note'      => null,
+        'note_info'      => [
+            'note'       => null,
+            'operator'   => null,
+            'updated_at' => null
+        ],
         'follow_pm' => null,
         'internal_set_status' => [
             'status'     => null,
@@ -86,7 +90,9 @@ class EventApplicationRepo implements EventApplicationInterface
         }
 
         if (array_key_exists('note', $input)) {
-            $memo['note'] = $input['note'];
+            $memo['note_info']['note']       = $input['note'];
+            $memo['note_info']['operator']   = \Auth::user()->name;
+            $memo['note_info']['updated_at'] = Carbon::now()->toDateTimeString();
         }
 
         if (array_key_exists('internal_selection', $input)) {

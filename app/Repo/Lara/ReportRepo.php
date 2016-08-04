@@ -322,6 +322,16 @@ class ReportRepo implements ReportInterface
                             return $item;
                         }
                         break;
+                    case 'premium':
+                        if ($item->isInternalPremium()) {
+                            return $item;
+                        }
+                        break;
+                    case 'expert':
+                        if ($item->isInternalExpert()) {
+                            return $item;
+                        }
+                        break;
                 }
 
             });
@@ -482,12 +492,12 @@ class ReportRepo implements ReportInterface
             'ait_selected'              => 0,
             'ait_considering'           => 0,
             'ait_rejected'              => 0,
-            'meetup_sz_selected'        => 0,
-            'meetup_sz_considering'     => 0,
             'meetup_sz_rejected'        => 0,
-            'meetup_osaka_selected'     => 0,
-            'meetup_osaka_considering'  => 0,
+            'meetup_sz_premium'         => 0,
+            'meetup_sz_expert'          => 0,
             'meetup_osaka_rejected'     => 0,
+            'meetup_osaka_premium'      => 0,
+            'meetup_osaka_expert'       => 0
         ];
 
         // filter entered at time
@@ -552,28 +562,28 @@ class ReportRepo implements ReportInterface
                             if ($trip_participation == 'shenzhen') {
                                 $summary['meetup_sz_applied'] = $summary['meetup_sz_applied'] + 1;
                                 switch ($event_user->getInternalSetStatus()) {
-                                    case 'selected':
-                                        $summary['meetup_sz_selected'] = $summary['meetup_sz_selected'] + 1;
-                                        break;
-                                    case 'considering':
-                                        $summary['meetup_sz_considering'] = $summary['meetup_sz_considering'] + 1;
-                                        break;
                                     case 'rejected':
                                         $summary['meetup_sz_rejected'] = $summary['meetup_sz_rejected'] + 1;
+                                        break;
+                                    case 'premium':
+                                        $summary['meetup_sz_premium'] = $summary['meetup_sz_premium'] + 1;
+                                        break;
+                                    case 'expert':
+                                        $summary['meetup_sz_expert'] = $summary['meetup_sz_expert'] + 1;
                                         break;
                                 }
                             } elseif ($trip_participation == 'osaka') {
                                 $summary['meetup_osaka_applied'] = $summary['meetup_osaka_applied'] + 1;
 
                                 switch ($event_user->getInternalSetStatus()) {
-                                    case 'selected':
-                                        $summary['meetup_osaka_selected'] = $summary['meetup_osaka_selected'] + 1;
-                                        break;
-                                    case 'considering':
-                                        $summary['meetup_osaka_considering'] = $summary['meetup_osaka_considering'] + 1;
-                                        break;
                                     case 'rejected':
                                         $summary['meetup_osaka_rejected'] = $summary['meetup_osaka_rejected'] + 1;
+                                        break;
+                                    case 'premium':
+                                        $summary['meetup_osaka_premium'] = $summary['meetup_osaka_premium'] + 1;
+                                        break;
+                                    case 'expert':
+                                        $summary['meetup_osaka_expert'] = $summary['meetup_osaka_expert'] + 1;
                                         break;
                                 }
                             }

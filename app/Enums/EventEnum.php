@@ -7,7 +7,7 @@ class EventEnum
     const TYPE_AIT_2016_Q1 = 1;
     const TYPE_AIT_2016_Q4 = 2;
 
-    const AIT_Q4_START_DATE = '2016-07-10';
+    const AIT_Q4_START_DATE = '2016-08-01';
 
     const EVENT_NAME = [
         self::TYPE_AIT_2016_Q1 => [
