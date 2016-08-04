@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v3.0.0
+## v2.5.0
 * [NEW] avoid cache js & css (@Hank)
 * [NEW] new AIT q4 report (@Hank)
 * [NEW] new float thead (@Hank)
