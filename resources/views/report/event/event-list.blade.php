@@ -15,11 +15,6 @@
     @include ('report.event.event-time-search')
     @include ('report.event.event-summary')
     @include ('report.event.event-search')
-    @if ($event_users->total() == 0)
-        <div class="row col-md-2 col-md-offset-0">
-            <h5>No records yet!</h5>
-        </div>
-    @endif
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped float-thead">
@@ -213,6 +208,11 @@
                 @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="text-center">
+            @if ($event_users->total() == 0)
+                <h5>No records yet!</h5>
+            @endif
         </div>
     </div>
     <div class="text-center">
