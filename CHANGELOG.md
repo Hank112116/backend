@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.0.0
+* [NEW] avoid cache js & css (@Hank)
+* [NEW] new AIT q4 report (@Hank)
+* [NEW] new float thead (@Hank)
+* [REMOVE] remove email template (@Hank)
+
 ## v2.4.5
 * [FIXED] Fix project assigned PM search error (#33)
 
