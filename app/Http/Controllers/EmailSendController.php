@@ -2,7 +2,6 @@
 
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
-use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
@@ -20,7 +19,6 @@ class EmailSendController extends BaseController
     private $user_repo;
     private $adminer_repo;
     private $project_repo;
-    private $mail_repo;
     private $pme_repo;
     private $applicant_repo;
     private $purifier;
@@ -28,7 +26,6 @@ class EmailSendController extends BaseController
     public function __construct(
         UserInterface $user,
         AdminerInterface $adminer,
-        MailTemplateInterface $mt,
         ProjectInterface $project,
         ProjectMailExpertInterface $projectMailExpert,
         GroupMemberApplicantInterface $applicant,
@@ -38,7 +35,6 @@ class EmailSendController extends BaseController
         $this->user_repo      = $user;
         $this->adminer_repo   = $adminer;
         $this->project_repo   = $project;
-        $this->mail_repo      = $mt;
         $this->pme_repo       = $projectMailExpert;
         $this->applicant_repo = $applicant;
         $this->purifier       = $purifier;
