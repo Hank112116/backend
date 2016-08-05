@@ -34,7 +34,8 @@
             document.write('<script src="/js/vendor/jquery.min.js"><\/script>');
         }
     </script>
-    <script src="/js/vendor/vendors.js"></script>
+
+    <script src="{{ LinkGen::assets('js/vendor/vendors.js') }}"></script>
     <script src="/js/common.js"></script>
     @yield('js')
 
