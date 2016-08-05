@@ -17,8 +17,6 @@ use Redirect;
 use Response;
 use SSH;
 use Backend\Model\Eloquent\User;
-use Backend\Model\Eloquent\MailTemplate;
-use Backend\Repo\RepoInterfaces\MailTemplateInterface;
 
 class EngineerController extends BaseController
 {

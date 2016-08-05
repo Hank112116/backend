@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.5.1
+* [FIXED] remove email template code (@Hank)
+
 ## v2.5.0
 * [NEW] avoid cache js & css (@Hank)
 * [NEW] new AIT q4 report (@Hank)
