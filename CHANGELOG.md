@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.5.2
+* [FIXED] fix solution update fail (@Hank)
+
 ## v2.5.1
 * [FIXED] remove email template code (@Hank)
 
