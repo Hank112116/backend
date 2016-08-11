@@ -269,17 +269,17 @@ class UserRepo implements UserInterface
                 $users = $users->filter(function (User $item) use ($status) {
                     switch ($status) {
                         case 'expert':
-                            if ($item->isExpert()) {
+                            if ($item->isExpert() and !$item->isHWTrekPM() and !$item->isPremiumExpert()) {
                                 return $item;
                             }
                             break;
                         case 'creator':
-                            if ($item->isCreator()) {
+                            if ($item->isCreator() and !$item->isPendingExpert()) {
                                 return $item;
                             }
                             break;
                         case 'to-be-expert':
-                            if ($item->isToBeExpert() or $item->isApplyExpert()) {
+                            if ($item->isPendingExpert()) {
                                 return $item;
                             }
                             break;

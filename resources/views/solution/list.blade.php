@@ -159,7 +159,9 @@
     </div>
 </div>
 
-@include('layouts.paginate', ['collection' => $solutions, 'per_page' => isset($per_page)? $per_page : ''])
+<div class="text-center">
+    {!! $solutions->appends(Input::all())->render() !!}
+</div>
 
 
 @stop

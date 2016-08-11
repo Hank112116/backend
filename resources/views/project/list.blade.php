@@ -69,12 +69,8 @@
 </div>
 
 <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
-@if($show_paginate)
-    @include('layouts.paginate', [
-        'collection' => $projects,
-        'per_page' => isset($per_page)? $per_page : ''
-    ])
-@endif
-
+<div class="text-center">
+    {!! $projects->appends(Input::all())->render() !!}
+</div>
 @stop
 

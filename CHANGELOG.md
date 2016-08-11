@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.5.3
+* [FIXED] fix member,project,solution paginate error (#35)
+* [FIXED] fix registration report data error (@Hank)
+* [FIXED] fix user type filter error (@Hank)
+
 ## v2.5.2
 * [FIXED] fix solution update fail (@Hank)
 

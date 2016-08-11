@@ -103,6 +103,8 @@ class ReportRepo implements ReportInterface
 
         $users = $this->user_repo->byDateRange($timeRange[0], $timeRange[1]);
 
+        $summary = $this->getRegistrationSummary($users);
+
         if ($filter === 'expert') {
             $users = $this->user_repo->filterExpertsWithToBeExperts($users);
         }
@@ -111,6 +113,7 @@ class ReportRepo implements ReportInterface
         }
 
         $users = $this->user_repo->byCollectionPage($users, $page, $per_page);
+        $users = $this->appendStatistics($users, $summary);
         return $users;
     }
 
@@ -399,6 +402,30 @@ class ReportRepo implements ReportInterface
         $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
         $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
         return $approve_event_users;
+    }
+
+    private function getRegistrationSummary(Collection $users)
+    {
+        $result = [];
+        $result['not_approve'] = $users->filter(function (User $item) {
+            if ($item->isPendingExpert()) {
+                return $item;
+            }
+        })->count();
+
+        $result['email_not_verify'] = $users->filter(function (User $item) {
+            if (!$item->isEmailVerify()) {
+                return $item;
+            }
+        })->count();
+
+        $result['account_suspend'] = $users->filter(function (User $item) {
+            if (!$item->isActive()) {
+                return $item;
+            }
+        })->count();
+
+        return $result;
     }
 
     private function getQuestionnaireStatistics(Collection $approve_event_users)
