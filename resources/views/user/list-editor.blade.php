@@ -59,7 +59,9 @@
         </div>
     </div>
     <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
-    @include('layouts.paginate', ['collection' => $users, 'per_page' => isset($per_page)? $per_page : ''])
+    <div class="text-center">
+        {!! $users->appends(Input::all())->render() !!}
+    </div>
     @include('user.dialog.add-tags-dialog')
     @include('user.dialog.description-dialog')
     @include('report.dialog.user-report-action')

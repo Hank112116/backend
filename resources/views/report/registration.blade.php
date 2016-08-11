@@ -66,9 +66,9 @@
     <div class="row text-center">
         <h4>
             {!! $users->total() !!} result |
-            {!! $users->filter(function($item){ return $item->isPendingExpert();})->count() !!} not approve |
-            {!! $users->filter(function($item){ return !$item->isEmailVerify();})->count() !!} email not verify |
-            {!! $users->filter(function($item){ return !$item->isActive();})->count() !!} account suspend |
+            {!! $users->not_approve !!} not approve |
+            {!! $users->email_not_verify !!} email not verify |
+            {!! $users->account_suspend !!} account suspend |
         </h4>
     </div>
     <div class="row">
