@@ -53,7 +53,8 @@
                 'all'     => 'All Status',
                 'public'  => 'Expert Mode',
                 'private' => 'Private Mode',
-                'draft'   => 'Unfinished Draft'
+                'draft'   => 'Unfinished Draft',
+                'deleted' => 'Deleted'
             ], Input::get('status'), ['class'=>'form-control']) !!}
         </div>
     </div>
@@ -79,6 +80,11 @@
         <span class="input-group-btn">
                 <button class="btn btn-primary js-btn-search" type="button">Go Search!</button>
         </span>
+    </div>
+    <div class="col-md-4">
+        <i class="fa fa-envelope fa-fw fa-2x" style="color: #d9534f"></i>
+        {!! link_to_action('ProjectController@showSearch', 'Not yet email out: ' . $not_recommend_count,
+         ['status' => 'not-yet-email-out'], ['target' => '_blank']) !!}
     </div>
 </div>
 

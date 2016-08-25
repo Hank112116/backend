@@ -63,17 +63,6 @@
     Collaborators:{{ $project->getCollaboratorsCount() }}
 </td>
 <td>
-    {{ implode(' / ', $project->getMappingTag($tag_tree, 2)) }} <br/>
-    @if ($project->internalProjectMemo)
-        <span class="table--text-light"> {{ str_replace(',', ' / ', $project->internalProjectMemo->tags) }} </span><br/>
-        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="{{ $project->internalProjectMemo->tags }}" tech-tags="{{ implode(' / ', $project->getMappingTag($tag_tree)) }}">Add</a>
-    @else
-        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="" tech-tags="{{ implode(' / ', $project->getMappingTag($tag_tree)) }}">Add</a>
-    @endif
-
-</td>
-
-<td>
     @if ($project->internalProjectMemo)
         @if($project->internalProjectMemo->description)
             <a href="javascript:void(0)" class="internal-description" rel="{!! $project->project_id !!}" description="{{ $project->internalProjectMemo->description }}">
@@ -85,6 +74,16 @@
     @else
         <a href="javascript:void(0)" class="btn-mini internal-description" rel="{!! $project->project_id !!}" description="">Add</a>
     @endif
+</td>
+<td>
+    {{ implode(' / ', $project->getMappingTag($tag_tree, 2)) }} <br/>
+    @if ($project->internalProjectMemo)
+        <span class="table--text-light"> {{ str_replace(',', ' / ', $project->internalProjectMemo->tags) }} </span><br/>
+        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="{{ $project->internalProjectMemo->tags }}" tech-tags="{{ implode(' / ', $project->getMappingTag($tag_tree)) }}">Add</a>
+    @else
+        <a href="javascript:void(0)" class="btn-mini internal-tag" rel="{!! $project->project_id !!}" tags="" tech-tags="{{ implode(' / ', $project->getMappingTag($tag_tree)) }}">Add</a>
+    @endif
+
 </td>
 <td>
     @if ($project->internalProjectMemo)

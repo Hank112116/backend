@@ -54,8 +54,8 @@
                 </th>
                 <th>Email<br/>Verify</th>
                 <th>Active</th>
-                <th>Expertise tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Internal description</th>
+                <th>Expertise tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Action</th>
                 <th></th>
             </tr>

@@ -64,6 +64,9 @@ class ProjectRepo implements ProjectInterface
         return $project;
     }
 
+    /**
+     * @return Collection
+     */
     public function all()
     {
         return $this->project
@@ -203,8 +206,17 @@ class ProjectRepo implements ProjectInterface
                                 return $item;
                             }
                             break;
+                        case 'deleted':
+                            if ($item->isDeleted()) {
+                                return $item;
+                            }
+                            break;
                     }
                 });
+
+                if ($status === 'not-yet-email-out') {
+                    $projects = $this->getNotRecommendExpertProjects();
+                }
             }
         }
 
@@ -481,6 +493,23 @@ class ProjectRepo implements ProjectInterface
     public function updateProjectManager($project_id, $data)
     {
         return $this->project_modifier->updateProjectManager($project_id, $data);
+    }
+
+    public function getNotRecommendExpertProjects()
+    {
+        $projects = $this->all();
+
+        $projects = $projects->filter(function (Project $item) {
+            if ($item->hub_approve
+                and $item->recommendExperts()->count() === 0
+                and !$item->isDeleted()
+                and !$item->profile->isDraft()
+                and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))
+            ) {
+                return $item;
+            }
+        });
+        return $projects;
     }
 
     private function getProjectMatchFromPM($projects, $dstart = null, $dend = null)
