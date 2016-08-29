@@ -71,6 +71,13 @@
     </div>
 
     <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('action', Input::get('action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+</div>
+<div class="row search-bar">
+    <div class="col-md-2 col-md-offset-1">
         <span class="input-group-btn">
                 <button class="btn btn-primary js-btn-search" type="button">Go Search!</button>
         </span>

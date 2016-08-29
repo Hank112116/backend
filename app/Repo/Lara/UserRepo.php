@@ -337,6 +337,17 @@ class UserRepo implements UserInterface
             });
         }
 
+        if (!empty($input['action'])) {
+            $action = $input['action'];
+            $users = $users->filter(function (User $item) use ($action) {
+                if ($item->internalUserMemo) {
+                    if (stristr($item->internalUserMemo->report_action, $action)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
         return $this->getPaginateFromCollection($users, $page, $per_page);
     }
 

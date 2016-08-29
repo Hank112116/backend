@@ -77,13 +77,20 @@
 
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
+        <div class="input-group">
+            {!! Form::text('report_action', Input::get('report_action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="col-md-2">
         <span class="input-group-btn">
                 <button class="btn btn-primary js-btn-search" type="button">Go Search!</button>
         </span>
     </div>
+
     <div class="col-md-4">
         <i class="fa fa-envelope fa-fw fa-2x" style="color: #d9534f"></i>
-        {!! link_to_action('ProjectController@showSearch', 'Not yet email out: ' . $not_recommend_count,
+        {!! link_to_action('ProjectController@showSearch', $not_recommend_count . ' schedule email not sent',
          ['status' => 'not-yet-email-out'], ['target' => '_blank']) !!}
     </div>
 </div>

@@ -41,8 +41,8 @@
                 <th>Referrals</th>
                 <th>Statistics</th>
                 <th>Internal description</th>
-                <th>Feature tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Action</th>
+                <th>Feature tags<br/><span class="table--text-light">Internal tags</span></th>
                 <th>Last Update<br/><span class="table--text-light">By</span></th>
                 <th></th>
             </tr>

@@ -21,10 +21,10 @@
     @include('user.component.list-internal-description', ['user' => $user, 'memo' => $user->internalUserMemo])
 </td>
 <td>
-    @include('user.component.list-expertise-tag', ['user' => $user, 'memo' => $user->internalUserMemo])
+    @include('report.component.user-action', ['user' => $user, 'memo' => $user->internalUserMemo])
 </td>
 <td>
-    @include('report.component.user-action', ['user' => $user, 'memo' => $user->internalUserMemo])
+    @include('user.component.list-expertise-tag', ['user' => $user, 'memo' => $user->internalUserMemo])
 </td>
 <td>
     {!! link_to_action(
