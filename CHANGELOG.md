@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2.5.4
+* [NEW] add action search of member and project (@Hank)
+* [NEW] add schedule email not sent data of project (@Hank)
+* [CHANGE] change column order of member and project (@Hank)
+* [UPDATE] update project category (@Hank)
+
 ## v2.5.3
 * [FIXED] fix member,project,solution paginate error (#35)
 * [FIXED] fix registration report data error (@Hank)
