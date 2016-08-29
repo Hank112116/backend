@@ -48,9 +48,9 @@ class HubQuestionnaire extends \Eloquent
         ],
         'category'      => [
             1 => 'Wearable', 2 => 'Industrial Applications',
-            3 => 'Sports', 4 => 'Toys / Games', 5 => 'Cameras / Audio & Video',
-            6 => 'Family / Home Automation', 7 => 'Mobile Device Accessories',
-            8 => 'Auto', 9 => 'Health', 10 => 'Science',
+            3 => 'Sports Devices', 4 => 'Toys / Games', 5 => 'Audio & Video Devices',
+            6 => 'Smart Home Devices', 7 => 'Tech Accessories',
+            8 => 'Auto Applications', 9 => 'Health Devices', 10 => 'Science Gadgets',
         ],
         'nature'        => [
             1 => 'New development', 2 => 'Enhancement project',

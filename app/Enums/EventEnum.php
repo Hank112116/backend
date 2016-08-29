@@ -37,6 +37,13 @@ class EventEnum
             'other_member_to_join'                => 'Other member to join',
             'wechat_account'                      => 'Wechat account',
             'forward_material'                    => 'Forward material'
+        ],
+        self::TYPE_AIT_2016_Q4 => [
+            'join_tour'                           => '',
+            'job_title'                           => 'Job title',
+            'company_name'                        => 'Company name',
+            'phone'                               => 'Phone',
+            'trip_participation'                  => 'Trip participation',
         ]
     ];
 

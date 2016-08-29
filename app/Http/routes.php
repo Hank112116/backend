@@ -26,9 +26,6 @@ Route::group(['before' => 'backend.adminer'], function () {
 Route::group(['before' => 'backend.user'], function () {
 
     Route::get('user/all', 'UserController@showList');
-    Route::get('user/all-expert', 'UserController@showExperts');
-    Route::get('user/all-creator', 'UserController@showCreators');
-    Route::get('user/to-be-expert', 'UserController@showToBeExperts');
     Route::get('user/search', 'UserController@showSearch');
     Route::get('user/detail/{id}', 'UserController@showDetail');
     Route::get('user/update/{id}/param/{param}', 'UserController@showUpdate');
@@ -67,7 +64,6 @@ Route::group(['before' => 'backend.user'], function () {
 Route::group(['before' => 'backend.project'], function () {
 
     Route::get('project/all', 'ProjectController@showList');
-    Route::get('project/deleted', 'ProjectController@showDeletedProjects');
 
     Route::get('project/search', 'ProjectController@showSearch');
 
@@ -96,11 +92,7 @@ Route::group(['before' => 'backend.project'], function () {
 Route::group(['before' => 'backend.solution'], function () {
     Route::get('solution/all', 'SolutionController@showList');
     Route::get('solution/drafts', 'SolutionController@showDraftSolutions');
-    Route::get('solution/wait-approve', 'SolutionController@showWaitApproveSolutions');
     Route::get('solution/deleted', 'SolutionController@showDeletedSolutions');
-    Route::get('solution/program', 'SolutionController@showProgram');
-    Route::get('solution/pending-solution', 'SolutionController@showPendingSolution');
-    Route::get('solution/pending-program', 'SolutionController@showPendingProgram');
 
     Route::get('solution/search', 'SolutionController@showSearch');
     Route::get('solution/detail/{id}', 'SolutionController@showDetail');

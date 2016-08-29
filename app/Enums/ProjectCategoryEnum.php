@@ -18,14 +18,14 @@ class ProjectCategoryEnum
     const CATEGORIES = [
         self::CATEGORY_WEARABLE   => 'Wearable',
         self::CATEGORY_INDUSTRIAL => 'Industrial Applications',
-        self::CATEGORY_SPORTS     => 'Sports',
+        self::CATEGORY_SPORTS     => 'Sports Devices',
         self::CATEGORY_TOYS       => 'Toys / Games',
-        self::CATEGORY_CAMERAS    => 'Cameras / Audio & Video',
-        self::CATEGORY_FAMILY     => 'Family / Home Automation',
-        self::CATEGORY_MOBILE     => 'Mobile Device Accessories',
-        self::CATEGORY_AUTO       => 'Auto',
-        self::CATEGORY_HEALTH     => 'Health',
-        self::CATEGORY_SCIENCE    => 'Science',
+        self::CATEGORY_CAMERAS    => 'Audio & Video Devices',
+        self::CATEGORY_FAMILY     => 'Smart Home Devices',
+        self::CATEGORY_MOBILE     => 'Tech Accessories',
+        self::CATEGORY_AUTO       => 'Auto Applications',
+        self::CATEGORY_HEALTH     => 'Health Devices',
+        self::CATEGORY_SCIENCE    => 'Science Gadgets',
         self::CATEGORY_OTHERS     => 'Others'
 
     ];
