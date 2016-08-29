@@ -34,32 +34,7 @@
 </div>
 
 <div class="row search-bar">
-
-    <div class="col-md-2 col-md-offset-1">
-        <div class="input-group">
-            {!! Form::text('tag', Input::get('tag'), ['placeholder'=>"Feature tags", 'class'=>"form-control"]) !!}
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <div class="input-group">
-            {!! Form::text('country', Input::get('country'), ['placeholder'=>"Country", 'class'=>"form-control"]) !!}
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <div class="input-group">
-            {!! Form::select('status',[
-                'all'     => 'All Status',
-                'public'  => 'Expert Mode',
-                'private' => 'Private Mode',
-                'draft'   => 'Unfinished Draft',
-                'deleted' => 'Deleted'
-            ], Input::get('status'), ['class'=>'form-control']) !!}
-        </div>
-    </div>
-
-    <div class="col-md-4">
+    <div class="col-md-4 col-md-offset-1">
         <div class="input-group">
             {!! Form::select('time_type',[
                 'update'  => 'Project Last Update',
@@ -73,12 +48,36 @@
 
         </div>
     </div>
+
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('country', Input::get('country'), ['placeholder'=>"Country", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="col-md-2 ">
+        <div class="input-group">
+            {!! Form::text('tag', Input::get('tag'), ['placeholder'=>"Feature tags", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('report_action', Input::get('report_action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
+        </div>
+    </div>
 </div>
 
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">
-            {!! Form::text('report_action', Input::get('report_action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
+            {!! Form::select('status',[
+                'all'     => 'All Status',
+                'public'  => 'Expert Mode',
+                'private' => 'Private Mode',
+                'draft'   => 'Unfinished Draft',
+                'deleted' => 'Deleted'
+            ], Input::get('status'), ['class'=>'form-control']) !!}
         </div>
     </div>
 

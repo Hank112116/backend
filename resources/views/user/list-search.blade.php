@@ -32,14 +32,7 @@
 </div>
 
 <div class="row search-bar">
-
-    <div class="col-md-2 col-md-offset-1">
-        <div class="input-group">
-            {!! Form::text('description', Input::get('description'), ['placeholder'=>"Internal description", 'class'=>"form-control"]) !!}
-        </div>
-    </div>
-
-    <div class="col-md-4">
+    <div class="col-md-4 col-md-offset-1">
         <div class="input-group">
             {!! Form::text('dstart', Input::get('dstart'),
                 ['placeholder'=>"Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
@@ -67,6 +60,12 @@
                 'to-be-expert'   => 'To Be Expert'
             ], Input::get('status'), ['class'=>'form-control']) !!}
             @endif
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="input-group">
+            {!! Form::text('description', Input::get('description'), ['placeholder'=>"Internal description", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
