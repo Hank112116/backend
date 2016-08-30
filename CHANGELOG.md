@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.5.5
+* [FIXED] fix project's grade display of backend, frontend pm (@Hank)
+
 ## v2.5.4
 * [NEW] add action search of member and project (@Hank)
 * [NEW] add schedule email not sent data of project (@Hank)

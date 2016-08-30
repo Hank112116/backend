@@ -15,7 +15,7 @@
                 @else
                     Exception
                 @endif
-            </span>
+            </span><br/>
         @endif
     @else
         <i class="fa fa-times" aria-hidden="true"></i> <i class="fa fa-envelope fa-fw"></i>
@@ -42,5 +42,11 @@
                class="btn-mini btn-danger grade" rel="{!! $project->project_id !!}" note="" grade="not-graded">
                 <i class="fa fa-pencil fa-fw"></i>Grade</a>
         </div>
+    @endif
+@else
+    @if($project->internalProjectMemo)
+        @if(!is_null($project->internalProjectMemo->schedule_note))
+            {{ $project->textNoteGrade() }} @if($project->internalProjectMemo->schedule_note != null ):@endif {{ $project->internalProjectMemo->schedule_note }}
+        @endif
     @endif
 @endif
