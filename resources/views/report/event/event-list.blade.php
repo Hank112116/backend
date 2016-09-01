@@ -78,12 +78,14 @@
                                 @endif
                                 @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                                     <br>
-                                    @if(!$event_user->approved_at)
-                                        <span class="user-sub-category">
-                                        <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}" title="approve event user"> Select
-                                    </span>
-                                    @else
-                                        <label for="active_1" class='iradio-lable'>Selected</label>
+                                    @if($event_user->isTour())
+                                        @if(!$event_user->approved_at)
+                                            <span class="user-sub-category">
+                                            <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}" title="approve event user"> Select
+                                        </span>
+                                        @else
+                                            <label for="active_1" class='iradio-lable'>Selected</label>
+                                        @endif
                                     @endif
                                 @endif
                             @endif
@@ -192,10 +194,10 @@
                                    class="note" rel="{!! $event_user->id !!}" note="{{ $event_user->getNote() }}">
                                     <i class="fa fa-pencil"></i>
                                     {{ mb_strimwidth($event_user->getNote(), 0, 130, mb_substr($event_user->getNote(), 0, 130) . '...') }}
-                                    <br/>
-                                    <span class="table--text-light">{{ $event_user->getNoteOperator() }}</span><br/>
-                                    <span class="table--text-light">{{ $event_user->getNoteUpdatedAt() }}</span>
                                 </a>
+                                <br/>
+                                <span class="table--text-light">{{ $event_user->getNoteOperator() }}</span><br/>
+                                <span class="table--text-light">{{ $event_user->getNoteUpdatedAt() }}</span>
                             @else
                             <div class="process-btns">
                                 <a href="javascript:void(0)"

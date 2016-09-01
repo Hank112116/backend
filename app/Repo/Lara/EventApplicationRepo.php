@@ -55,7 +55,9 @@ class EventApplicationRepo implements EventApplicationInterface
         $approve_event_users = $approve_event_users->groupBy('user_id');
         if ($approve_event_users) {
             foreach ($approve_event_users as $approve_event_user) {
-                $result[] = $approve_event_user[0];
+                if ($approve_event_user[0]->isTour()) {
+                    $result[] = $approve_event_user[0];
+                }
             }
         }
         return Collection::make($result);

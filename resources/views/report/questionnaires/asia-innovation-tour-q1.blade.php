@@ -12,11 +12,9 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <h1>{{ $title }}</h1>
-    </div>
+    <div class="page-header"></div>
 
-    @include ('report.questionnaires.questionnaire-search')
+    @include ('report.questionnaires.questionnaire-q1-search')
 
     <div class="row text-center">
         <h4>
@@ -31,8 +29,9 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped">
-                <tr>
+            <table class="table table-striped float-thead">
+                <thead>
+                    <tr>
                     <th>#</th>
                     <th class="table--width-limit">
                         Name
@@ -64,7 +63,7 @@
                     </th>
                     <th>Note</th>
                 </tr>
-
+                </thead>
                 @foreach($approve_event_users as $approve_user)
                     <tr>
                         <td>{!! $approve_user->user_id !!}</td>

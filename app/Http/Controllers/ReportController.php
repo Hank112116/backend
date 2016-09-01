@@ -169,6 +169,7 @@ class ReportController extends BaseController
 
         $event_list     = $this->event_repo->getEvents();
         $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, Input::all(), $this->page, $this->per_page);
+
         $view           = $this->questionnaire_repo->getView($event_id);
         $template = view($view)
             ->with([

@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Enums\EventEnum;
 use Backend\Model\Eloquent\User;
 use Backend\Model\Eloquent\ProposeSolution;
 use Backend\Model\Eloquent\GroupMemberApplicant;
@@ -397,10 +398,16 @@ class ReportRepo implements ReportInterface
                 }
             });
         }
+        switch ($event_id) {
+            case EventEnum::TYPE_AIT_2016_Q1:
+                $statistics          = $this->getQuestionnaireStatistics($approve_event_users);
+                $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
+                break;
+            case EventEnum::TYPE_AIT_2016_Q4:
+                break;
 
-        $statistics     = $this->getQuestionnaireStatistics($approve_event_users);
+        }
         $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
-        $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
         return $approve_event_users;
     }
 
