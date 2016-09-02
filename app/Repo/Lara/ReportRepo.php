@@ -1,6 +1,7 @@
 <?php namespace Backend\Repo\Lara;
 
 use Backend\Enums\EventEnum;
+use Backend\Model\Eloquent\EventQuestionnaireFeedback;
 use Backend\Model\Eloquent\User;
 use Backend\Model\Eloquent\ProposeSolution;
 use Backend\Model\Eloquent\GroupMemberApplicant;
@@ -398,16 +399,134 @@ class ReportRepo implements ReportInterface
                 }
             });
         }
+
+        if (!empty($input['form_status'])) {
+            $form_status = trim($input['form_status']);
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($form_status) {
+                if ($item->questionnaire) {
+                    if ($item->questionnaire->form_status == $form_status) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['attendees'])) {
+            $attendees = trim($input['attendees']);
+            $approve_event_users = $approve_event_users->filter(function ($item) use ($attendees) {
+                if ($item->questionnaire) {
+                    if ($item->questionnaire->trip_participation) {
+                        if (in_array($attendees, $item->questionnaire->trip_participation)) {
+                            return $item;
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['project'])) {
+            $project = $input['project'];
+
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($project) {
+                if ($item->project) {
+                    if (is_numeric($project)) {
+                        if ($item->project_id == $project) {
+                            return $item;
+                        }
+                    } else {
+                        if (stristr($item->project->project_title, $project)) {
+                            return $item;
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['user'])) {
+            $user = $input['user'];
+
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($user) {
+                if ($item->user) {
+                    if (is_numeric($user)) {
+                        if ($item->user_id == $user) {
+                            return $item;
+                        }
+                    } else {
+                        if ($item->questionnaire) {
+                            if (stristr($item->questionnaire->attendee_name, $user)) {
+                                return $item;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['assigned_pm'])) {
+            $assigned_pm = explode(',', $input['assigned_pm']);
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($assigned_pm) {
+                foreach ($assigned_pm as $row) {
+                    if (stristr($item->getFollowPM(), $row)) {
+                        return $item;
+                    }
+                }
+                if ($item->project) {
+                    /* @var Collection $manager_names*/
+                    $manager_names =  $item->project->getHubManagerNames();
+                    if ($manager_names) {
+                        foreach ($manager_names as $name) {
+                            foreach ($assigned_pm as $pm) {
+                                if (stristr($name, $pm)) {
+                                    return $item;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['company'])) {
+            $company = trim($input['company']);
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($company) {
+                if ($item->questionnaire) {
+                    if (stristr($item->questionnaire->company_name, $company)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+        if (!empty($input['email'])) {
+            $email = trim($input['email']);
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($email) {
+                if ($item->questionnaire) {
+                    if (stristr($item->questionnaire->email, $email)) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+
+        $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
         switch ($event_id) {
             case EventEnum::TYPE_AIT_2016_Q1:
                 $statistics          = $this->getQuestionnaireStatistics($approve_event_users);
                 $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
                 break;
             case EventEnum::TYPE_AIT_2016_Q4:
+                $join_event_users   = $this->event_repo->findByEventId($event_id);
+                $join_event_summary = $this->getEventSummary($join_event_users, $input);
+
+                $summary_approve_event_users = $this->event_repo->findApproveEventUsers($event_id);
+                $approve_event_summary       = $this->getQuestionnaireSummary($summary_approve_event_users, $input);
+
+                $approve_event_users = $this->appendStatistics($approve_event_users, $join_event_summary);
+                $approve_event_users = $this->appendStatistics($approve_event_users, $approve_event_summary);
                 break;
 
         }
-        $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
         return $approve_event_users;
     }
 
@@ -621,6 +740,114 @@ class ReportRepo implements ReportInterface
                                         break;
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+        return $summary;
+    }
+
+    private function getQuestionnaireSummary(Collection $approve_event_users, $input)
+    {
+        $summary = [
+            'ait_form_rejected'     => 0,
+            'ait_form_ongoing'      => 0,
+            'ait_form_completed'    => 0,
+            'ait_dinner'            => 0,
+            'ait_sz'                => 0,
+            'ait_kyoto'             => 0,
+            'ait_osaka'             => 0,
+            'ait_guest_dinner'      => 0,
+            'ait_guest_sz'          => 0,
+            'ait_guest_kyoto'       => 0,
+            'ait_guest_osaka'       => 0
+        ];
+
+        // filter entered at time
+        if (!empty($input['dstart'])) {
+            $dstart =  $input['dstart'];
+            if (!empty($input['dend'])) {
+                $dend = $input['dend'];
+            } else {
+                $dend = Carbon::now()->toDateString();
+            }
+
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($dstart, $dend) {
+                if ($item->approved_at) {
+                    $approved_at = Carbon::parse($item->approved_at)->toDateString();
+                    if ($approved_at <= $dend && $approved_at >= $dstart) {
+                        return $item;
+                    }
+                }
+            });
+        }
+
+        /* @var EventApplication $approve_event_user */
+        foreach ($approve_event_users as $approve_event_user) {
+            $questionnaire = $this->questionnaire_repo->findByApproveUser($approve_event_user);
+            if (empty($questionnaire)) {
+                continue;
+            }
+            switch ($questionnaire->form_status) {
+                case 'Rejected':
+                    $summary['ait_form_rejected'] = $summary['ait_form_rejected'] + 1;
+                    break;
+                case 'Ongoing':
+                    $summary['ait_form_ongoing'] = $summary['ait_form_ongoing'] + 1;
+                    break;
+                case 'Completed':
+                    $summary['ait_form_completed'] = $summary['ait_form_completed'] + 1;
+                    break;
+            }
+
+            if ($questionnaire->trip_participation) {
+                foreach ($questionnaire->trip_participation as $trip) {
+                    if ($trip == 'dinner') {
+                        $summary['ait_dinner'] = $summary['ait_dinner'] + 1;
+
+                        if ($questionnaire->guest_info
+                            or $questionnaire->guest_attendee_name
+                            or $questionnaire->guest_job_title
+                            or $questionnaire->guest_email
+                        ) {
+                            $summary['ait_guest_dinner'] = $summary['ait_guest_dinner'] + 1;
+                        }
+                    }
+
+                    if ($trip == 'shenzhen') {
+                        $summary['ait_sz'] = $summary['ait_sz'] + 1;
+
+                        if ($questionnaire->guest_info
+                            or $questionnaire->guest_attendee_name
+                            or $questionnaire->guest_job_title
+                            or $questionnaire->guest_email
+                        ) {
+                            $summary['ait_guest_sz'] = $summary['ait_guest_sz'] + 1;
+                        }
+                    }
+
+                    if ($trip == 'kyoto') {
+                        $summary['ait_kyoto'] = $summary['ait_kyoto'] + 1;
+
+                        if ($questionnaire->guest_info
+                            or $questionnaire->guest_attendee_name
+                            or $questionnaire->guest_job_title
+                            or $questionnaire->guest_email
+                        ) {
+                            $summary['ait_guest_kyoto'] = $summary['ait_guest_kyoto'] + 1;
+                        }
+                    }
+
+                    if ($trip == 'osaka') {
+                        $summary['ait_osaka'] = $summary['ait_osaka'] + 1;
+
+                        if ($questionnaire->guest_info
+                            or $questionnaire->guest_attendee_name
+                            or $questionnaire->guest_job_title
+                            or $questionnaire->guest_email
+                        ) {
+                            $summary['ait_guest_osaka'] = $summary['ait_guest_osaka'] + 1;
                         }
                     }
                 }

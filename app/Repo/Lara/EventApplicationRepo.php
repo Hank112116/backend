@@ -19,6 +19,11 @@ class EventApplicationRepo implements EventApplicationInterface
             'status'     => null,
             'operator'   => null,
             'updated_at' => null
+        ],
+        'internal_set_form_status' => [
+            'status'     => null,
+            'operator'   => null,
+            'updated_at' => null
         ]
     ];
     use PaginateTrait;
@@ -104,6 +109,15 @@ class EventApplicationRepo implements EventApplicationInterface
             $memo['internal_set_status']['status']     = $input['internal_selection'];
             $memo['internal_set_status']['operator']   = \Auth::user()->name;
             $memo['internal_set_status']['updated_at'] = Carbon::now()->toDateTimeString();
+        }
+
+        if (array_key_exists('internal_form_selection', $input)) {
+            if (!\Auth::user()) {
+                return false;
+            }
+            $memo['internal_set_form_status']['status']     = $input['internal_form_selection'];
+            $memo['internal_set_form_status']['operator']   = \Auth::user()->name;
+            $memo['internal_set_form_status']['updated_at'] = Carbon::now()->toDateTimeString();
         }
 
         if (array_key_exists('follow_pm', $input)) {

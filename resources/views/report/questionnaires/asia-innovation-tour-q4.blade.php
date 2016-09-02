@@ -14,7 +14,7 @@
 @section('content')
     <div class="page-header"></div>
 
-    @include ('report.questionnaires.questionnaire-q1-search')
+    @include ('report.questionnaires.questionnaire-q4-search')
 
     <div class="row">
         <div class="col-md-12">
@@ -33,7 +33,14 @@
                             Company<br/>
                             <span class="table--text-light">Position</span>
                         </th>
-                        <th>Form Status</th>
+                        <th>
+                            Form Status<br/>
+                            <span class="table--text-light">PM Mark</span>
+                        </th>
+                        <th class="table--width-limit">
+                            Assigned PM<br/>
+                            <span class="table--text-light">Follow PM</span>
+                        </th>
                         <th>Contact Details</th>
                         <th>Attendance & Itinerary</th>
                         <th>Materials</th>
@@ -86,6 +93,69 @@
                         <td>
                             @if($approve_user->questionnaire)
                                 {{ $approve_user->questionnaire->form_status }}
+
+                                @if($approve_user->questionnaire->form_status == 'Ongoing')
+                                    <br/>
+                                    @if($approve_user->getInternalSetFormStatus())
+                                        <a href="javascript:void(0)"
+                                           class="pm-mark-form-status-selection" rel="{!! $approve_user->id !!}" status="{{ $approve_user->getInternalSetFormStatus() }}">
+                                            <i class="fa fa-pencil"></i>
+                                            {{ $approve_user->getInternalSetFormStatus() }}
+                                        </a><br/>
+                                        <span class="table--text-light">{{ $approve_user->getInternalSetFormStatusOperator() }}</span><br/>
+                                        <span class="table--text-light">{{ $approve_user->getInternalSetFormStatusUpdatedAt() }}</span>
+                                    @else
+                                        <div class="process-btns">
+                                            <button class="btn-main btn-flat-purple pm-mark-form-status-selection" rel="{!! $approve_user->id !!}" status="{{ $approve_user->getInternalSetFormStatus() }}" >
+                                                <i class="fa fa-pencil fa-fw"></i>Mark Status</button>
+                                        </div>
+                                    @endif
+                                @endif
+                            @else
+                                Initialed<br/>
+                                @if($approve_user->getInternalSetFormStatus())
+                                    <a href="javascript:void(0)"
+                                       class="pm-mark-form-status-selection" rel="{!! $approve_user->id !!}" status="{{ $approve_user->getInternalSetFormStatus() }}">
+                                        <i class="fa fa-pencil"></i>
+                                        {{ $approve_user->getInternalSetFormStatus() }}
+                                    </a><br/>
+                                    <span class="table--text-light">{{ $approve_user->getInternalSetFormStatusOperator() }}</span><br/>
+                                    <span class="table--text-light">{{ $approve_user->getInternalSetFormStatusUpdatedAt() }}</span>
+                                @else
+                                    <div class="process-btns">
+                                        <button class="btn-main btn-flat-purple pm-mark-form-status-selection" rel="{!! $approve_user->id !!}" status="{{ $approve_user->getInternalSetFormStatus() }}" >
+                                            <i class="fa fa-pencil fa-fw"></i>Mark Status</button>
+                                    </div>
+                                @endif
+                            @endif
+                        </td>
+
+                        <td>
+                            @if($approve_user->project)
+                                @if(!$approve_user->project->hasProjectManager())
+                                    <p class="hub-manages">
+                                        <i class="fa fa-fw fa-exclamation-triangle"></i> No PM
+                                    </p>
+                                @else
+                                    @foreach($approve_user->project->getHubManagerNames() as $manager)
+                                        <p class="hub-manages">
+                                            <i class="fa fa-user fa-fw"></i> {!! $manager !!}
+                                        </p>
+                                    @endforeach
+                                @endif
+                            @endif
+
+                            @if($approve_user->getFollowPM())
+                                <a href="javascript:void(0)"
+                                   class="follow-pm" rel="{!! $approve_user->id !!}" pm="{{ $approve_user->getFollowPM() }}">
+                                    <i class="fa fa-pencil"></i>
+                                    {{ $approve_user->getFollowPM() }}
+                                </a>
+                            @else
+                                <div class="process-btns">
+                                    <button class="btn-main btn-flat-purple follow-pm" rel="{!! $approve_user->id !!}" pm="{{ $approve_user->getFollowPM() }}" >
+                                        <i class="fa fa-pencil fa-fw"></i>Follow Up</button>
+                                </div>
                             @endif
                         </td>
 
@@ -103,11 +173,11 @@
                                     @foreach($approve_user->questionnaire->trip_participation as $trip_participation)
                                         @if($trip_participation == 'dinner')
                                             Dinner:
-                                            @if($approve_user->questionnaire->dinner_flight and $approve_user->questionnaire->dinner_datetime)
-                                                {{ $approve_user->questionnaire->dinner_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->dinner_datetime)->format('M jS g:ia') }} <br/>
+                                            @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
+                                                {{ $approve_user->questionnaire->shenzhen_flight }} -
+                                                {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }} <br/>
                                             @else
-                                                I haven't book one yet
+                                                I haven't book one yet<br/>
                                             @endif
 
                                         @endif
@@ -117,7 +187,7 @@
                                                 {{ $approve_user->questionnaire->shenzhen_flight }} -
                                                 {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }} <br/>
                                             @else
-                                                I haven't book one yet
+                                                I haven't book one yet<br/>
                                             @endif
 
                                         @endif
@@ -127,7 +197,7 @@
                                                 {{ $approve_user->questionnaire->kyoto_flight }} -
                                                 {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }} <br/>
                                             @else
-                                                I haven't book one yet
+                                                I haven't book one yet<br/>
                                             @endif
 
                                         @endif
@@ -137,7 +207,7 @@
                                                 {{ $approve_user->questionnaire->osaka_flight }} -
                                                 {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }} <br/>
                                             @else
-                                                I haven't book one yet
+                                                I haven't book one yet<br/>
                                             @endif
 
                                         @endif
@@ -186,4 +256,6 @@
     </div>
     @include ('report.dialog.event-note')
     @include ('report.dialog.event-questionnaire-guest')
+    @include ('report.dialog.event-follow-pm')
+    @include ('report.dialog.event-pm-mark-form-status')
 @stop
