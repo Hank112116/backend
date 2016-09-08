@@ -128,9 +128,12 @@ class EventApplicationRepo implements EventApplicationInterface
         return $event_user->save();
     }
 
-    public function approveEventUser($user_id)
+    public function approveEventUser($user_id, $event_id)
     {
-        $same_event_users = $this->findByUserId($user_id);
+        $same_event_users = $this->event
+            ->where('user_id', $user_id)
+            ->where('event_id', $event_id)
+            ->get();
         $approved_at = Carbon::now();
         foreach ($same_event_users as $user) {
             $user->approved_at = $approved_at;

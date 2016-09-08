@@ -44,6 +44,7 @@
                         <th>Contact Details</th>
                         <th>Attendance & Itinerary</th>
                         <th>Materials</th>
+                        <th>Video Url</th>
                         <th>Note</th>
                     </tr>
                 </thead>
@@ -166,7 +167,7 @@
                             @endif
                         </td>
 
-                        <td>
+                        <td style="width: 300px">
                             @if($approve_user->questionnaire)
 
                                 @if($approve_user->questionnaire->trip_participation)
@@ -185,7 +186,12 @@
                                             Shenzhen:
                                             @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
                                                 {{ $approve_user->questionnaire->shenzhen_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }} <br/>
+                                                {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
+
+                                                @if($approve_user->questionnaire->shenzhen_hotel_name)
+                                                        <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->shenzhen_hotel_name }}"></i>
+                                                @endif
+                                                <br/>
                                             @else
                                                 I haven't book one yet<br/>
                                             @endif
@@ -195,7 +201,12 @@
                                             Kyoto:
                                             @if($approve_user->questionnaire->kyoto_flight and $approve_user->questionnaire->kyoto_datetime)
                                                 {{ $approve_user->questionnaire->kyoto_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }} <br/>
+                                                {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
+
+                                                @if($approve_user->questionnaire->kyoto_hotel_name)
+                                                    <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->kyoto_hotel_name }}"></i>
+                                                @endif
+                                                <br/>
                                             @else
                                                 I haven't book one yet<br/>
                                             @endif
@@ -205,7 +216,12 @@
                                             Osaka:
                                             @if($approve_user->questionnaire->osaka_flight and $approve_user->questionnaire->osaka_datetime)
                                                 {{ $approve_user->questionnaire->osaka_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }} <br/>
+                                                {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
+
+                                                @if($approve_user->questionnaire->osaka_hotel_name)
+                                                    <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->osaka_hotel_name }}"></i>
+                                                @endif
+                                                <br/>
                                             @else
                                                 I haven't book one yet<br/>
                                             @endif
@@ -225,6 +241,16 @@
                                 @if($approve_user->questionnaire->attachments)
                                     @foreach($approve_user->questionnaire->attachments as $attachment)
                                             {!! link_to($attachment['key'], $attachment['name'], ['target' => '_blank']) !!}<br/>
+                                    @endforeach
+                                @endif
+                            @endif
+                        </td>
+
+                        <td>
+                            @if($approve_user->questionnaire)
+                                @if($approve_user->questionnaire->video_url)
+                                    @foreach($approve_user->questionnaire->video_url as $key => $url)
+                                        {!! link_to($url, 'Video No.' . ($key+1) , ['target' => '_blank']) !!}<br/>
                                     @endforeach
                                 @endif
                             @endif
@@ -258,4 +284,8 @@
     @include ('report.dialog.event-questionnaire-guest')
     @include ('report.dialog.event-follow-pm')
     @include ('report.dialog.event-pm-mark-form-status')
+
+    <div id="hotel_dialog" class="ui-widget" title="Hotel Name" style="display:none">
+
+    </div>
 @stop

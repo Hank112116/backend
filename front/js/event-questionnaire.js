@@ -30,4 +30,15 @@ $(function () {
             width: 600
         });
     });
+
+    $(".fa-bed").click(function(){
+        var hotel_name = $(this).attr("rel");
+        $("#hotel_dialog").text(hotel_name);
+
+        var $dialog =  $("#hotel_dialog");
+        $dialog.dialog({
+            height: 100,
+            width: 500
+        });
+    });
 });

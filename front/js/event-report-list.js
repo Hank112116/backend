@@ -18,7 +18,8 @@ $(function () {
                         type: "POST",
                         url: "/report/events/approve-user",
                         data: {
-                            user_id: user_id
+                            user_id: user_id,
+                            event_id: event_id
                         },
                         dataType: "JSON",
                         success: function success(feeback) {

@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
 use Backend\Http\Requests;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use App;
 use Carbon;
 use Noty;
 
@@ -151,7 +153,13 @@ class ReportController extends BaseController
 
     public function approveEventUser()
     {
-        if ($this->event_repo->approveEventUser(Input::get('user_id'))) {
+        if ($this->event_repo->approveEventUser(Input::get('user_id'), Input::get('event_id'))) {
+            $user_id   = Input::get('user_id');
+            $user      = $this->user_repo->find($user_id);
+            /* @var QuestionnaireApiInterface $event_api*/
+            $event_api = App::make(QuestionnaireApiInterface::class, ['user' => $user]);
+            $event_api->sendNotificationMail();
+
             $result['status'] = 'success';
         } else {
             $result['status'] = 'fail';
