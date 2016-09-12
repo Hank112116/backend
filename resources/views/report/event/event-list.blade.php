@@ -42,8 +42,7 @@
                     </th>
                     <th>Ticket Type</th>
                     <th>
-                        Contact Email<br/>
-                        <span class="table--text-light">Already Send</span>
+                        Contact Email
                     </th>
                     <th class="table--width-limit">
                         Country<br/>
@@ -173,13 +172,13 @@
                             @if ($event_user->hasGuestJoin())
                             <i style="cursor:pointer" class="fa fa-user-plus fa-2x" title="Has Guest" rel="{{ json_encode($event_user->getGuestInfo()) }}"></i>
                             @endif
+                            @if($event_user->isAlreadySendMail())
+                                <i class="fa fa-paper-plane-o" title="Mail Already send."></i>
+                            @endif
                         </td>
                         <td class="table--user-mail">
                             @if(!$event_user->isDropped())
-                                {{ $event_user->email }} <br/>
-                                @if($event_user->isAlreadySendMail())
-                                    <i class="fa fa-paper-plane-o" title="Mail Already send."></i>
-                                @endif
+                                {{ $event_user->email }}
                             @endif
                         </td>
                         <td class="table--width-limit">
