@@ -41,7 +41,10 @@
                         <span class="table--text-light">Follow PM</span>
                     </th>
                     <th>Ticket Type</th>
-                    <th>Contact Email</th>
+                    <th>
+                        Contact Email<br/>
+                        <span class="table--text-light">Already Send</span>
+                    </th>
                     <th class="table--width-limit">
                         Country<br/>
                         <span class="table--text-light">City</span>
@@ -173,7 +176,10 @@
                         </td>
                         <td class="table--user-mail">
                             @if(!$event_user->isDropped())
-                            {{ $event_user->email }}
+                                {{ $event_user->email }} <br/>
+                                @if($event_user->isAlreadySendMail())
+                                    <i class="fa fa-paper-plane-o" title="Mail Already send."></i>
+                                @endif
                             @endif
                         </td>
                         <td class="table--width-limit">

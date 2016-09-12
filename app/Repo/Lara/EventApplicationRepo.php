@@ -24,7 +24,8 @@ class EventApplicationRepo implements EventApplicationInterface
             'status'     => null,
             'operator'   => null,
             'updated_at' => null
-        ]
+        ],
+        'is_already_send_mail' => false
     ];
     use PaginateTrait;
 

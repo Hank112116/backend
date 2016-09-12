@@ -345,4 +345,19 @@ class EventApplication extends Model
             }
         }
     }
+
+    public function isAlreadySendMail()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (is_null($memo)) {
+            return false;
+        }
+
+        if (!array_key_exists('is_already_send_mail', $memo)) {
+            return false;
+        }
+
+        return $memo['is_already_send_mail'];
+    }
 }
