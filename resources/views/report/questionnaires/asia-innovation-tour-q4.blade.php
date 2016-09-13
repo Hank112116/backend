@@ -236,7 +236,7 @@
                         <td>
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->company_logo)
-                                    {!! link_to($approve_user->questionnaire->company_logo['key'], 'Company Logo', ['target' => '_blank']) !!}<br/>
+                                    {!! link_to($approve_user->questionnaire->company_logo[0]['key'], 'Company Logo', ['target' => '_blank']) !!}<br/>
                                 @endif
                                 @if($approve_user->questionnaire->attachments)
                                     @foreach($approve_user->questionnaire->attachments as $attachment)
@@ -250,7 +250,7 @@
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->video_url)
                                     @foreach($approve_user->questionnaire->video_url as $key => $url)
-                                        {!! link_to($url, 'Video No.' . ($key+1) , ['target' => '_blank']) !!}<br/>
+                                        {!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}<br/>
                                     @endforeach
                                 @endif
                             @endif
