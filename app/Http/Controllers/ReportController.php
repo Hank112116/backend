@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
 use Backend\Http\Requests;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use App;
 use Carbon;
 use Noty;
 
@@ -151,7 +153,13 @@ class ReportController extends BaseController
 
     public function approveEventUser()
     {
-        if ($this->event_repo->approveEventUser(Input::get('user_id'))) {
+        if ($this->event_repo->approveEventUser(Input::get('user_id'), Input::get('event_id'))) {
+            $user_id   = Input::get('user_id');
+            $user      = $this->user_repo->find($user_id);
+            /* @var QuestionnaireApiInterface $event_api*/
+            $event_api = App::make(QuestionnaireApiInterface::class, ['user' => $user]);
+            $event_api->sendNotificationMail();
+
             $result['status'] = 'success';
         } else {
             $result['status'] = 'fail';
@@ -167,9 +175,16 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
+        $dstart  = Input::get('dstart') ? Input::get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dend    = Input::get('dend') ? Input::get('dend') : Carbon::now()->toDateString();
+
         $event_list     = $this->event_repo->getEvents();
         $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, Input::all(), $this->page, $this->per_page);
+
         $view           = $this->questionnaire_repo->getView($event_id);
+
+        $admins = $this->adminer_repo->all();
+
         $template = view($view)
             ->with([
                 'title'               => $event_list[$event_id]['orig'],
@@ -177,7 +192,10 @@ class ReportController extends BaseController
                 'event_list'          => $event_list,
                 'event_id'            => $event_id,
                 'approve_event_users' => $approve_event_users,
-                'is_super_admin'      => $this->auth
+                'is_super_admin'      => $this->auth,
+                'admins'              => $admins,
+                'dstart'              => $dstart,
+                'dend'                => $dend
             ]);
         return $template;
     }

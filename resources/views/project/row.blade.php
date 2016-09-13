@@ -48,7 +48,9 @@
 
 <td>
     @include('project.assigned-pm')
-    @include('project.recommend-expert')
+    @if(!Auth::user()->isEditor())
+        @include('project.recommend-expert')
+    @endif
 </td>
 
 <td>
@@ -111,10 +113,11 @@
             link_to_action('ProjectController@showDetail', 'DETAIL',
                 $project->project_id, ['class' => 'btn-mini'])
         !!}
-
-        {!!
-            link_to_action('ProjectController@showUpdate', 'EDIT',
-                $project->project_id, ['class' => 'btn-mini'])
-        !!}
+        @if(!Auth::user()->isEditor())
+            {!!
+                link_to_action('ProjectController@showUpdate', 'EDIT',
+                    $project->project_id, ['class' => 'btn-mini'])
+            !!}
+        @endif
     @endif
 </td>

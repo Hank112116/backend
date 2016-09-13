@@ -32,5 +32,10 @@ class ApiServiceProvider extends ServiceProvider
             'Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface',
             'Backend\Api\Lara\UserApi\AttachmentApi'
         );
+
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface',
+            'Backend\Api\Lara\EventApi\QuestionnaireApi'
+        );
     }
 }

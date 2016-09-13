@@ -54,7 +54,8 @@ interface EventApplicationInterface
 
     /**
      * @param $user_id
+     * @param $event_id
      * @return boolean
      */
-    public function approveEventUser($user_id);
+    public function approveEventUser($user_id, $event_id);
 }

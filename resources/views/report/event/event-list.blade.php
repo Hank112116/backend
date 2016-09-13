@@ -41,7 +41,9 @@
                         <span class="table--text-light">Follow PM</span>
                     </th>
                     <th>Ticket Type</th>
-                    <th>Contact Email</th>
+                    <th>
+                        Contact Email
+                    </th>
                     <th class="table--width-limit">
                         Country<br/>
                         <span class="table--text-light">City</span>
@@ -78,12 +80,14 @@
                                 @endif
                                 @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
                                     <br>
-                                    @if(!$event_user->approved_at)
-                                        <span class="user-sub-category">
-                                        <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}" title="approve event user"> Select
-                                    </span>
-                                    @else
-                                        <label for="active_1" class='iradio-lable'>Selected</label>
+                                    @if($event_user->isTour())
+                                        @if(!$event_user->approved_at)
+                                            <span class="user-sub-category">
+                                            <input type="checkbox"  class="approve_event_user" rel="{!! $event_user->user_id !!}" title="approve event user"> Select
+                                        </span>
+                                        @else
+                                            <label for="active_1" class='iradio-lable'>Selected</label>
+                                        @endif
                                     @endif
                                 @endif
                             @endif
@@ -168,10 +172,13 @@
                             @if ($event_user->hasGuestJoin())
                             <i style="cursor:pointer" class="fa fa-user-plus fa-2x" title="Has Guest" rel="{{ json_encode($event_user->getGuestInfo()) }}"></i>
                             @endif
+                            @if($event_user->isAlreadySendMail())
+                                <i class="fa fa-paper-plane-o" title="Mail Already send."></i>
+                            @endif
                         </td>
                         <td class="table--user-mail">
                             @if(!$event_user->isDropped())
-                            {{ $event_user->email }}
+                                {{ $event_user->email }}
                             @endif
                         </td>
                         <td class="table--width-limit">
@@ -192,10 +199,10 @@
                                    class="note" rel="{!! $event_user->id !!}" note="{{ $event_user->getNote() }}">
                                     <i class="fa fa-pencil"></i>
                                     {{ mb_strimwidth($event_user->getNote(), 0, 130, mb_substr($event_user->getNote(), 0, 130) . '...') }}
-                                    <br/>
-                                    <span class="table--text-light">{{ $event_user->getNoteOperator() }}</span><br/>
-                                    <span class="table--text-light">{{ $event_user->getNoteUpdatedAt() }}</span>
                                 </a>
+                                <br/>
+                                <span class="table--text-light">{{ $event_user->getNoteOperator() }}</span><br/>
+                                <span class="table--text-light">{{ $event_user->getNoteUpdatedAt() }}</span>
                             @else
                             <div class="process-btns">
                                 <a href="javascript:void(0)"

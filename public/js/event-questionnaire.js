@@ -16,6 +16,32 @@ $(function () {
             width: 500
         });
     });
+
+    $(".fa-user-plus").click(function () {
+        var guest_data = JSON.parse($(this).attr("rel"));
+        $("#guest_attendee_name").text(guest_data.guest_attendee_name);
+        $("#guest_job_title").text(guest_data.guest_job_title);
+        $("#guest_email").text(guest_data.guest_email);
+        $("#guest_phone").text(guest_data.guest_phone);
+        $("#guest_info").text(guest_data.guest_info);
+
+        var $dialog = $("#questionnaire_guest_info_dialog");
+        $dialog.dialog({
+            height: 370,
+            width: 600
+        });
+    });
+
+    $(".fa-bed").click(function () {
+        var hotel_name = $(this).attr("rel");
+        $("#hotel_dialog").text(hotel_name);
+
+        var $dialog = $("#hotel_dialog");
+        $dialog.dialog({
+            height: 100,
+            width: 500
+        });
+    });
 });
 
 },{"./libs/EventNote.js":2}],2:[function(require,module,exports){
@@ -155,6 +181,41 @@ $(function () {
                     return;
                 }
                 $("#note_dialog").dialog("close");
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
+
+    $(".pm-mark-form-status-selection").click(function () {
+        var $this = $(this);
+        var id = $this.attr("rel");
+        var status = $this.attr("status");
+        $("#mark_status").val(status);
+        $("#mark_status_event_id").val(id);
+        $("#pm_mark_form_status_dialog").dialog({
+            height: 200,
+            width: 500
+        });
+    });
+
+    $("#edit_pm_mark_status").click(function () {
+        var id = $("#mark_status_event_id").val();
+        var status = $("#mark_status").val();
+        $.ajax({
+            type: "POST",
+            url: "/report/events/update-memo",
+            data: {
+                id: id,
+                internal_form_selection: status
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $("#pm_mark_form_status_dialog").dialog("close");
                 Notifier.showTimedMessage("Update successful", "information", 2);
                 location.reload();
             }

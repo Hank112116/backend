@@ -137,4 +137,39 @@ $(function () {
             }
         });
     });
+
+    $(".pm-mark-form-status-selection").click(function () {
+        var $this = $(this);
+        var id = $this.attr("rel");
+        var status = $this.attr("status");
+        $("#mark_status").val(status);
+        $("#mark_status_event_id").val(id);
+        $("#pm_mark_form_status_dialog").dialog({
+            height: 200,
+            width: 500
+        });
+    });
+
+    $("#edit_pm_mark_status").click(function(){
+        var id = $("#mark_status_event_id").val();
+        var status = $("#mark_status").val();
+        $.ajax({
+            type: "POST",
+            url: "/report/events/update-memo",
+            data: {
+                id: id,
+                internal_form_selection: status
+            },
+            dataType: "JSON",
+            success: function success(feeback) {
+                if (feeback.status === "fail") {
+                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                    return;
+                }
+                $( "#pm_mark_form_status_dialog" ).dialog( "close" );
+                Notifier.showTimedMessage("Update successful", "information", 2);
+                location.reload();
+            }
+        });
+    });
 });

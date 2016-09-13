@@ -15,4 +15,30 @@ $(function () {
             width: 500
         });
     });
+
+    $(".fa-user-plus").click(function(){
+        var guest_data = JSON.parse($(this).attr("rel"));
+        $("#guest_attendee_name").text(guest_data.guest_attendee_name);
+        $("#guest_job_title").text(guest_data.guest_job_title);
+        $("#guest_email").text(guest_data.guest_email);
+        $("#guest_phone").text(guest_data.guest_phone);
+        $("#guest_info").text(guest_data.guest_info);
+
+        var $dialog =  $("#questionnaire_guest_info_dialog");
+        $dialog.dialog({
+            height: 370,
+            width: 600
+        });
+    });
+
+    $(".fa-bed").click(function(){
+        var hotel_name = $(this).attr("rel");
+        $("#hotel_dialog").text(hotel_name);
+
+        var $dialog =  $("#hotel_dialog");
+        $dialog.dialog({
+            height: 100,
+            width: 500
+        });
+    });
 });

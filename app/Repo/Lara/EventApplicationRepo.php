@@ -19,7 +19,13 @@ class EventApplicationRepo implements EventApplicationInterface
             'status'     => null,
             'operator'   => null,
             'updated_at' => null
-        ]
+        ],
+        'internal_set_form_status' => [
+            'status'     => null,
+            'operator'   => null,
+            'updated_at' => null
+        ],
+        'is_already_send_mail' => false
     ];
     use PaginateTrait;
 
@@ -55,7 +61,9 @@ class EventApplicationRepo implements EventApplicationInterface
         $approve_event_users = $approve_event_users->groupBy('user_id');
         if ($approve_event_users) {
             foreach ($approve_event_users as $approve_event_user) {
-                $result[] = $approve_event_user[0];
+                if ($approve_event_user[0]->isTour()) {
+                    $result[] = $approve_event_user[0];
+                }
             }
         }
         return Collection::make($result);
@@ -104,6 +112,15 @@ class EventApplicationRepo implements EventApplicationInterface
             $memo['internal_set_status']['updated_at'] = Carbon::now()->toDateTimeString();
         }
 
+        if (array_key_exists('internal_form_selection', $input)) {
+            if (!\Auth::user()) {
+                return false;
+            }
+            $memo['internal_set_form_status']['status']     = $input['internal_form_selection'];
+            $memo['internal_set_form_status']['operator']   = \Auth::user()->name;
+            $memo['internal_set_form_status']['updated_at'] = Carbon::now()->toDateTimeString();
+        }
+
         if (array_key_exists('follow_pm', $input)) {
             $memo['follow_pm']     = $input['follow_pm'];
         }
@@ -112,9 +129,12 @@ class EventApplicationRepo implements EventApplicationInterface
         return $event_user->save();
     }
 
-    public function approveEventUser($user_id)
+    public function approveEventUser($user_id, $event_id)
     {
-        $same_event_users = $this->findByUserId($user_id);
+        $same_event_users = $this->event
+            ->where('user_id', $user_id)
+            ->where('event_id', $event_id)
+            ->get();
         $approved_at = Carbon::now();
         foreach ($same_event_users as $user) {
             $user->approved_at = $approved_at;

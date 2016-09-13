@@ -239,6 +239,44 @@ class EventApplication extends Model
         return $memo['follow_pm'];
     }
 
+    public function getInternalSetFormStatus()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (empty($memo['internal_set_form_status'])) {
+            return null;
+        }
+
+        return $memo['internal_set_form_status']['status'];
+    }
+
+
+    public function getInternalSetFormStatusOperator()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (empty($memo['internal_set_form_status'])) {
+            return null;
+        }
+
+        return $memo['internal_set_form_status']['operator'];
+    }
+
+    public function getInternalSetFormStatusUpdatedAt()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (empty($memo['internal_set_form_status'])) {
+            return null;
+        }
+
+        if ($memo['internal_set_form_status']['updated_at']) {
+            return Carbon::parse($memo['internal_set_form_status']['updated_at'])->toFormattedDateString();
+        } else {
+            return null;
+        }
+    }
+
     public function getInternalSetStatus()
     {
         $memo = json_decode($this->note, true);
@@ -306,5 +344,20 @@ class EventApplication extends Model
                 return implode('<br/>', $data);
             }
         }
+    }
+
+    public function isAlreadySendMail()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (is_null($memo)) {
+            return false;
+        }
+
+        if (!array_key_exists('is_already_send_mail', $memo)) {
+            return false;
+        }
+
+        return $memo['is_already_send_mail'];
     }
 }
