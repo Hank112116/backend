@@ -295,7 +295,7 @@
                         <div class="panel-heading">Attachments</div>
 
                         <div class="panel-body-attachment-list" style="margin-left: 10px; margin-bottom: 10px;">
-                            @if (!empty($attachments))
+                            @if ($attachments != 'null')
                                 @foreach($attachments as $attachment)
                                     <div class="photo-preview">
                                         <a target="_blank" href="{{ $attachment->url }}">
