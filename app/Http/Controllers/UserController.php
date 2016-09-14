@@ -52,6 +52,7 @@ class UserController extends BaseController
         $this->expertise_repo = $expertise;
         $this->user_api       = $user_api;
         $this->apply_msg_repo = $apply_expert_message;
+        $this->per_page       = 200;
     }
 
     public function showList()

@@ -35,7 +35,7 @@ class ProjectController extends BaseController
         $this->adminer_repo = $adminer;
         $this->hub_repo     = $hub;
         $this->user_repo    = $user;
-        $this->per_page     = 250;
+        $this->per_page     = 100;
     }
 
     public function showList()
