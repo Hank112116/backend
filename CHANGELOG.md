@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.6.0
+* [NEW] add AIT tour form report (@Hank)
+* [CHANGE] adjust editor role access privileges (@Hank)
+* [FIXED] fix landing expert operate issue (@Hank)
+
 ## v2.5.5
 * [FIXED] fix project's grade display of backend, frontend pm (@Hank)
 
