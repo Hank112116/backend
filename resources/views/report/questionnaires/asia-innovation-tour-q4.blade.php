@@ -250,7 +250,9 @@
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->video_url)
                                     @foreach($approve_user->questionnaire->video_url as $key => $url)
-                                        {!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}<br/>
+                                        @if($url)
+                                            {!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}<br/>
+                                        @endif
                                     @endforeach
                                 @endif
                             @endif
