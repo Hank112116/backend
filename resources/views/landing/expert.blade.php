@@ -21,20 +21,15 @@
 
         @foreach ($types as $type) 
             <div class="col-md-4">
-                {!! Form::open(['action' => ['LandingController@findExpertEntity', $type], 
-                               'method' => 'POST', 'class' => 'js-search-form']) !!}
+                <div class="input-group js-search-form">
+                    {!! Form::text('id', '',
+                        ['placeholder'=> "Add ".studly_case($type)." by ".studly_case($type)." Id",
+                         'class'=>"form-control search_id"]) !!}
 
-                    <div class="input-group">
-                        {!! Form::text('id', '', 
-                            ['placeholder'=> "Add ".studly_case($type)." by ".studly_case($type)." Id", 
-                             'class'=>"form-control search_id"]) !!}
-
-                        <span class="input-group-btn">
-                            <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                        </span>
-                    </div>
-
-                {!! Form::close() !!}
+                    <span class="input-group-btn">
+                        <button class="btn btn-default js-btn-search" type="button">Go!</button>
+                    </span>
+                </div>
             </div>
         @endforeach
 

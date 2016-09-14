@@ -21,7 +21,7 @@ Expert.prototype._setSearchForm = function (block){
             event.preventDefault();
             $.ajax({
                 type: "POST",
-                url: block.action,
+                url: "/landing/find-expert/expert",
                 data: { id: $block.find(".search_id")[0].value },
                 dataType: "JSON",
                 success: function success(feeback) {
