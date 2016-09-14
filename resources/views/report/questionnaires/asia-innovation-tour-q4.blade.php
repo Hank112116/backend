@@ -45,7 +45,7 @@
                         <th>Attendance</th>
                         <th>Itinerary</th>
                         <th>Materials</th>
-                        <th>Video Url</th>
+                        <th>Video URL</th>
                         <th>Note</th>
                     </tr>
                 </thead>
@@ -230,11 +230,11 @@
                         <td>
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->company_logo)
-                                    {!! link_to($approve_user->questionnaire->company_logo[0]['key'], 'Company Logo', ['target' => '_blank']) !!}<br/>
+                                   - {!! link_to($approve_user->questionnaire->company_logo[0]['key'], 'Company Logo', ['target' => '_blank']) !!}<br/>
                                 @endif
                                 @if($approve_user->questionnaire->attachments)
                                     @foreach($approve_user->questionnaire->attachments as $attachment)
-                                            {!! link_to($attachment['key'], $attachment['name'], ['target' => '_blank']) !!}<br/>
+                                            - {!! link_to($attachment['key'], $attachment['name'], ['target' => '_blank']) !!}<br/>
                                     @endforeach
                                 @endif
                             @endif
@@ -245,7 +245,7 @@
                                 @if($approve_user->questionnaire->video_url)
                                     @foreach($approve_user->questionnaire->video_url as $key => $url)
                                         @if($url)
-                                            {!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}<br/>
+                                            - {!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}<br/>
                                         @endif
                                     @endforeach
                                 @endif
