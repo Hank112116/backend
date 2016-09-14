@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v2.5.6
+## v2.6.0
 * [NEW] add AIT tour form report (@Hank)
 * [CHANGE] adjust editor role access privileges (@Hank)
 * [FIXED] fix landing expert operate issue (@Hank)
