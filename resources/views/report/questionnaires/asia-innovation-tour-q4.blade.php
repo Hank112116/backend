@@ -93,9 +93,9 @@
 
                         <td>
                             @if($approve_user->questionnaire)
-                                {{ $approve_user->questionnaire->form_status }}
 
                                 @if($approve_user->questionnaire->form_status == 'Ongoing')
+                                    In Progress
                                     <br/>
                                     @if($approve_user->getInternalSetFormStatus())
                                         <a href="javascript:void(0)"
@@ -111,9 +111,12 @@
                                                 <i class="fa fa-pencil fa-fw"></i>Mark Status</button>
                                         </div>
                                     @endif
+                                @else
+                                    {{ $approve_user->questionnaire->form_status }}
                                 @endif
+
                             @else
-                                Initialed<br/>
+                                Initial<br/>
                                 @if($approve_user->getInternalSetFormStatus())
                                     <a href="javascript:void(0)"
                                        class="pm-mark-form-status-selection" rel="{!! $approve_user->id !!}" status="{{ $approve_user->getInternalSetFormStatus() }}">

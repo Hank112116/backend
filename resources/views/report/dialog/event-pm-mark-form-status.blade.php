@@ -5,7 +5,6 @@
                 <select id="mark_status" title="Mark Status">
                     <option value="">Select one status</option>
                     <option value="Rejected">Rejected</option>
-                    <option value="Considering">Considering</option>
                 </select>
             </td>
         </tr>
