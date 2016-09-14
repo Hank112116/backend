@@ -42,7 +42,8 @@
                             <span class="table--text-light">Follow PM</span>
                         </th>
                         <th>Contact Details</th>
-                        <th>Attendance & Itinerary</th>
+                        <th>Attendance</th>
+                        <th>Itinerary</th>
                         <th>Materials</th>
                         <th>Video Url</th>
                         <th>Note</th>
@@ -170,72 +171,62 @@
                             @endif
                         </td>
 
-                        <td style="width: 300px">
+                        <td>
                             @if($approve_user->questionnaire)
 
                                 @if($approve_user->questionnaire->trip_participation)
                                     @foreach($approve_user->questionnaire->trip_participation as $trip_participation)
                                         @if($trip_participation == 'dinner')
-                                            Dinner:
-                                            @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
-                                                {{ $approve_user->questionnaire->shenzhen_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }} <br/>
-                                            @else
-                                                I haven't book one yet<br/>
-                                            @endif
-
+                                            Dinner
                                         @endif
                                         @if($trip_participation == 'shenzhen')
-                                            Shenzhen:
-                                            @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
-                                                {{ $approve_user->questionnaire->shenzhen_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
-
-                                                @if($approve_user->questionnaire->shenzhen_hotel_name)
-                                                        <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->shenzhen_hotel_name }}"></i>
-                                                @endif
-                                                <br/>
-                                            @else
-                                                I haven't book one yet<br/>
-                                            @endif
-
+                                            Shenzhen
                                         @endif
                                         @if($trip_participation == 'kyoto')
-                                            Kyoto:
-                                            @if($approve_user->questionnaire->kyoto_flight and $approve_user->questionnaire->kyoto_datetime)
-                                                {{ $approve_user->questionnaire->kyoto_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
-
-                                                @if($approve_user->questionnaire->kyoto_hotel_name)
-                                                    <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->kyoto_hotel_name }}"></i>
-                                                @endif
-                                                <br/>
-                                            @else
-                                                I haven't book one yet<br/>
-                                            @endif
-
+                                            Kyoto
                                         @endif
                                         @if($trip_participation == 'osaka')
-                                            Osaka:
-                                            @if($approve_user->questionnaire->osaka_flight and $approve_user->questionnaire->osaka_datetime)
-                                                {{ $approve_user->questionnaire->osaka_flight }} -
-                                                {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
-
-                                                @if($approve_user->questionnaire->osaka_hotel_name)
-                                                    <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->osaka_hotel_name }}"></i>
-                                                @endif
-                                                <br/>
-                                            @else
-                                                I haven't book one yet<br/>
-                                            @endif
-
+                                            Osaka
                                         @endif
+                                        <br/>
                                     @endforeach
                                 @endif
 
                             @endif
                         </td>
+                        <td style="width: 300px">
+                            @if($approve_user->questionnaire)
+                                @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
+                                    Shenzhen:
+                                    {{ $approve_user->questionnaire->shenzhen_flight }} -
+                                    {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
+                                    @if($approve_user->questionnaire->shenzhen_hotel_name)
+                                        <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->shenzhen_hotel_name }}"></i>
+                                    @endif
+                                    <br/>
+                                @endif
 
+                                @if($approve_user->questionnaire->kyoto_flight and $approve_user->questionnaire->kyoto_datetime)
+                                    Kyoto:
+                                    {{ $approve_user->questionnaire->kyoto_flight }} -
+                                    {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
+                                    @if($approve_user->questionnaire->kyoto_hotel_name)
+                                        <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->kyoto_hotel_name }}"></i>
+                                    @endif
+                                    <br/>
+                                @endif
+
+                                @if($approve_user->questionnaire->osaka_flight and $approve_user->questionnaire->osaka_datetime)
+                                    Osaka:
+                                    {{ $approve_user->questionnaire->osaka_flight }} -
+                                    {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
+                                    @if($approve_user->questionnaire->osaka_hotel_name)
+                                        <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->osaka_hotel_name }}"></i>
+                                    @endif
+                                    <br/>
+                                @endif
+                            @endif
+                        </td>
                         <td>
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->company_logo)
