@@ -336,9 +336,17 @@ class EventApplication extends Model
                 $data = [];
                 foreach ($trips as $trip) {
                     if ($trip === 'shenzhen') {
-                        array_push($data, 'Meetup SZ');
+                        $r = 'Meetup SZ';
+                        if ($this->isAlreadySendSZMail()) {
+                            $r .= '<i class="fa fa-paper-plane-o" title="Mail Already send."></i>';
+                        }
+                        array_push($data, $r);
                     } elseif ($trip === 'osaka') {
-                        array_push($data, 'Meetup Osaka');
+                        $r = 'Meetup Osaka';
+                        if ($this->isAlreadySendOsakaMail()) {
+                            $r .= '<i class="fa fa-paper-plane-o" title="Mail Already send."></i>';
+                        }
+                        array_push($data, $r);
                     }
                 }
                 return implode('<br/>', $data);
@@ -346,7 +354,7 @@ class EventApplication extends Model
         }
     }
 
-    public function isAlreadySendMail()
+    public function isAlreadySendSZMail()
     {
         $memo = json_decode($this->note, true);
 
@@ -354,10 +362,25 @@ class EventApplication extends Model
             return false;
         }
 
-        if (!array_key_exists('is_already_send_mail', $memo)) {
+        if (!array_key_exists('is_already_send_sz_mail', $memo)) {
             return false;
         }
 
-        return $memo['is_already_send_mail'];
+        return $memo['is_already_send_sz_mail'];
+    }
+
+    public function isAlreadySendOsakaMail()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (is_null($memo)) {
+            return false;
+        }
+
+        if (!array_key_exists('is_already_send_osaka_mail', $memo)) {
+            return false;
+        }
+
+        return $memo['is_already_send_osaka_mail'];
     }
 }
