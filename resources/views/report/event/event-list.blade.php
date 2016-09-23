@@ -167,13 +167,10 @@
                                 </div>
                             @endif
                         </td>
-                        <td>
+                        <td style="width: 130px">
                             {!! $event_user->getTextTicketType() !!} <br/>
                             @if ($event_user->hasGuestJoin())
                             <i style="cursor:pointer" class="fa fa-user-plus fa-2x" title="Has Guest" rel="{{ json_encode($event_user->getGuestInfo()) }}"></i>
-                            @endif
-                            @if($event_user->isAlreadySendMail())
-                                <i class="fa fa-paper-plane-o" title="Mail Already send."></i>
                             @endif
                         </td>
                         <td class="table--user-mail">

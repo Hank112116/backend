@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.6.1
+* [CHANGE] adjust AIT event email send status (@Hank)
+
 ## v2.6.0
 * [NEW] add AIT tour form report (@Hank)
 * [CHANGE] adjust editor role access privileges (@Hank)

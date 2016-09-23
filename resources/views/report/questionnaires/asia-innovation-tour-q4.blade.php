@@ -85,7 +85,7 @@
                             @endif
                         </td>
 
-                        <td>
+                        <td style="max-width: 200px">
                             @if($approve_user->questionnaire)
                                 {{ $approve_user->questionnaire->company_name }}<br/>
                                 <span class="table--text-light">{{ $approve_user->questionnaire->job_title }}</span>
@@ -194,7 +194,7 @@
 
                             @endif
                         </td>
-                        <td style="width: 300px">
+                        <td style="min-width: 300px">
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
                                     Shenzhen:
