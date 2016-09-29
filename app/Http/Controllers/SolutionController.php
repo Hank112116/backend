@@ -2,11 +2,14 @@
 
 namespace Backend\Http\Controllers;
 
-use Auth;
+use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
+use Backend\Repo\Lara\SolutionRepo;
 use Illuminate\Support\Collection;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
+use App;
+use Auth;
 use Input;
 use Noty;
 use Redirect;
@@ -233,6 +236,9 @@ class SolutionController extends BaseController
 
     public function approve($solution_id)
     {
+        $solution = $this->solution_repo->find($solution_id);
+        $approve_api = App::make(ApproveApiInterface::class, ['solution' => $solution]);
+        $approve_api->approve();
         $log_action = 'Approve solutions';
         $log_data   = [
             'solution' => $solution_id,
