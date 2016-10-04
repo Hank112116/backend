@@ -89,7 +89,7 @@
 
     <div class="col-md-4">
         <i class="fa fa-envelope fa-fw fa-2x" style="color: #d9534f"></i>
-        {!! link_to_action('ProjectController@showSearch', $not_recommend_count . ' schedule email not sent',
+        {!! link_to_action('ProjectController@showSearch', $projects->not_recommend_count . ' schedule email not sent',
          ['status' => 'not-yet-email-out'], ['target' => '_blank']) !!}
     </div>
 </div>

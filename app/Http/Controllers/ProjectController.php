@@ -66,8 +66,6 @@ class ProjectController extends BaseController
 
     public function showProjects($projects, $paginate = true, $title = '')
     {
-        $not_recommend_count = $this->project_repo->getNotRecommendExpertProjects()->count();
-
         if (Input::has('csv')) {
             return $this->renderCsv($projects);
         }
@@ -88,8 +86,7 @@ class ProjectController extends BaseController
                 'show_paginate'       => $paginate,
                 'adminers'            => $this->adminer_repo->all(),
                 'tag_tree'            => TagNode::tags(),
-                'pm_ids'              => $pm_ids,
-                'not_recommend_count' => $not_recommend_count
+                'pm_ids'              => $pm_ids
             ]);
     }
 

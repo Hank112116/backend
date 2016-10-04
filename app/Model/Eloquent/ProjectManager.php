@@ -14,4 +14,9 @@ class ProjectManager extends Eloquent
     {
         return $this->hasOne(Project::class, 'project_id', 'project_id');
     }
+
+    public function adminer()
+    {
+        return $this->hasOne(Adminer::class, 'hwtrek_member', 'pm_id');
+    }
 }
