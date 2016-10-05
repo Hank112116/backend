@@ -52,16 +52,16 @@ class TagBuilder implements TagBuilderInterface
     private function buildTreeNodes(TagTree $tree)
     {
         $tags = Collection::make(TechTag::TECH_TAGS);
+        $all_tags   = $this->other_tag->select('classified_slug', 'name')->get();
         $tags->map(
-            function ($tags, $parent_tag) use ($tree) {
-                $other_tags = $this->other_tag->where('classified_slug', 'LIKE', "{$parent_tag}:%")->get();
-                if ($other_tags->count() > 0) {
-                    foreach ($other_tags as $other_tag) {
+            function ($tags, $parent_tag) use ($tree, $all_tags) {
+
+                foreach ($all_tags as $other_tag) {
+                    if (Str::contains($other_tag->classified_slug, $parent_tag .':')) {
                         array_push($tags, $other_tag->classified_slug);
                     }
                 }
-
-                $tree->createNode($tags, $parent_tag);
+                $tree->createNode($tags, $parent_tag, $all_tags);
             }
         );
     }

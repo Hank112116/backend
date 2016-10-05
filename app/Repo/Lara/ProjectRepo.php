@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use DB;
 use Carbon;
 use Backend\Enums\DeleteReason;
 use Backend\Model\Eloquent\Project;
@@ -20,7 +21,13 @@ class ProjectRepo implements ProjectInterface
 {
     use PaginateTrait;
 
-    protected $with_relations = ['user', 'propose', 'recommendExperts', 'projectTeam', 'internalProjectMemo'];
+    protected $with_relations = ['user', 'recommendExperts', 'projectTeam', 'internalProjectMemo', 'projectStatistic'];
+    private $project_columns  = [
+        'project_id', 'user_id', 'last_editor_id', 'uuid', 'category_id',
+        'project_title', 'project_country', 'date_added', 'public_draft', 'update_time',
+        'project_submit_time', 'is_project_submitted', 'hub_approve', 'hub_approve_time',
+        'is_deleted', 'deleted_date', 'deleted_reason', 'tags', 'is_created_via_fusion360'
+    ];
 
     private $adminer;
     private $project;
@@ -70,8 +77,9 @@ class ProjectRepo implements ProjectInterface
     public function all()
     {
         return $this->project
-            ->orderBy('project_id', 'desc')
-            ->get();
+            ->select($this->project_columns)
+            ->with($this->with_relations)
+            ->orderBy('project_id', 'desc')->get();
     }
 
     public function deletedProjects()
@@ -105,7 +113,15 @@ class ProjectRepo implements ProjectInterface
     public function byUnionSearch($input, $page, $per_page, $do_statistics = false)
     {
         /* @var Collection $projects */
-        $projects = $this->all();
+        if (!empty($input['project_id'])) {
+            $projects = $this->project
+                ->select($this->project_columns)
+                ->with('recommendExperts')
+                ->orderBy('project_id', 'desc')
+                ->get();
+        } else {
+            $projects = $this->all();
+        }
 
         $not_recommend_count = $this->getNotRecommendExpertProjectCount($projects);
 
@@ -213,7 +229,7 @@ class ProjectRepo implements ProjectInterface
                             break;
                         case 'not-yet-email-out':
                             if ($item->hub_approve
-                                and $item->recommendExperts()->count() == 0
+                                and $item->recommendExperts->count() == 0
                                 and !$item->isDeleted()
                                 and !$item->profile->isDraft()
                                 and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))
@@ -276,8 +292,8 @@ class ProjectRepo implements ProjectInterface
                         }
                         break;
                     case 'release':
-                        if ($item->recommendExperts()->count() > 0) {
-                            $recommend_experts = $item->recommendExperts()->getResults();
+                        if ($item->recommendExperts->count() > 0) {
+                            $recommend_experts = $item->recommendExperts->getResults();
                             $release_time = Carbon::parse($recommend_experts[0]->date_send)->toDateString();
                             if ($release_time < $dend && $release_time >= $dstart) {
                                 return $item;
@@ -508,7 +524,7 @@ class ProjectRepo implements ProjectInterface
     {
         $projects = $projects->filter(function (Project $item) {
             if ($item->hub_approve
-                and $item->recommendExperts()->count() === 0
+                and $item->recommendExperts->count() === 0
                 and !$item->isDeleted()
                 and !$item->profile->isDraft()
                 and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))

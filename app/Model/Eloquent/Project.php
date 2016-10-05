@@ -156,12 +156,12 @@ class Project extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->select('user_id', 'user_name', 'last_name');
     }
 
     public function lastEditorUser()
     {
-        return $this->hasOne(User::class, 'user_id', 'last_editor_id');
+        return $this->hasOne(User::class, 'user_id', 'last_editor_id')->select('user_id', 'user_name', 'last_name');
     }
 
     public function projectTeam()
@@ -204,7 +204,7 @@ class Project extends Eloquent
 
     public function projectStatistic()
     {
-        return $this->hasOne(ProjectStatistic::class, 'id', 'project_id');
+        return $this->hasOne(ProjectStatistic::class, 'id', 'project_id')->select(['id', 'page_view', 'staff_referral', 'user_referral', 'staff_proposed', 'user_proposed']);
     }
 
     public function projectMember()
@@ -821,7 +821,7 @@ class Project extends Eloquent
         }
         $internal_count = $external_count = 0;
         $internal_date  = $external_data  = [];
-        $propose_solutions = $this->propose()->getResults();
+        $propose_solutions = $this->propose;
         if ($propose_solutions) {
             foreach ($propose_solutions as $propose_solution) {
                 if ($propose_solution->event !== ProposeSolution::EVENT_CLICK
@@ -975,7 +975,7 @@ class Project extends Eloquent
 
     public function hasRecommendExpert($dstart, $dend)
     {
-        $recommend_experts = $this->recommendExperts()->getResults();
+        $recommend_experts = $this->recommendExperts;
         if ($recommend_experts) {
             foreach ($recommend_experts as $recommend_expert) {
                 if ($recommend_expert->user) {

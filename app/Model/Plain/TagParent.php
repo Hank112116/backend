@@ -30,9 +30,9 @@ class TagParent
         $this->name = self::$parent_tags[$parent_tag];
     }
 
-    public function appendNode($tag)
+    public function appendNode($tag, $all_tags)
     {
-        $this->nodes[] = new TagNode($tag);
+        $this->nodes[] = new TagNode($tag, $all_tags);
         $this->node_tag_ids[] = $tag;
     }
 

@@ -145,17 +145,21 @@ class TagNode
         TechTag::OS_TBD                                => 'TBD',
     ];
 
-    public function __construct($tag)
+    public function __construct($tag, $all_tags)
     {
         $this->key = $tag;
-        $this->name = $this->tags()[$tag];
+        $this->name = $this->tags($all_tags)[$tag];
 
     }
 
-    public static function tags()
+    public static function tags($all_tags = null)
     {
-        $other_tag_model = new OtherTag();
-        $other_tags = $other_tag_model->all();
+        if ($all_tags == null) {
+            $other_tag_model = new OtherTag();
+            $other_tags = $other_tag_model->all(['name', 'classified_slug']);
+        } else {
+            $other_tags = $all_tags;
+        }
         $result = [];
         if ($other_tags) {
             foreach ($other_tags as $other_tag) {
