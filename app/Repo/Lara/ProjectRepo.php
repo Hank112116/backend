@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use DB;
 use Carbon;
 use Backend\Enums\DeleteReason;
 use Backend\Model\Eloquent\Project;
@@ -20,7 +21,13 @@ class ProjectRepo implements ProjectInterface
 {
     use PaginateTrait;
 
-    protected $with_relations = ['user', 'propose', 'recommendExperts', 'projectTeam', 'internalProjectMemo'];
+    protected $with_relations = ['user', 'recommendExperts', 'projectTeam', 'internalProjectMemo', 'projectStatistic'];
+    private $project_columns  = [
+        'project_id', 'user_id', 'last_editor_id', 'uuid', 'category_id',
+        'project_title', 'project_country', 'date_added', 'public_draft', 'update_time',
+        'project_submit_time', 'is_project_submitted', 'hub_approve', 'hub_approve_time',
+        'is_deleted', 'deleted_date', 'deleted_reason', 'tags', 'is_created_via_fusion360'
+    ];
 
     private $adminer;
     private $project;
@@ -70,9 +77,9 @@ class ProjectRepo implements ProjectInterface
     public function all()
     {
         return $this->project
+            ->select($this->project_columns)
             ->with($this->with_relations)
-            ->orderBy('project_id', 'desc')
-            ->get();
+            ->orderBy('project_id', 'desc')->get();
     }
 
     public function deletedProjects()
@@ -85,13 +92,12 @@ class ProjectRepo implements ProjectInterface
 
     public function byPage($page = 1, $limit = 20)
     {
-        $projects = $this->modelBuilder($this->project, $page, $limit)
-            ->with($this->with_relations)
-            ->get();
+        $projects            = $this->all();
+        $not_recommend_count = $this->getNotRecommendExpertProjectCount($projects);
+        $projects            = $this->getPaginateFromCollection($projects, $page, $limit);
 
-        $this->setPaginateTotal($this->project->count());
-
-        return $this->getPaginateContainer($this->project, $page, $limit, $projects);
+        $projects->not_recommend_count = $not_recommend_count;
+        return $projects;
     }
 
     public function byUserId($user_id)
@@ -107,7 +113,17 @@ class ProjectRepo implements ProjectInterface
     public function byUnionSearch($input, $page, $per_page, $do_statistics = false)
     {
         /* @var Collection $projects */
-        $projects = $this->project->with($this->with_relations)->orderBy('project_id', 'desc')->get();
+        if (!empty($input['project_id'])) {
+            $projects = $this->project
+                ->select($this->project_columns)
+                ->with('recommendExperts')
+                ->orderBy('project_id', 'desc')
+                ->get();
+        } else {
+            $projects = $this->all();
+        }
+
+        $not_recommend_count = $this->getNotRecommendExpertProjectCount($projects);
 
         if (!empty($input['project_title'])) {
             $project_title = $input['project_title'];
@@ -138,12 +154,12 @@ class ProjectRepo implements ProjectInterface
 
         if (!empty($input['assigned_pm'])) {
             $assigned_pm = explode(',', $input['assigned_pm']);
-            $projects = $projects->filter(function (Project $item) use ($assigned_pm) {
-                if ($item->hasProjectManager()) {
-                    $project_managers = json_decode($item->getProjectManagers(), true);
-                    if ($project_managers) {
-                        $adminers = $this->adminer->findAssignedProjectPM($assigned_pm);
-                        if ($adminers) {
+            $adminers    = $this->adminer->findAssignedProjectPM($assigned_pm);
+            $projects = $projects->filter(function (Project $item) use ($adminers) {
+                if (!$adminers->isEmpty()) {
+                    if ($item->hasProjectManager()) {
+                        $project_managers = json_decode($item->getProjectManagers(), true);
+                        if ($project_managers) {
                             foreach ($adminers as $adminer) {
                                 if (in_array($adminer->hwtrek_member, $project_managers)) {
                                     return $item;
@@ -211,12 +227,18 @@ class ProjectRepo implements ProjectInterface
                                 return $item;
                             }
                             break;
+                        case 'not-yet-email-out':
+                            if ($item->hub_approve
+                                and $item->recommendExperts->count() == 0
+                                and !$item->isDeleted()
+                                and !$item->profile->isDraft()
+                                and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))
+                            ) {
+                                return $item;
+                            }
+                            break;
                     }
                 });
-
-                if ($status === 'not-yet-email-out') {
-                    $projects = $this->getNotRecommendExpertProjects();
-                }
             }
         }
 
@@ -270,8 +292,8 @@ class ProjectRepo implements ProjectInterface
                         }
                         break;
                     case 'release':
-                        if ($item->recommendExperts()->count() > 0) {
-                            $recommend_experts = $item->recommendExperts()->getResults();
+                        if ($item->recommendExperts->count() > 0) {
+                            $recommend_experts = $item->recommendExperts->getResults();
                             $release_time = Carbon::parse($recommend_experts[0]->date_send)->toDateString();
                             if ($release_time < $dend && $release_time >= $dstart) {
                                 return $item;
@@ -301,6 +323,9 @@ class ProjectRepo implements ProjectInterface
             $projects->match_statistics = $match;
             $projects->user_referrals = $user_referrals;
         }
+
+        $projects->not_recommend_count = $not_recommend_count;
+
         return $projects;
     }
 
@@ -495,13 +520,11 @@ class ProjectRepo implements ProjectInterface
         return $this->project_modifier->updateProjectManager($project_id, $data);
     }
 
-    public function getNotRecommendExpertProjects()
+    private function getNotRecommendExpertProjectCount(Collection $projects)
     {
-        $projects = $this->all();
-
         $projects = $projects->filter(function (Project $item) {
             if ($item->hub_approve
-                and $item->recommendExperts()->count() === 0
+                and $item->recommendExperts->count() === 0
                 and !$item->isDeleted()
                 and !$item->profile->isDraft()
                 and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))
@@ -509,7 +532,7 @@ class ProjectRepo implements ProjectInterface
                 return $item;
             }
         });
-        return $projects;
+        return $projects->count();
     }
 
     private function getProjectMatchFromPM($projects, $dstart = null, $dend = null)
