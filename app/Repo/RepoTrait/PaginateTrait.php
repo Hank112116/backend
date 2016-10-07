@@ -14,7 +14,7 @@ trait PaginateTrait
 
     protected function total(Eloquent $model)
     {
-        return isset($this->total) ? $this->total : $model->all()->count();
+        return isset($this->total) ? $this->total : $model->count();
     }
 
     /*
@@ -57,6 +57,13 @@ trait PaginateTrait
         $paginator = new Paginator($pagedData, $collection->count(), $perPage);
         $paginator->setPath('/' . \Request::path());
 
+        return $paginator;
+    }
+
+    protected function getSearchPaginateContainer($total, $perPage, Collection $collection)
+    {
+        $paginator = new Paginator($collection, $total, $perPage);
+        $paginator->setPath('/' . \Request::path());
         return $paginator;
     }
 }

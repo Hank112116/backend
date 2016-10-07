@@ -78,6 +78,7 @@ class ProjectController extends BaseController
                 $pm_ids[] = $pm->user_id;
             }
         }
+        $projects->not_recommend_count = $this->project_repo->getNotRecommendExpertProjectCount();
         return view('project.list')
             ->with([
                 'title'               => $title ?: 'projects',

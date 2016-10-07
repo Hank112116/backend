@@ -48,45 +48,51 @@ class Solution extends Eloquent
 
     public $draft_status = [
         'solution_draft' => 0,
-        'active'         => 0
+        'active'         => 0,
+        'is_deleted'     => 0
     ];
 
     public $wait_approve_status = [
         'solution_draft'      => 1,
         'active'              => 0,
-        'previously_approved' => 0
+        'previously_approved' => 0,
+        'is_deleted'          => 0
     ];
 
     public $on_shelf_status = [
         'solution_draft'      => 1,
         'active'              => 1,
-        'previously_approved' => 1
+        'previously_approved' => 1,
+        'is_deleted'          => 0
     ];
 
     public $off_shelf_status = [
         'solution_draft'      => 1,
         'active'              => 0,
-        'previously_approved' => 1
+        'previously_approved' => 1,
+        'is_deleted'          => 0
     ];
     public $is_solution_status = [
         'is_program'                       => 0,
         'is_manager_upgrade_to_program'    => 0,
-        'is_manager_downgrade_to_solution' => 0
+        'is_manager_downgrade_to_solution' => 0,
     ];
     public $is_program_status = [
         'is_program'                       => 1,
         'is_manager_upgrade_to_program'    => 0,
-        'is_manager_downgrade_to_solution' => 0
+        'is_manager_downgrade_to_solution' => 0,
     ];
     public $is_pending_solution_status = [
         'is_program'                       => 1,
         'is_manager_upgrade_to_program'    => 0,
-        'is_manager_downgrade_to_solution' => 1
+        'is_manager_downgrade_to_solution' => 1,
+        'is_deleted'                       => 0
     ];
     public $is_pending_program_status = [
         'is_program'                       => 0,
         'is_manager_upgrade_to_program'    => 1,
-        'is_manager_downgrade_to_solution' => 0
+        'is_manager_downgrade_to_solution' => 0,
+        'is_deleted'                       => 0
     ];
 
     public $after_submitted_status = ['solution_draft' => '1'];
@@ -104,7 +110,7 @@ class Solution extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->select(['user_id', 'user_name', 'last_name']);
     }
 
     /**
@@ -165,8 +171,7 @@ class Solution extends Eloquent
      */
     public function scopeQuerySolution(Builder $query)
     {
-        return $query->where('is_program', 0)
-                     ->where('is_manager_downgrade_to_solution', 0);
+        return $query->where($this->is_solution_status);
     }
     /**
      * Query Program
@@ -175,8 +180,7 @@ class Solution extends Eloquent
      */
     public function scopeQueryProgram(Builder $query)
     {
-        return $query->where('is_program', 1)
-                     ->where('is_manager_upgrade_to_program', 0);
+        return $query->where($this->is_program_status);
     }
     /**
      * Query Pending Solution
@@ -185,9 +189,7 @@ class Solution extends Eloquent
      */
     public function scopeQueryPendingSolution(Builder $query)
     {
-        return $query->where('is_program', 0)
-                     ->where('is_manager_upgrade_to_program', 0)
-                     ->where('is_manager_downgrade_to_solution', 1);
+        return $query->where($this->is_pending_solution_status);
     }
     /**
      * Query Pending Program
@@ -196,29 +198,45 @@ class Solution extends Eloquent
      */
     public function scopeQueryPendingProgram(Builder $query)
     {
-        return $query->where('is_program', 0)
-                     ->where('is_manager_upgrade_to_program', 1)
-                     ->where('is_manager_downgrade_to_solution', 0);
+        return $query->where($this->is_pending_program_status);
+    }
+    /**
+     * Query Pending Program
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryOnShelf(Builder $query)
+    {
+        return $query->where($this->on_shelf_status);
+    }
+    /**
+     * Query Pending Program
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryOffShelf(Builder $query)
+    {
+        return $query->where($this->off_shelf_status);
     }
 
     public function isDraft()
     {
-        return $this->isStatus($this->draft_status) and !$this->isDeleted();
+        return $this->isStatus($this->draft_status);
     }
 
     public function isWaitApprove()
     {
-        return $this->isStatus($this->wait_approve_status) and !$this->isDeleted();
+        return $this->isStatus($this->wait_approve_status);
     }
 
     public function isOnShelf()
     {
-        return $this->isStatus($this->on_shelf_status) and !$this->isDeleted();
+        return $this->isStatus($this->on_shelf_status);
     }
 
     public function isOffShelf()
     {
-        return $this->isStatus($this->off_shelf_status) and !$this->isDeleted();
+        return $this->isStatus($this->off_shelf_status);
     }
 
     public function isOngoing()

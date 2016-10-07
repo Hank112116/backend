@@ -52,7 +52,11 @@ class RepoServiceProvider extends ServiceProvider
                     $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface'),
                     new \Backend\Model\Eloquent\ProposeSolution(),
                     new \Backend\Model\Eloquent\GroupMemberApplicant(),
-                    new \Backend\Model\Eloquent\ProjectMailExpert()
+                    new \Backend\Model\Eloquent\ProjectMailExpert(),
+                    new \Backend\Model\Eloquent\ProjectManager(),
+                    new \Backend\Model\Eloquent\InternalProjectMemo(),
+                    new \Backend\Model\Eloquent\ProjectStatistic(),
+                    new \Backend\Model\Eloquent\Tag()
                 );
             }
         );
@@ -69,7 +73,8 @@ class RepoServiceProvider extends ServiceProvider
                     $app->make('Backend\Model\ModelInterfaces\FeatureModifierInterface'),
                     new SolutionCategory(),
                     new SolutionCertification(),
-                    new \ImageUp()
+                    new \ImageUp(),
+                    $app->make('Backend\Repo\RepoInterfaces\UserInterface')
                 );
             }
         );

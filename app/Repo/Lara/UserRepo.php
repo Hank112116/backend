@@ -1,21 +1,22 @@
 <?php namespace Backend\Repo\Lara;
 
-use Backend\Model\Eloquent\User;
-use Backend\Model\Eloquent\InternalUserMemo;
-use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use ImageUp;
 use Validator;
 use Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Backend\Model\Eloquent\Expertise;
+use Backend\Model\Eloquent\User;
+use Backend\Model\Eloquent\InternalUserMemo;
+use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserRepo implements UserInterface
 {
     use PaginateTrait;
 
-    protected $with_relations = ['internalUserMemo'];
+    protected $with_relations = ['internalUserMemo', 'applyExpertMessage'];
 
     private $error;
     private $user;
@@ -23,6 +24,7 @@ class UserRepo implements UserInterface
     private $expertise;
     private $apply_expert_msg_repo;
     private $image_uplodaer;
+    private $expertise_elq;
 
     private static $update_columns = [
         'active', 'email_verify', 'user_type', 'email',
@@ -40,13 +42,15 @@ class UserRepo implements UserInterface
         InternalUserMemo $user_memo,
         ExpertiseInterface $expertise,
         ApplyExpertMessageInterface $apply_expert_msg_repo,
-        ImageUp $image_uploader
+        ImageUp $image_uploader,
+        Expertise $expertise_elq
     ) {
         $this->user                  = $user;
         $this->user_memo             = $user_memo;
         $this->expertise             = $expertise;
         $this->apply_expert_msg_repo = $apply_expert_msg_repo;
         $this->image_uplodaer        = $image_uploader;
+        $this->expertise_elo             = $expertise_elq;
     }
 
     public function dummy()
@@ -132,6 +136,7 @@ class UserRepo implements UserInterface
         $users = $this->modelBuilder($this->user, $page, $limit)
             ->with($this->with_relations)
             ->get();
+
         return $this->getPaginateContainer($this->user, $page, $limit, $users);
     }
 
@@ -208,43 +213,27 @@ class UserRepo implements UserInterface
 
     public function byUnionSearch($input, $page, $per_page)
     {
-        /* @var Collection $users */
-        $users = $this->user->orderBy('user_id', 'desc')->get();
+        $users = $this->user->with($this->with_relations)->orderBy('user_id', 'desc');
 
         if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
-            $users = $users->filter(function (User $item) use ($user_name) {
-                if (stristr($item->textFullName(), $user_name)) {
-                    return $item;
-                }
-            });
+            $users = $users->orWhere('user_name', 'LIKE', "%{$user_name}%")
+                           ->orWhere('last_name', 'LIKE', "%{$user_name}%");
         }
 
         if (!empty($input['user_id'])) {
             $user_id = $input['user_id'];
-            $users = $users->filter(function (User $item) use ($user_id) {
-                if ($item->user_id == $user_id) {
-                    return $item;
-                }
-            });
+            $users = $users->where('user_id', $user_id);
         }
 
         if (!empty($input['email'])) {
             $email = $input['email'];
-            $users = $users->filter(function (User $item) use ($email) {
-                if (stristr($item->email, $email)) {
-                    return $item;
-                }
-            });
+            $users = $users->where('email', 'LIKE', "%{$email}%");
         }
 
         if (!empty($input['company'])) {
             $company = $input['company'];
-            $users = $users->filter(function (User $item) use ($company) {
-                if (stristr($item->company, $company)) {
-                    return $item;
-                }
-            });
+            $users = $users->where('company', 'LIKE', "%{$company}%");
         }
 
         if (!empty($input['dstart'])) {
@@ -255,100 +244,69 @@ class UserRepo implements UserInterface
             } else {
                 $dend = Carbon::tomorrow()->toDateString();
             }
-            $users = $users->filter(function (User $item) use ($dstart, $dend) {
-                $create_time = Carbon::parse($item->date_added)->toDateString();
-                if ($create_time < $dend && $create_time >= $dstart) {
-                    return $item;
-                }
-            });
+            $users = $users->whereBetween('date_added', [$dstart, $dend]);
         }
 
         if (!empty($input['status'])) {
             if ($input['status'] != 'all') {
-                $status   = $input['status'];
-                $users = $users->filter(function (User $item) use ($status) {
-                    switch ($status) {
-                        case 'expert':
-                            if ($item->isExpert() and !$item->isHWTrekPM() and !$item->isPremiumExpert()) {
-                                return $item;
-                            }
-                            break;
-                        case 'creator':
-                            if ($item->isCreator() and !$item->isPendingExpert()) {
-                                return $item;
-                            }
-                            break;
-                        case 'to-be-expert':
-                            if ($item->isPendingExpert()) {
-                                return $item;
-                            }
-                            break;
-                        case 'premium-expert':
-                            if ($item->isPremiumExpert()) {
-                                return $item;
-                            }
-                            break;
-                        case 'pm':
-                            if ($item->isHWTrekPM()) {
-                                return $item;
-                            }
-                            break;
-                    }
-                });
+                $status = $input['status'];
+                switch ($status) {
+                    case 'expert':
+                        $users = $users->queryExperts();
+                        break;
+                    case 'creator':
+                        $users = $users->queryCreators()
+                            ->where('is_sign_up_as_expert', '!=', true)
+                            ->where('is_apply_to_be_expert', '!=', true);
+                        break;
+                    case 'to-be-expert':
+                        $users = $users->queryPendingToBeExpert();
+                        break;
+                    case 'premium-expert':
+                        $users = $users->queryPremiumExpert();
+                        break;
+                    case 'pm':
+                        $users = $users->queryPM();
+                        break;
+                }
             }
         }
 
         if (!empty($input['description'])) {
             $description = $input['description'];
-            $users = $users->filter(function (User $item) use ($description) {
-                if ($item->internalUserMemo) {
-                    if (stristr($item->internalUserMemo->description, $description)) {
-                        return $item;
-                    }
-                }
-            });
+
+            $memo = $this->user_memo->select('id')->where('description', 'LIKE', "%{$description}%")->get();
+
+            $users = $users->whereIn('user_id', $memo->pluck('id'));
         }
 
         if (!empty($input['tag'])) {
             $search_tag = $input['tag'];
-            $users   = $users->filter(function (User $item) use ($search_tag) {
-                $internal_tag = [];
 
-                if ($item->internalUserMemo) {
-                    if ($item->internalUserMemo->tags) {
-                        $internal_tag = explode(',', $item->internalUserMemo->tags);
-                    }
-                    if ($internal_tag) {
-                        foreach ($internal_tag as $tag) {
-                            if (stristr($tag, $search_tag)) {
-                                return $item;
-                            }
-                        }
-                    }
-                }
-                if ($item->expertises) {
-                    $expertise_tags = $this->expertise->getDisplayTags(explode(',', $item->expertises));
-                    foreach ($expertise_tags as $tag) {
-                        if (stristr($tag, $search_tag)) {
-                            return $item;
-                        }
-                    }
+            $memo = $this->user_memo->select('id')->where('tags', 'LIKE', "%{$search_tag}%")->get();
+
+            $expertise = $this->expertise_elo->select('expertise_id')->where('tag', 'LIKE', "%{$search_tag}%")->get();
+
+            $users = $users->where(function ($users) use ($memo, $expertise) {
+                $users->orWhereIn('user_id', $memo->pluck('id'));
+                if (!empty($expertise->implode('expertise_id', ','))) {
+                    $users->orWhere('expertises', 'LIKE', "%{$expertise->implode('expertise_id', ',')}%");
                 }
             });
         }
 
         if (!empty($input['action'])) {
             $action = $input['action'];
-            $users = $users->filter(function (User $item) use ($action) {
-                if ($item->internalUserMemo) {
-                    if (stristr($item->internalUserMemo->report_action, $action)) {
-                        return $item;
-                    }
-                }
-            });
-        }
 
-        return $this->getPaginateFromCollection($users, $page, $per_page);
+            $memo = $this->user_memo->select('id')->where('report_action', 'LIKE', "%{$action}%")->get();
+
+            $users = $users->whereIn('user_id', $memo->pluck('id'));
+        }
+        $total = $users->count();
+        $users = $users->skip($per_page * ($page -1))
+                       ->take($per_page);
+
+        return $this->getSearchPaginateContainer($total, $per_page, $users->get());
     }
 
     public function filterExpertsWithToBeExperts(Collection $users)

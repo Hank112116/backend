@@ -69,7 +69,8 @@ class AdminerRepo implements AdminerInterface
                 $this->adminer = $this->adminer->orwhere('name', 'like', '%' . $pm . '%');
             }
         }
-        return $this->adminer->get();
+
+        return $this->adminer->whereNotNull('hwtrek_member')->select('hwtrek_member')->get();
     }
 
     public function validCreate($input)

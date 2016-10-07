@@ -167,4 +167,9 @@ interface ProjectInterface
      * @return boolean
      */
     public function updateProjectManager($project_id, $data);
+
+    /**
+     * @return int
+     */
+    public function getNotRecommendExpertProjectCount();
 }

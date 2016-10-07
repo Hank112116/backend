@@ -171,7 +171,8 @@ class Project extends Eloquent
 
     public function internalProjectMemo()
     {
-        return $this->hasOne(InternalProjectMemo::class, 'id', 'project_id');
+        return $this->hasOne(InternalProjectMemo::class, 'id', 'project_id')
+            ->select(['id', 'description', 'schedule_note', 'schedule_note_grade', 'tags', 'report_action']);
     }
 
     public function categoryData()
@@ -726,8 +727,8 @@ class Project extends Eloquent
 
     public function recommendExpertTime()
     {
-        if ($this->recommendExperts()->getResults()->count() > 0) {
-            $recommend_experts = $this->recommendExperts()->getResults();
+        if ($this->recommendExperts->count() > 0) {
+            $recommend_experts = $this->recommendExperts;
             return Carbon::parse($recommend_experts[0]->date_send)->toFormattedDateString();
         }
         return null;
@@ -955,53 +956,6 @@ class Project extends Eloquent
         return (object) $result;
     }
 
-    public function hasProposeSolution($dstart, $dend)
-    {
-        if (!$this->projectStatistic) {
-            return false;
-        }
-
-        if (is_null(($this->projectStatistic->last_proposed_time))) {
-            return false;
-        }
-
-        if ($this->projectStatistic->last_proposed_time >= $dstart
-            and $this->projectStatistic->last_proposed_time < $dend
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    public function hasRecommendExpert($dstart, $dend)
-    {
-        $recommend_experts = $this->recommendExperts;
-        if ($recommend_experts) {
-            foreach ($recommend_experts as $recommend_expert) {
-                if ($recommend_expert->user) {
-                    if ($recommend_expert->date_send >= $dstart && $recommend_expert->date_send < $dend) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        if (!$this->projectStatistic) {
-            return false;
-        }
-
-        if (is_null(($this->projectStatistic->last_referral_time))) {
-            return false;
-        }
-
-        if ($this->projectStatistic->last_referral_time >= $dstart
-            and $this->projectStatistic->last_referral_time < $dend
-        ) {
-            return true;
-        }
-        return false;
-    }
-
     public function getPageViewCount()
     {
         if ($this->projectStatistic) {
@@ -1039,5 +993,49 @@ class Project extends Eloquent
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Query Draft Projects
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryDraft(Builder $query)
+    {
+        return $query->where($this->profile()->draft_project);
+    }
+
+    /**
+     * Query public Projects
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryPublic(Builder $query)
+    {
+        return $query->where($this->profile()->public_project);
+    }
+
+    /**
+     * Query private Projects
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryPrivate(Builder $query)
+    {
+        return $query->where($this->profile()->private_project);
+    }
+
+    /**
+     * Query approved schedule Projects
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeQueryApprovedSchedule(Builder $query)
+    {
+        return $query->where('hub_approve', 1)
+            ->where('is_deleted', 0)
+            ->where('is_project_submitted', 1)
+            ->where('date_added', '>', env('SHOW_DATE'))
+            ->with('recommendExperts');
     }
 }

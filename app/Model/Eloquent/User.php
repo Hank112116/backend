@@ -120,6 +120,15 @@ class User extends Eloquent
         return $query->where('user_type', self::TYPE_PREMIUM_EXPERT);
     }
 
+    public function scopeQueryPendingToBeExpert($query)
+    {
+        return $query->where('user_type', self::TYPE_CREATOR)
+                     ->where(function ($query) {
+                         $query->orWhere('is_sign_up_as_expert', true)
+                               ->orWhere('is_apply_to_be_expert', true);
+                     });
+    }
+
     public function getPrimaryKey()
     {
         return $this->primaryKey;

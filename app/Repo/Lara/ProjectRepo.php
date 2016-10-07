@@ -1,6 +1,5 @@
 <?php namespace Backend\Repo\Lara;
 
-use DB;
 use Carbon;
 use Backend\Enums\DeleteReason;
 use Backend\Model\Eloquent\Project;
@@ -8,6 +7,10 @@ use Backend\Model\Eloquent\ProjectCategory;
 use Backend\Model\Eloquent\ProposeSolution;
 use Backend\Model\Eloquent\GroupMemberApplicant;
 use Backend\Model\Eloquent\ProjectMailExpert;
+use Backend\Model\Eloquent\ProjectManager;
+use Backend\Model\Eloquent\InternalProjectMemo;
+use Backend\Model\Eloquent\ProjectStatistic;
+use Backend\Model\Eloquent\Tag;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -21,7 +24,7 @@ class ProjectRepo implements ProjectInterface
 {
     use PaginateTrait;
 
-    protected $with_relations = ['user', 'recommendExperts', 'projectTeam', 'internalProjectMemo', 'projectStatistic'];
+    protected $with_relations = ['user', 'recommendExperts', 'projectTeam', 'internalProjectMemo', 'projectStatistic', 'projectManager'];
     private $project_columns  = [
         'project_id', 'user_id', 'last_editor_id', 'uuid', 'category_id',
         'project_title', 'project_country', 'date_added', 'public_draft', 'update_time',
@@ -39,6 +42,10 @@ class ProjectRepo implements ProjectInterface
     private $propose_solution;
     private $group_member_applicant;
     private $project_mail_expert;
+    private $project_manager;
+    private $project_memo;
+    private $project_statistic;
+    private $tag;
 
     public function __construct(
         AdminerInterface $adminer,
@@ -50,7 +57,11 @@ class ProjectRepo implements ProjectInterface
         ProjectModifierInterface $project_modifier,
         ProposeSolution $propose_solution,
         GroupMemberApplicant $group_member_applicant,
-        ProjectMailExpert $project_mail_expert
+        ProjectMailExpert $project_mail_expert,
+        ProjectManager $project_manager,
+        InternalProjectMemo $project_memo,
+        ProjectStatistic $project_statistic,
+        Tag $tag
     ) {
         $this->adminer                = $adminer;
         $this->project                = $project;
@@ -62,6 +73,10 @@ class ProjectRepo implements ProjectInterface
         $this->propose_solution       = $propose_solution;
         $this->group_member_applicant = $group_member_applicant;
         $this->project_mail_expert    = $project_mail_expert;
+        $this->project_manager        = $project_manager;
+        $this->project_memo           = $project_memo;
+        $this->project_statistic      = $project_statistic;
+        $this->tag                    = $tag;
     }
 
     public function find($id)
@@ -92,12 +107,15 @@ class ProjectRepo implements ProjectInterface
 
     public function byPage($page = 1, $limit = 20)
     {
-        $projects            = $this->all();
-        $not_recommend_count = $this->getNotRecommendExpertProjectCount($projects);
-        $projects            = $this->getPaginateFromCollection($projects, $page, $limit);
+        $this->setPaginateTotal($this->project->count());
 
-        $projects->not_recommend_count = $not_recommend_count;
-        return $projects;
+        $collection = $this->modelBuilder($this->project, $page, $limit)
+            ->with($this->with_relations)
+            ->select($this->project_columns)
+            ->get();
+
+
+        return $this->getPaginateContainer($this->project, $page, $limit, $collection);
     }
 
     public function byUserId($user_id)
@@ -110,160 +128,105 @@ class ProjectRepo implements ProjectInterface
         return $projects;
     }
 
+    /**
+     * @param array $input
+     * @param $page
+     * @param $per_page
+     * @param bool $do_statistics
+     * @return Collection
+     */
     public function byUnionSearch($input, $page, $per_page, $do_statistics = false)
     {
-        /* @var Collection $projects */
-        if (!empty($input['project_id'])) {
-            $projects = $this->project
-                ->select($this->project_columns)
-                ->with('recommendExperts')
-                ->orderBy('project_id', 'desc')
-                ->get();
-        } else {
-            $projects = $this->all();
-        }
-
-        $not_recommend_count = $this->getNotRecommendExpertProjectCount($projects);
+        $projects = $this->project
+            ->select($this->project_columns)
+            ->with($this->with_relations)
+            ->orderBy('project_id', 'desc');
 
         if (!empty($input['project_title'])) {
             $project_title = $input['project_title'];
-            $projects = $projects->filter(function (Project $item) use ($project_title) {
-                if (stristr($item->project_title, $project_title)) {
-                    return $item;
-                }
-            });
+            $projects = $projects->where('project_title', 'like', "%{$project_title}%");
         }
 
         if (!empty($input['project_id'])) {
             $project_id = trim($input['project_id']);
-            $projects = $projects->filter(function (Project $item) use ($project_id) {
-                if ($item->project_id == $project_id) {
-                    return $item;
-                }
-            });
+            $projects = $projects->where('project_id', $project_id);
         }
 
         if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
-            $projects = $projects->filter(function (Project $item) use ($user_name) {
-                if (stristr($item->user->textFullName(), $user_name)) {
-                    return $item;
-                }
-            });
+            $users = $this->user_repo->byName($user_name);
+            $projects = $projects->whereIn('user_id', $users->pluck('user_id'));
         }
+
 
         if (!empty($input['assigned_pm'])) {
             $assigned_pm = explode(',', $input['assigned_pm']);
             $adminers    = $this->adminer->findAssignedProjectPM($assigned_pm);
-            $projects = $projects->filter(function (Project $item) use ($adminers) {
-                if (!$adminers->isEmpty()) {
-                    if ($item->hasProjectManager()) {
-                        $project_managers = json_decode($item->getProjectManagers(), true);
-                        if ($project_managers) {
-                            foreach ($adminers as $adminer) {
-                                if (in_array($adminer->hwtrek_member, $project_managers)) {
-                                    return $item;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+
+            $project_managers = $this->project_manager
+                ->whereIn('pm_id', $adminers->pluck('hwtrek_member'))
+                ->groupBy('project_id')
+                ->get();
+            $projects = $projects->whereIn('project_id', $project_managers->pluck('project_id'));
         }
 
         if (!empty($input['description'])) {
             $description = $input['description'];
-            $projects = $projects->filter(function (Project $item) use ($description) {
-                if ($item->internalProjectMemo) {
-                    if (stristr($item->internalProjectMemo->description, $description)) {
-                        return $item;
-                    }
-                }
-            });
+            $memo = $this->project_memo->select('id')->where('description', 'like', "%{$description}%")->get();
+            $projects = $projects->whereIn('project_id', $memo->pluck('id'));
         }
 
         if (!empty($input['report_action'])) {
             $action = $input['report_action'];
-            $projects = $projects->filter(function (Project $item) use ($action) {
-                if ($item->internalProjectMemo) {
-                    if (stristr($item->internalProjectMemo->report_action, $action)) {
-                        return $item;
-                    }
-                }
-            });
+            $memo = $this->project_memo->select('id')->where('report_action', 'like', "%{$action}%")->get();
+            $projects = $projects->whereIn('project_id', $memo->pluck('id'));
         }
 
         if (!empty($input['country'])) {
             $country = $input['country'];
-            $projects = $projects->filter(function (Project $item) use ($country) {
-                if (stristr($item->project_country, $country)) {
-                    return $item;
-                }
-            });
+            $projects = $projects->where('project_country', 'like', "%{$country}%");
         }
-
         if (!empty($input['status'])) {
             if ($input['status'] != 'all') {
                 $status   = $input['status'];
-                $projects = $projects->filter(function (Project $item) use ($status) {
-                    switch ($status) {
-                        case 'public':
-                            if ($item->profile->isPublic()) {
+
+                switch ($status) {
+                    case 'public':
+                        $projects = $projects->queryPublic();
+                        break;
+                    case 'private':
+                        $projects = $projects->queryPrivate();
+                        break;
+                    case 'draft':
+                        $projects = $projects->queryDraft();
+                        break;
+                    case 'deleted':
+                        $projects = $projects->queryDeleted();
+                        break;
+                    case 'not-yet-email-out':
+                        $projects = $projects->queryApprovedSchedule()->get();
+
+                        $projects = $projects->filter(function (Project $item) {
+                            if ($item->recommendExperts->count() == 0) {
                                 return $item;
                             }
-                            break;
-                        case 'private':
-                            if ($item->profile->isPrivate()) {
-                                return $item;
-                            }
-                            break;
-                        case 'draft':
-                            if ($item->profile->isDraft()) {
-                                return $item;
-                            }
-                            break;
-                        case 'deleted':
-                            if ($item->isDeleted()) {
-                                return $item;
-                            }
-                            break;
-                        case 'not-yet-email-out':
-                            if ($item->hub_approve
-                                and $item->recommendExperts->count() == 0
-                                and !$item->isDeleted()
-                                and !$item->profile->isDraft()
-                                and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))
-                            ) {
-                                return $item;
-                            }
-                            break;
-                    }
-                });
+                        });
+                        return $projects = $this->getPaginateFromCollection($projects, $page, $per_page);
+                        break;
+                }
             }
         }
 
         if (!empty($input['tag'])) {
             $search_tag = $this->tag_builder->tagTransformKey($input['tag']);
-            $projects   = $projects->filter(function (Project $item) use ($search_tag) {
+            $memo = $this->project_memo->select('id')->where('tags', 'like', "%{$input['tag']}%")->get();
 
-                if ($item->isSimilarTag($search_tag)) {
-                    return $item;
-                }
-                $internal_tag = [];
-                if ($item->internalProjectMemo) {
-                    if ($item->internalProjectMemo->tags) {
-                        $internal_tag = explode(',', $item->internalProjectMemo->tags);
-                    }
-                    if ($internal_tag) {
-                        foreach ($internal_tag as $tag) {
-                            if (stristr($tag, $search_tag)) {
-                                return $item;
-                            }
-                        }
-                    }
-                }
+            $projects = $projects->where(function ($projects) use ($search_tag, $memo) {
+                $projects->orWhere('tags', 'like', "%{$search_tag}%")
+                    ->orWhereIn('project_id', $memo->pluck('id'));
             });
         }
+
 
         if (!empty($input['dstart']) and !empty($input['time_type'])) {
             $dstart = $input['dstart'];
@@ -276,42 +239,37 @@ class ProjectRepo implements ProjectInterface
 
             $time_type = $input['time_type'];
 
-            $projects = $projects->filter(function (Project $item) use ($dstart, $dend, $time_type) {
-                switch ($time_type)
-                {
-                    case 'update':
-                        $update_time = Carbon::parse($item->update_time)->toDateString();
-                        if ($update_time < $dend && $update_time >= $dstart) {
-                            return $item;
-                        }
-                        break;
-                    case 'create':
-                        $create_time = Carbon::parse($item->date_added)->toDateString();
-                        if ($create_time < $dend && $create_time >= $dstart) {
-                            return $item;
-                        }
-                        break;
-                    case 'release':
-                        if ($item->recommendExperts->count() > 0) {
-                            $recommend_experts = $item->recommendExperts->getResults();
-                            $release_time = Carbon::parse($recommend_experts[0]->date_send)->toDateString();
-                            if ($release_time < $dend && $release_time >= $dstart) {
-                                return $item;
-                            }
-                        }
-                        break;
-                    case 'match':
-                        $create_time = Carbon::parse($item->date_added)->toDateString();
-                        if ($item->hasProposeSolution($dstart, $dend) or
-                            $item->hasRecommendExpert($dstart, $dend) or
-                            ($create_time < $dend && $create_time >= $dstart)
-                        ) {
-                            return $item;
-                        }
-                        break;
-                }
-            });
+            switch ($time_type)
+            {
+                case 'update':
+                    $projects = $projects->whereBetween('update_time', [$dstart, $dend]);
+
+                    break;
+                case 'create':
+                    $projects = $projects->whereBetween('date_added', [$dstart, $dend]);
+                    break;
+                case 'release':
+                    $release_projects = $this->project_mail_expert
+                        ->whereBetween('date_send', [$dstart, $dend])
+                        ->select('project_id')
+                        ->groupBy('project_id')
+                        ->get();
+                    $projects = $projects->whereIn('project_id', $release_projects->pluck('project_id'));
+
+                    break;
+                case 'match':
+                    $project_statistic = $this->project_statistic
+                        ->select('id')
+                        ->orWhereBetween('last_referral_time', [$dstart, $dend])
+                        ->orWhereBetween('last_proposed_time', [$dstart, $dend])
+                        ->groupBy('id')
+                        ->get();
+                    $projects = $projects->whereBetween('date_added', [$dstart, $dend])->whereIn('project_id', $project_statistic->pluck('id'));
+                    break;
+            }
+
         }
+        $projects = $projects->get();
         $search_projects = $projects;
         $projects        = $this->getPaginateFromCollection($projects, $page, $per_page);
 
@@ -323,8 +281,6 @@ class ProjectRepo implements ProjectInterface
             $projects->match_statistics = $match;
             $projects->user_referrals = $user_referrals;
         }
-
-        $projects->not_recommend_count = $not_recommend_count;
 
         return $projects;
     }
@@ -520,15 +476,13 @@ class ProjectRepo implements ProjectInterface
         return $this->project_modifier->updateProjectManager($project_id, $data);
     }
 
-    private function getNotRecommendExpertProjectCount(Collection $projects)
+    public function getNotRecommendExpertProjectCount()
     {
+        $projects = $this->project
+            ->queryApprovedSchedule()
+            ->get();
         $projects = $projects->filter(function (Project $item) {
-            if ($item->hub_approve
-                and $item->recommendExperts->count() === 0
-                and !$item->isDeleted()
-                and !$item->profile->isDraft()
-                and Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($item->date_added))
-            ) {
+            if ($item->recommendExperts->count() === 0) {
                 return $item;
             }
         });

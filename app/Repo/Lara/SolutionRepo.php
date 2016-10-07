@@ -28,6 +28,7 @@ class SolutionRepo implements SolutionInterface
     private $certification;
     private $image_uploader;
     private $feature;
+    private $user_repo;
 
     public function __construct(
         Solution $solution,
@@ -38,7 +39,8 @@ class SolutionRepo implements SolutionInterface
         FeatureModifierInterface $feature_modify,
         SolutionCategory $category,
         SolutionCertification $certification,
-        ImageUp $uploader
+        ImageUp $uploader,
+        UserInterface $user_repo
     ) {
         $this->solution            = $solution;
         $this->duplicate           = $duplicate;
@@ -49,6 +51,7 @@ class SolutionRepo implements SolutionInterface
         $this->certification       = $certification;
         $this->image_uploader      = $uploader;
         $this->feature             = $feature_modify;
+        $this->user_repo           = $user_repo;
     }
 
     public function duplicateRepo()
@@ -96,7 +99,7 @@ class SolutionRepo implements SolutionInterface
     
     public function byPage($page = 1, $limit = 20)
     {
-        $this->setPaginateTotal($this->all()->count());
+        $this->setPaginateTotal($this->solution->count());
 
         $collection = $this->modelBuilder($this->solution, $page, $limit)
             ->with('user')
@@ -213,34 +216,22 @@ class SolutionRepo implements SolutionInterface
 
     public function byUnionSearch($input, $page, $per_page)
     {
-        /* @var Collection $solutions */
-        $solutions = $this->solution->orderBy('solution_id', 'desc')->get();
+        $solutions = $this->solution->with('user')->orderBy('solution_id', 'desc');
 
         if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
-            $solutions = $solutions->filter(function (Solution $item) use ($user_name) {
-                if (stristr($item->user->textFullName(), $user_name)) {
-                    return $item;
-                }
-            });
+            $users = $this->user_repo->byName($user_name);
+            $solutions = $solutions->whereIn('user_id', $users->pluck('user_id'));
         }
 
         if (!empty($input['solution_title'])) {
             $solution_title = $input['solution_title'];
-            $solutions      = $solutions->filter(function (Solution $item) use ($solution_title) {
-                if (stristr($item->solution_title, $solution_title)) {
-                    return $item;
-                }
-            });
+            $solutions = $solutions->where('solution_title', 'LIKE', "%{$solution_title}%");
         }
 
         if (!empty($input['solution_id'])) {
             $solution_id = $input['solution_id'];
-            $solutions   = $solutions->filter(function (Solution $item) use ($solution_id) {
-                if ($item->solution_id == $solution_id) {
-                    return $item;
-                }
-            });
+            $solutions = $solutions->where('solution_id', $solution_id);
         }
 
         if (!empty($input['dstart'])) {
@@ -251,73 +242,50 @@ class SolutionRepo implements SolutionInterface
             } else {
                 $dend = Carbon::tomorrow()->toDateString();
             }
-            $solutions = $solutions->filter(function (Solution $item) use ($dstart, $dend) {
-                $approve_time = Carbon::parse($item->approve_time)->toDateString();
-                if ($approve_time < $dend
-                    and $approve_time >= $dstart
-                    and !is_null($item->approve_time)
-                ) {
-                    return $item;
-                }
-            });
+
+            $solutions = $solutions->whereBetween('approve_time', [$dstart, $dend]);
         }
 
         if (!empty($input['status'])) {
             if ($input['status'] != 'all') {
                 $status   = $input['status'];
-                $solutions = $solutions->filter(function (Solution $item) use ($status) {
-                    switch ($status) {
-                        case 'solution':
-                            if ($item->isSolution()) {
-                                return $item;
-                            }
-                            break;
-                        case 'program':
-                            if ($item->isProgram()) {
-                                return $item;
-                            }
-                            break;
-                        case 'unfinished':
-                            if ($item->isDraft()) {
-                                return $item;
-                            }
-                            break;
-                        case 'on-shelf':
-                            if ($item->isOnShelf()) {
-                                return $item;
-                            }
-                            break;
-                        case 'off-shelf':
-                            if ($item->isOffShelf()) {
-                                return $item;
-                            }
-                            break;
-                        case 'pending-approve':
-                            if ($item->isWaitApprove()) {
-                                return $item;
-                            }
-                            break;
-                        case 'pending-program':
-                            if ($item->isPendingProgram()) {
-                                return $item;
-                            }
-                            break;
-                        case 'pending-solution':
-                            if ($item->isPendingSolution()) {
-                                return $item;
-                            }
-                            break;
-                        case 'deleted':
-                            if ($item->isDeleted()) {
-                                return $item;
-                            }
-                            break;
-                    }
-                });
+                switch ($status) {
+                    case 'solution':
+                        $solutions = $solutions->querySolution();
+                        break;
+                    case 'program':
+                        $solutions = $solutions->queryProgram();
+                        break;
+                    case 'unfinished':
+                        $solutions = $solutions->queryDraft();
+                        break;
+                    case 'on-shelf':
+                        $solutions = $solutions->queryOnShelf();
+                        break;
+                    case 'off-shelf':
+                        $solutions = $solutions->queryOffShelf();
+                        break;
+                    case 'pending-approve':
+                        $solutions = $solutions->queryWaitApproved();
+                        break;
+                    case 'pending-program':
+                        $solutions = $solutions->queryPendingProgram();
+                        break;
+                    case 'pending-solution':
+                        $solutions = $solutions->queryPendingSolution();
+                        break;
+                    case 'deleted':
+                        $solutions = $solutions->queryDeleted();
+                        break;
+                }
             }
         }
 
-        return $this->getPaginateFromCollection($solutions, $page, $per_page);
+        $total = $solutions->count();
+        $solutions = $solutions->skip($per_page * ($page -1))
+            ->take($per_page);
+
+        return $this->getSearchPaginateContainer($total, $per_page, $solutions->get());
     }
 
     public function configApprove($solutions)
