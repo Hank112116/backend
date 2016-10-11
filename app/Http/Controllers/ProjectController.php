@@ -6,6 +6,7 @@ use Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
+use Backend\Repo\RepoInterfaces\ProjectStatisticInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Model\Plain\TagNode;
 use Input;
@@ -24,19 +25,22 @@ class ProjectController extends BaseController
     private $adminer_repo;
     private $hub_repo;
     private $user_repo;
+    private $project_stat_repo;
 
     public function __construct(
         ProjectInterface $project,
         AdminerInterface $adminer,
         HubInterface $hub,
-        UserInterface $user
+        UserInterface $user,
+        ProjectStatisticInterface $project_statistics
     ) {
         parent::__construct();
-        $this->project_repo = $project;
-        $this->adminer_repo = $adminer;
-        $this->hub_repo     = $hub;
-        $this->user_repo    = $user;
-        $this->per_page     = 100;
+        $this->project_repo      = $project;
+        $this->adminer_repo      = $adminer;
+        $this->hub_repo          = $hub;
+        $this->user_repo         = $user;
+        $this->project_stat_repo = $project_statistics;
+        $this->per_page           = 100;
     }
 
     public function showList()
@@ -79,16 +83,21 @@ class ProjectController extends BaseController
                 $pm_ids[] = $pm->user_id;
             }
         }
+
         $projects->not_recommend_count = $this->project_repo->getNotRecommendExpertProjectCount();
+
+        $project_stats = $this->project_stat_repo->loadProjectStatistics($projects->getCollection());
+
         return view('project.list')
             ->with([
-                'title'               => $title ?: 'projects',
-                'projects'            => $projects,
-                'per_page'            => $this->per_page,
-                'show_paginate'       => $paginate,
-                'adminers'            => $this->adminer_repo->all(),
-                'tag_tree'            => TagNode::tags(),
-                'pm_ids'              => $pm_ids
+                'title'            => $title ?: 'projects',
+                'projects'         => $projects,
+                'per_page'         => $this->per_page,
+                'show_paginate'    => $paginate,
+                'adminers'         => $this->adminer_repo->all(),
+                'tag_tree'         => TagNode::tags(),
+                'pm_ids'           => $pm_ids,
+                'project_stats'    => $project_stats
             ]);
     }
 
@@ -214,6 +223,9 @@ class ProjectController extends BaseController
         $input = Input::all();
         if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
             $project = $this->project_repo->find($input['project_id']);
+
+            $project_stats = $this->project_stat_repo->loadProjectStatistic($project);
+
             if ($input['route_path'] === 'report/project') {
                 // make report project row view
                 $view = View::make('report.project-row')
@@ -221,7 +233,13 @@ class ProjectController extends BaseController
                     ->render();
             } else {
                 // make project row view
-                $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+                $view = View::make('project.row')->with(
+                    [
+                        'project'       => $project,
+                        'tag_tree'      => TagNode::tags(),
+                        'project_stats' => $project_stats
+                    ]
+                )->render();
             }
             $res  = ['status' => 'success', 'view' => $view];
         } else {
@@ -238,8 +256,16 @@ class ProjectController extends BaseController
     {
         $input = Input::all();
         if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
-            $project = $this->project_repo->find($input['project_id']);
-            $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+            $project       = $this->project_repo->find($input['project_id']);
+            $project_stats = $this->project_stat_repo->loadProjectStatistic($project);
+            // make project row view
+            $view = View::make('project.row')->with(
+                [
+                    'project'       => $project,
+                    'tag_tree'      => TagNode::tags(),
+                    'project_stats' => $project_stats
+                ]
+            )->render();
             $res  = ['status' => 'success', 'view' => $view];
         } else {
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
@@ -311,7 +337,16 @@ class ProjectController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+        $project_stats = $this->project_stat_repo->loadProjectStatistic($project);
+        // make project row view
+        $view = View::make('project.row')->with(
+            [
+                'project'       => $project,
+                'tag_tree'      => TagNode::tags(),
+                'project_stats' => $project_stats
+            ]
+        )->render();
+        
         $res  = ['status' => 'success', 'view' => $view];
 
         return Response::json($res);

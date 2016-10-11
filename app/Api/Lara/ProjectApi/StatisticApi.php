@@ -5,8 +5,6 @@ namespace Backend\Api\Lara\ProjectApi;
 use Backend\Api\ApiInterfaces\ProjectApi\StatisticApiInterface;
 use Backend\Api\Lara\HWTrekApi;
 use Backend\Enums\URI\API\HWTrek\ProjectApiEnum;
-use Backend\Model\Eloquent\Project;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
 class StatisticApi extends HWTrekApi implements StatisticApiInterface
