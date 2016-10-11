@@ -26,8 +26,7 @@ class StatisticApi extends HWTrekApi implements StatisticApiInterface
         foreach ($this->projects as $project) {
             $project_ids[] = $project->project_id;
         }
-        $uri = str_replace('(:any)', implode('+', $project_ids), ProjectApiEnum::PROJECT_STATISTICS);
-        $url = $this->hwtrek_url . $uri;
+        $url = $this->hwtrek_url . ProjectApiEnum::PROJECT_STATISTICS . '?projectIds=' . json_encode($project_ids);
         $r   = $this->get($url);
         return $this->response((array) $r);
     }
