@@ -156,13 +156,6 @@
                         </li>
                     </ul>
                 </li>
-
-                <li>
-                    <a href="{!! action('InboxController@index') !!}">
-                        <i class="fa fa-inbox fa-fw"></i>
-                        Inbox
-                    </a>
-                </li>
                 @endif
 
                 <li>

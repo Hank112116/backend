@@ -48,10 +48,12 @@
         </div>
         <div class="form-group has-feedback">
             {!! Form::select('filter',[
-                'all'     => 'Show All',
-                'pm'      => 'Show Internal PM',
-                'expert'  => 'Show Expert',
-                'creator' => 'Show Creator',
+                'all'            => 'Show All',
+                'pm'             => 'Show Internal PM',
+                'expert'         => 'Show Expert',
+                'premium-expert' => 'Show Premium Expert',
+                'creator'        => 'Show Creator',
+                'to-be-expert'   => 'Show To Be Expert'
             ], Input::get('filter'), ['class'=>'form-control']) !!}
             {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'id'=>'search-name', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-id").value=""']) !!}
             {!! Form::text('id', Input::get('id'), ['placeholder'=>"Search by user ID", 'id'=>'search-id', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-name").value=""']) !!}
@@ -90,7 +92,7 @@
                         @if($is_super_admin && $user->isHWTrekPM())
                             <td>{!! $user->textHWTrekPM() !!}({!! $user->textType() !!})</td>
                         @else
-                            <td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+                            <td>{{ $user->textType() }}</td>
                         @endif
                         <td><span style="font-size:1.3em">{!! $user->commentCount !!}</span> <span> of total {!! $user->totalCommentCount !!}.</span></td>
                     </tr>

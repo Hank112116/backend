@@ -149,6 +149,12 @@ interface UserInterface
      * @param Collection $users
      * @return Collection|User[]
      */
+    public function filterPremiumExperts(Collection $users);
+
+    /**
+     * @param Collection $users
+     * @return Collection|User[]
+     */
     public function filterCreator(Collection $users);
 
     /**
@@ -156,6 +162,12 @@ interface UserInterface
      * @return Collection|User[]
      */
     public function filterPM(Collection $users);
+
+    /**
+     * @param Collection $users
+     * @return Collection|User[]
+     */
+    public function filterToBeExpert(Collection $users);
 
     /**
      * @param $dstart

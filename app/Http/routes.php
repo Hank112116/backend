@@ -49,16 +49,6 @@ Route::group(['before' => 'backend.user'], function () {
     Route::post('user/put-attachment', 'UserController@putAttachment');
 });
 
-// Inbox
-Route::group(['before' => 'backend.user'], function () {
-
-    Route::get('inbox', 'InboxController@index');
-    Route::get('inbox/topics', 'InboxController@topics');
-    Route::get('inbox/search', 'InboxController@search');
-
-    Route::post('inbox/delete/{message_id}', 'InboxController@delete');
-
-});
 
 // Project
 Route::group(['before' => 'backend.project'], function () {

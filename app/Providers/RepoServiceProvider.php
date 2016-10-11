@@ -35,11 +35,6 @@ class RepoServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Repo\RepoInterfaces\InboxInterface',
-            'Backend\Repo\Lara\InboxRepo'
-        );
-
-        $this->app->bind(
             'Backend\Repo\RepoInterfaces\ProjectInterface',
             function ($app) {
                 return new Lara\ProjectRepo(
@@ -111,7 +106,10 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\Lara\ProjectMailExpertRepo'
         );
 
-        $this->app->bind('Backend\Repo\RepoInterfaces\CommentInterface', 'Backend\Repo\Lara\CommentRepo');
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\CommentInterface',
+            'Backend\Repo\Lara\CommentRepo'
+        );
 
 
         $this->app->bind(

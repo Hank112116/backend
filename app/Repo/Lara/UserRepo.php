@@ -50,7 +50,7 @@ class UserRepo implements UserInterface
         $this->expertise             = $expertise;
         $this->apply_expert_msg_repo = $apply_expert_msg_repo;
         $this->image_uplodaer        = $image_uploader;
-        $this->expertise_elo             = $expertise_elq;
+        $this->expertise_elo         = $expertise_elq;
     }
 
     public function dummy()
@@ -331,7 +331,16 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isExpert();
+                return $user->isExpert() && !$user->isHWTrekPM() && !$user->isPremiumExpert();
+            }
+        );
+    }
+
+    public function filterPremiumExperts(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isPremiumExpert();
             }
         );
     }
@@ -340,7 +349,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isCreator();
+                return $user->isCreator() && !$user->isPendingExpert();
             }
         );
     }
@@ -350,6 +359,15 @@ class UserRepo implements UserInterface
         return $users->filter(
             function (User $user) {
                 return $user->isHWTrekPM();
+            }
+        );
+    }
+
+    public function filterToBeExpert(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isPendingExpert();
             }
         );
     }
@@ -386,9 +404,6 @@ class UserRepo implements UserInterface
             },
             'sendHubProjectSolutionCommentCount' => function ($q) use ($dstart, $dend) {
                 $q->where('profession_id', 0)->whereBetween('date_added', [ $dstart, $dend ]);
-            },
-            'inboxCount'                         => function ($q) use ($dstart, $dend) {
-                $q->whereBetween('date_added', [ $dstart, $dend ]);
             },
             'sendUserCommentCount'               => function ($q) use ($dstart, $dend) {
                 $q->whereBetween('created_at', [ $dstart, $dend ]);

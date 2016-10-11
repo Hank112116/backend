@@ -68,16 +68,23 @@ class ReportRepo implements ReportInterface
             $users = $this->user_repo->getCommentCountsByDate($timeRange[0], $timeRange[1]);
         }
 
-        if ($filter === 'expert') {
-            $users = $this->user_repo->filterExpertsWithToBeExperts($users);
+        switch ($filter) {
+            case 'expert':
+                $users = $this->user_repo->filterExperts($users);
+                break;
+            case 'premium-expert':
+                $users = $this->user_repo->filterPremiumExperts($users);
+                break;
+            case 'creator':
+                $users = $this->user_repo->filterCreator($users);
+                break;
+            case 'to-be-expert':
+                $users = $this->user_repo->filterToBeExpert($users);
+                break;
+            case 'pm':
+                $users = $this->user_repo->filterPM($users);
+                break;
         }
-        if ($filter === 'creator') {
-            $users = $this->user_repo->filterCreatorWithoutToBeExperts($users);
-        }
-        if ($filter === 'pm') {
-            $users = $this->user_repo->filterPM($users);
-        }
-
 
         $users = $users->sort(function ($user1, $user2) {
             return $user2->commentCount - $user1->commentCount ?: $user2->user_id - $user1->user_id; // First sort by sendCommentCount, and second sort by user_id
