@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.6.2
+* [CHANGE] improve performance (@Hank)
+* [CHANGE] remove inbox model (@Hank)
+
 ## v2.6.1
 * [CHANGE] adjust AIT event email send status (@Hank)
 
