@@ -110,7 +110,7 @@ class Solution extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select(['user_id', 'user_name', 'last_name']);
+        return $this->belongsTo(User::class)->select(['user_id', 'user_name', 'last_name', 'country', 'city']);
     }
 
     /**
