@@ -19,6 +19,16 @@ class SolutionRepo implements SolutionInterface
 {
     use PaginateTrait;
 
+    private $select_columns = [
+        'solution_id', 'user_id', 'solution_title', 'active', 'date_added', 'previously_approved',
+        'solution_draft', 'is_manager_approved', 'update_time', 'approve_time', 'tags', 'solution_type',
+        'business_prospect_reference', 'business_prospect_reference_other', 'project_category_co_work',
+        'project_category_co_work_other', 'solution_obtained', 'solution_obtained_other', 'solution_detail',
+        'solution_application_compatibility', 'customer_portfolio', 'agree',
+        'is_deleted', 'deleted_date', 'deleted_reason', 'is_program', 'is_manager_upgrade_to_program',
+        'is_manager_downgrade_to_solution', 'first_submitted_at'
+    ];
+
     private $wait_approve;
     private $solution;
     private $duplicate;
@@ -103,6 +113,7 @@ class SolutionRepo implements SolutionInterface
 
         $collection = $this->modelBuilder($this->solution, $page, $limit)
             ->with('user')
+            ->select($this->select_columns)
             ->get();
 
         $collection = $this->configApprove($collection);
@@ -216,7 +227,10 @@ class SolutionRepo implements SolutionInterface
 
     public function byUnionSearch($input, $page, $per_page)
     {
-        $solutions = $this->solution->with('user')->orderBy('solution_id', 'desc');
+        $solutions = $this->solution
+            ->with('user')
+            ->select($this->select_columns)
+            ->orderBy('solution_id', 'desc');
 
         if (!empty($input['user_name'])) {
             $user_name = $input['user_name'];
