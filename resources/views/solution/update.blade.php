@@ -29,15 +29,10 @@
                 @endif
             @endif
             @if (!$is_restricted && $solution->isWaitApprove() and (!$solution->is_manager_approved or Auth::user()->isAdmin() or Auth::user()->isManagerHead()))
-            <a href="{!! action('SolutionController@approve', $solution->solution_id) !!}"
-                class="btn-mini btn-flat-green">
-                <i class="fa fa-shield fa-fw"></i> Approve
-            </a>
-
-            <a href="{!! action('SolutionController@reject', $solution->solution_id) !!}"
-                class="btn-mini btn-flat-purple">
-                <i class="fa fa-shield fa-fw"></i> Reject
-            </a>
+            <button class="btn-mini btn-flat-green js-approve-solution" rel="{{ $solution->solution_id }}">
+                <i class="fa fa-shield fa-fw"></i> Approve</button>
+            <button class="btn-mini btn-flat-purple js-reject-solution" rel="{{ $solution->solution_id }}">
+                <i class="fa fa-shield fa-fw"></i> Reject</button>
             @endif
         </div>
 

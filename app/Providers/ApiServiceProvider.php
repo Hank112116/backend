@@ -42,5 +42,15 @@ class ApiServiceProvider extends ServiceProvider
             'Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface',
             'Backend\Api\Lara\SolutionApi\ApproveApi'
         );
+
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface',
+            'Backend\Api\Lara\ProjectApi\ReleaseApi'
+        );
+
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\ProjectApi\StatisticApiInterface',
+            'Backend\Api\Lara\ProjectApi\StatisticApi'
+        );
     }
 }

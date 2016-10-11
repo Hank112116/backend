@@ -1,5 +1,6 @@
 <?php namespace Backend\Http\Controllers;
 
+use Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
@@ -7,11 +8,12 @@ use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
 use Backend\Model\Plain\TagNode;
 use Mews\Purifier\Purifier;
+use App;
+use Carbon;
 use Input;
 use Log;
 use Response;
 use Session;
-use Carbon;
 use View;
 
 class EmailSendController extends BaseController
@@ -84,6 +86,16 @@ class EmailSendController extends BaseController
             $this->pme_repo->insertItem($data);
             
         }
+        /* @var ReleaseApiInterface $release_api*/
+        $release_api = App::make(ReleaseApiInterface::class, ['project' => $project]);
+
+        $response    = $release_api->staffRecommendExperts();
+
+        if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
+            $res   = ['status' => 'fail', 'msg' => $response->getContent()];
+            return Response::json($res);
+        }
+        
         $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
         $res   = ['status' => 'success', 'view'=> $view];
 

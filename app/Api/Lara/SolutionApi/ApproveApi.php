@@ -4,19 +4,18 @@ namespace Backend\Api\Lara\SolutionApi;
 
 use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
 use Backend\Api\Lara\HWTrekApi;
+use Backend\Enums\URI\API\HWTrek\SolutionApiEnum;
 use Backend\Enums\URI\API\HWTrekApiEnum;
 use Backend\Model\Eloquent\Solution;
 
 class ApproveApi extends HWTrekApi implements ApproveApiInterface
 {
     private $solution;
-    private $url;
 
     public function __construct(Solution $solution)
     {
         parent::__construct();
         $this->solution = $solution;
-        $this->url      = 'https://' . $this->front_domain . HWTrekApiEnum::API . HWTrekApiEnum::SOLUTION . '/' . $solution->solution_id;
     }
 
     /**
@@ -24,7 +23,8 @@ class ApproveApi extends HWTrekApi implements ApproveApiInterface
      */
     public function approve()
     {
-        $url = $this->url . HWTrekApiEnum::APPROVE;
+        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::APPROVE);
+        $url = $this->hwtrek_url . $uri;
         $r = $this->patch($url);
         return $this->response((array) $r);
     }
@@ -34,7 +34,8 @@ class ApproveApi extends HWTrekApi implements ApproveApiInterface
      */
     public function reject()
     {
-        $url = $this->url . HWTrekApiEnum::REJECT_APPROVE;
+        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::REJECT_APPROVE);
+        $url = $this->hwtrek_url . $uri;
         $r = $this->patch($url);
         return $this->response((array) $r);
     }

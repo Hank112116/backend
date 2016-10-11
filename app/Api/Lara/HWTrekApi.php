@@ -17,8 +17,8 @@ use Log;
 class HWTrekApi
 {
     protected $curl;
-    
     protected $front_domain;
+    protected $hwtrek_url;
 
     public function __construct()
     {
@@ -26,7 +26,7 @@ class HWTrekApi
         $curl               = new Curl();
         $curl               = $this->setAccessToken($curl);
         $this->curl         = $curl;
-
+        $this->hwtrek_url   = 'https://' . $this->front_domain;
     }
     
     public function __destruct()

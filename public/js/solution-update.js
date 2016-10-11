@@ -505,6 +505,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.boot = boot;
+exports.approveSolution = approveSolution;
+exports.rejectSolution = rejectSolution;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -538,6 +540,60 @@ function boot() {
     new _SolutionCustomerUpdater2["default"]();
 }
 
+function approveSolution() {
+    $(".js-approve-solution").click(function () {
+        var $this = $(this);
+        var solution_id = $this.attr("rel");
+        $.ajax({
+            type: "POST",
+            url: "/solution/approve/" + solution_id,
+            dataType: "JSON",
+            statusCode: {
+                204: function _() {
+                    Notifier.showTimedMessage("Upload success", "information", 2);
+                    location.href = "/solution/detail/" + solution_id;
+                },
+                403: function _($data) {
+                    Notifier.showTimedMessage($data.responseJSON.error.message, "warning", 2);
+                },
+                404: function _($data) {
+                    Notifier.showTimedMessage($data.responseJSON.error.message, "warning", 2);
+                },
+                500: function _() {
+                    Notifier.showTimedMessage("Server error", "warning", 2);
+                }
+            }
+        });
+    });
+}
+
+function rejectSolution() {
+    $(".js-reject-solution").click(function () {
+        var $this = $(this);
+        var solution_id = $this.attr("rel");
+        $.ajax({
+            type: "POST",
+            url: "/solution/reject/" + solution_id,
+            dataType: "JSON",
+            statusCode: {
+                204: function _() {
+                    Notifier.showTimedMessage("Upload success", "information", 2);
+                    location.href = "/solution/detail/" + solution_id;
+                },
+                403: function _($data) {
+                    Notifier.showTimedMessage($data.responseJSON.error.message, "warning", 2);
+                },
+                404: function _($data) {
+                    Notifier.showTimedMessage($data.responseJSON.error.message, "warning", 2);
+                },
+                500: function _() {
+                    Notifier.showTimedMessage("Server error", "warning", 2);
+                }
+            }
+        });
+    });
+}
+
 },{"./ProjectUpdater":2,"./SolutionCategoryUpdater":3,"./SolutionCustomerUpdater":4}],6:[function(require,module,exports){
 "use strict";
 
@@ -554,6 +610,8 @@ var SolutionUpdater = _interopRequireWildcard(_libsSolutionUpdater);
 $(function () {
     FormUtility.editor();
     SolutionUpdater.boot();
+    SolutionUpdater.approveSolution();
+    SolutionUpdater.rejectSolution();
 });
 
 },{"./libs/FormUtility":1,"./libs/SolutionUpdater":5}]},{},[6]);

@@ -238,18 +238,7 @@ class SolutionController extends BaseController
     {
         $solution = $this->solution_repo->find($solution_id);
         $approve_api = App::make(ApproveApiInterface::class, ['solution' => $solution]);
-        $approve_api->approve();
-        $log_action = 'Approve solutions';
-        $log_data   = [
-            'solution' => $solution_id,
-            'approve'  => true
-        ];
-        Log::info($log_action, $log_data);
-
-        $this->solution_repo->approve($solution_id, Auth::user()->isBackendPM());
-        Noty::successLang('solution.approve');
-
-        return Redirect::action('SolutionController@showDetail', $solution_id);
+        return $approve_api->approve();
     }
     //change solution type to program (solution table:is_program)
     public function toProgram()
@@ -322,17 +311,10 @@ class SolutionController extends BaseController
 
     public function reject($solution_id)
     {
-        $log_action = 'Reject solutions';
-        $log_data   = [
-            'solution' => $solution_id,
-            'approve'  => false
-        ];
-        Log::info($log_action, $log_data);
+        $solution = $this->solution_repo->find($solution_id);
+        $approve_api = App::make(ApproveApiInterface::class, ['solution' => $solution]);
 
-        $this->solution_repo->reject($solution_id);
-        Noty::successLang('solution.reject');
-
-        return Redirect::action('SolutionController@showDetail', $solution_id);
+        return $approve_api->reject();
     }
 
     public function approveEdition($solution_id)

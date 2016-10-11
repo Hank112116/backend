@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
@@ -13,7 +14,7 @@ use Redirect;
 use Log;
 use Response;
 use View;
-use Request;
+use App;
 
 class ProjectController extends BaseController
 {
@@ -289,15 +290,24 @@ class ProjectController extends BaseController
         $project = $this->project_repo->find($id);
         if ($project->isDeleted()) {
             Noty::warn('Permission deny');
-            $res   = ['status' => 'fail', "msg" => "Permission deny"];
+            $res   = ['status' => 'fail', 'msg' => 'Permission deny'];
             return Response::json($res);
         }
-        $project = $this->hub_repo->approveSchedule($project);
+        /* @var ReleaseApiInterface $release_api*/
+        $release_api = App::make(ReleaseApiInterface::class, ['project' => $project]);
 
+        $response = $release_api->releaseSchedule();
+
+        if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
+            $error_message = json_decode($response->getContent());
+            $res   = ['status' => 'fail', 'msg' => $error_message->error->message];
+            return Response::json($res);
+        }
+
+        $project->hub_approve = true;
         $log_action = 'Approve project';
         $log_data   = [
-            'project' => $id,
-            'approve' => $project->hub_approve,
+            'project' => $id
         ];
         Log::info($log_action, $log_data);
 
