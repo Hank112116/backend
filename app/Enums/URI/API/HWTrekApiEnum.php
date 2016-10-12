@@ -27,6 +27,4 @@ class HWTrekApiEnum
      * Solution
      */
     const SOLUTION       = '/solutions';
-    const APPROVE        = '/approve';
-    const REJECT_APPROVE = '/reject-approve';
 }

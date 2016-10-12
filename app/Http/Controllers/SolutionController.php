@@ -3,11 +3,10 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
-use Backend\Repo\Lara\SolutionRepo;
-use Illuminate\Support\Collection;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
+use Illuminate\Contracts\View\View;
 use App;
 use Auth;
 use Input;
@@ -240,6 +239,7 @@ class SolutionController extends BaseController
         $approve_api = App::make(ApproveApiInterface::class, ['solution' => $solution]);
         return $approve_api->approve();
     }
+
     //change solution type to program (solution table:is_program)
     public function toProgram()
     {
@@ -274,7 +274,8 @@ class SolutionController extends BaseController
         }
         return Response::json($res);
     }
-    //cancel penging solution to program
+
+    //cancel pending solution to program
     public function cancelPendingSolution()
     {
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
@@ -291,7 +292,8 @@ class SolutionController extends BaseController
         }
         return Response::json($res);
     }
-    //cancel penfing program to solution
+
+    //cancel pending program to solution
     public function cancelPendingProgram()
     {
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {

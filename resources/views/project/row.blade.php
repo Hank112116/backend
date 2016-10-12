@@ -54,14 +54,14 @@
 </td>
 
 <td>
-    @include('project.list-propose-statistic', ['propose_solution' => $project_stats[$project->project_id]])
+    @include('project.list-propose-statistic', ['propose_solution' => $project->getStatistic()])
 </td>
 <td>
-    @include('project.list-recommend-statistic', ['recommend_expert' => $project_stats[$project->project_id], 'email_out_count' => $project->getEmailOutCount()])
+    @include('project.list-recommend-statistic', ['recommend_expert' => $project->getStatistic(), 'email_out_count' => $project->getEmailOutCount()])
 </td>
 <td>
-    Community:{{ $project_stats[$project->project_id]->page_view }}<br/>
-    Staff Referrals:{{ $project_stats[$project->project_id]->staff_referral }} <br/>
+    Community:{{ $project->getPageViewCount() }}<br/>
+    Staff Referrals:{{ $project->getStaffReferredCount() }} <br/>
     Collaborators:{{ $project->getCollaboratorsCount() }}
 </td>
 <td>

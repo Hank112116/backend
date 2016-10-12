@@ -27,6 +27,6 @@ class ImageUploadController extends BaseController
             return response()->json(['status' => 'success', 'filelink' => $uploader->getOriginImage()]);
         }
 
-        return response()->json(['status' => 'fail', 'filelink' => $uploader->err]);
+        return response()->json(['error' => true]);
     }
 }

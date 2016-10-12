@@ -6,7 +6,6 @@ use Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
-use Backend\Repo\RepoInterfaces\ProjectStatisticInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Model\Plain\TagNode;
 use Input;
@@ -25,21 +24,18 @@ class ProjectController extends BaseController
     private $adminer_repo;
     private $hub_repo;
     private $user_repo;
-    private $project_stat_repo;
 
     public function __construct(
         ProjectInterface $project,
         AdminerInterface $adminer,
         HubInterface $hub,
-        UserInterface $user,
-        ProjectStatisticInterface $project_statistics
+        UserInterface $user
     ) {
         parent::__construct();
         $this->project_repo      = $project;
         $this->adminer_repo      = $adminer;
         $this->hub_repo          = $hub;
         $this->user_repo         = $user;
-        $this->project_stat_repo = $project_statistics;
         $this->per_page           = 100;
     }
 
@@ -86,8 +82,6 @@ class ProjectController extends BaseController
 
         $projects->not_recommend_count = $this->project_repo->getNotRecommendExpertProjectCount();
 
-        $project_stats = $this->project_stat_repo->loadProjectStatistics($projects->getCollection());
-
         return view('project.list')
             ->with([
                 'title'            => $title ?: 'projects',
@@ -96,8 +90,7 @@ class ProjectController extends BaseController
                 'show_paginate'    => $paginate,
                 'adminers'         => $this->adminer_repo->all(),
                 'tag_tree'         => TagNode::tags(),
-                'pm_ids'           => $pm_ids,
-                'project_stats'    => $project_stats
+                'pm_ids'           => $pm_ids
             ]);
     }
 
@@ -224,8 +217,6 @@ class ProjectController extends BaseController
         if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
             $project = $this->project_repo->find($input['project_id']);
 
-            $project_stats = $this->project_stat_repo->loadProjectStatistic($project);
-
             if ($input['route_path'] === 'report/project') {
                 // make report project row view
                 $view = View::make('report.project-row')
@@ -236,8 +227,7 @@ class ProjectController extends BaseController
                 $view = View::make('project.row')->with(
                     [
                         'project'       => $project,
-                        'tag_tree'      => TagNode::tags(),
-                        'project_stats' => $project_stats
+                        'tag_tree'      => TagNode::tags()
                     ]
                 )->render();
             }
@@ -257,13 +247,11 @@ class ProjectController extends BaseController
         $input = Input::all();
         if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
             $project       = $this->project_repo->find($input['project_id']);
-            $project_stats = $this->project_stat_repo->loadProjectStatistic($project);
             // make project row view
             $view = View::make('project.row')->with(
                 [
                     'project'       => $project,
-                    'tag_tree'      => TagNode::tags(),
-                    'project_stats' => $project_stats
+                    'tag_tree'      => TagNode::tags()
                 ]
             )->render();
             $res  = ['status' => 'success', 'view' => $view];
@@ -337,13 +325,11 @@ class ProjectController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        $project_stats = $this->project_stat_repo->loadProjectStatistic($project);
         // make project row view
         $view = View::make('project.row')->with(
             [
                 'project'       => $project,
-                'tag_tree'      => TagNode::tags(),
-                'project_stats' => $project_stats
+                'tag_tree'      => TagNode::tags()
             ]
         )->render();
         

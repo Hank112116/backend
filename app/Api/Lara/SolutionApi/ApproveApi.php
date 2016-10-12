@@ -23,9 +23,9 @@ class ApproveApi extends HWTrekApi implements ApproveApiInterface
      */
     public function approve()
     {
-        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::APPROVE);
+        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::PUBLICITY);
         $url = $this->hwtrek_url . $uri;
-        $r = $this->patch($url);
+        $r = $this->post($url);
         return $this->response((array) $r);
     }
 
@@ -34,9 +34,9 @@ class ApproveApi extends HWTrekApi implements ApproveApiInterface
      */
     public function reject()
     {
-        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::REJECT_APPROVE);
+        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::PUBLICITY);
         $url = $this->hwtrek_url . $uri;
-        $r = $this->patch($url);
+        $r = $this->delete($url);
         return $this->response((array) $r);
     }
 }
