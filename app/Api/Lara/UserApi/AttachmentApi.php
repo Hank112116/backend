@@ -49,7 +49,7 @@ class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
         $this->curl->setHeader('Content-Type', 'multipart/form-data');
         $this->curl->setOpt(CURLOPT_INFILE, $fp);
         $this->curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
-        $r = $this->put($this->url, ['file' => "@{$file_path}"]);
+        $r = $this->post($this->url, ['file' => "@{$file_path}"]);
         fclose($fp);
         unlink($file_path);
         return $r;
