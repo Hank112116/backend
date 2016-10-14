@@ -365,26 +365,26 @@ class SolutionRepo implements SolutionInterface
 
     public function hasProgram()
     {
-        $solutions = $this->solution
+        $count = $this->solution
                     ->queryProgram()
-                    ->get();
-        return $solutions->count() > 0;
+                    ->count();
+        return $count > 0;
     }
 
     public function hasPendingSolution()
     {
-        $solutions = $this->solution
-                    ->QueryPendingSolution()
-                    ->get();
-        return $solutions->count() > 0;
+        $count = $this->solution
+                    ->queryPendingSolution()
+                    ->count();
+        return $count > 0;
     }
 
     public function hasPendingProgram()
     {
-        $solutions = $this->solution
-                    ->QueryPendingProgram()
-                    ->get();
-        return $solutions->count() > 0;
+        $count = $this->solution
+                    ->queryPendingProgram()
+                    ->count();
+        return $count > 0;
     }
 
     private function filterWaitManagerApproveSolutions(Collection $solutions)
