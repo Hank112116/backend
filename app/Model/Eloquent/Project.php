@@ -156,12 +156,22 @@ class Project extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo(User::class)->select('user_id', 'user_name', 'last_name');
+        return $this->belongsTo(User::class)
+            ->select([
+                'user_id', 'user_name', 'last_name', 'user_type',
+                'is_sign_up_as_expert', 'is_apply_to_be_expert',
+                'company'
+            ]);
     }
 
     public function lastEditorUser()
     {
-        return $this->hasOne(User::class, 'user_id', 'last_editor_id')->select('user_id', 'user_name', 'last_name');
+        return $this->hasOne(User::class, 'user_id', 'last_editor_id')
+            ->select([
+                'user_id', 'user_name', 'last_name', 'user_type',
+                'is_sign_up_as_expert', 'is_apply_to_be_expert',
+                'company'
+            ]);
     }
 
     public function projectTeam()
