@@ -264,7 +264,7 @@ class ProjectRepo implements ProjectInterface
                         ->orWhereBetween('last_proposed_time', [$dstart, $dend])
                         ->groupBy('id')
                         ->get();
-                    $projects = $projects->whereBetween('date_added', [$dstart, $dend])->whereIn('project_id', $project_statistic->pluck('id'));
+                    $projects = $projects->whereIn('project_id', $project_statistic->pluck('id'));
                     break;
             }
 
