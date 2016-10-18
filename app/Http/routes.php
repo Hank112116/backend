@@ -88,8 +88,8 @@ Route::group(['before' => 'backend.solution'], function () {
     Route::get('solution/detail/{id}', 'SolutionController@showDetail');
     Route::get('solution/update/{id}', 'SolutionController@showUpdate');
 
-    Route::get('solution/approve/{id}', 'SolutionController@approve');
-    Route::get('solution/reject/{id}', 'SolutionController@reject');
+    Route::post('solution/approve/{id}', 'SolutionController@approve');
+    Route::post('solution/reject/{id}', 'SolutionController@reject');
 
     Route::get('solution/approve-edition/{id}', 'SolutionController@approveEdition');
     Route::get('solution/reject-edition/{id}', 'SolutionController@rejectEdition');

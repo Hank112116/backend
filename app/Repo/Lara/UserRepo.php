@@ -1,9 +1,11 @@
 <?php namespace Backend\Repo\Lara;
 
+use App;
 use ImageUp;
 use Validator;
 use Carbon;
 use Backend\Model\Eloquent\Expertise;
+use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Model\Eloquent\User;
 use Backend\Model\Eloquent\InternalUserMemo;
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
@@ -457,6 +459,12 @@ class UserRepo implements UserInterface
             // It means that the user_type change from creator to expert or from expert to creator
             // If the user is from creator to expert than write the expert_approved_at, otherwise clear expert_approved_at
             $user->expert_approved_at = ($user->isExpert()) ? Carbon::now() : null;
+            
+            if ($user->isExpert()) {
+                $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+                $profile_api->approveExpert($data['user_type']);
+            }
+            
         }
         if ($is_type_change && $user->isExpert() &&  $apply_expert_msg = $this->apply_expert_msg_repo->byUserId($user->user_id)->first()) {
             $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ? $apply_expert_msg->expired_at : Carbon::now();

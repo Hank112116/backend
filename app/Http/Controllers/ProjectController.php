@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
@@ -13,7 +14,7 @@ use Redirect;
 use Log;
 use Response;
 use View;
-use Request;
+use App;
 
 class ProjectController extends BaseController
 {
@@ -31,11 +32,11 @@ class ProjectController extends BaseController
         UserInterface $user
     ) {
         parent::__construct();
-        $this->project_repo = $project;
-        $this->adminer_repo = $adminer;
-        $this->hub_repo     = $hub;
-        $this->user_repo    = $user;
-        $this->per_page     = 100;
+        $this->project_repo      = $project;
+        $this->adminer_repo      = $adminer;
+        $this->hub_repo          = $hub;
+        $this->user_repo         = $user;
+        $this->per_page           = 100;
     }
 
     public function showList()
@@ -78,16 +79,18 @@ class ProjectController extends BaseController
                 $pm_ids[] = $pm->user_id;
             }
         }
+
         $projects->not_recommend_count = $this->project_repo->getNotRecommendExpertProjectCount();
+
         return view('project.list')
             ->with([
-                'title'               => $title ?: 'projects',
-                'projects'            => $projects,
-                'per_page'            => $this->per_page,
-                'show_paginate'       => $paginate,
-                'adminers'            => $this->adminer_repo->all(),
-                'tag_tree'            => TagNode::tags(),
-                'pm_ids'              => $pm_ids
+                'title'            => $title ?: 'projects',
+                'projects'         => $projects,
+                'per_page'         => $this->per_page,
+                'show_paginate'    => $paginate,
+                'adminers'         => $this->adminer_repo->all(),
+                'tag_tree'         => TagNode::tags(),
+                'pm_ids'           => $pm_ids
             ]);
     }
 
@@ -213,6 +216,7 @@ class ProjectController extends BaseController
         $input = Input::all();
         if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
             $project = $this->project_repo->find($input['project_id']);
+
             if ($input['route_path'] === 'report/project') {
                 // make report project row view
                 $view = View::make('report.project-row')
@@ -220,7 +224,12 @@ class ProjectController extends BaseController
                     ->render();
             } else {
                 // make project row view
-                $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+                $view = View::make('project.row')->with(
+                    [
+                        'project'       => $project,
+                        'tag_tree'      => TagNode::tags()
+                    ]
+                )->render();
             }
             $res  = ['status' => 'success', 'view' => $view];
         } else {
@@ -237,8 +246,14 @@ class ProjectController extends BaseController
     {
         $input = Input::all();
         if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
-            $project = $this->project_repo->find($input['project_id']);
-            $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+            $project       = $this->project_repo->find($input['project_id']);
+            // make project row view
+            $view = View::make('project.row')->with(
+                [
+                    'project'       => $project,
+                    'tag_tree'      => TagNode::tags()
+                ]
+            )->render();
             $res  = ['status' => 'success', 'view' => $view];
         } else {
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
@@ -289,19 +304,35 @@ class ProjectController extends BaseController
         $project = $this->project_repo->find($id);
         if ($project->isDeleted()) {
             Noty::warn('Permission deny');
-            $res   = ['status' => 'fail', "msg" => "Permission deny"];
+            $res   = ['status' => 'fail', 'msg' => 'Permission deny'];
             return Response::json($res);
         }
-        $project = $this->hub_repo->approveSchedule($project);
+        /* @var ReleaseApiInterface $release_api*/
+        $release_api = App::make(ReleaseApiInterface::class, ['project' => $project]);
 
+        $response = $release_api->releaseSchedule();
+
+        if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
+            $error_message = json_decode($response->getContent());
+            $res   = ['status' => 'fail', 'msg' => $error_message->error->message];
+            return Response::json($res);
+        }
+
+        $project->hub_approve = true;
         $log_action = 'Approve project';
         $log_data   = [
-            'project' => $id,
-            'approve' => $project->hub_approve,
+            'project' => $id
         ];
         Log::info($log_action, $log_data);
 
-        $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+        // make project row view
+        $view = View::make('project.row')->with(
+            [
+                'project'       => $project,
+                'tag_tree'      => TagNode::tags()
+            ]
+        )->render();
+        
         $res  = ['status' => 'success', 'view' => $view];
 
         return Response::json($res);

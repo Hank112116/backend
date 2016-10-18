@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Collection;
 interface SolutionInterface
 {
     /**
+     * @return Collection|Solution[]
+     */
+    public function all();
+
+    /**
      * @return DuplicateSolutionInterface
      */
     public function duplicateRepo();

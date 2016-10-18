@@ -6,4 +6,6 @@ import * as SolutionUpdater from "./libs/SolutionUpdater";
 $(() => {
     FormUtility.editor();
     SolutionUpdater.boot();
+    SolutionUpdater.approveSolution();
+    SolutionUpdater.rejectSolution();
 });

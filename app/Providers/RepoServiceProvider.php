@@ -156,5 +156,10 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface',
             'Backend\Repo\Lara\GroupMemberApplicantRepo'
         );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\ProjectStatisticInterface',
+            'Backend\Repo\Lara\ProjectStatisticRepo'
+        );
     }
 }

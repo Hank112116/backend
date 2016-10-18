@@ -2,11 +2,13 @@
 
 namespace Backend\Http\Controllers;
 
-use Auth;
-use Illuminate\Support\Collection;
+use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
+use Illuminate\Contracts\View\View;
+use App;
+use Auth;
 use Input;
 use Noty;
 use Redirect;
@@ -233,18 +235,11 @@ class SolutionController extends BaseController
 
     public function approve($solution_id)
     {
-        $log_action = 'Approve solutions';
-        $log_data   = [
-            'solution' => $solution_id,
-            'approve'  => true
-        ];
-        Log::info($log_action, $log_data);
-
-        $this->solution_repo->approve($solution_id, Auth::user()->isBackendPM());
-        Noty::successLang('solution.approve');
-
-        return Redirect::action('SolutionController@showDetail', $solution_id);
+        $solution = $this->solution_repo->find($solution_id);
+        $approve_api = App::make(ApproveApiInterface::class, ['solution' => $solution]);
+        return $approve_api->approve();
     }
+
     //change solution type to program (solution table:is_program)
     public function toProgram()
     {
@@ -279,7 +274,8 @@ class SolutionController extends BaseController
         }
         return Response::json($res);
     }
-    //cancel penging solution to program
+
+    //cancel pending solution to program
     public function cancelPendingSolution()
     {
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
@@ -296,7 +292,8 @@ class SolutionController extends BaseController
         }
         return Response::json($res);
     }
-    //cancel penfing program to solution
+
+    //cancel pending program to solution
     public function cancelPendingProgram()
     {
         if (Auth::user()->isBackendPM() || Auth::user()->isAdmin() || Auth::user()->isManagerHead()) {
@@ -316,17 +313,10 @@ class SolutionController extends BaseController
 
     public function reject($solution_id)
     {
-        $log_action = 'Reject solutions';
-        $log_data   = [
-            'solution' => $solution_id,
-            'approve'  => false
-        ];
-        Log::info($log_action, $log_data);
+        $solution = $this->solution_repo->find($solution_id);
+        $approve_api = App::make(ApproveApiInterface::class, ['solution' => $solution]);
 
-        $this->solution_repo->reject($solution_id);
-        Noty::successLang('solution.reject');
-
-        return Redirect::action('SolutionController@showDetail', $solution_id);
+        return $approve_api->reject();
     }
 
     public function approveEdition($solution_id)
