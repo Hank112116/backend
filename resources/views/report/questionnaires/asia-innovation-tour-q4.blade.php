@@ -199,7 +199,11 @@
                                 @if($approve_user->questionnaire->shenzhen_flight and $approve_user->questionnaire->shenzhen_datetime)
                                     Shenzhen:
                                     {{ $approve_user->questionnaire->shenzhen_flight }} -
-                                    {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
+                                    @if(strtotime($approve_user->questionnaire->shenzhen_datetime))
+                                        {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
+                                    @else
+                                        {{ $approve_user->questionnaire->shenzhen_datetime }}
+                                    @endif
                                     @if($approve_user->questionnaire->shenzhen_hotel_name)
                                         <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->shenzhen_hotel_name }}"></i>
                                     @endif
@@ -209,7 +213,11 @@
                                 @if($approve_user->questionnaire->kyoto_flight and $approve_user->questionnaire->kyoto_datetime)
                                     Kyoto:
                                     {{ $approve_user->questionnaire->kyoto_flight }} -
-                                    {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
+                                    @if(strtotime($approve_user->questionnaire->kyoto_datetime))
+                                        {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
+                                    @else
+                                        {{ $approve_user->questionnaire->kyoto_datetime }}
+                                    @endif
                                     @if($approve_user->questionnaire->kyoto_hotel_name)
                                         <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->kyoto_hotel_name }}"></i>
                                     @endif
@@ -219,7 +227,11 @@
                                 @if($approve_user->questionnaire->osaka_flight and $approve_user->questionnaire->osaka_datetime)
                                     Osaka:
                                     {{ $approve_user->questionnaire->osaka_flight }} -
-                                    {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
+                                    @if(strtotime($approve_user->questionnaire->osaka_datetime))
+                                        {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
+                                    @else
+                                        {{ $approve_user->questionnaire->osaka_datetime }}
+                                    @endif
                                     @if($approve_user->questionnaire->osaka_hotel_name)
                                         <i style="cursor:pointer" class="fa fa-bed" aria-hidden="true" rel="{{ $approve_user->questionnaire->osaka_hotel_name }}"></i>
                                     @endif
