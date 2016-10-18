@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.6.4
+* [FIXED] fix AIT tour form datetime parse error (@Hank)
+
 ## v2.6.3
 * [FIXED] fix project report match search error (@Hank)
 * [FIXED] fix owner user type error of solution update page (@Hank)
