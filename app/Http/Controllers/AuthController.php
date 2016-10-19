@@ -96,11 +96,6 @@ class AuthController extends BaseController
         return $this->routeFilter($type = 'marketing');
     }
 
-    public function mailFilter()
-    {
-        return $this->routeFilter($type = 'email_template');
-    }
-
     public function hubFilter()
     {
         return $this->routeFilter($type = 'hub');
