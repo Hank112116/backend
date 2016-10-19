@@ -295,7 +295,7 @@ $(function () {
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "/hub/get-expert",
+            url: "/project/get-expert",
             data: {
                 expertId: expertId
             },
@@ -305,6 +305,7 @@ $(function () {
             }
         });
     });
+
     $document.on("change", "#expert2", function () {
         var $expert2Info = $("#expert2Info");
         $expert2Info.empty();
@@ -313,7 +314,7 @@ $(function () {
         var expertId = $this.val();
         $.ajax({
             type: "POST",
-            url: "/hub/get-expert",
+            url: "/project/get-expert",
             data: {
                 expertId: expertId
             },

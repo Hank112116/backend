@@ -76,6 +76,7 @@ Route::group(['before' => 'backend.project'], function () {
     Route::post('project/recommend-expert', 'ProjectController@recommendExpert');
     Route::post('project/update-project-manager', 'ProjectController@updateManager');
     Route::post('project/approve-schedule', 'ProjectController@approveSchedule');
+    Route::post('project/get-expert', 'ProjectController@getExpert');
 });
 
 // Solution
@@ -121,7 +122,6 @@ Route::group(['before' => 'backend.hub'], function () {
     Route::get('hub/schedule-manager/{id}', 'HubController@showUpdateScheduleManager');
 
     Route::post('hub/update-schedule-manager/{id}', 'HubController@updateScheduleManager');
-    Route::post('hub/get-expert', 'HubController@getExpert');
 });
 
 // Landing

@@ -337,4 +337,20 @@ class ProjectController extends BaseController
 
         return Response::json($res);
     }
+
+    /**
+     * @param $expertId
+     * @return mixed
+     */
+    public function getExpert()
+    {
+        $input  = Input::all();
+        $expert = $this->user_repo->findExpert($input["expertId"]);
+        if ($expert) {
+            $res   = ['msg' => "{$expert->user_name} ({$expert->company})"];
+        } else {
+            $res   = ['msg' => 'no expert'];
+        }
+        return Response::json($res);
+    }
 }
