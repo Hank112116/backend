@@ -444,7 +444,24 @@ class UserRepo implements UserInterface
     {
         /** @var User $user */
         $user = $this->user->find($id);
+
         $is_type_change = isset($data['user_type']) && $user->user_type !== $data['user_type'];
+        if ($is_type_change) {
+            // It means that the user_type change from creator to expert or from expert to creator
+            // If the user is from creator to expert than write the expert_approved_at, otherwise clear expert_approved_at
+            $user->expert_approved_at = ($user->isPendingExpert()) ? Carbon::now() : null;
+
+            if ($user->isPendingExpert()) {
+                $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+                $profile_api->approveExpert($data['user_type']);
+            }
+        }
+
+        if ($is_type_change && $user->isPendingExpert() &&  $apply_expert_msg = $this->apply_expert_msg_repo->byUserId($user->user_id)->first()) {
+            $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ? $apply_expert_msg->expired_at : Carbon::now();
+            $apply_expert_msg->save();
+        }
+
         $user->fill(array_only($data, self::$update_columns));
 
         if (null !== array_get($data, 'head', null)) {
@@ -455,21 +472,8 @@ class UserRepo implements UserInterface
             $user->is_sign_up_as_expert = 0;
             $user->is_apply_to_be_expert = 0;
         }
-        if ($is_type_change) {
-            // It means that the user_type change from creator to expert or from expert to creator
-            // If the user is from creator to expert than write the expert_approved_at, otherwise clear expert_approved_at
-            $user->expert_approved_at = ($user->isExpert()) ? Carbon::now() : null;
-            
-            if ($user->isExpert()) {
-                $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
-                $profile_api->approveExpert($data['user_type']);
-            }
-            
-        }
-        if ($is_type_change && $user->isExpert() &&  $apply_expert_msg = $this->apply_expert_msg_repo->byUserId($user->user_id)->first()) {
-            $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ? $apply_expert_msg->expired_at : Carbon::now();
-            $apply_expert_msg->save();
-        }
+
+
         $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
 
         $tag_ids    = $user->expertises ? explode(',', $user->expertises) : [];
