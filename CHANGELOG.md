@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.6.5
+* [CHANGE] integrate release project schedule API (@Hank)
+* [CHANGE] integrate approve solution API (@Hank)
+* [CHANGE] integrate approve expert API (@Hank)
+
 ## v2.6.4
 * [FIXED] fix AIT tour form datetime parse error (@Hank)
 
