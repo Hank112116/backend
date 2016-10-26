@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.6.6
+* [FIXED] fix uppercase/lowercase error of project uri file (@Hank) 
+
 ## v2.6.5
 * [CHANGE] integrate release project schedule API (@Hank)
 * [CHANGE] integrate approve solution API (@Hank)
