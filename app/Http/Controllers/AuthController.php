@@ -71,36 +71,6 @@ class AuthController extends BaseController
         return redirect('/');
     }
 
-    public function adminerFilter()
-    {
-        return $this->routeFilter($type = 'adminer');
-    }
-
-    public function userFilter()
-    {
-        return $this->routeFilter($type = 'user');
-    }
-
-    public function projectFilter()
-    {
-        return $this->routeFilter($type = 'project');
-    }
-
-    public function solutionFilter()
-    {
-        return $this->routeFilter($type = 'solution');
-    }
-
-    public function landingFilter()
-    {
-        return $this->routeFilter($type = 'marketing');
-    }
-
-    public function hubFilter()
-    {
-        return $this->routeFilter($type = 'hub');
-    }
-
     public function reportFilter()
     {
         return $this->routeFilter($type = 'report');

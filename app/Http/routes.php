@@ -5,7 +5,7 @@ Route::get('/', 'HomeController@index');
 Route::post('login', 'AuthController@login');
 Route::get('logout', 'AuthController@logout');
 
-Route::group(['before' => 'backend.adminer'], function () {
+Route::group(['middleware' => 'route_filter:adminer'], function () {
     Route::get('adminer/all', 'AdminerController@showList');
 
     Route::get('adminer/create', 'AdminerController@showCreate');
@@ -23,7 +23,7 @@ Route::group(['before' => 'backend.adminer'], function () {
     Route::post('adminer/role/update/{id}', 'AdminerController@roleUpdate');
 });
 
-Route::group(['before' => 'backend.user'], function () {
+Route::group(['middleware' => 'route_filter:user'], function () {
 
     Route::get('user/all', 'UserController@showList');
     Route::get('user/search', 'UserController@showSearch');
@@ -49,9 +49,8 @@ Route::group(['before' => 'backend.user'], function () {
     Route::post('user/put-attachment', 'UserController@putAttachment');
 });
 
-
 // Project
-Route::group(['before' => 'backend.project'], function () {
+Route::group(['middleware' => 'route_filter:project'], function () {
 
     Route::get('project/all', 'ProjectController@showList');
 
@@ -80,7 +79,7 @@ Route::group(['before' => 'backend.project'], function () {
 });
 
 // Solution
-Route::group(['before' => 'backend.solution'], function () {
+Route::group(['middleware' => 'route_filter:solution'], function () {
     Route::get('solution/all', 'SolutionController@showList');
     Route::get('solution/drafts', 'SolutionController@showDraftSolutions');
     Route::get('solution/deleted', 'SolutionController@showDeletedSolutions');
@@ -111,21 +110,10 @@ Route::group(['before' => 'backend.solution'], function () {
     Route::post('solution/to-solution', 'SolutionController@toSolution');
     Route::post('solution/cancel-pending-program', 'SolutionController@cancelPendingProgram');
     Route::post('solution/cancel-pending-solution', 'SolutionController@cancelPendingSolution');
-
-});
-
-// Hub
-Route::group(['before' => 'backend.hub'], function () {
-    Route::get('hub/questionnaires', 'HubController@indexQuestionnaire');
-    Route::get('hub/schedules', 'HubController@indexSchedule');
-    Route::get('hub/questionnaires/detail/{id}', 'HubController@showQuestionnaireDetail');
-    Route::get('hub/schedule-manager/{id}', 'HubController@showUpdateScheduleManager');
-
-    Route::post('hub/update-schedule-manager/{id}', 'HubController@updateScheduleManager');
 });
 
 // Landing
-Route::group(['before' => 'backend.landing'], function () {
+Route::group(['middleware' => 'route_filter:marketing'], function () {
     Route::get('landing/feature', 'LandingController@showFeature');
     Route::get('landing/hello', 'LandingController@showHello');
     Route::get('landing/expert', 'LandingController@showExpert');
@@ -142,29 +130,22 @@ Route::group(['before' => 'backend.landing'], function () {
 });
 
 // Report
-Route::group([ 'before' => 'backend.reportRegistration' ], function () {
+Route::group([ 'middleware' => 'route_filter:report_full|registration_report' ], function () {
     Route::get('report/registration', 'ReportController@showRegistrationReport');
 });
-Route::group([ 'before' => 'backend.reportComment' ], function () {
+Route::group([ 'middleware' => 'route_filter:report_full|comment_report' ], function () {
     Route::get('report/comment', 'ReportController@showCommentReport');
 });
-Route::group([ 'before' => 'backend.reportProject' ], function () {
+Route::group([ 'middleware' => 'route_filter:report_full|project_report' ], function () {
     Route::get('report/project', 'ReportController@showProjectReport');
 });
-Route::group([ 'before' => 'backend.reportEvent' ], function () {
+Route::group([ 'middleware' => 'route_filter:report_full|event_report' ], function () {
     Route::get('report/events', 'ReportController@showEventReport');
     Route::get('report/events/{event_id}', 'ReportController@showEventReport');
     Route::get('report/tour-form', 'ReportController@showQuestionnaire');
     Route::post('report/events/update-memo', 'ReportController@updateEventMemo');
     Route::post('report/events/approve-user', 'ReportController@approveEventUser');
     Route::post('report/events/user-questionnaire', 'ReportController@showUserQuestionnaire');
-});
-
-
-// Engineer
-Route::group(['before' => 'backend.login'], function () {
-    Route::get('engineer/bug', 'EngineerController@bug');
-    Route::post('engineer/bug-decode', 'EngineerController@bugDecode');
 });
 
 Route::post('/upload-editor-image', 'ImageUploadController@index');
