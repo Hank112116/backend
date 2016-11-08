@@ -66,10 +66,11 @@ class EventApplication extends Model
 
     public function isCoincide()
     {
-        $full_name_flag = Str::equals($this->textFullName(), $this->user->textFullName());
-        $email_flag     = Str::equals($this->email, $this->user->email);
-        $company_flag   = Str::equals($this->company, $this->user->company);
-        $position_flag  = Str::equals($this->job_title, $this->user->business_id);
+        $full_name_flag = hash_equals((string)$this->textFullName(), (string)$this->user->textFullName());
+        $email_flag     = hash_equals((string)$this->email, (string)$this->user->email);
+        $company_flag   = hash_equals((string)$this->company, (string)$this->user->company);
+        $position_flag  = hash_equals((string)$this->job_title, (string)$this->user->business_id);
+
         return $full_name_flag && $email_flag && $company_flag && $position_flag;
     }
 
@@ -286,7 +287,7 @@ class EventApplication extends Model
 
     public function getTextInternalSetStatus()
     {
-        switch($this->getInternalSetStatus()) {
+        switch ($this->getInternalSetStatus()) {
             case self::INTERNAL_SELECTED_STATUS:
                 return 'Selected';
             break;
