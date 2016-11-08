@@ -25,8 +25,8 @@ cp .env.dev.example .env
 # Create bootstrap/cache Directory
 mkdir bootstrap/cache
 
-# composer install
-composer install
+# submodule init
+git submodule update --init vendor
 
 # npm install
 npm install
