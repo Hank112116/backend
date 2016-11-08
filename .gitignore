@@ -16,7 +16,6 @@ _ide_helper_models.php
 .env
 target
 
-vendor/*
 storage/images/*
 storage/*
 
