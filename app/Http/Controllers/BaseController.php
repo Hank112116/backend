@@ -7,13 +7,13 @@ use Illuminate\Support\Collection;
 use Input;
 use League\Csv\Writer;
 use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class BaseController extends Controller
 {
 
-    use DispatchesCommands, ValidatesRequests;
+    use DispatchesJobs, ValidatesRequests;
 
     protected $page = null;
     protected $per_page = null;
