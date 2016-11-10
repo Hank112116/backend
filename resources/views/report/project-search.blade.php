@@ -8,31 +8,31 @@
                 'public'  => 'Expert Mode',
                 'private' => 'Private Mode',
                 'draft'   => 'Unfinished Draft'
-            ], Input::get('status'), ['class'=>'form-control']) !!}
+            ], request('status'), ['class'=>'form-control']) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('project_id', Input::get('project_id'), ['placeholder'=>"Project ID", 'class'=>"form-control"]) !!}
+            {!! Form::text('project_id', request('project_id'), ['placeholder'=>"Project ID", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('user_name', Input::get('user_name'), ['placeholder'=>"Owner name", 'class'=>"form-control"]) !!}
+            {!! Form::text('user_name', request('user_name'), ['placeholder'=>"Owner name", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('assigned_pm', Input::get('assigned_pm'), ['placeholder'=>"Assigned PM", 'class'=>"form-control"]) !!}
+            {!! Form::text('assigned_pm', request('assigned_pm'), ['placeholder'=>"Assigned PM", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('report_action', Input::get('report_action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
+            {!! Form::text('report_action', request('report_action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
         </div>
     </div>
 

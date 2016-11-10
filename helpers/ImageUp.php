@@ -145,9 +145,9 @@ class ImageUp
     {
         if (!$size) {
             $size = [
-                'width'  => Config::get('image.thumb_p_width'),
-                'height' => Config::get('image.thumb_p_height'),
-                'ratio'  => Config::get('image.thumb_p_ratio'),
+                'width'  => config('image.thumb_p_width'),
+                'height' => config('image.thumb_p_height'),
+                'ratio'  => config('image.thumb_p_ratio'),
             ];
         }
 
@@ -166,9 +166,9 @@ class ImageUp
     public function buildUserThumbImage(UploadedFile $image)
     {
         return $this->buildThumbImage($image, [
-            'width'  => Config::get('image.thumb_u_width'),
-            'height' => Config::get('image.thumb_u_height'),
-            'ratio'  => Config::get('image.thumb_u_ratio'),
+            'width'  => config('image.thumb_u_width'),
+            'height' => config('image.thumb_u_height'),
+            'ratio'  => config('image.thumb_u_ratio'),
         ]);
     }
 

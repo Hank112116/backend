@@ -6,15 +6,10 @@ use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\ProjectMailExpertInterface;
 use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
+use Backend\Facades\Log;
 use Backend\Model\Plain\TagNode;
 use Mews\Purifier\Purifier;
-use App;
 use Carbon;
-use Input;
-use Log;
-use Response;
-use Session;
-use View;
 
 class EmailSendController extends BaseController
 {
@@ -43,9 +38,9 @@ class EmailSendController extends BaseController
     }
     public function hubMailSend()
     {
-        if (empty(Session::get('admin'))) {
+        if (empty($this->request->session()->get('admin'))) {
             $res   = ['status' => 'fail', 'msg' => 'Permissions denied'];
-            return Response::json($res);
+            return response()->json($res);
         }
 
         //PM user_id
@@ -57,12 +52,12 @@ class EmailSendController extends BaseController
         foreach ($this->adminer_repo->findBackManager()->toArray() as $row) {
             $backPM[] = $row['hwtrek_member'];
         }
-        $input   = Input::all();
+        $input   = $this->request->all();
         $expert1 = $this->user_repo->findExpert($input['expert1']);
         $expert2 = $this->user_repo->findExpert($input['expert2']);
         if (sizeof($expert1) <= 0 || sizeof($expert2) <= 0) {
             $res   = ['status' => 'fail', 'msg' => 'Error expert id!'];
-            return Response::json($res);
+            return response()->json($res);
         }
 
         $project = $this->project_repo->find($input['projectId']);
@@ -80,25 +75,25 @@ class EmailSendController extends BaseController
         foreach ($experts as $expert) {
             $data['expert_id']  = $expert;
             $data['project_id'] = $input['projectId'];
-            $data['admin_id']   = Session::get('admin');
+            $data['admin_id']   = $this->request->session()->get('admin');
             $data['date_send']  = $date;
             $this->applicant_repo->insertItem($data);
             $this->pme_repo->insertItem($data);
             
         }
         /* @var ReleaseApiInterface $release_api*/
-        $release_api = App::make(ReleaseApiInterface::class, ['project' => $project]);
+        $release_api = app()->make(ReleaseApiInterface::class, ['project' => $project]);
 
         $response    = $release_api->staffRecommendExperts();
 
         if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
             $res   = ['status' => 'fail', 'msg' => $response->getContent()];
-            return Response::json($res);
+            return response()->json($res);
         }
         
-        $view = View::make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+        $view = view()->make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
         $res   = ['status' => 'success', 'view'=> $view];
 
-        return Response::json($res);
+        return response()->json($res);
     }
 }

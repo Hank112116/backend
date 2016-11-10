@@ -3,10 +3,8 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
+use Backend\Facades\Log;
 
-use Input;
-use Response;
-use Log;
 
 class ApplyExpertMessageController extends BaseController
 {
@@ -20,7 +18,7 @@ class ApplyExpertMessageController extends BaseController
 
     public function showMessages()
     {
-        $user_id  = Input::get('user_id');
+        $user_id  = $this->request->get('user_id');
         $messages = $this->apply_expert_message->byUserId($user_id);
 
         if ($messages) {

@@ -1,7 +1,6 @@
 <?php namespace Backend\Providers;
 
 use Backend\Logger\LogService;
-use Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Application;
 

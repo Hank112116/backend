@@ -4,17 +4,11 @@ namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
-use Backend\Http\Requests;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use App;
 use Carbon;
 use Noty;
 
@@ -37,7 +31,7 @@ class ReportController extends BaseController
         EventQuestionnaireInterface $questionnaire_repo
     ) {
         parent::__construct();
-        $this->auth               = Auth::user()->isAdmin() || Auth::user()->isManagerHead();
+        $this->auth               = auth()->user()->isAdmin() || auth()->user()->isManagerHead();
         $this->adminer_repo       = $adminer_repo;
         $this->user_repo          = $user_repo;
         $this->report_repo        = $report_repo;
@@ -50,7 +44,7 @@ class ReportController extends BaseController
      */
     private function dateValidator()
     {
-        return Validator::make(Input::all(), [
+        return validator($this->request->all(), [
             'range'  => 'integer|min:1|required_without_all:dstart,dend',
             'dstart' => 'date|required_with:dend',
             'dend'   => 'date|required_with:dstart',
@@ -61,20 +55,20 @@ class ReportController extends BaseController
 
     public function showCommentReport()
     {
-        $this->filter = Input::get('filter', 'all');
+        $this->filter = $this->request->get('filter', 'all');
 
         if ($this->dateValidator()->fails()) {
             Noty::warn('The input parameter is wrong');
-            return Redirect::back();
+            return redirect()->back();
         }
 
-        $users = $this->report_repo->getCommentReport($this->filter, Input::all(), $this->page, $this->per_page);
+        $users = $this->report_repo->getCommentReport($this->filter, $this->request->all(), $this->page, $this->per_page);
 
         $template = view('report.comment')
             ->with([
                 'title'          => 'Comment Summary',
                 'users'          => $users,
-                'range'          => Input::get('range'),
+                'range'          => $this->request->get('range'),
                 'is_super_admin' => $this->auth,
             ]);
         return $template;
@@ -87,20 +81,20 @@ class ReportController extends BaseController
      */
     public function showRegistrationReport()
     {
-        $this->filter = $this->auth ? Input::get('filter', 'all') : 'expert';
+        $this->filter = $this->auth ? $this->request->get('filter', 'all') : 'expert';
 
         if ($this->dateValidator()->fails()) {
             Noty::warn('The input parameter is wrong');
-            return Redirect::back();
+            return rredirect()->back();
         }
 
-        $users = $this->report_repo->getRegistrationReport($this->filter, Input::all(), $this->page, $this->per_page);
+        $users = $this->report_repo->getRegistrationReport($this->filter, $this->request->all(), $this->page, $this->per_page);
 
         $template = view('report.registration')
             ->with([
                 'title'          => 'Registration Summary',
                 'users'          => $users,
-                'range'          => Input::get('range'),
+                'range'          => $this->request->get('range'),
                 'is_super_admin' => $this->auth,
             ]);
         return $template;
@@ -112,14 +106,14 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $dstart  = Input::get('dstart') ? Input::get('dstart') : EventEnum::AIT_Q4_START_DATE;
-        $dend    = Input::get('dend') ? Input::get('dend') : Carbon::now()->toDateString();
+        $dstart  = $this->request->get('dstart') ? $this->request->get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dend    = $this->request->get('dend') ? $this->request->get('dend') : Carbon::now()->toDateString();
 
         $view     = 'report.event.event-list';
 
         $event_list       = $this->event_repo->getEvents();
 
-        $join_event_users = $this->report_repo->getEventReport($event_id, Input::all(), $this->page, $this->per_page);
+        $join_event_users = $this->report_repo->getEventReport($event_id, $this->request->all(), $this->page, $this->per_page);
 
         $begin_number = $join_event_users->total() - (($this->page -1) * $this->per_page);
 
@@ -143,7 +137,7 @@ class ReportController extends BaseController
 
     public function updateEventMemo()
     {
-        if ($this->event_repo->updateEventMemo(Input::get('id'), Input::get())) {
+        if ($this->event_repo->updateEventMemo($this->request->get('id'), $this->request->all())) {
             $result['status'] = 'success';
         } else {
             $result['status'] = 'fail';
@@ -153,11 +147,11 @@ class ReportController extends BaseController
 
     public function approveEventUser()
     {
-        if ($this->event_repo->approveEventUser(Input::get('user_id'), Input::get('event_id'))) {
-            $user_id   = Input::get('user_id');
+        if ($this->event_repo->approveEventUser($this->request->get('user_id'), $this->request->get('event_id'))) {
+            $user_id   = $this->request->get('user_id');
             $user      = $this->user_repo->find($user_id);
             /* @var QuestionnaireApiInterface $event_api*/
-            $event_api = App::make(QuestionnaireApiInterface::class, ['user' => $user]);
+            $event_api = app()->make(QuestionnaireApiInterface::class, ['user' => $user]);
             $event_api->sendNotificationMail();
 
             $result['status'] = 'success';
@@ -169,17 +163,17 @@ class ReportController extends BaseController
 
     public function showQuestionnaire()
     {
-        if (Input::get('event')) {
-            $event_id = Input::get('event');
+        if ($this->request->get('event')) {
+            $event_id = $this->request->get('event');
         } else {
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $dstart  = Input::get('dstart') ? Input::get('dstart') : EventEnum::AIT_Q4_START_DATE;
-        $dend    = Input::get('dend') ? Input::get('dend') : Carbon::now()->toDateString();
+        $dstart  = $this->request->get('dstart') ? $this->request->get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dend    = $this->request->get('dend') ? $this->request->get('dend') : Carbon::now()->toDateString();
 
         $event_list     = $this->event_repo->getEvents();
-        $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, Input::all(), $this->page, $this->per_page);
+        $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, $this->request->all(), $this->page, $this->per_page);
 
         $view           = $this->questionnaire_repo->getView($event_id);
 
@@ -202,7 +196,7 @@ class ReportController extends BaseController
 
     public function showUserQuestionnaire()
     {
-        $questionnaire = $this->questionnaire_repo->find(Input::get('questionnaire_id'));
+        $questionnaire = $this->questionnaire_repo->find($this->request->get('questionnaire_id'));
         $questionnaire_column = $this->questionnaire_repo->getQuestionnaireColumn($questionnaire->subject_id);
         $questionnaire_items  = json_decode($questionnaire->detail, true);
         $template = view('report.event.event-questionnaire')
@@ -217,20 +211,20 @@ class ReportController extends BaseController
     {
         if ($this->dateValidator()->fails()) {
             Noty::warn('The input parameter is wrong');
-            return Redirect::back();
+            return redirect()->back();
         }
 
-        $input = Input::all();
+        $input = $this->request->all();
 
         if (empty($input['time_type'])) {
             $input['time_type'] = 'match';
         }
 
-        if (Input::get('range')) {
-            $input['dstart']    = Carbon::parse(Input::get('range') . ' days ago')->toDateString();
+        if ($this->request->get('range')) {
+            $input['dstart']    = Carbon::parse($this->request->get('range') . ' days ago')->toDateString();
         }
 
-        if (empty(Input::get('range')) && empty(Input::get('dstart'))) {
+        if (empty($this->request->get('range')) && empty($this->request->get('dstart'))) {
             $input['dstart']    = Carbon::parse('7 days ago')->toDateString();
         }
 
@@ -252,7 +246,7 @@ class ReportController extends BaseController
             ->with([
                 'title'            => 'Project Report',
                 'projects'         => $projects,
-                'range'            => Input::get('range'),
+                'range'            => $this->request->get('range'),
                 'is_super_admin'   => $this->auth,
                 'pm_ids'           => $pm_ids,
                 'input'            => $input,

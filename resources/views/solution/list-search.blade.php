@@ -2,19 +2,19 @@
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">
-            {!! Form::text('user_name', Input::get('user_name'), ['placeholder'=>"Owner", 'class'=>"form-control"]) !!}
+            {!! Form::text('user_name', request('user_name'), ['placeholder'=>"Owner", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('solution_title', Input::get('solution_title'), ['placeholder'=>"Solution Title", 'class'=>"form-control"]) !!}
+            {!! Form::text('solution_title', request('solution_title'), ['placeholder'=>"Solution Title", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('solution_id', Input::get('solution_id'), ['placeholder'=>"Solution ID", 'class'=>"form-control"]) !!}
+            {!! Form::text('solution_id', request('solution_id'), ['placeholder'=>"Solution ID", 'class'=>"form-control"]) !!}
         </div>
     </div>
 </div>
@@ -23,9 +23,9 @@
 
     <div class="col-md-4 col-md-offset-1">
         <div class="input-group">
-            {!! Form::text('dstart', Input::get('dstart'),
+            {!! Form::text('dstart', request('dstart'),
                 ['placeholder'=>"Approve Time From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
-            {!! Form::text('dend', Input::get('dend'),
+            {!! Form::text('dend', request('dend'),
                 ['placeholder'=>"To", 'class'=>"form-control date-input", 'id' => 'js-datepicker-edate']) !!}
 
         </div>
@@ -44,7 +44,7 @@
                     'pending-program'  => 'Pending for Program',
                     'pending-solution' => 'Pending for Solution',
                     'deleted'          => 'Deleted'
-                ], Input::get('status'), ['class'=>'form-control']) !!}
+                ], request('status'), ['class'=>'form-control']) !!}
         </div>
     </div>
 

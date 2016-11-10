@@ -25,7 +25,7 @@
     @else
         <br/><span class="table--text-light">{{ $project->textSubmitTime() }}</span>
     @endif
-    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+    @if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
         @if(!$project->profile->isDraft() and !$project->isDeleted())
             <br/><a href="{{ $project->textScheduleFrontEditLink() }}" target="_blank" class="btn-mini">Schedule</a>
             @if(!$project->hub_approve)
@@ -48,7 +48,7 @@
 
 <td>
     @include('project.assigned-pm')
-    @if(!Auth::user()->isEditor())
+    @if(!auth()->user()->isEditor())
         @include('project.recommend-expert')
     @endif
 </td>
@@ -113,7 +113,7 @@
             link_to_action('ProjectController@showDetail', 'DETAIL',
                 $project->project_id, ['class' => 'btn-mini'])
         !!}
-        @if(!Auth::user()->isEditor())
+        @if(!auth()->user()->isEditor())
             {!!
                 link_to_action('ProjectController@showUpdate', 'EDIT',
                     $project->project_id, ['class' => 'btn-mini'])

@@ -6,14 +6,10 @@ use Backend\Repo\RepoInterfaces\HubInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
+use Backend\Facades\Log;
 use Mews\Purifier\Purifier;
-use Config;
-use Input;
 use Noty;
-use Redirect;
-use Response;
 use Carbon;
-use Log;
 
 class HubController extends BaseController
 {
@@ -61,7 +57,7 @@ class HubController extends BaseController
      */
     public function indexSchedule()
     {
-        $front   = Config::get('app.front_domain');
+        $front   = config('app.front_domain');
         $preview = [
             'project' => "//{$front}/hub/schedule-preview/project/",
             'version' => "//{$front}/hub/schedule-preview/version/"
@@ -85,7 +81,7 @@ class HubController extends BaseController
         $questionnaire = $this->hub_repo->findQuestionnaire($id);
         if (is_null($questionnaire)) {
             Noty::warnLang('No such questionnaire');
-            return Redirect::action('HubController@indexQuestionnaire');
+            return redirect()->action('HubController@indexQuestionnaire');
         }
 
         return view('hub.questionnaire-detail')
@@ -119,7 +115,7 @@ class HubController extends BaseController
     public function updateScheduleManager($id)
     {
         $schedule     = $this->hub_repo->findSchedule($id);
-        $this->hub_repo->updateScheduleManagers($schedule, Input::all());
+        $this->hub_repo->updateScheduleManagers($schedule, $this->request->all());
         $projectTitle = $this->purifier->clean($schedule->project_title);
         Noty::success("Project [{$projectTitle}] managers is updated");
 
@@ -130,7 +126,7 @@ class HubController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        return Redirect::action('ProjectController@showList');
+        return redirect()->action('ProjectController@showList');
     }
 
     /**
@@ -139,13 +135,13 @@ class HubController extends BaseController
      */
     public function getExpert()
     {
-        $input  = Input::all();
+        $input  = $this->request->all();
         $expert = $this->user_repo->findExpert($input["expertId"]);
         if ($expert) {
             $res   = ['msg' => "{$expert->user_name} ({$expert->company})"];
         } else {
             $res   = ['msg' => 'no expert'];
         }
-        return Response::json($res);
+        return response()->json($res);
     }
 }

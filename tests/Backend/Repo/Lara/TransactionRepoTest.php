@@ -13,7 +13,7 @@ class TransactionRepoTest extends BackendTestCase
     {
         parent::setUp();
 
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\TransactionInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\TransactionInterface');
     }
 
     /** @test */

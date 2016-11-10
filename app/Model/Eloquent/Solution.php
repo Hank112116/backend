@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use UrlFilter;
 use Carbon;
-use Config;
 
 class Solution extends Eloquent
 {
@@ -321,7 +320,7 @@ class Solution extends Eloquent
     public function getImagePath()
     {
         return $this->image ?
-            Config::get('s3.origin') . $this->image : Config::get('s3.default_solution');
+            config('s3.origin') . $this->image : config('s3.default_solution');
     }
 
     public function textTitle()
@@ -378,7 +377,7 @@ class Solution extends Eloquent
     public function textFrontLink()
     {
         $name = UrlFilter::filter($this->textTitle());
-        return "//" . Config::get('app.front_domain') . "/solution/{$name}.{$this->solution_id}";
+        return "//" . config('app.front_domain') . "/solution/{$name}.{$this->solution_id}";
     }
 
     public function textMainCategory()
@@ -457,7 +456,7 @@ class Solution extends Eloquent
 
     public function originImage($image)
     {
-        return Config::get('s3.origin') . $image;
+        return config('s3.origin') . $image;
     }
 
     public function certifications()

@@ -16,7 +16,7 @@
                 ({{ $user->textStatus() }})
             @endif
         </h1>
-        @if(Auth::user()->isAdmin())
+        @if(auth()->user()->isAdmin())
 
             @if($user->isSuspended())
             <button
@@ -102,7 +102,7 @@
             </label>
 
             <div class="col-md-5">
-                @if(Auth::user()->isAdmin() or Auth::user()->isManagerHead())
+                @if(auth()->user()->isAdmin() or auth()->user()->isManagerHead())
                     <div>
                         {!! Form::radio('user_type', 'creator', $user->user_type=='creator', ["id"=>"user_type_0"]) !!}
                         <label for="user_type_0" class='iradio-lable'>Creator</label>

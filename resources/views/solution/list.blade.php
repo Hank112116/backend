@@ -63,7 +63,7 @@
                 </td>
                 <td>
                     {!! $solution->textType() !!} <br/>
-                    @if(Auth::user()->isBackendPM() || Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                    @if(auth()->user()->isBackendPM() || auth()->user()->isManagerHead() || auth()->user()->isAdmin())
                         @if($solution->isSolution())                     
                              <span class="solution-sub-category">
                                 <input type="checkbox"  class="approve_program" rel="{!! $solution->solution_id !!}"> To Program
@@ -121,12 +121,12 @@
                     $solution->solution_id, ['class' => 'btn-mini']) !!}
 
                     @if($solution->is_wait_approve_draft && !$is_restricted)
-                        @if(!Auth::user()->isFrontendPM())
+                        @if(!auth()->user()->isFrontendPM())
                             {!! link_to_action( 'SolutionController@showUpdate', 'Edit & Approve',
                             $solution->solution_id, ['class' => 'btn-mini btn-danger']) !!}
                         @endif
                     @elseif($solution->is_wait_approve_ongoing && !$is_restricted)
-                        @if(!Auth::user()->isFrontendPM())
+                        @if(!auth()->user()->isFrontendPM())
                             <a href="{!! action('SolutionController@showUpdate', $solution->solution_id) !!}" class="btn-mini btn-danger">
                                 Edit & Approve <i class="fa fa-copy"></i>
                             </a>
@@ -138,7 +138,7 @@
 
                     @endif
 
-                    @if(Auth::user()->isAdmin() || Auth::user()->isManagerHead())
+                    @if(auth()->user()->isAdmin() || auth()->user()->isManagerHead())
                         @if($solution->isPendingProgram())
                             <a href="javascript:void(0)" title="Upgrade Solution to Program" class="btn-mini btn-danger approve_pending_program" rel="{!! $solution->solution_id !!}">
                                 <i class="fa fa-long-arrow-up"></i> Up
@@ -160,7 +160,7 @@
 </div>
 
 <div class="text-center">
-    {!! $solutions->appends(Input::all())->render() !!}
+    {!! $solutions->appends(request()->all())->render() !!}
 </div>
 
 

@@ -2,13 +2,10 @@
 
 namespace Backend\Http\Controllers;
 
-use Auth;
+use Backend\Facades\Log;
+
 use Illuminate\Http\Request;
-use Input;
 use Noty;
-use Session;
-use Artisan;
-use Log;
 
 class AuthController extends BaseController
 {
@@ -17,12 +14,12 @@ class AuthController extends BaseController
     {
         $cert = [
             'email'    => $request->get('email'),
-            'password' =>$request->get('password')
+            'password' => $request->get('password')
         ];
 
         $login_status = true;
 
-        if (!Auth::attempt($cert)) {
+        if (!auth()->attempt($cert)) {
             Noty::warn('Login fail');
             $login_status = false;
         }
@@ -43,10 +40,11 @@ class AuthController extends BaseController
 
     private function loginSuccess()
     {
-        $user =  Auth::user();
+        $user =  auth()->user();
 
-        Session::put('cert', $user->role->cert);
-        Session::put('admin', $user->id);
+        $this->request->session()->put('cert', $user->role->cert);
+        $this->request->session()->put('admin', $user->id);
+
         Noty::success('Welcome, ' . $user->name . ". Login success");
 
         return redirect('/');
@@ -54,7 +52,7 @@ class AuthController extends BaseController
 
     public function logout()
     {
-        Auth::logout();
+        auth()->logout();
         Noty::success('Logout Success');
 
         return redirect('/');

@@ -3,12 +3,10 @@
 use Backend\Model\Eloquent\HubQuestionnaire;
 use Backend\Model\Eloquent\HubSchedule;
 use Backend\Model\Eloquent\Project;
-use Config;
 use Requests;
 use Backend\Repo\RepoInterfaces\HubInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
-use Carbon;
 
 class HubRepo implements HubInterface
 {
@@ -30,8 +28,8 @@ class HubRepo implements HubInterface
         $this->admin            = $admin;
         $this->user             = $user;
 
-        $this->token        = Config::get('app.hub_token');
-        $this->snapshot_api = 'https://'.Config::get('app.front_domain').'/hub/apis/admin-snapshot';
+        $this->token        = config('app.hub_token');
+        $this->snapshot_api = 'https://'.config('app.front_domain').'/hub/apis/admin-snapshot';
     }
 
     public function dummySchedule()

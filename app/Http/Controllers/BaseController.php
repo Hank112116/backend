@@ -2,15 +2,14 @@
 
 namespace Backend\Http\Controllers;
 
-use Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Input;
-use League\Csv\Writer;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use League\Csv\Writer;
 
-class BaseController extends Controller
+abstract class BaseController extends Controller
 {
 
     use DispatchesJobs, ValidatesRequests;
@@ -20,10 +19,17 @@ class BaseController extends Controller
     protected $is_restricted_adminer;
     protected $is_limitied_editor;
 
+    /* @var Request $request */
+    protected $request;
+
     public function __construct()
     {
-        $this->page     = $this->page ?: Input::get('page', 1);
-        $this->per_page = $this->per_page ?: Input::get('pp', 200);
+        $request = app()->make('Illuminate\Http\Request');
+        $this->page     = $this->page ?: $request->get('page', 1);
+        $this->per_page = $this->per_page ?: $request->get('pp', 200);
+
+        $this->request  = $request;
+
         if (isset($this->cert)) {
             $this->setCert();
         }
@@ -31,13 +37,13 @@ class BaseController extends Controller
 
     protected function setCert()
     {
-        if (!Auth::check()) {
+        if (!auth()->check()) {
             $this->is_restricted_adminer = true;
             return;
         }
 
-        $this->is_restricted_adminer = Auth::user()->isRestricted($this->cert);
-        $this->is_limitied_editor    = Auth::user()->isLimitedEditor($this->cert);
+        $this->is_restricted_adminer = auth()->user()->isRestricted($this->cert);
+        $this->is_limitied_editor    = auth()->user()->isLimitedEditor($this->cert);
     }
 
    /**

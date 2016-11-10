@@ -5,7 +5,6 @@ use Backend\Model\Eloquent\Project;
 use Backend\Repo\RepoInterfaces\ProjectStatisticInterface;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use App;
 
 class ProjectStatisticRepo implements ProjectStatisticInterface
 {
@@ -21,7 +20,7 @@ class ProjectStatisticRepo implements ProjectStatisticInterface
     public function loadProjectStatistics(Collection $projects)
     {
         /* @var StatisticApiInterface $project_statistic_api*/
-        $project_statistic_api = App::make(StatisticApiInterface::class, ['projects' => $projects]);
+        $project_statistic_api = app()->make(StatisticApiInterface::class, ['projects' => $projects]);
 
         $response = $project_statistic_api->load();
 

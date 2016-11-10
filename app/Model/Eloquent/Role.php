@@ -3,7 +3,6 @@
 // id, name, cert, created_at, updated_at
 namespace Backend\Model\Eloquent;
 
-use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Role extends Eloquent
@@ -59,7 +58,7 @@ class Role extends Eloquent
     {
         if (!self::$certs_all) {
             self::$certs_all = [];
-            foreach (Config::get('cert.all') as $cert_arr) {
+            foreach (config('cert.all') as $cert_arr) {
                 self::$certs_all = array_merge(self::$certs_all, $cert_arr);
             }
         }

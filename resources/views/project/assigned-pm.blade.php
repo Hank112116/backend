@@ -1,4 +1,4 @@
-@if (Auth::user()->role->hasCert('schedule_manager')
+@if (auth()->user()->role->hasCert('schedule_manager')
     and !$project->isDeleted()
     and Route::getCurrentRoute()->getPath() != 'report/project'
 )

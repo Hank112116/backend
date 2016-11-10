@@ -78,7 +78,7 @@
                                 @if(!$event_user->isCoincide())
                                     <i class="fa fa-pencil-square-o" title="Different from profile."></i>
                                 @endif
-                                @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                                @if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
                                     <br>
                                     @if($event_user->isTour())
                                         @if(!$event_user->approved_at)
@@ -220,7 +220,7 @@
         </div>
     </div>
     <div class="text-center">
-        {!! $event_users->appends(Input::all())->render() !!}
+        {!! $event_users->appends(request()->all())->render() !!}
     </div>
     <input type="hidden" id="event_id" name="event_id" value="{{ $event_id }}">
     <div id="dialog" class="ui-widget" title="Apply messages" style="display:none"></div>

@@ -13,7 +13,7 @@ class UserApiTest extends BackendTestCase
         parent::setUp();
 
         $this->user = Factory::create(Eloquent\User::class);
-        $this->api = App::make('Backend\Api\ApiInterfaces\UserApiInterface');
+        $this->api = app()->make('Backend\Api\ApiInterfaces\UserApiInterface');
     }
 
     /** @test */

@@ -70,7 +70,7 @@
 
 <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
 <div class="text-center">
-    {!! $projects->appends(Input::all())->render() !!}
+    {!! $projects->appends(request()->all())->render() !!}
 </div>
 @stop
 

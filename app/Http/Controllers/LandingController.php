@@ -6,10 +6,7 @@ use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
 use Illuminate\Http\Request;
-use Input;
 use Noty;
-use Redirect;
-use Response;
 
 class LandingController extends BaseController
 {
@@ -22,6 +19,8 @@ class LandingController extends BaseController
         LandingFeatureInterface $feature,
         LandingExpertInterface $expert
     ) {
+        parent::__construct();
+
         $this->feature = $feature;
         $this->expert  = $expert;
     }
@@ -40,7 +39,7 @@ class LandingController extends BaseController
 
     public function findFeatureEntity($type)
     {
-        $id = Input::get('id');
+        $id = $this->request->get('id');
         $feature = $this->feature->byEntityIdType($id, $type);
         if (!$feature->entity) {
             $res = [
@@ -54,15 +53,15 @@ class LandingController extends BaseController
             $res   = ['status' => 'success', 'new_block' => $block];
         }
 
-        return Response::json($res);
+        return response()->json($res);
     }
 
     public function updateFeature()
     {
-        $this->feature->reset(Input::get('feature', []));
+        $this->feature->reset($this->request->get('feature', []));
         Noty::success('Update features successful');
 
-        return Redirect::action('LandingController@showFeature');
+        return redirect()->action('LandingController@showFeature');
     }
 
     public function updateHelloRedirect(Request $request, LogAccessHelloInterface $repo)
@@ -70,7 +69,7 @@ class LandingController extends BaseController
         $default = "signup?status=2";
         $repo->updateHelloDestination($request->get('destination'));
 
-        return Response::json(['status' => 'success',]);
+        return response()->json(['status' => 'success',]);
     }
     
     public function showExpert()
@@ -84,7 +83,7 @@ class LandingController extends BaseController
 
     public function findExpertEntity($type)
     {
-        $id = Input::get('id');
+        $id = $this->request->get('id');
         $user = $this->expert->getExpert($id);
         if (sizeof($user) >0) {
             $block = view('landing.expert-block')
@@ -96,13 +95,13 @@ class LandingController extends BaseController
             $res   = ['status' => 'fail', 'msg' => 'No Expert Id!'];
         }
 
-        return Response::json($res);
+        return response()->json($res);
     }
     public function updateExpert()
     {
         $data = [];
-        $user = Input::get('user');
-        $description = Input::get('description');
+        $user = $this->request->get('user');
+        $description = $this->request->get('description');
         if (sizeof($user) >0) {
             foreach ($user as $key => $row) {
                 $data[$key]["user_id"] = $row;
@@ -113,6 +112,6 @@ class LandingController extends BaseController
             $this->expert->setExpert($data);
         }
         $res   = ['status' => 'success'];
-        return Response::json($res);
+        return response()->json($res);
     }
 }

@@ -1,6 +1,5 @@
 <?php namespace Backend\Repo\Lara;
 
-use App;
 use ImageUp;
 use Validator;
 use Carbon;
@@ -452,7 +451,7 @@ class UserRepo implements UserInterface
             $user->expert_approved_at = ($user->isPendingExpert()) ? Carbon::now() : null;
 
             if ($user->isPendingExpert()) {
-                $profile_api = App::make(ProfileApiInterface::class, ['user' => $user]);
+                $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
                 $profile_api->approveExpert($data['user_type']);
             }
         }

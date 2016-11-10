@@ -100,25 +100,25 @@ class EventApplicationRepo implements EventApplicationInterface
 
         if (array_key_exists('note', $input)) {
             $memo['note_info']['note']       = $input['note'];
-            $memo['note_info']['operator']   = \Auth::user()->name;
+            $memo['note_info']['operator']   = auth()->user()->name;
             $memo['note_info']['updated_at'] = Carbon::now()->toDateTimeString();
         }
 
         if (array_key_exists('internal_selection', $input)) {
-            if (!\Auth::user()) {
+            if (!auth()->user()) {
                 return false;
             }
             $memo['internal_set_status']['status']     = $input['internal_selection'];
-            $memo['internal_set_status']['operator']   = \Auth::user()->name;
+            $memo['internal_set_status']['operator']   = auth()->user()->name;
             $memo['internal_set_status']['updated_at'] = Carbon::now()->toDateTimeString();
         }
 
         if (array_key_exists('internal_form_selection', $input)) {
-            if (!\Auth::user()) {
+            if (!auth()->user()) {
                 return false;
             }
             $memo['internal_set_form_status']['status']     = $input['internal_form_selection'];
-            $memo['internal_set_form_status']['operator']   = \Auth::user()->name;
+            $memo['internal_set_form_status']['operator']   = auth()->user()->name;
             $memo['internal_set_form_status']['updated_at'] = Carbon::now()->toDateTimeString();
         }
 

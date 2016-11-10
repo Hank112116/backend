@@ -2,10 +2,8 @@
 
 namespace Backend\Http\Controllers;
 
-use App;
 use Carbon;
 use DB;
-use Input;
 use Noty;
 use Backend\Model\Eloquent\Project;
 use ProjectSubmitTimeUpdater;
@@ -13,8 +11,6 @@ use ProjectTagMigrater;
 use ProjectTagSeeder;
 use QueryLog;
 use QuestionnaireProjectTagMigrater;
-use Redirect;
-use Response;
 use SSH;
 use Backend\Model\Eloquent\User;
 
@@ -32,10 +28,10 @@ class EngineerController extends BaseController
 
     public function bugDecode()
     {
-        $reporter = App::make('Backend\ErrorReport\ReporterInterface');
+        $reporter = app()->make('Backend\ErrorReport\ReporterInterface');
 
-        return Response::json([
-            'report' => $reporter->decrypt(Input::get('bug'))
+        return response()->json([
+            'report' => $reporter->decrypt($this->request->get('bug'))
         ]);
     }
 
@@ -50,7 +46,7 @@ class EngineerController extends BaseController
         $seeder->run();
         Noty::success('Done');
 
-        return Redirect::to('/');
+        return redirect()->to('/');
     }
 
     public function migrateTagsColumn()
@@ -59,7 +55,7 @@ class EngineerController extends BaseController
         $seeder->run();
         Noty::success('Done');
 
-        return Redirect::to('/');
+        return redirect()->to('/');
     }
 
     public function migrateQuestionnaireColumn()
@@ -68,7 +64,7 @@ class EngineerController extends BaseController
         $seeder->run();
         Noty::success('Done');
 
-        return Redirect::to('/');
+        return redirect()->to('/');
     }
 
     public function migrateProjectSubmitDate()
@@ -77,7 +73,7 @@ class EngineerController extends BaseController
         $seeder->run();
         Noty::success('Done');
 
-        return Redirect::to('/');
+        return redirect()->to('/');
     }
 
     public function index()
@@ -91,7 +87,7 @@ class EngineerController extends BaseController
     {
         QueryLog::instance()->deleteLog();
 
-        return Redirect::action('EngineerController@index');
+        return redirect()->action('EngineerController@index');
     }
 
     public function updateHwtrekDevDatabase()
@@ -103,7 +99,7 @@ class EngineerController extends BaseController
 
         Noty::success('Update HWtrek Dev Database Success');
 
-        return Redirect::to('/');
+        return redirect()->to('/');
     }
 
     public function getUsersByMonth()
@@ -124,7 +120,7 @@ class EngineerController extends BaseController
             $sum += $n->user_amount;
         }
 
-        return Response::json(['users' => $users, 'months' => $months]);
+        return response()->json(['users' => $users, 'months' => $months]);
     }
 
     public function getProjectsStatus()
@@ -153,7 +149,7 @@ class EngineerController extends BaseController
             }
         }
 
-        return Response::json(['project_status' => array_values($status)]);
+        return response()->json(['project_status' => array_values($status)]);
     }
 
     public function showProductsInfograph()

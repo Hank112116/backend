@@ -13,10 +13,10 @@
     <div class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
 
-            @if(Auth::check())
+            @if(auth()->check())
             <ul class="nav" id="side-menu">
 
-                @if(Auth::user()->isShowLink('adminer'))
+                @if(auth()->user()->isShowLink('adminer'))
                 <li>
                     <a href="{!! action('AdminerController@showList') !!}">
                         <i class="fa fa-user fa-fw"></i>
@@ -25,7 +25,7 @@
                 </li>
                 @endif
 
-                @if(Auth::user()->isShowLink('report'))
+                @if(auth()->user()->isShowLink('report'))
                     <li>
                         <a href="#">
                             <i class="fa fa-line-chart fa-fw"></i>
@@ -33,7 +33,7 @@
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
-                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('registration_report'))
+                            @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('registration_report'))
                                 <li>
                                     <a href="{!! action('ReportController@showRegistrationReport', ['range' => 7]) !!}">
                                         <i class="fa fa-users fa-fw"></i>
@@ -41,7 +41,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('project_report'))
+                            @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('project_report'))
                                 <li>
                                     <a href="{!! action('ReportController@showProjectReport', ['range'=>7]) !!}">
                                         <i class="fa fa-send fa-fw"></i>
@@ -49,7 +49,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('comment_report'))
+                            @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('comment_report'))
                                 <li>
                                     <a href="{!! action('ReportController@showCommentReport', ['range'=>7]) !!}">
                                         <i class="fa fa-comment-o fa-fw"></i>
@@ -57,7 +57,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if(Auth::user()->isShowLink('report_full') || Auth::user()->isShowLink('event_report'))
+                            @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('event_report'))
                                 <li>
                                     <a href="{!! action('ReportController@showEventReport', ['event'=>'']) !!}">
                                         <i class="fa fa-glass fa-fw"></i>
@@ -69,7 +69,7 @@
                     </li>
                 @endif
 
-                @if(Auth::user()->isShowLink('user'))
+                @if(auth()->user()->isShowLink('user'))
                 <li>
                     <a href="{!! action('UserController@showList') !!}">
                         <i class="fa fa-users fa-fw"></i>
@@ -78,7 +78,7 @@
                 </li>
                 @endif
 
-                @if(Auth::user()->isShowLink('project'))
+                @if(auth()->user()->isShowLink('project'))
                 <li>
                     <a href="{!! action('ProjectController@showList') !!}">
                         <i class="fa fa-send fa-fw"></i>
@@ -87,7 +87,7 @@
                 </li>
                 @endif
 
-                @if(Auth::user()->isShowLink('solution'))
+                @if(auth()->user()->isShowLink('solution'))
                 <li>
                     <a href="{!! action('SolutionController@showList') !!}">
                         <i class="fa fa-plug fa-fw"></i>
@@ -95,8 +95,8 @@
                     </a>
                 </li>
                 @endif
-                <?php //print_r(Auth::user()->isShowLink('marketing_full')); die();?>
-                @if(Auth::user()->isShowLink('marketing'))
+                <?php //print_r(auth()->user()->isShowLink('marketing_full')); die();?>
+                @if(auth()->user()->isShowLink('marketing'))
                 <li>
                     <a href="#">
                         <i class="fa fa-anchor fa-fw"></i>
@@ -105,7 +105,7 @@
                     </a>
 
                     <ul class="nav nav-second-level">
-                        @if(Auth::user()->isShowLink('marketing_full'))
+                        @if(auth()->user()->isShowLink('marketing_full'))
                         <li>
                             <a href="{!! action('LandingController@showFeature') !!}">
                                 <i class="fa fa-tag fa-fw"></i> Feature
@@ -126,7 +126,7 @@
                 </li>
                 @endif
 
-                @if(Auth::user()->isAdmin())
+                @if(auth()->user()->isAdmin())
                 <li>
                     <a href="#">
                         <i class="fa fa-comments fa-fw"></i>

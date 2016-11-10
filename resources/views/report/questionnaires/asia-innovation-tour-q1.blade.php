@@ -170,7 +170,7 @@
         </div>
     </div>
     <div class="text-center">
-        {!! $approve_event_users->appends(Input::all())->render() !!}
+        {!! $approve_event_users->appends(request()->all())->render() !!}
     </div>
     <div id="questionnaire-2016-q1" class="ui-widget" title="Detail information" style="display:none">
         <table class="table table-striped">

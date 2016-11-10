@@ -1,6 +1,5 @@
 <?php namespace Backend\ErrorReport;
 
-use App;
 use Backend\Logger\LoggerInterface;
 use Illuminate\Encryption\Encrypter;
 use Exception;
@@ -16,7 +15,7 @@ class Reporter implements ReporterInterface
     public function send(Exception $e)
     {
         $encrypted = $this->encrypter->encrypt($e->__toString());
-        $this->logger->error(App::environment(), $encrypted);
+        $this->logger->error(app()->environment(), $encrypted);
     }
 
     public function decrypt($msg)

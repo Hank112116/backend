@@ -12,7 +12,7 @@ class CommentRepoTest extends BackendTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\CommentInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\CommentInterface');
     }
 
 

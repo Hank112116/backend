@@ -11,37 +11,37 @@
                 'all'     => 'All Role',
                 'creator'  => 'Creator',
                 'expert' => 'Expert',
-            ], Input::get('role'), ['class'=>'form-control']) !!}
+            ], request('role'), ['class'=>'form-control']) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('user', Input::get('user'), ['title' => 'User Title or ID', 'placeholder'=>"User Name or ID", 'class'=>"form-control"]) !!}
+            {!! Form::text('user', request('user'), ['title' => 'User Title or ID', 'placeholder'=>"User Name or ID", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('project', Input::get('project'), ['title' => 'Project Title or ID' ,'placeholder'=>"Project Title or ID", 'class'=>"form-control"]) !!}
+            {!! Form::text('project', request('project'), ['title' => 'Project Title or ID' ,'placeholder'=>"Project Title or ID", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-1">
         <div class="input-group">
-            {!! Form::text('company', Input::get('company'), ['title' => 'Company Name', 'placeholder'=>"Company", 'class'=>"form-control"]) !!}
+            {!! Form::text('company', request('company'), ['title' => 'Company Name', 'placeholder'=>"Company", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('assigned_pm', Input::get('assigned_pm'), ['title' => 'Assigned PM or Follow PM', 'placeholder'=>"Assigned PM", 'class'=>"form-control"]) !!}
+            {!! Form::text('assigned_pm', request('assigned_pm'), ['title' => 'Assigned PM or Follow PM', 'placeholder'=>"Assigned PM", 'class'=>"form-control"]) !!}
         </div>
     </div>
 
     <div class="col-md-1">
         <div class="input-group">
-            {!! Form::text('email', Input::get('email'), ['placeholder'=>"Email", 'class'=>"form-control"]) !!}
+            {!! Form::text('email', request('email'), ['placeholder'=>"Email", 'class'=>"form-control"]) !!}
         </div>
     </div>
 

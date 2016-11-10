@@ -10,7 +10,7 @@ class LandingFeatureRepoTest extends BackendTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\LandingFeatureInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\LandingFeatureInterface');
     }
 
     /** @test */

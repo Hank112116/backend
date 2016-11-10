@@ -1,6 +1,5 @@
 <?php namespace Backend\ErrorReport;
 
-use Config;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Application;
@@ -13,7 +12,7 @@ class ErrorReportServiceProvider extends ServiceProvider
             'Backend\ErrorReport\ReporterInterface',
             function (Application $app) {
                 return new Reporter(
-                    new Encrypter(Config::get('app.key')),
+                    new Encrypter(config('app.key')),
                     $app->make('Backend\Logger\LoggerInterface')
                 );
             }

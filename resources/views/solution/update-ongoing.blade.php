@@ -16,7 +16,7 @@
     <h1>{!! $solution->solution_title !!}</h1>
 
     <div>
-        @if( !$solution->is_manager_approved or Auth::user()->isAdmin() or Auth::user()->isManagerHead() )
+        @if( !$solution->is_manager_approved or auth()->user()->isAdmin() or auth()->user()->isManagerHead() )
         <a href="{!! action('SolutionController@approveEdition', $solution->solution_id) !!}"
             class="btn-mini btn-flat-green">
             <i class="fa fa-shield fa-fw"></i> Approve <i class="fa fa-copy"></i>

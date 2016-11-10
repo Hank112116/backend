@@ -1,6 +1,5 @@
 <?php namespace Backend\Http\Controllers;
 
-use Input;
 use ImageUp;
 
 class ImageUploadController extends BaseController
@@ -18,12 +17,12 @@ class ImageUploadController extends BaseController
      **/
     public function index()
     {
-        if (!Input::hasFile('file')) {
+        if (!$this->request->hasFile('file')) {
             return;
         }
 
         $uploader = ImageUp::instance();
-        if ($image = $uploader->uploadImage(Input::file('file'))) {
+        if ($image = $uploader->uploadImage($this->request->file('file'))) {
             return response()->json(['status' => 'success', 'filelink' => $uploader->getOriginImage()]);
         }
 

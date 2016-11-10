@@ -60,7 +60,7 @@
     </div>
     <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
     <div class="text-center">
-        {!! $users->appends(Input::all())->render() !!}
+        {!! $users->appends(request()->all())->render() !!}
     </div>
     @include('user.dialog.add-tags-dialog')
     @include('user.dialog.description-dialog')

@@ -5,7 +5,6 @@ use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
 
-use Auth;
 use Request;
 
 class LogService implements LoggerInterface
@@ -149,7 +148,7 @@ class LogService implements LoggerInterface
     private function getBaseContext()
     {
         $base_info = [
-            'adminer_id' => Auth::id(),
+            'adminer_id' => auth()->id(),
             'user_agent' => Request::server('HTTP_USER_AGENT'),
             'user_ip'    => Request::getClientIp(),
             'referer'    => Request::server('HTTP_REFERER'),

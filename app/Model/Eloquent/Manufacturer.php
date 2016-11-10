@@ -2,7 +2,6 @@
 
 namespace Backend\Model\Eloquent;
 
-use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
@@ -26,6 +25,6 @@ class Manufacturer extends Eloquent
 
     public function getDefaultImage()
     {
-        return Config::get('s3.default_project');
+        return config('s3.default_project');
     }
 }

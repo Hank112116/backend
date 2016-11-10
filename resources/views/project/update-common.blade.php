@@ -29,7 +29,7 @@
 <!-- Project Owner -->
 <div class="form-group">
     <label for="member" class="col-md-3">Project Owner*</label>
-    @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+    @if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
     <div id="owner-selector" class="col-md-5" 
          data-user='{!! $project->user->toBasicJson() !!}'>
     </div>

@@ -13,7 +13,7 @@ class UserRepoTest extends BackendTestCase
     {
         parent::setUp();
 
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\UserInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\UserInterface');
     }
 
     /** @test */
