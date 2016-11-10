@@ -4,7 +4,6 @@ namespace Backend\Http\Middleware;
 
 use Closure;
 use Noty;
-use Session;
 
 class RouteFilter
 {
@@ -19,7 +18,7 @@ class RouteFilter
     {
         $type = explode('|', $type);
 
-        if (auth()->check() and str_contains(Session::get('cert'), $type)) {
+        if (auth()->check() and str_contains($request->session()->get('cert'), $type)) {
             return $next($request);
         }
 

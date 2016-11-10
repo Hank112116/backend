@@ -13,7 +13,6 @@ use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Model\Eloquent\Industry;
 use Backend\Facades\Log;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Illuminate\Http\Request;
 use Noty;
 
 
@@ -149,7 +148,6 @@ class UserController extends BaseController
         Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'users');
-        //return CSV::fromArray($output)->render('users.csv');
     }
 
     /**
@@ -242,7 +240,7 @@ class UserController extends BaseController
             $data['is_restricted'] = $this->is_restricted_adminer;
         }
 
-        return view($view)->with($data);
+        return view($view, $data);
     }
 
     public function update($id)
@@ -346,8 +344,8 @@ class UserController extends BaseController
      */
     public function putAttachment()
     {
-        $user = $this->user_repo->find(Request::get('user_id'));
-        $file = Request::file()[0];
+        $user = $this->user_repo->find($this->request->get('user_id'));
+        $file = $this->request->file()[0];
         $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
         $r    = $attachment_api->putAttachment($file);
         Log::info('Upload attachment', (array) $r);
