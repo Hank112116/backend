@@ -13,7 +13,6 @@ class AdminerController extends BaseController
 
     private $adminer_repo;
     private $role_repo;
-    private $request;
 
     public function __construct(
         AdminerInterface $adminer,
