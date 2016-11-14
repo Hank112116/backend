@@ -93,7 +93,7 @@
             <a href="" class="btn btn-primary btn-disabled" disabled>This project was deleted</a>
         @endif
 
-        @if(Auth::user()->role->isManagerHead() or $q->schedule->inHubManagers(Auth::user()->id))
+        @if(auth()->user()->role->isManagerHead() or $q->schedule->inHubManagers(auth()->user()->id))
             <a class="btn-mini" href="{!! $q->schedule->textFrontEditLink() !!}" target="_blank">
                 <i class="fa fa-pencil fa-fw"></i> EDIT SCHEDULE
             </a>

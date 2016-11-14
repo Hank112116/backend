@@ -20,11 +20,11 @@
     @if($event_id == 1)
         <div class="col-md-2">
             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                @if(Input::get('participation') == 'shenzhen')
+                @if(request('participation') == 'shenzhen')
                     SZ
-                @elseif(Input::get('participation') == 'beijing')
+                @elseif(request('participation') == 'beijing')
                     BJ
-                @elseif(Input::get('participation') == 'taipei')
+                @elseif(request('participation') == 'taipei')
                     TW
                 @else
                     All

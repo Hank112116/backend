@@ -6,7 +6,7 @@
         <a href="{!! $user->textFrontLink() !!}" target="_blank">{{ $user->textFullName() }}</a>
     @endif
 </td>
-@if(Auth::user()->isAdmin())
+@if(auth()->user()->isAdmin())
     <td>{!! $user->textHWTrekPM() !!}<br>
         @if(!$user->isHWTrekPM())
             <span class="user-sub-category">
@@ -23,7 +23,7 @@
     </td>
 @endif
 
-@if(Auth::user()->isAdmin() && $user->isHWTrekPM())
+@if(auth()->user()->isAdmin() && $user->isHWTrekPM())
     <td>{!! $user->textHWTrekPM() !!}</td>
 @else
     <td>
@@ -39,7 +39,7 @@
     </td>
 @endif
 
-@if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+@if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
     <td class="table--user-mail">
         {{ $user->email }}
         @if('facebook' === $user->social)

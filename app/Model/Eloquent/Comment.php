@@ -2,7 +2,6 @@
 
 namespace Backend\Model\Eloquent;
 
-use Config;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -110,7 +109,7 @@ class Comment extends Eloquent
 
         $urls = [];
         foreach (explode(',', $this->images) as $image) {
-            $urls[] = Config::get('s3.thumb') . $image;
+            $urls[] = config('s3.thumb') . $image;
         }
 
         return $urls;

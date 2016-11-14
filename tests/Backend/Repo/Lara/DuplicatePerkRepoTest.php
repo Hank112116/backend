@@ -13,8 +13,8 @@ class DuplicatePerkRepoTest extends BackendTestCase
     {
         parent::setUp();
 
-        $this->perk_repo = App::make('Backend\Repo\RepoInterfaces\PerkInterface');
-        $this->duplicate_repo = App::make('Backend\Repo\RepoInterfaces\DuplicatePerkInterface');
+        $this->perk_repo = app()->make('Backend\Repo\RepoInterfaces\PerkInterface');
+        $this->duplicate_repo = app()->make('Backend\Repo\RepoInterfaces\DuplicatePerkInterface');
     }
 
     /** @test */

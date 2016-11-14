@@ -3,7 +3,6 @@
 namespace Backend\Model\Eloquent;
 
 use DB;
-use Input;
 use Requests;
 
 /**
@@ -92,7 +91,7 @@ class HubSchedule extends Project
     // update project hub_managers
     public function updateHubManagers()
     {
-        $managers           = Input::get('managers', []);
+        $managers           = request()->get('managers', []);
         $this->hub_managers = implode(',', $managers);
         $this->save();
     }

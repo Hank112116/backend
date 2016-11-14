@@ -7,10 +7,10 @@ use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
+use Backend\Facades\Log;
 use Illuminate\Support\Collection;
 use Mews\Purifier\Purifier;
 
-use Log;
 
 class CommentRepo implements CommentInterface
 {

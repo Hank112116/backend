@@ -4,11 +4,10 @@ namespace Backend\Api\Lara;
 
 use Backend\Enums\GrantTypeRegistry;
 use Backend\Enums\URI\API\HWTrekApiEnum;
+use Backend\Facades\Log;
 use Illuminate\Http\Response;
 use Guzzle\Http\Exception\CurlException;
 use Curl\Curl;
-use Config;
-use Log;
 
 /**
  * HWTrek API
@@ -22,7 +21,7 @@ class HWTrekApi
 
     public function __construct()
     {
-        $this->front_domain = Config::get('app.front_domain');
+        $this->front_domain = config('app.front_domain');
         $curl               = new Curl();
         $curl               = $this->setAccessToken($curl);
         $this->curl         = $curl;
@@ -40,10 +39,10 @@ class HWTrekApi
      */
     private function setAccessToken(Curl $curl)
     {
-        $client_id       = Config::get('api.hwtrek_client_id');
-        $client_secret   = Config::get('api.hwtrek_client_secret');
+        $client_id       = config('api.hwtrek_client_id');
+        $client_secret   = config('api.hwtrek_client_secret');
         $url             = 'https://' .  $this->front_domain . HWTrekApiEnum::OAUTH_TOKEN;
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::get('api.curl_ssl_verifypeer'));
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
         $curl->setBasicAuthentication($client_id, $client_secret);
         $curl->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
         if ($curl->error) {

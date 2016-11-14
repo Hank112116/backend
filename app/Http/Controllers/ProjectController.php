@@ -8,13 +8,8 @@ use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Model\Plain\TagNode;
-use Input;
+use Backend\Facades\Log;
 use Noty;
-use Redirect;
-use Log;
-use Response;
-use View;
-use App;
 
 class ProjectController extends BaseController
 {
@@ -36,7 +31,7 @@ class ProjectController extends BaseController
         $this->adminer_repo      = $adminer;
         $this->hub_repo          = $hub;
         $this->user_repo         = $user;
-        $this->per_page           = 100;
+        $this->per_page          = 100;
     }
 
     public function showList()
@@ -54,9 +49,9 @@ class ProjectController extends BaseController
 
     public function showSearch()
     {
-        $projects = $this->project_repo->byUnionSearch(Input::all(), $this->page, $this->per_page);
+        $projects = $this->project_repo->byUnionSearch($this->request->all(), $this->page, $this->per_page);
         $log_action = 'Search project';
-        Log::info($log_action, Input::all());
+        Log::info($log_action, $this->request->all());
 
         if ($projects->count() == 0) {
             Noty::warnLang('common.no-search-result');
@@ -67,7 +62,7 @@ class ProjectController extends BaseController
 
     public function showProjects($projects, $paginate = true, $title = '')
     {
-        if (Input::has('csv')) {
+        if ($this->request->has('csv')) {
             return $this->renderCsv($projects);
         }
 
@@ -96,13 +91,13 @@ class ProjectController extends BaseController
 
     private function renderCsv($projects)
     {
-        if (Input::get('csv') == 'all') {
+        if ($this->request->get('csv') == 'all') {
             $output = $this->project_repo->toOutputArray($this->project_repo->all());
         } else {
             $output = $this->project_repo->toOutputArray($projects);
         }
 
-        $csv_type   = Input::get('csv') == 'all' ? 'all' : 'this';
+        $csv_type   = $this->request->get('csv') == 'all' ? 'all' : 'this';
         $log_action = 'CSV of Project ('.$csv_type.')';
         Log::info($log_action);
 
@@ -116,7 +111,7 @@ class ProjectController extends BaseController
         if (!$project) {
             Noty::warnLang('project.no-project');
 
-            return Redirect::action('ProjectController@showList');
+            return redirect()->action('ProjectController@showList');
         }
         return view('project.detail')
             ->with([
@@ -134,7 +129,7 @@ class ProjectController extends BaseController
         if (!$project) {
             Noty::warnLang('project.no-project');
 
-            return Redirect::action('ProjectController@showList');
+            return redirect()->action('ProjectController@showList');
         }
 
         return view('project.update')
@@ -177,7 +172,7 @@ class ProjectController extends BaseController
 
         Noty::successLang('common.update-success');
 
-        return Redirect::action('ProjectController@showDetail', $project_id);
+        return redirect()->action('ProjectController@showDetail', $project_id);
     }
 
     public function update($project_id)
@@ -185,14 +180,14 @@ class ProjectController extends BaseController
         $log_action = 'Edit project';
         $log_data   =  [
             'project' => $project_id,
-            Input::all()
+            $this->request->all()
         ];
         Log::info($log_action, $log_data);
 
-        $this->project_repo->update($project_id, Input::all());
+        $this->project_repo->update($project_id, $this->request->all());
         Noty::successLang('common.update-success');
 
-        return Redirect::action('ProjectController@showDetail', $project_id);
+        return redirect()->action('ProjectController@showDetail', $project_id);
     }
 
     public function delete($project_id)
@@ -208,23 +203,23 @@ class ProjectController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        return Redirect::action('ProjectController@showList');
+        return redirect()->action('ProjectController@showList');
     }
 
     public function updateMemo()
     {
-        $input = Input::all();
+        $input = $this->request->all();
         if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
             $project = $this->project_repo->find($input['project_id']);
 
             if ($input['route_path'] === 'report/project') {
                 // make report project row view
-                $view = View::make('report.project-row')
+                $view = view()->make('report.project-row')
                     ->with(['project' => $project, 'input' => $input, 'user_referral_total' => 0])
                     ->render();
             } else {
                 // make project row view
-                $view = View::make('project.row')->with(
+                $view = view()->make('project.row')->with(
                     [
                         'project'       => $project,
                         'tag_tree'      => TagNode::tags()
@@ -239,16 +234,16 @@ class ProjectController extends BaseController
         $log_action = 'Edit internal project memo';
         Log::info($log_action, $input);
 
-        return Response::json($res);
+        return response()->json($res);
     }
     
     public function updateManager()
     {
-        $input = Input::all();
+        $input = $this->request->all();
         if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
             $project       = $this->project_repo->find($input['project_id']);
             // make project row view
-            $view = View::make('project.row')->with(
+            $view = view()->make('project.row')->with(
                 [
                     'project'       => $project,
                     'tag_tree'      => TagNode::tags()
@@ -262,32 +257,32 @@ class ProjectController extends BaseController
         $log_action = 'Edit project manager';
         Log::info($log_action, $input);
 
-        return Response::json($res);
+        return response()->json($res);
     }
 
     public function proposeSolution()
     {
-        $project_id   = Input::get('project_id');
-        $dstart       = Input::get('dstart');
-        $dend         = Input::get('dend');
+        $project_id   = $this->request->get('project_id');
+        $dstart       = $this->request->get('dstart');
+        $dend         = $this->request->get('dend');
 
         $project    = $this->project_repo->find($project_id);
         $statistics = $project->proposeSolutionStatistics($dstart, $dend);
         $result['staff_propose'] = $statistics->internal_data;
         $result['user_propose']  = $statistics->external_data;
-        return Response::json($result);
+        return response()->json($result);
     }
 
     public function recommendExpert()
     {
-        $project_id     = Input::get('project_id');
-        $dstart         = Input::get('dstart');
-        $dend           = Input::get('dend');
+        $project_id     = $this->request->get('project_id');
+        $dstart         = $this->request->get('dstart');
+        $dend           = $this->request->get('dend');
         $project     = $this->project_repo->find($project_id);
         $statistics  = $project->recommendExpertStatistics($dstart, $dend);
         $result['staff_referral'] = $statistics->internal_data;
         $result['user_referral']  = $statistics->external_data;
-        return Response::json($result);
+        return response()->json($result);
     }
 
     /**
@@ -295,27 +290,28 @@ class ProjectController extends BaseController
      * GET /hub/schedule/approve/{project_id}
      *
      * @param int $id project_id
-     * @return Redirect
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function approveSchedule()
     {
-        $id = Input::get('project_id');
+        $id = $this->request->get('project_id');
 
         $project = $this->project_repo->find($id);
         if ($project->isDeleted()) {
             Noty::warn('Permission deny');
             $res   = ['status' => 'fail', 'msg' => 'Permission deny'];
-            return Response::json($res);
+            return response()->json($res);
         }
         /* @var ReleaseApiInterface $release_api*/
-        $release_api = App::make(ReleaseApiInterface::class, ['project' => $project]);
+        $release_api = app()->make(ReleaseApiInterface::class, ['project' => $project]);
 
         $response = $release_api->releaseSchedule();
 
         if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
             $error_message = json_decode($response->getContent());
             $res   = ['status' => 'fail', 'msg' => $error_message->error->message];
-            return Response::json($res);
+            return response()->json($res);
         }
 
         $project->hub_approve = true;
@@ -326,7 +322,7 @@ class ProjectController extends BaseController
         Log::info($log_action, $log_data);
 
         // make project row view
-        $view = View::make('project.row')->with(
+        $view = view()->make('project.row')->with(
             [
                 'project'       => $project,
                 'tag_tree'      => TagNode::tags()
@@ -335,7 +331,7 @@ class ProjectController extends BaseController
         
         $res  = ['status' => 'success', 'view' => $view];
 
-        return Response::json($res);
+        return response()->json($res);
     }
 
     /**
@@ -344,13 +340,13 @@ class ProjectController extends BaseController
      */
     public function getExpert()
     {
-        $input  = Input::all();
+        $input  = $this->request->all();
         $expert = $this->user_repo->findExpert($input["expertId"]);
         if ($expert) {
             $res   = ['msg' => "{$expert->user_name} ({$expert->company})"];
         } else {
             $res   = ['msg' => 'no expert'];
         }
-        return Response::json($res);
+        return response()->json($res);
     }
 }

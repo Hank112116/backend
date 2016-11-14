@@ -34,11 +34,11 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                @if(Auth::user()->isAdmin())
+                @if(auth()->user()->isAdmin())
                 <th>Internal PM</th>
                 @endif
                 <th>Role</th>
-                @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+                @if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
                     <th class="table--user-mail">Email</th>
                 @endif
                 <th>Country<br/>City</th>
@@ -76,7 +76,7 @@
 @include('user.dialog.description-dialog')
 @include('report.dialog.user-report-action')
 <div class="text-center">
-    {!! $users->appends(Input::all())->render() !!}
+    {!! $users->appends(request()->all())->render() !!}
 </div>
 
 @stop

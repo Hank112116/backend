@@ -1,7 +1,7 @@
 <div class="col-md-3">
     {!! Form::open(['action' => ['TransactionController@showSearch', 'name'], 'method' => 'GET']) !!}
         <div class="input-group">
-            {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
+            {!! Form::text('name', request('name'), ['placeholder'=>"Search by user name", 'class'=>"form-control"]) !!}
             <span class="input-group-btn">
                 <button class="btn btn-default js-btn-search" type="button">Go!</button>
             </span>
@@ -12,7 +12,7 @@
 <div class="col-md-3">
     {!! Form::open(['action' => ['TransactionController@showSearch', 'title'], 'method' => 'GET']) !!}
         <div class="input-group">
-            {!! Form::text('title', Input::get('title'), ['placeholder'=>"Search by project title", 'class'=>"form-control"]) !!}
+            {!! Form::text('title', request('title'), ['placeholder'=>"Search by project title", 'class'=>"form-control"]) !!}
             <span class="input-group-btn">
                 <button class="btn btn-default js-btn-search" type="button">Go!</button>
             </span>

@@ -14,7 +14,7 @@
 @section('content')
 	<div class="page-header">
 	    <h1>{{ $project->project_title }}</h1>
-        @if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+        @if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
             <div>
                 <a href="/project/update-status/draft/{!! $project->project_id !!}"
                    class="btn-mini">

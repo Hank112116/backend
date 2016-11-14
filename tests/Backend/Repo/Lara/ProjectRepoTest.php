@@ -12,7 +12,7 @@ class ProjectRepoTest extends BackendTestCase
     {
         parent::setUp();
 
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\ProjectInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\ProjectInterface');
     }
 
     /** @test */

@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1 clearfix">
 
-            @if($q->schedule and Auth::user()->role->hasCert('schedule_manager'))
+            @if($q->schedule and auth()->user()->role->hasCert('schedule_manager'))
 
             {!! Form::open(['action' => ['HubController@updateScheduleManager', $schedule->project_id],
             'method' => 'POST']) !!}

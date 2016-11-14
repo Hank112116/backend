@@ -26,12 +26,12 @@ class RoleTableSeeder extends Seeder
 
         $admin = new Role;
         $admin->name = 'admin';
-        $admin->cert = implode(',', Config::get('cert.default_admin'));
+        $admin->cert = implode(',', config('cert.default_admin'));
         $admin->save();
 
         $manager = new Role;
         $manager->name = 'manager';
-        $manager->cert = implode(',', Config::get('cert.default_manager'));
+        $manager->cert = implode(',', config('cert.default_manager'));
         $manager->save();
     }
 }

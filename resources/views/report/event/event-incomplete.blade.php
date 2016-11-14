@@ -71,7 +71,7 @@
         </div>
     </div>
     <div class="text-center">
-        {!! $event_users->appends(Input::all())->render() !!}
+        {!! $event_users->appends(request()->all())->render() !!}
     </div>
     @include ('report.dialog.event-note-dialog')
 @stop

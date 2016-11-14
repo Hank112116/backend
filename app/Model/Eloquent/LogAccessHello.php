@@ -1,6 +1,6 @@
 <?php namespace Backend\Model\Eloquent;
 
-use Browser\Browser;
+use Sinergi\BrowserDetector\Browser;
 use Illuminate\Database\Eloquent\Model;
 
 class LogAccessHello extends Model

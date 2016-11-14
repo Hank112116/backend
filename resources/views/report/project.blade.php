@@ -25,7 +25,7 @@
     </div>
     <div class="row text-center">
         <h4>
-            @if (Input::get('range'))
+            @if (request('range'))
                 Showing Match Stats from {{ $input['dstart'] }} to {{ $input['dend'] }}
             @else
                 Showing Search Results
@@ -88,7 +88,7 @@
         </div>
     </div>
     <div class="text-center">
-    {!! $projects->appends(Input::all())->render() !!}
+    {!! $projects->appends(request()->all())->render() !!}
     </div>
     @if ($input['time_type'] == 'match')
         <input type="hidden" id="statistic-start-date" value="{{ $input['dstart'] }}">

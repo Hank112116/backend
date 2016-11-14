@@ -6,8 +6,6 @@ use Backend\Enums\ProjectCategoryEnum;
 use Backend\Model\ModelTrait\TagTrait;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use App;
-use Config;
 use Carbon;
 use FrontLinkGenerator;
 use UrlFilter;
@@ -306,7 +304,7 @@ class Project extends Eloquent
     public function getImagePath()
     {
         return $this->image ?
-            Config::get('s3.origin') . $this->image : Config::get('s3.default_project');
+            config('s3.origin') . $this->image : config('s3.default_project');
     }
 
     public function textChooseType()
@@ -651,7 +649,7 @@ class Project extends Eloquent
     public function getProfileAttribute()
     {
         if (!array_key_exists('profile', $this->attributes)) {
-            $this->profile = App::make('Backend\Model\ModelInterfaces\ProjectProfileGeneratorInterface')->gen($this);
+            $this->profile = app()->make('Backend\Model\ModelInterfaces\ProjectProfileGeneratorInterface')->gen($this);
         }
 
         return $this->profile; //$this->attributes['profile'];

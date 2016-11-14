@@ -18,7 +18,7 @@ class CodeigniterEncrypter
      */
     public function get_key()
     {
-        return md5(Config::get('front.product_secret_key'));
+        return md5(config('front.product_secret_key'));
     }
 
     // --------------------------------------------------------------------

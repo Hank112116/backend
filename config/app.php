@@ -11,6 +11,7 @@ return [
     'hipchat_token'    => '0f656c8433c1bc4fbf2fe4ae457208',
 
     'key'              => env('APP_KEY', 'SomeRandomString'),
+    'env'              => env('APP_ENV', 'production'),
     'cipher'           => MCRYPT_RIJNDAEL_128,
 
     'debug'            => env('APP_DEBUG'),
@@ -49,12 +50,9 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        'Illuminate\Foundation\Providers\ArtisanServiceProvider',
         'Illuminate\Auth\AuthServiceProvider',
-        'Illuminate\Bus\BusServiceProvider',
         'Illuminate\Cache\CacheServiceProvider',
         'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
-        'Illuminate\Routing\ControllerServiceProvider',
         'Illuminate\Cookie\CookieServiceProvider',
         'Illuminate\Database\DatabaseServiceProvider',
         'Illuminate\Encryption\EncryptionServiceProvider',
@@ -85,9 +83,10 @@ return [
         /*
          * Third-Party Service Providers...
          */
-        'Illuminate\Html\HtmlServiceProvider',
+        'Collective\Html\HtmlServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'Mews\Purifier\PurifierServiceProvider',
+        'Collective\Bus\BusServiceProvider',
 
         /*
          * Backend Service Providers...
@@ -96,7 +95,6 @@ return [
         'Backend\Providers\ApiServiceProvider',
         'Backend\Providers\ModelServiceProvider',
         'Backend\Providers\LoggerServiceProvider',
-        'Backend\Providers\FilterServiceProvider',
     ],
 
     /*
@@ -144,8 +142,8 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-        'Form'      => 'Illuminate\Html\FormFacade',
-        'HTML'      => 'Illuminate\Html\HtmlFacade',
+        'Form'      => 'Collective\Html\FormFacade',
+        'HTML'      => 'Collective\Html\HtmlFacade',
         'Log'       => 'Backend\Facades\Log',
         'Carbon'    => 'Carbon\Carbon',
         'Image'     => 'Intervention\Image\Facades\Image',

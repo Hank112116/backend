@@ -13,8 +13,8 @@ class ProductRepoTest extends BackendTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\ProductInterface');
-        $this->profile = App::make('Backend\Model\Plain\ProjectProfile');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\ProductInterface');
+        $this->profile = app()->make('Backend\Model\Plain\ProjectProfile');
     }
 
 

@@ -13,8 +13,8 @@ class LinkGen
     public static function csv($all = false)
     {
         $num = $all?  'all' : 'this';
-        $tail = (Input::all()? '&' : '?') . "csv={$num}";
-        return Request::fullUrl() . $tail;
+        $tail = (request()->all()? '&' : '?') . "csv={$num}";
+        return request()->fullUrl() . $tail;
     }
 
     /**
@@ -23,16 +23,16 @@ class LinkGen
      */
     public static function assets($path)
     {
-        if (!in_array(env('APP_ENV'), Config::get('assets.environments'))) {
-            return URL::secureAsset($path);
+        if (!in_array(env('APP_ENV'), config('assets.environments'))) {
+            return secure_url($path);
         }
 
         if (!is_file($path)){
-            return URL::secureAsset($path);
+            return secure_url($path);
         }
 
         $check_sum = md5_file($path);
         $path      = $path . '?v=' . $check_sum;
-        return URL::secureAsset($path);
+        return secure_url($path);
     }
 }

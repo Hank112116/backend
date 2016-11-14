@@ -22,7 +22,7 @@
     @endif
 @endif
 
-@if(Auth::user()->isManagerHead() || Auth::user()->isAdmin())
+@if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
     @if ($project->internalProjectMemo)
         @if($project->internalProjectMemo->schedule_note_grade == 'not-graded' && is_null($project->internalProjectMemo->schedule_note))
             <div class="process-btns">

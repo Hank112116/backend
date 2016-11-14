@@ -21,7 +21,7 @@ class Noty
      **/
     private static function sessionFlashLang($lang = '', $type = 'information')
     {
-        $msg = Lang::get($lang);
+        $msg = trans($lang);
 
         if (!$lang or !$msg) {
             return;

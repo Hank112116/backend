@@ -3,7 +3,6 @@
 namespace Backend\Model\Eloquent;
 
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
-use Config;
 use UrlFilter;
 use Carbon;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -142,7 +141,7 @@ class User extends Eloquent
     public function getImagePath()
     {
         return $this->image ?
-            Config::get('s3.thumb') . $this->image : Config::get('s3.default_user');
+            config('s3.thumb') . $this->image : config('s3.default_user');
     }
 
     public function textType()
@@ -177,7 +176,7 @@ class User extends Eloquent
     public function textFrontLink()
     {
         $name = UrlFilter::filter("{$this->user_name}-{$this->last_name}");
-        return 'https://' . Config::get('app.front_domain') . "/profile/{$name}.{$this->user_id}";
+        return 'https://' . config('app.front_domain') . "/profile/{$name}.{$this->user_id}";
     }
 
     public function textHWTrekPM()
@@ -416,7 +415,7 @@ class User extends Eloquent
         if (!$this->expertises) {
             return [];
         }
-        $expertise_repo = \App::make(ExpertiseInterface::class);
+        $expertise_repo = app()->make(ExpertiseInterface::class);
         $mapping = $expertise_repo->getDisplayTags(explode(',', $this->expertises))->toArray();
 
         if ($amount === 0) {

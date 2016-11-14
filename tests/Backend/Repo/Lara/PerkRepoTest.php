@@ -13,7 +13,7 @@ class PerkRepoTest extends BackendTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\PerkInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\PerkInterface');
     }
 
 

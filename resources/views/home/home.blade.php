@@ -10,7 +10,7 @@
 	  <h1>HWTrek Back-end System</h1>
 	</div>
 
-	@if(!Auth::check())
+	@if(!auth()->check())
   	<div class="info">
 	  	{!! Form::open(['url' => 'login', 'method' => 'POST', 'class' => 'login-form']) !!}
 	  		{!! Form::email('email', '',['placeholder' => 'email', 'class'=>'form-control']) !!}

@@ -22,28 +22,28 @@
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 7 days', ['range' => 7,'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id')  ], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 7 days', ['range' => 7,'filter' => request('filter'), 'name' => request('name'), 'id' => request('id')  ], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 14 days', ['range' => 14,'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id') ], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 14 days', ['range' => 14,'filter' => request('filter'), 'name' => request('name'), 'id' => request('id') ], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 30 days', ['range' => 30,'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id')  ], null) !!}
+                    {!! link_to_action('ReportController@showCommentReport', 'Comment Report in last 30 days', ['range' => 30,'filter' => request('filter'), 'name' => request('name'), 'id' => request('id')  ], null) !!}
                 </li>
                 <li>
                     {!! link_to_action('ReportController@showCommentReport', 'Custom', [
-                    'dstart' => \Carbon\Carbon::parse(Input::get('range',7).' days ago')->toDateString(),
+                    'dstart' => \Carbon\Carbon::parse(request('range',7).' days ago')->toDateString(),
                     'dend'   => \Carbon\Carbon::now()->toDateString(),
-                    'filter' => Input::get('filter'), 'name' => Input::get('name'), 'id' => Input::get('id')  ],null) !!}
+                    'filter' => request('filter'), 'name' => request('name'), 'id' => request('id')  ],null) !!}
                 </li>
             </ul>
             @if(!isset($range))
-                {!! Form::text('dstart', Input::get('dstart'),
+                {!! Form::text('dstart', request('dstart'),
                     ['placeholder'=>"Search From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
-                {!! Form::text('dend', Input::get('dend'),
+                {!! Form::text('dend', request('dend'),
                     ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
             @else
-                {!! Form::hidden('range', Input::get('range')) !!}
+                {!! Form::hidden('range', request('range')) !!}
             @endif
         </div>
         <div class="form-group has-feedback">
@@ -54,9 +54,9 @@
                 'premium-expert' => 'Show Premium Expert',
                 'creator'        => 'Show Creator',
                 'to-be-expert'   => 'Show To Be Expert'
-            ], Input::get('filter'), ['class'=>'form-control']) !!}
-            {!! Form::text('name', Input::get('name'), ['placeholder'=>"Search by user name", 'id'=>'search-name', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-id").value=""']) !!}
-            {!! Form::text('id', Input::get('id'), ['placeholder'=>"Search by user ID", 'id'=>'search-id', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-name").value=""']) !!}
+            ], request('filter'), ['class'=>'form-control']) !!}
+            {!! Form::text('name', request('name'), ['placeholder'=>"Search by user name", 'id'=>'search-name', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-id").value=""']) !!}
+            {!! Form::text('id', request('id'), ['placeholder'=>"Search by user ID", 'id'=>'search-id', 'class'=>"form-control", 'onkeydown'=>'document.getElementById("search-name").value=""']) !!}
         </div>
         {!! Form::submit('Go!', $attributes=["class"=>"btn btn-default js-btn-search", "type"=>"button"]) !!}
         {!! Form::close() !!}
@@ -102,7 +102,7 @@
         </div>
     </div>
     <div class="text-center">
-        {!! $users->appends(Input::all())->render() !!}
+        {!! $users->appends(request()->all())->render() !!}
     </div>
 
 @stop

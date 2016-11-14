@@ -11,7 +11,7 @@ class MailTemplateRepoTest extends BackendTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repo = App::make('Backend\Repo\RepoInterfaces\MailTemplateInterface');
+        $this->repo = app()->make('Backend\Repo\RepoInterfaces\MailTemplateInterface');
     }
 
     /** @test */

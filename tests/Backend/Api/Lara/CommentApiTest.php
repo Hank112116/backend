@@ -20,7 +20,7 @@ class CommentApiTest extends BackendTestCase
            'main_comment' => $this->topic->comment_id
         ]);
 
-        $this->api = App::make('Backend\Api\ApiInterfaces\CommentApiInterface');
+        $this->api = app()->make('Backend\Api\ApiInterfaces\CommentApiInterface');
     }
 
     /** @test */

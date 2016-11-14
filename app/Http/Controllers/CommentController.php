@@ -4,9 +4,7 @@ namespace Backend\Http\Controllers;
 
 use Backend\Repo\RepoInterfaces\CommentInterface;
 use Backend\Api\ApiInterfaces\CommentApiInterface;
-use Input;
-use Response;
-use Log;
+use Backend\Facades\Log;
 
 class CommentController extends BaseController
 {
@@ -33,7 +31,7 @@ class CommentController extends BaseController
 
     public function professions()
     {
-        return Response::json(
+        return response()->json(
             $this->comment_repo->professionTopicsByPage($this->page, $this->per_page)
         );
     }
@@ -49,7 +47,7 @@ class CommentController extends BaseController
 
     public function projects()
     {
-        return Response::json(
+        return response()->json(
             $this->comment_repo->projectTopicsByPage($this->page, $this->per_page)
         );
     }
@@ -66,37 +64,37 @@ class CommentController extends BaseController
 
     public function solutions()
     {
-        return Response::json(
+        return response()->json(
             $this->comment_repo->solutionTopicsByPage($this->page, $this->per_page)
         );
     }
 
     public function searchProfessions()
     {
-        $where  = Input::get('where', '');
-        $search = Input::get('search', '');
+        $where  = $this->request->get('where', '');
+        $search = $this->request->get('search', '');
 
-        return Response::json([
+        return response()->json([
             'data' => $this->comment_repo->professionTopicsBySearch($where, $search)
         ]);
     }
 
     public function searchProjects()
     {
-        $where  = Input::get('where', '');
-        $search = Input::get('search', '');
+        $where  = $this->request->get('where', '');
+        $search = $this->request->get('search', '');
 
-        return Response::json([
+        return response()->json([
             'data' => $this->comment_repo->projectTopicsBySearch($where, $search)
         ]);
     }
 
     public function searchSolutions()
     {
-        $where  = Input::get('where', '');
-        $search = Input::get('search', '');
+        $where  = $this->request->get('where', '');
+        $search = $this->request->get('search', '');
 
-        return Response::json([
+        return response()->json([
             'data' => $this->comment_repo->solutionTopicsBySearch($where, $search)
         ]);
     }

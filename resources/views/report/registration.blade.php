@@ -25,36 +25,36 @@
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li>
-                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 7 days', ['range' => 7,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 7 days', ['range' => 7,'filter' => request('filter')], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 14 days', ['range' => 14,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 14 days', ['range' => 14,'filter' => request('filter')], null) !!}
                 </li>
                 <li>
-                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 30 days', ['range' => 30,'filter' => Input::get('filter')], null) !!}
+                    {!! link_to_action('ReportController@showRegistrationReport', 'Registered in last 30 days', ['range' => 30,'filter' => request('filter')], null) !!}
                 </li>
                 <li>
                     {!! link_to_action('ReportController@showRegistrationReport', 'Custom', [
-                    'dstart' => \Carbon\Carbon::parse(Input::get('range',7).' days ago')->toDateString(),
+                    'dstart' => \Carbon\Carbon::parse(request('range',7).' days ago')->toDateString(),
                     'dend'   => \Carbon\Carbon::now()->toDateString(),
-                    'filter' => Input::get('filter')],null) !!}
+                    'filter' => request('filter')],null) !!}
                 </li>
             </ul>
             @if(!isset($range))
-                {!! Form::text('dstart', Input::get('dstart'),
+                {!! Form::text('dstart', request('dstart'),
                     ['placeholder'=>"Search From", 'class'=>"form-control date-input", 'id' => 'js-datepicker-sdate']) !!}
-                {!! Form::text('dend', Input::get('dend'),
+                {!! Form::text('dend', request('dend'),
                     ['placeholder'=>"To", 'class'=>"form-control date-input js-datepicker", 'id' => 'js-datepicker-edate']) !!}
             @else
 
-                {!! Form::hidden('range',Input::get('range')) !!}
+                {!! Form::hidden('range',request('range')) !!}
             @endif
             @if($is_super_admin)
                 {!! Form::select('filter',[
                     'all'     => 'Show All',
                     'expert'  => 'Show Expert',
                     'creator' => 'Show Creator',
-                ],Input::get('filter'),['class'=>'form-control']) !!}
+                ],request('filter'),['class'=>'form-control']) !!}
             @endif
         </div>
         @if($is_super_admin || !isset($range))
@@ -111,7 +111,7 @@
         </div>
     </div>
     <div class="text-center">
-        {!! $users->appends(Input::all())->render() !!}
+        {!! $users->appends(request()->all())->render() !!}
     </div>
     @include('report.dialog.user-report-action')
     <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">

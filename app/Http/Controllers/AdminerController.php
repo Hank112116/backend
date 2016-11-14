@@ -4,13 +4,8 @@ namespace Backend\Http\Controllers;
 
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\RoleInterface;
-
-use Config;
-use CSV;
-use Input;
+use Backend\Facades\Log;
 use Noty;
-use Redirect;
-use Log;
 
 class AdminerController extends BaseController
 {
@@ -34,7 +29,7 @@ class AdminerController extends BaseController
      **/
     public function showList()
     {
-        if (Input::get('csv')) {
+        if ($this->request->get('csv')) {
             $output = $this->adminer_repo->toOutputArray($this->adminer_repo->all());
 
             $log_action = 'CSV of backend team';
@@ -61,7 +56,7 @@ class AdminerController extends BaseController
      **/
     public function create()
     {
-        $data = Input::all();
+        $data = $this->request->all();
 
         if ($this->adminer_repo->validCreate($data)) {
             Noty::success('Create successful');
@@ -77,11 +72,11 @@ class AdminerController extends BaseController
             ];
             Log::info($log_action, $log_data);
 
-            return Redirect::action('AdminerController@showList');
+            return redirect()->action('AdminerController@showList');
         } else {
             Noty::warn('Something goes wrong');
 
-            return Redirect::action('AdminerController@showCreate')
+            return redirect()->action('AdminerController@showCreate')
                 ->withInput()
                 ->withErrors($this->adminer_repo->error());
         }
@@ -105,7 +100,7 @@ class AdminerController extends BaseController
     public function showRoleCreate()
     {
         return view('adminer.role-create')
-            ->with('certs', Config::get('cert.all'));
+            ->with('certs', config('cert.all'));
     }
 
     /**
@@ -116,7 +111,7 @@ class AdminerController extends BaseController
     {
         return view('adminer.role-update')
             ->with('role', $this->role_repo->find($id))
-            ->with('certs', Config::get('cert.all'));
+            ->with('certs', config('cert.all'));
     }
 
     /**
@@ -125,10 +120,10 @@ class AdminerController extends BaseController
      **/
     public function update($id)
     {
-        if ($this->adminer_repo->validUpdate($id, Input::all())) {
-            $this->adminer_repo->update($id, Input::all());
+        if ($this->adminer_repo->validUpdate($id, $this->request->all())) {
+            $this->adminer_repo->update($id, $this->request->all());
 
-            $data = Input::all();
+            $data = $this->request->all();
             $log_action = 'Edit member of backend team';
             $log_data   = [
                 'backend_member' => $id,
@@ -140,11 +135,11 @@ class AdminerController extends BaseController
 
             Noty::success('Update successful');
 
-            return Redirect::action('AdminerController@showList');
+            return redirect()->action('AdminerController@showList');
         } else {
             Noty::warn('Something goes wrong');
 
-            return Redirect::action('AdminerController@showUpdate', [$id])
+            return redirect()->action('AdminerController@showUpdate', [$id])
                 ->withInput()
                 ->withErrors($this->adminer_repo->error());
         }
@@ -156,7 +151,7 @@ class AdminerController extends BaseController
      **/
     public function roleCreate()
     {
-        $data = Input::all();
+        $data = $this->request->all();
 
         $role = $this->role_repo->create($data);
 
@@ -171,7 +166,7 @@ class AdminerController extends BaseController
 
         Noty::success('Create successful');
 
-        return Redirect::action('AdminerController@showList');
+        return redirect()->action('AdminerController@showList');
     }
 
     /**
@@ -180,7 +175,7 @@ class AdminerController extends BaseController
      **/
     public function roleUpdate($id)
     {
-        $data = Input::all();
+        $data = $this->request->all();
         $this->role_repo->update($id, $data);
         Noty::success('Update successful');
 
@@ -193,7 +188,7 @@ class AdminerController extends BaseController
 
         Log::info($log_action, $log_data);
 
-        return Redirect::action('AdminerController@showList');
+        return redirect()->action('AdminerController@showList');
     }
 
     public function delete($id)
@@ -210,7 +205,7 @@ class AdminerController extends BaseController
 
         $this->adminer_repo->deleteAdminer($adminer);
 
-        return Redirect::action('AdminerController@showList');
+        return redirect()->action('AdminerController@showList');
     }
 
     public function roleDelete($id)
@@ -225,6 +220,6 @@ class AdminerController extends BaseController
             Noty::success("Delete {$name} successful");
         }
 
-        return Redirect::action('AdminerController@showList');
+        return redirect()->action('AdminerController@showList');
     }
 }

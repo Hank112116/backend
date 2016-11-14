@@ -28,7 +28,7 @@
                     </a>
                 @endif
             @endif
-            @if (!$is_restricted && $solution->isWaitApprove() and (!$solution->is_manager_approved or Auth::user()->isAdmin() or Auth::user()->isManagerHead()))
+            @if (!$is_restricted && $solution->isWaitApprove() and (!$solution->is_manager_approved or auth()->user()->isAdmin() or auth()->user()->isManagerHead()))
             <button class="btn-mini btn-flat-green js-approve-solution" rel="{{ $solution->solution_id }}">
                 <i class="fa fa-shield fa-fw"></i> Approve</button>
             <button class="btn-mini btn-flat-purple js-reject-solution" rel="{{ $solution->solution_id }}">
