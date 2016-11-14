@@ -40,7 +40,7 @@ class ReportController extends BaseController
     }
 
     /**
-     * @return Validator The validator for date range and custom interval
+     * @return \Illuminate\Contracts\Validation\Validator The validator for date range and custom interval
      */
     private function dateValidator()
     {
@@ -77,7 +77,7 @@ class ReportController extends BaseController
     /**
      * To show the register in the given time interval.
      *
-     * @return view Registration Summary view
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory Registration Summary view
      */
     public function showRegistrationReport()
     {
@@ -85,7 +85,7 @@ class ReportController extends BaseController
 
         if ($this->dateValidator()->fails()) {
             Noty::warn('The input parameter is wrong');
-            return rredirect()->back();
+            return redirect()->back();
         }
 
         $users = $this->report_repo->getRegistrationReport($this->filter, $this->request->all(), $this->page, $this->per_page);
