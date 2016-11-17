@@ -8,9 +8,8 @@ Log actions that made by member
 * [Unsuspend User](#unsuspend-user)
 * [Edit user internal memo](#edit-user-internal-memo)
 * [Upload attachment of member](#upload-attachment-of-member)
-* [Approve pending expert](#approve-pending-expert)
+* [User Approved to Expert](#user-approved-to-expert)
 * [Change user type](#change-user-type)
-* [Approve schedule of project](#approve-schedule-of-project)
 
 ---
 
@@ -124,10 +123,10 @@ Log actions that made by member
     
 ---
 
-### Approve pending expert
+### User Approved to Expert
 
 #### Log action
-`Approve pending expert {user_id}`
+`User Approved to Expert`
 
 #### Log data
 
@@ -153,17 +152,3 @@ Log actions that made by member
     
 ---
 
-### Approve schedule of project
-
-#### Log action
-`Approve schedule of project`
-
-#### Log data
-
-    {
-      "adminer_id": "integer",
-      "user_id": "integer",
-      "user_type": "string"
-    }
-    
----

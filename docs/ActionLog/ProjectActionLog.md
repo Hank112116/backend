@@ -121,7 +121,7 @@ Log actions that made by project
 ### Project schedule released
 
 #### Log action
-`Project schedule released`
+`release schedule`
 
 #### Log data
 

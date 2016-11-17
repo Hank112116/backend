@@ -315,7 +315,7 @@ class ProjectController extends BaseController
         }
 
         $project->hub_approve = true;
-        $log_action = 'Project schedule released';
+        $log_action = 'release schedule';
         $log_data   = [
             'project_id' => $id
         ];
