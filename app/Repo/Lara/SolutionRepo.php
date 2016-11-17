@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Facades\Log;
 use ImageUp;
 use Carbon;
 use Backend\Model\Eloquent\Solution;
@@ -438,8 +439,10 @@ class SolutionRepo implements SolutionInterface
     {
         if ($is_manager) {
             $this->solution_modifier->managerToProgram($solution_id, $is_manager);
+            Log::info('Solution pending to program', ['solution_id' => $solution_id]);
         } else {
             $this->solution_modifier->toProgram($solution_id, $is_manager);
+            Log::info('Solution to program', ['solution_id' => $solution_id]);
             $featureDate['block_data']    = $solution_id;
             $featureDate['block_type']    = 'solution';
             $featureDate['to_block_type'] = 'program';
@@ -450,8 +453,10 @@ class SolutionRepo implements SolutionInterface
     {
         if ($is_manager) {
             $this->solution_modifier->managerToSolution($solution_id, $is_manager);
+            Log::info('Program pending to solution', ['solution_id' => $solution_id]);
         } else {
             $this->solution_modifier->toSolution($solution_id, $is_manager);
+            Log::info('Program to solution', ['solution_id' => $solution_id]);
             $featureDate['block_data']    = $solution_id;
             $featureDate['block_type']    = 'program';
             $featureDate['to_block_type'] = 'solution';

@@ -129,7 +129,8 @@ class AdminerController extends BaseController
                 'backend_member' => $id,
                 'name'           => $data['name'],
                 'email'          => $data['email'],
-                'role'           => $data['role_id']
+                'role'           => $data['role_id'],
+                'hwtrek_member'  => $data['user_id']
             ];
             Log::info($log_action, $log_data);
 
@@ -179,7 +180,7 @@ class AdminerController extends BaseController
         $this->role_repo->update($id, $data);
         Noty::success('Update successful');
 
-        $log_action = 'Edit Role of backend team';
+        $log_action = 'Edit role of backend team';
         $log_data   = [
             'role'      => $id,
             'name'      => $data['name'],

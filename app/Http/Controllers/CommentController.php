@@ -107,7 +107,7 @@ class CommentController extends BaseController
     {
         $log_action = 'Delete comments';
         $log_data   = [
-            'comment' => $comment_id
+            'comment_id' => $comment_id
         ];
         Log::info($log_action, $log_data);
 

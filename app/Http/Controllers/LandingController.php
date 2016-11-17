@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Facades\Log;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
@@ -58,7 +59,12 @@ class LandingController extends BaseController
 
     public function updateFeature()
     {
-        $this->feature->reset($this->request->get('feature', []));
+        $feature = $this->request->get('feature', []);
+
+        $this->feature->reset($feature);
+
+        Log::info('Update feature', $feature);
+
         Noty::success('Update features successful');
 
         return redirect()->action('LandingController@showFeature');
@@ -111,6 +117,9 @@ class LandingController extends BaseController
         } else {
             $this->expert->setExpert($data);
         }
+
+        Log::info('Update expert list of home page', $data);
+
         $res   = ['status' => 'success'];
         return response()->json($res);
     }
