@@ -193,7 +193,7 @@ class Project extends Eloquent
 
     public function propose()
     {
-        return $this->hasMany(ProposeSolution::class, 'project_id', 'project_id');
+        return $this->hasMany(ProposeSolution::class, 'project_id', 'project_id')->orderBy('propose_time', 'desc');
     }
 
     public function recommendExperts()
@@ -882,38 +882,37 @@ class Project extends Eloquent
             foreach ($groups as $group) {
                 if ($group->memberApplicant) {
                     foreach ($group->memberApplicant as $applicant) {
-                        if ($applicant->user) {
-                            if ($applicant->user->isExpert()) {
-                                if ($dstart) {
-                                    if ($applicant->apply_date < $dstart) {
-                                        continue;
-                                    }
+                        if ($applicant->user_type != User::TYPE_CREATOR and !is_null($applicant->user_type)) {
+                            if ($dstart) {
+                                if ($applicant->apply_date < $dstart) {
+                                    continue;
                                 }
-                                if ($dend) {
-                                    if ($applicant->apply_date >= $dend) {
-                                        continue;
-                                    }
+                            }
+
+                            if ($dend) {
+                                if ($applicant->apply_date >= $dend) {
+                                    continue;
                                 }
-                                $data                 = [];
-                                $data['applicant_id'] = $applicant->applicant_id;
-                                $data['user_id']      = $applicant->user_id;
-                                $data['profile_url']  = $applicant->user->textFrontLink();
-                                $data['user_name']    = $applicant->user->textFullName();
-                                $data['company_name'] = UrlFilter::filter($applicant->user->company);
-                                $data['at_time']      = Carbon::parse($applicant->apply_date)->toFormattedDateString();
-                                $data['type']         = 'applicant';
-                                if ($applicant->referralUser) {
-                                    $data['referral_user_name'] = $applicant->referralUser->textFullName();
-                                    $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
-                                }
-                                if ($applicant->event == GroupMemberApplicant::REFERRAL_PM
-                                    or $applicant->event == GroupMemberApplicant::APPLY_PM) {
-                                    $internal_date[] = $data;
-                                    $internal_count++;
-                                } else {
-                                    $external_data[] = $data;
-                                    $external_count++;
-                                }
+                            }
+                            $data                 = [];
+                            $data['applicant_id'] = $applicant->applicant_id;
+                            $data['user_id']      = $applicant->user_id;
+                            $data['profile_url']  = $applicant->user->textFrontLink();
+                            $data['user_name']    = $applicant->user->textFullName();
+                            $data['company_name'] = UrlFilter::filter($applicant->user->company);
+                            $data['at_time']      = Carbon::parse($applicant->apply_date)->toFormattedDateString();
+                            $data['type']         = 'applicant';
+                            if ($applicant->referralUser) {
+                                $data['referral_user_name'] = $applicant->referralUser->textFullName();
+                                $data['referral_user_url']  = $applicant->referralUser->textFrontLink();
+                            }
+                            if ($applicant->event == GroupMemberApplicant::REFERRAL_PM
+                                or $applicant->event == GroupMemberApplicant::APPLY_PM) {
+                                $internal_date[] = $data;
+                                $internal_count++;
+                            } else {
+                                $external_data[] = $data;
+                                $external_count++;
                             }
                         }
                     }
