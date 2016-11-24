@@ -81,9 +81,15 @@ interface UserInterface
 
     /**
      * @param $email
-     * @return Collection|User[]
+     * @return User
      */
     public function byMail($email);
+
+    /**
+     * @param $email
+     * @return Collection|User[]
+     */
+    public function byLikeMail($email);
 
     /**
      * @param $company

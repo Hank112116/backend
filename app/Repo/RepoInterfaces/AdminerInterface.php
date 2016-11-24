@@ -12,10 +12,22 @@ interface AdminerInterface
 
     public function allDeleted();
 
+    /**
+     * @param $hwtrek_member
+     * @return Adminer
+     */
     public function find($id);
 
+    /**
+     * @param $hwtrek_member
+     * @return Adminer
+     */
     public function findHWTrekMember($hwtrek_member);
 
+    /**
+     * @param $hwtrek_member
+     * @return Adminer
+     */
     public function findWithTrashed($id);
 
     public function validCreate($data);

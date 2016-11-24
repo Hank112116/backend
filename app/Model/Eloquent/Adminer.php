@@ -18,6 +18,11 @@ class Adminer extends Eloquent implements AuthenticatableContract
     protected $hidden = ['password'];
     protected $dates = ['deleted_at'];
 
+    public function id()
+    {
+        return $this->id;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'hwtrek_member', 'user_id');

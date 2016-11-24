@@ -177,7 +177,12 @@ class UserRepo implements UserInterface
         return $user_builder->get();
     }
 
-    public function byMail($email = '')
+    public function byMail($email)
+    {
+        return $this->user->where('email', $email)->first();
+    }
+
+    public function byLikeMail($email = '')
     {
         return $this->byLikeSearch('email', $email);
     }
