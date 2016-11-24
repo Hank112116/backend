@@ -232,6 +232,7 @@ class SolutionController extends BaseController
     {
         $solution = $this->solution_repo->find($solution_id);
         $approve_api = app()->make(ApproveApiInterface::class, ['solution' => $solution]);
+        Log::info('Solution approved', ['solution_id' => $solution_id]);
         return $approve_api->approve();
     }
 
@@ -278,6 +279,7 @@ class SolutionController extends BaseController
             $solution = $this->solution_repo->find($solution_id);
             if ($solution) {
                 $this->solution_repo->toProgram($solution_id, false);
+                Log:info('Cancel pending to solution', ['solution_id' => $solution_id]);
                 $res   = ['status' => 'success'];
             } else {
                 $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
@@ -296,6 +298,7 @@ class SolutionController extends BaseController
             $solution = $this->solution_repo->find($solution_id);
             if ($solution) {
                 $this->solution_repo->toSolution($solution_id, false);
+                Log:info('Cancel pending to program', ['solution_id' => $solution_id]);
                 $res   = ['status' => 'success'];
             } else {
                 $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
@@ -310,7 +313,7 @@ class SolutionController extends BaseController
     {
         $solution = $this->solution_repo->find($solution_id);
         $approve_api = app()->make(ApproveApiInterface::class, ['solution' => $solution]);
-
+        Log:info('Solution rejected', ['solution_id' => $solution_id]);
         return $approve_api->reject();
     }
 
@@ -334,7 +337,7 @@ class SolutionController extends BaseController
     {
         $log_action = 'Solution on shelf';
         $log_data   = [
-            'solution' => $solution_id,
+            'solution_id' => $solution_id,
         ];
         Log::info($log_action, $log_data);
 
@@ -348,7 +351,7 @@ class SolutionController extends BaseController
     {
         $log_action = 'Solution off shelf';
         $log_data   = [
-            'solution' => $solution_id,
+            'solution_id' => $solution_id,
         ];
         Log::info($log_action, $log_data);
 

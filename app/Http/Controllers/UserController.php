@@ -15,7 +15,6 @@ use Backend\Facades\Log;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Noty;
 
-
 class UserController extends BaseController
 {
     protected $cert = 'user';
@@ -323,6 +322,10 @@ class UserController extends BaseController
         }
 
         $this->user_repo->changeUserType($user_id, $user_type);
+        Log::info('Change user type', [
+            'user_id'   => $user_id,
+            'user_type' => $user_type
+        ]);
         $user = $this->user_repo->find($user_id);
         $view = view()->make('user.row')->with(
             [
@@ -362,6 +365,7 @@ class UserController extends BaseController
         $user_id = $this->request->get('user_id');
         $user    = $this->user_repo->find($user_id);
         $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
+        Log::info('Suspend User ' . $user_id, ['user_id' => $user_id]);
         return $profile_api->disable();
     }
 
@@ -375,6 +379,7 @@ class UserController extends BaseController
         $user_id = $this->request->get('user_id');
         $user    = $this->user_repo->find($user_id);
         $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
+        Log::info('Unsuspend User ' . $user_id, ['user_id' => $user_id]);
         return $profile_api->enable();
     }
 

@@ -4,6 +4,7 @@ namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
+use Backend\Facades\Log;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -64,6 +65,8 @@ class ReportController extends BaseController
 
         $users = $this->report_repo->getCommentReport($this->filter, $this->request->all(), $this->page, $this->per_page);
 
+        Log::info('Search comment report', $this->request->all());
+
         $template = view('report.comment')
             ->with([
                 'title'          => 'Comment Summary',
@@ -90,6 +93,8 @@ class ReportController extends BaseController
 
         $users = $this->report_repo->getRegistrationReport($this->filter, $this->request->all(), $this->page, $this->per_page);
 
+        Log::info('Search registration report', $this->request->all());
+
         $template = view('report.registration')
             ->with([
                 'title'          => 'Registration Summary',
@@ -114,6 +119,9 @@ class ReportController extends BaseController
         $event_list       = $this->event_repo->getEvents();
 
         $join_event_users = $this->report_repo->getEventReport($event_id, $this->request->all(), $this->page, $this->per_page);
+
+        $log_data = ['event_id' => $event_id] + $this->request->all();
+        Log::info('Search event report', $log_data);
 
         $begin_number = $join_event_users->total() - (($this->page -1) * $this->per_page);
 
@@ -142,17 +150,30 @@ class ReportController extends BaseController
         } else {
             $result['status'] = 'fail';
         }
+
+        $log_data = $this->request->all() + ['application_id' => $this->request->get('id')];
+        Log:info('Edit event application memo', $log_data);
+
         return json_encode($result);
     }
 
     public function approveEventUser()
     {
-        if ($this->event_repo->approveEventUser($this->request->get('user_id'), $this->request->get('event_id'))) {
-            $user_id   = $this->request->get('user_id');
+        $user_id  = $this->request->get('user_id');
+        $event_id = $this->request->get('event_id');
+
+        if ($this->event_repo->approveEventUser($user_id, $event_id)) {
+
             $user      = $this->user_repo->find($user_id);
             /* @var QuestionnaireApiInterface $event_api*/
             $event_api = app()->make(QuestionnaireApiInterface::class, ['user' => $user]);
             $event_api->sendNotificationMail();
+
+            $log_data = [
+                'user_id'  => $user_id,
+                'event_id' => $event_id
+            ];
+            Log::info('Approve event application', $log_data);
 
             $result['status'] = 'success';
         } else {
@@ -174,6 +195,9 @@ class ReportController extends BaseController
 
         $event_list     = $this->event_repo->getEvents();
         $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, $this->request->all(), $this->page, $this->per_page);
+
+        $log_data = ['event_id' => $event_id] + $this->request->all();
+        Log::info('Search questionnaire report', $log_data);
 
         $view           = $this->questionnaire_repo->getView($event_id);
 
@@ -240,6 +264,8 @@ class ReportController extends BaseController
                 $pm_ids[] = $pm->user_id;
             }
         }
+
+        Log::info('Search project report', $input);
 
         $projects = $this->report_repo->getProjectReport($input, $this->page, $this->per_page);
         $template = view('report.project')

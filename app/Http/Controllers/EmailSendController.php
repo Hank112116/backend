@@ -62,9 +62,13 @@ class EmailSendController extends BaseController
 
         $project = $this->project_repo->find($input['projectId']);
 
-        $log_action = 'Send approved mail';
+        $log_action = 'Send mail of recommend experts';
         $log_data   = [
-            'project' => $project->project_id,
+            'project_id' => $project->project_id,
+            'recommend_experts' => [
+                $input['expert1'],
+                $input['expert2']
+            ]
         ];
         Log::info($log_action, $log_data);
 

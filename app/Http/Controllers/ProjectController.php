@@ -315,9 +315,9 @@ class ProjectController extends BaseController
         }
 
         $project->hub_approve = true;
-        $log_action = 'Approve project';
+        $log_action = 'release schedule';
         $log_data   = [
-            'project' => $id
+            'project_id' => $id
         ];
         Log::info($log_action, $log_data);
 
