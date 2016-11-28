@@ -473,6 +473,10 @@ class ProjectRepo implements ProjectInterface
 
     public function updateProjectManager($project_id, $data)
     {
+        if (!$this->project_modifier->projectManagerValidate($data['project_managers'])) {
+            return false;
+        }
+
         return $this->project_modifier->updateProjectManager($project_id, $data);
     }
 

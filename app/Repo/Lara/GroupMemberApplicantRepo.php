@@ -5,6 +5,7 @@ use Backend\Model\Eloquent\GroupMemberApplicant;
 use Backend\Model\Eloquent\ProjectGroup;
 use Backend\Model\Eloquent\Adminer;
 use Backend\Model\Eloquent\ProjectMember;
+use Backend\Repo\RepoInterfaces\UserInterface;
 
 class GroupMemberApplicantRepo implements GroupMemberApplicantInterface
 {
@@ -12,17 +13,20 @@ class GroupMemberApplicantRepo implements GroupMemberApplicantInterface
     private $adminer;
     private $project_group;
     private $project_member;
+    private $user;
 
     public function __construct(
         GroupMemberApplicant $applicant,
         ProjectGroup $project_group,
         Adminer $adminer,
-        ProjectMember $project_member
+        ProjectMember $project_member,
+        UserInterface $user
     ) {
         $this->applicant      = $applicant;
         $this->adminer        = $adminer;
         $this->project_group  = $project_group;
         $this->project_member = $project_member;
+        $this->user           = $user;
     }
     public function insertItem($data)
     {
@@ -41,13 +45,15 @@ class GroupMemberApplicantRepo implements GroupMemberApplicantInterface
             $applicant_model->is_expired = 1;
         }
 
+        $user = $this->user->find($data['expert_id']);
+
         $privileges['1'] = 'project';
         $privileges['2'] = $data['project_id'];
         $privileges['3'] = '2';
 
         $applicant_model->group_id              = $project_group->group_id;
         $applicant_model->user_id               = $data['expert_id'];
-        $applicant_model->is_referral_expert    = 1;
+        $applicant_model->user_type             = $user->user_type;
         $applicant_model->referral              = $adminer->hwtrek_member;
         $applicant_model->apply_date            = $data['date_send'];
         $applicant_model->additional_privileges = json_encode([$privileges]);

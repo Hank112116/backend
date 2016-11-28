@@ -251,7 +251,7 @@ class ProjectController extends BaseController
             )->render();
             $res  = ['status' => 'success', 'view' => $view];
         } else {
-            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+            $res   = ['status' => 'fail', "msg" => "Update Fail! At least one frontend and one backend PM."];
         }
 
         $log_action = 'Edit project manager';

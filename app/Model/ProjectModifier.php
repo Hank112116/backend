@@ -174,6 +174,35 @@ class ProjectModifier implements ProjectModifierInterface
         return true;
     }
 
+    public function projectManagerValidate($pms)
+    {
+        $project_managers = json_decode($pms, true);
+
+        if (!$project_managers) {
+            return true;
+        }
+
+        $frontend_pm_flag = $backend_pm_flag = false;
+
+        foreach ($project_managers as $manager) {
+            $adminer = $this->adminer->where('hwtrek_member', $manager)->first();
+            if ($adminer->isFrontendPM()) {
+                $frontend_pm_flag = true;
+            }
+
+            if ($adminer->isBackendPM()) {
+                $backend_pm_flag = true;
+            }
+        }
+
+        if ($frontend_pm_flag and $backend_pm_flag) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     /**
      * @param \Backend\Model\Eloquent\Project|\Backend\Model\Eloquent\DuplicateProject $project
      */
