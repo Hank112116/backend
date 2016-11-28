@@ -3,11 +3,14 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\AuthApi\OAuthApiInterface;
+use Backend\Assistant\ApiResponse\OAuthResponseAssistant;
+use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Facades\Log;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Illuminate\Http\Request;
 use Noty;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends BaseController
 {
@@ -46,11 +49,9 @@ class AuthController extends BaseController
         if (!$response->isOk()) {
             auth()->logout();
             return $this->loginFail($email);
-        } else {
-
         }
 
-        return $this->loginSuccess();
+        return $this->loginSuccess($response);
     }
 
     public function oauthLogin(Request $request)
@@ -71,6 +72,12 @@ class AuthController extends BaseController
         }
 
         // TODO run OAuth login
+        $response = $this->oauth_api->password($email, $password);
+        
+        if (!$response->isOk()) {
+            auth()->logout();
+            return $this->loginFail($email);
+        }
 
         auth()->loginUsingId($adminer->id());
 
@@ -79,16 +86,19 @@ class AuthController extends BaseController
             return $this->loginFail($email);
         }
 
-        return $this->loginSuccess();
+        return $this->loginSuccess($response);
     }
 
-    private function loginSuccess()
+    private function loginSuccess(Response $response)
     {
-        $user =  auth()->user();
+        $user = auth()->user();
 
+        $oauth_assistant = OAuthResponseAssistant::create($response);
 
         $this->request->session()->put('cert', $user->role->cert);
         $this->request->session()->put('admin', $user->id);
+        $this->request->session()->put(OAuthKey::ACCESS_TOKEN, $oauth_assistant->getAccessToken());
+        $this->request->session()->put(OAuthKey::TOKEN_TYPE, $oauth_assistant->getTokenType());
 
         Noty::success('Welcome, ' . $user->name . ". Login success");
 

@@ -6,8 +6,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseResponseAssistant
 {
-    public static function create(Response $response)
-    {
+    /* @var Response $response*/
+    protected $response;
 
+    public function deserialize()
+    {
+        return json_decode($this->response->getContent());
+    }
+
+    public function decode()
+    {
+        return json_decode($this->response->getContent(), true);
     }
 }

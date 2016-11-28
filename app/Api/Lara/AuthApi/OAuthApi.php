@@ -14,7 +14,12 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
      */
     public function password($username, $password)
     {
-        // TODO: Implement password() method.
+        $url             = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
+        $this->curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
+        $this->curl->setBasicAuthentication($username, $password);
+        $this->curl->post($url, ['grant_type' => GrantTypeRegistry::PASSWORD]);
+
+        return $this->response((array) $this->curl->response);
     }
 
     /**
