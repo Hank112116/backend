@@ -17,9 +17,8 @@ abstract class BasicApi
 
     public function __construct()
     {
-        $curl               = new Curl();
-        $this->curl         = $curl;
-        $this->hwtrek_url   = 'https://' . config('app.front_domain');
+        $this->curl       = $this->initCurl();
+        $this->hwtrek_url = 'https://' . config('app.front_domain');
     }
 
     /**
@@ -104,6 +103,26 @@ abstract class BasicApi
     protected function response($data = [])
     {
         return Response::create($data, $this->getHttpStatusCode());
+    }
+
+    /**
+     * @return Curl
+     */
+    private function initCurl()
+    {
+        $cookie_file = storage_path('app/tmp/' . session()->getId());
+
+        $curl = new Curl();
+
+        // Saving Cookie with CURL
+        $curl->setHeader('Connection', 'keep-alive');
+        $curl->setCookieJar($cookie_file);
+        $curl->setCookieFile($cookie_file);
+        $curl->setOpt(CURLOPT_RETURNTRANSFER, true);
+        $curl->setOpt(CURLOPT_COOKIESESSION, true);
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
+
+        return $curl;
     }
 
     /**
