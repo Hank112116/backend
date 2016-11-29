@@ -9,4 +9,5 @@ interface ProjectModifierInterface
     public function updateProjectMemo($project_id, $data);
     public function updateProjectTeam($project_id, $data);
     public function updateProjectManager($project_id, $data);
+    public function projectManagerValidate($pms);
 }

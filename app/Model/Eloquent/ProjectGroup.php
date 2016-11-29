@@ -12,7 +12,7 @@ class ProjectGroup extends Eloquent
 
     public function memberApplicant()
     {
-        return $this->hasMany(GroupMemberApplicant::class, 'group_id', 'group_id');
+        return $this->hasMany(GroupMemberApplicant::class, 'group_id', 'group_id')->orderBy('apply_date', 'desc');
     }
 
     public function group()
