@@ -883,17 +883,14 @@ class Project extends Eloquent
                 if ($group->memberApplicant) {
                     foreach ($group->memberApplicant as $applicant) {
                         if ($applicant->user_type != User::TYPE_CREATOR and !is_null($applicant->user_type)) {
-                            if ($dstart) {
-                                if ($applicant->apply_date < $dstart) {
-                                    continue;
-                                }
+                            if (!is_null($dstart) and $applicant->apply_date < $dstart) {
+                                continue;
                             }
 
-                            if ($dend) {
-                                if ($applicant->apply_date >= $dend) {
-                                    continue;
-                                }
+                            if (!is_null($dend) and $applicant->apply_date >= $dend) {
+                                continue;
                             }
+
                             $data                 = [];
                             $data['applicant_id'] = $applicant->applicant_id;
                             $data['user_id']      = $applicant->user_id;
@@ -924,15 +921,12 @@ class Project extends Eloquent
         if ($recommend_experts) {
             foreach ($recommend_experts as $recommend_expert) {
                 if ($recommend_expert->user) {
-                    if ($dstart) {
-                        if ($recommend_expert->date_send < $dstart) {
-                            continue;
-                        }
+                    if (!is_null($dstart) and $recommend_expert->date_send < $dstart) {
+                        continue;
                     }
-                    if ($dend) {
-                        if ($recommend_expert->date_send >= $dend) {
-                            continue;
-                        }
+
+                    if (!is_null($dend) and $recommend_expert->date_send >= $dend) {
+                        continue;
                     }
                     $data['user_id']      = $recommend_expert->expert_id;
                     $data['profile_url']  = $recommend_expert->user->textFrontLink();

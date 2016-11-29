@@ -195,11 +195,7 @@ class ProjectModifier implements ProjectModifierInterface
             }
         }
 
-        if ($frontend_pm_flag and $backend_pm_flag) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($frontend_pm_flag and $backend_pm_flag);
     }
 
 
