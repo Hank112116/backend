@@ -97,7 +97,6 @@ class AuthController extends BaseController
         auth()->loginUsingId($adminer->id());
 
         if (auth()->check() === false) {
-
             return $this->loginFail($email);
         }
 

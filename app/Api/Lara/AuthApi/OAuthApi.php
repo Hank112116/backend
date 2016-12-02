@@ -25,18 +25,22 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
      */
     public function password($username, $password)
     {
-        $csrf = $this->getCSRFToken();
+        $csrf          = $this->getCSRFToken();
+        $client_id     = config('api.hwtrek_client_id');
+        $client_secret = config('api.hwtrek_client_secret');
 
         $url = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
-        $this->curl->setBasicAuthentication($username, $password);
+
         $this->curl->setHeader('X-Csrf-Token', $csrf);
-        $this->post($url, ['grant_type' => GrantTypeRegistry::PASSWORD]);
+        $this->curl->setBasicAuthentication($client_id, $client_secret);
 
-        if ($this->curl->error) {
-            return $this->response();
-        }
+        $post_data = [
+            'grant_type'    => GrantTypeRegistry::PASSWORD,
+            'username'      => $username,
+            'password'      =>$password
+        ];
 
-        return $this->response((array) $this->curl->response);
+        return $this->post($url, $post_data);
     }
 
     /**
@@ -48,30 +52,7 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
         $client_secret   = config('api.hwtrek_client_secret');
         $url             = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
         $this->curl->setBasicAuthentication($client_id, $client_secret);
-        $this->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
 
-        if ($this->curl->error) {
-            return $this->response();
-        }
-
-        return $this->response((array) $this->curl->response);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function profile()
-    {
-        $authorization = session('token_type') . ' ' . session('access_token');
-
-        $this->curl->setHeader('Authorization', $authorization);
-
-        $this->curl->get('https://dev.hwtrek.com/apis/users/1145/profile/setting');
-
-        if ($this->curl->error) {
-            return $this->response();
-        }
-
-        return $this->response((array) $this->curl->response);
+        return $this->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
     }
 }

@@ -19,7 +19,6 @@ abstract class BasicApi
     public function __construct()
     {
         $this->hwtrek_url = 'https://' . config('app.front_domain');
-        //$this->hwtrek_url = 'http://10.10.55.66';
         $this->curl       = $this->initCurl();
     }
 
@@ -35,10 +34,6 @@ abstract class BasicApi
         $data['method'] = 'GET';
         $data['url']    = $url;
         $this->recordActionLog($data);
-
-        if ($this->curl->error) {
-            return $this->response();
-        }
 
         return $this->response((array) $this->curl->response);
     }
@@ -56,10 +51,6 @@ abstract class BasicApi
         $data['url']    = $url;
         $this->recordActionLog($data);
 
-        if ($this->curl->error) {
-            return $this->response();
-        }
-
         return $this->response((array) $this->curl->response);
     }
 
@@ -75,10 +66,6 @@ abstract class BasicApi
         $data['method'] = 'PATCH';
         $data['url']    = $url;
         $this->recordActionLog($data);
-
-        if ($this->curl->error) {
-            return $this->response();
-        }
 
         return $this->response((array) $this->curl->response);
     }
@@ -96,10 +83,6 @@ abstract class BasicApi
         $data['url']    = $url;
         $this->recordActionLog($data);
 
-        if ($this->curl->error) {
-            return $this->response();
-        }
-
         return $this->response((array) $this->curl->response);
     }
 
@@ -116,10 +99,6 @@ abstract class BasicApi
         $data['method'] = 'DELETE';
         $data['url']    = $url;
         $this->recordActionLog($data);
-
-        if ($this->curl->error) {
-            return $this->response();
-        }
 
         return $this->response((array) $this->curl->response);
     }
@@ -142,7 +121,7 @@ abstract class BasicApi
         if ($this->getHttpStatusCode() === 0) {
             session()->put(OAuthKey::API_SERVER_STATUS, 'stop');
 
-            return Response::create($data, Response::HTTP_GATEWAY_TIMEOUT);
+            return Response::create([], Response::HTTP_GATEWAY_TIMEOUT);
         }
 
         return Response::create($data, $this->getHttpStatusCode());

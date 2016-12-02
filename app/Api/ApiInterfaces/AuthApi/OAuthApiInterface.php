@@ -18,9 +18,4 @@ interface OAuthApiInterface
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function clientCredentials();
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function profile();
 }
