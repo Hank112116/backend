@@ -87,7 +87,6 @@ return [
         'Intervention\Image\ImageServiceProvider',
         'Mews\Purifier\PurifierServiceProvider',
         'Collective\Bus\BusServiceProvider',
-        'GrahamCampbell\Throttle\ThrottleServiceProvider',
 
         /*
          * Backend Service Providers...
@@ -149,7 +148,5 @@ return [
         'Carbon'    => 'Carbon\Carbon',
         'Image'     => 'Intervention\Image\Facades\Image',
         'Purifier'  => 'Mews\Purifier\Facades\Purifier',
-        'Throttle'  => 'GrahamCampbell\Throttle\Facades\Throttle',
     ],
-
 ];

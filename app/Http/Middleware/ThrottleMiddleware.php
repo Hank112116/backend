@@ -4,34 +4,13 @@ namespace Backend\Http\Middleware;
 
 use Closure;
 use Noty;
-use GrahamCampbell\Throttle\Throttle;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 
 /**
  * This is the throttle middleware class.
- *
- * @author Graham Campbell <graham@alt-three.com>
  */
-class ThrottleMiddleware
+class ThrottleMiddleware extends ThrottleRequests
 {
-    /**
-     * The throttle instance.
-     *
-     * @var \GrahamCampbell\Throttle\Throttle
-     */
-    protected $throttle;
-
-    /**
-     * Create a new throttle middleware instance.
-     *
-     * @param \GrahamCampbell\Throttle\Throttle $throttle
-     *
-     * @return void
-     */
-    public function __construct(Throttle $throttle)
-    {
-        $this->throttle = $throttle;
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -43,10 +22,14 @@ class ThrottleMiddleware
      */
     public function handle($request, Closure $next, $limit = 10, $time = 60)
     {
-        if (!$this->throttle->attempt($request, $limit, $time)) {
-            Noty::warn('Too Many Requests');
+        $key = $this->resolveRequestSignature($request);
+
+        if ($this->limiter->tooManyAttempts($key, $limit, $time)) {
+            Noty::warn('To Many Request');
             return redirect('/');
         }
+
+        $this->limiter->hit($key, $time);
 
         return $next($request);
     }
