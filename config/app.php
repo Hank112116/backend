@@ -63,7 +63,6 @@ return [
         'Illuminate\Pagination\PaginationServiceProvider',
         'Illuminate\Pipeline\PipelineServiceProvider',
         'Illuminate\Queue\QueueServiceProvider',
-        'Illuminate\Redis\RedisServiceProvider',
         'Illuminate\Auth\Passwords\PasswordResetServiceProvider',
         'Illuminate\Session\SessionServiceProvider',
         'Illuminate\Translation\TranslationServiceProvider',
@@ -87,6 +86,7 @@ return [
         'Intervention\Image\ImageServiceProvider',
         'Mews\Purifier\PurifierServiceProvider',
         'Collective\Bus\BusServiceProvider',
+        'TillKruss\LaravelPhpRedis\RedisServiceProvider',
 
         /*
          * Backend Service Providers...
@@ -131,7 +131,7 @@ return [
         'Password'  => 'Illuminate\Support\Facades\Password',
         'Queue'     => 'Illuminate\Support\Facades\Queue',
         'Redirect'  => 'Illuminate\Support\Facades\Redirect',
-        'LRedis'    => 'Illuminate\Support\Facades\Redis',
+        'Redis'     => 'Illuminate\Support\Facades\Redis',
         'Request'   => 'Illuminate\Support\Facades\Request',
         'Response'  => 'Illuminate\Support\Facades\Response',
         'Route'     => 'Illuminate\Support\Facades\Route',
