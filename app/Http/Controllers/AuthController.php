@@ -38,6 +38,11 @@ class AuthController extends BaseController
         }
     }
 
+    public function oauthLogin(Request $request)
+    {
+
+    }
+
     private function loginSuccess()
     {
         $user =  auth()->user();

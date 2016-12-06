@@ -1,0 +1,24 @@
+/* line 1, ../../front/sass/modules/_login-form.scss */
+.panel-login > .panel-heading {
+  color: #00415d;
+  background-color: #fff;
+  border-color: #fff;
+  text-align: center;
+}
+
+/* line 7, ../../front/sass/modules/_login-form.scss */
+.panel-login > .panel-heading a {
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+
+/* line 16, ../../front/sass/modules/_login-form.scss */
+.panel-login > .panel-heading a.active {
+  color: #029f5b;
+  font-size: 18px;
+}

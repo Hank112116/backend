@@ -13,7 +13,7 @@ use Curl\Curl;
  * HWTrek API
  * @author Hank
  **/
-class HWTrekApi
+abstract class HWTrekApi
 {
     protected $curl;
     protected $front_domain;
