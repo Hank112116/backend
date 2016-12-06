@@ -129,6 +129,9 @@ class AuthController extends BaseController
     public function logout()
     {
         auth()->logout();
+
+        session()->clear();
+
         Noty::success('Logout Success');
 
         return redirect('/');

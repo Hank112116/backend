@@ -33,6 +33,10 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
         $this->curl->setReferer($this->hwtrek_url);
         $this->curl->post($url, ['grant_type' => GrantTypeRegistry::PASSWORD]);
 
+
+        $this->curl->setHeader('Authorization', "{$this->curl->response->token_type} {$this->curl->response->access_token}");
+
+
         return $this->response((array) $this->curl->response);
     }
 

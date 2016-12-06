@@ -110,7 +110,7 @@ abstract class BasicApi
      */
     private function initCurl()
     {
-        $cookie_file = storage_path('app/tmp/' . session()->getId());
+        $cookie_file = config('app.tmp_folder') . session()->getId();
 
         $curl = new Curl();
 
@@ -121,6 +121,8 @@ abstract class BasicApi
         $curl->setOpt(CURLOPT_RETURNTRANSFER, true);
         $curl->setOpt(CURLOPT_COOKIESESSION, true);
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
+        $curl->setHeader('Content-Type', 'application/json');
+        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
 
         return $curl;
     }
