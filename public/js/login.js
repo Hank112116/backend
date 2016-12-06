@@ -2,20 +2,26 @@
 "use strict";
 
 $(function () {
-    $('#oauth-form').hide();
+    var $oauth_form = $("#oauth-form");
+    var $login_form = $("#login-form");
 
-    $('#login-form-link').click(function (e) {
-        $("#login-form").delay(100).fadeIn(100);
-        $("#oauth-form").fadeOut(100);
-        $('#oauth-login-form-link').removeClass('active');
-        $(this).addClass('active');
+    var $oauth_login_form_link = $("#oauth-login-form-link");
+    var $login_form_link = $("#login-form-link");
+
+    $oauth_form.hide();
+
+    $login_form_link.click(function (e) {
+        $login_form.delay(100).fadeIn(100);
+        $oauth_form.fadeOut(100);
+        $oauth_login_form_link.removeClass("active");
+        $(this).addClass("active");
         e.preventDefault();
     });
-    $('#oauth-login-form-link').click(function (e) {
-        $("#oauth-form").delay(100).fadeIn(100);
-        $("#login-form").fadeOut(100);
-        $('#login-form-link').removeClass('active');
-        $(this).addClass('active');
+    $oauth_login_form_link.click(function (e) {
+        $oauth_form.delay(100).fadeIn(100);
+        $login_form.fadeOut(100);
+        $login_form_link.removeClass("active");
+        $(this).addClass("active");
         e.preventDefault();
     });
 });

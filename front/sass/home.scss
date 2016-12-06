@@ -8,24 +8,23 @@
 .info {
   @include make-md-column(4);
   @include make-md-column-offset(4);
-  background-color: rgba(255, 255, 255, 0.5);
-
+  @include box-shadow(1px 2px 3px rgba(0, 0, 0, .3));
+  margin-top: 7%;
   padding-top: 40px;
   padding-bottom: 40px;
-  margin-top: 7%;
-
   border: 1px solid $gray-lighter;
-  @include box-shadow(1px 2px 3px rgba(0, 0, 0, 0.3));
+  background-color: rgba(255, 255, 255, .5);
 
   form {
-    & > input, & > button {
-    @include make-lg-column(12);
-	  margin-bottom: 20px;
+    input,
+    & > button {
+      @include make-lg-column(12);
+      margin-bottom: 20px;
       font-size: $font-size-large;
 	}
 
     button {
-      width : 100%;
+      width: 100%;
 	}
   }
 }
