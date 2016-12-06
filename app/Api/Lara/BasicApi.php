@@ -142,7 +142,7 @@ abstract class BasicApi
     {
         session()->put(OAuthKey::API_SERVER_STATUS, 'stop');
 
-        return Response::create([], Response::HTTP_GATEWAY_TIMEOUT);
+        return Response::create([], Response::HTTP_SERVICE_UNAVAILABLE ,['Retry-After' => '120']);
     }
 
     /**

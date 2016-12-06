@@ -20,7 +20,7 @@ class OAuthApi extends BasicApi implements OAuthApiInterface
         $csrf_token = $this->getCSRFToken();
 
         if (is_null($csrf_token)) {
-
+            return $this->connectExceptionResponse();
         }
 
         $url = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
