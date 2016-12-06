@@ -25,10 +25,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'         => 'Backend\Http\Middleware\Authenticate',
-        'auth.basic'   => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest'        => 'Backend\Http\Middleware\RedirectIfAuthenticated',
-        'route_filter' => 'Backend\Http\Middleware\RouteFilter',
-        'throttle'     => 'Backend\Http\Middleware\ThrottleMiddleware'
+
+        'auth'                => 'Backend\Http\Middleware\Authenticate',
+        'auth.basic'          => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+        'guest'               => 'Backend\Http\Middleware\RedirectIfAuthenticated',
+        'route_filter'        => 'Backend\Http\Middleware\RouteFilter',
+        'throttle'            => 'Backend\Http\Middleware\ThrottleMiddleware',
+        'check_source_server' => 'Backend\Http\Middleware\AfterCheckSourceServer',
+
     ];
 }

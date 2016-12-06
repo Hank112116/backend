@@ -3,7 +3,6 @@ namespace Backend\Api\Lara\UserApi;
 
 use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
 use Backend\Enums\URI\API\HWTrek\UserApiEnum;
-use Backend\Enums\URI\API\HWTrekApiEnum;
 use Backend\Api\Lara\HWTrekApi;
 use Backend\Model\Eloquent\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

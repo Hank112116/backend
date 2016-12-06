@@ -2,6 +2,7 @@
 
 namespace Backend\Api\Lara;
 
+use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Facades\Log;
 use Illuminate\Http\Response;
 use Curl\Curl;
@@ -17,75 +18,110 @@ abstract class BasicApi
 
     public function __construct()
     {
-        $this->curl       = $this->initCurl();
         $this->hwtrek_url = 'https://' . config('app.front_domain');
+        //$this->hwtrek_url = 'http://10.10.55.66';
+        $this->curl       = $this->initCurl();
     }
 
     /**
      * @param $url
      * @param array $data
-     * @return string
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function get($url, $data = [])
     {
-        $r = $this->curl->get($url, $data);
+        $this->curl->get($url, $data);
+
         $data['method'] = 'GET';
         $data['url']    = $url;
         $this->recordActionLog($data);
-        return $r;
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
+
+        return $this->response((array) $this->curl->response);
     }
 
     /**
      * @param $url
      * @param array $data
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function post($url, $data = [])
     {
-        $r = $this->curl->post($url, $data);
+        $this->curl->post($url, $data);
+
         $data['method'] = 'POST';
         $data['url']    = $url;
         $this->recordActionLog($data);
-        return $r;
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
+
+        return $this->response((array) $this->curl->response);
     }
 
     /**
      * @param $url
      * @param array $data
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function patch($url, $data = [])
     {
-        $r = $this->curl->patch($url, json_encode($data));
+        $this->curl->patch($url, json_encode($data));
+
         $data['method'] = 'PATCH';
         $data['url']    = $url;
         $this->recordActionLog($data);
-        return $r;
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
+
+        return $this->response((array) $this->curl->response);
     }
 
     /**
      * @param $url
      * @param array $data
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function put($url, $data = [])
     {
-        $r = $this->curl->put($url, $data);
+        $this->curl->put($url, $data);
+
         $data['method'] = 'PUT';
         $data['url']    = $url;
         $this->recordActionLog($data);
-        return $r;
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
+
+        return $this->response((array) $this->curl->response);
     }
 
     /**
      * @param $url
      * @param array $query_parameters
      * @param array $data
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function delete($url, $query_parameters = [], $data = [])
     {
-        $r =  $this->curl->delete($url, $query_parameters, $data);
+        $this->curl->delete($url, $query_parameters, $data);
+
         $data['method'] = 'DELETE';
         $data['url']    = $url;
         $this->recordActionLog($data);
-        return $r;
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
+
+        return $this->response((array) $this->curl->response);
     }
 
     /**
@@ -97,11 +133,18 @@ abstract class BasicApi
     }
 
     /**
+     * @param int $http_code
      * @param array $data
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function response($data = [])
     {
+        if ($this->getHttpStatusCode() === 0) {
+            session()->put(OAuthKey::API_SERVER_STATUS, 'stop');
+
+            return Response::create($data, Response::HTTP_GATEWAY_TIMEOUT);
+        }
+
         return Response::create($data, $this->getHttpStatusCode());
     }
 
@@ -120,7 +163,9 @@ abstract class BasicApi
         $curl->setCookieFile($cookie_file);
         $curl->setOpt(CURLOPT_RETURNTRANSFER, true);
         $curl->setOpt(CURLOPT_COOKIESESSION, true);
+        $curl->setOpt(CURLOPT_TIMEOUT, 30);
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
+        $curl->setReferer($this->hwtrek_url);
         $curl->setHeader('Content-Type', 'application/json');
         $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
 

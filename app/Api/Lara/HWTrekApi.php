@@ -2,9 +2,7 @@
 
 namespace Backend\Api\Lara;
 
-use Backend\Enums\GrantTypeRegistry;
-use Backend\Enums\URI\API\HWTrekApiEnum;
-use Guzzle\Http\Exception\CurlException;
+use Backend\Enums\API\Response\Key\OAuthKey;
 use Curl\Curl;
 
 /**
@@ -29,18 +27,8 @@ abstract class HWTrekApi extends BasicApi
      */
     private function setAccessToken()
     {
-        $curl            = $this->curl;
-        $client_id       = config('api.hwtrek_client_id');
-        $client_secret   = config('api.hwtrek_client_secret');
-        $url             = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
-        $curl->setBasicAuthentication($client_id, $client_secret);
-        $curl->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
-        if ($curl->error) {
-            throw new CurlException($curl->errorMessage);
-        }
-        $curl->setHeader('Authorization', "{$curl->response->token_type} {$curl->response->access_token}");
-        $curl->setHeader('Content-Type', 'application/json');
-        return $curl;
+        $authorization = session(OAuthKey::TOKEN_TYPE) . ' ' . session(OAuthKey::ACCESS_TOKEN);
+
+        $this->curl->setHeader('Authorization', $authorization);
     }
 }

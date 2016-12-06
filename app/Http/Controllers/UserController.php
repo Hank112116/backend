@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Assistant\ApiResponse\UserApi\UserAttachmentResponseAssistant;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
@@ -170,10 +171,17 @@ class UserController extends BaseController
 
             return redirect()->action('UserController@showList');
         }
-        $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
 
-        $attachments = $attachment_api->getAttachment();
-        
+        /* @var AttachmentApiInterface $attachment_api */
+        $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
+        $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment());
+
+        if ($attachment_assist->haveAttachments()) {
+            $attachments = $attachment_assist->deserialize();
+        } else {
+            $attachments = null;
+        }
+
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
             'expertise_setting' => explode(',', $user->expertises),
@@ -217,9 +225,18 @@ class UserController extends BaseController
             Noty::warn('No access permission');
             return redirect()->action('UserController@showUpdate', [$id]);
         }
+
+        /* @var AttachmentApiInterface $attachment_api */
         $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-        $attachments  = $attachment_api->getAttachment();
-        $front_domain = config('app.front_domain');
+        $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment());
+
+        if ($attachment_assist->haveAttachments()) {
+            $attachments = $attachment_assist->deserialize();
+        } else {
+            $attachments = null;
+        }
+
+        $front_domain   = config('app.front_domain');
 
         $data = [
             'industries'        => Industry::getUpdateArray(),
@@ -277,8 +294,9 @@ class UserController extends BaseController
                 foreach ($attachment_data['delete_items'] as $row) {
                     $attachments['delete'][] = $row;
                 }
+                /* @var AttachmentApiInterface $attachment_api*/
                 $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-                $attachment_api->updateAttachment($attachments);
+                $r = $attachment_api->updateAttachment($attachments);
             }
         }
 
@@ -349,10 +367,11 @@ class UserController extends BaseController
     {
         $user = $this->user_repo->find($this->request->get('user_id'));
         $file = $this->request->file()[0];
-        $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-        $r    = $attachment_api->putAttachment($file);
-        Log::info('Upload attachment', (array) $r);
-        return json_encode($r);
+        /* @var AttachmentApiInterface $attachment_api */
+        $attachment_api      = app()->make(AttachmentApiInterface::class, ['user' => $user]);
+        $response_assistant  = UserAttachmentResponseAssistant::create($attachment_api->putAttachment($file));
+        Log::info('Upload attachment', $response_assistant->decode());
+        return $response_assistant->serialize();
     }
 
     public function disable()

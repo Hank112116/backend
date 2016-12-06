@@ -25,6 +25,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('storage:clear-tmp')->daily();
+        $schedule->command('storage:clear-tmp')->dailyAt('13:00');
     }
 }

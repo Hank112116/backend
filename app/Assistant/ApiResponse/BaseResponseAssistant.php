@@ -18,4 +18,9 @@ abstract class BaseResponseAssistant
     {
         return json_decode($this->response->getContent(), true);
     }
+
+    public function serialize()
+    {
+        return $this->response->getContent();
+    }
 }

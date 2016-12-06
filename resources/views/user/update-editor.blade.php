@@ -108,7 +108,7 @@
                 </div>
             </div>
         @endif
-        @if ($attachments != 'null')
+        @if ($attachments)
             <div class="form-group">
                 <label for="industry" class="col-md-3">Attachments</label>
                 <div class="col-md-9 industry">

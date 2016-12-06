@@ -760,7 +760,7 @@ for (var key in requestBase) {
 Request.prototype.abort = function(){
   if (this.aborted) return;
   this.aborted = true;
-  this.xhr.abort();
+  this.xhr && this.xhr.abort();
   this.clearTimeout();
   this.emit('abort');
   return this;

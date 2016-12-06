@@ -390,7 +390,7 @@ $(function () {
 
     function check_attachment_amount() {
         var attachment_count = $(".photo-preview").length;
-        console.log(attachment_count);
+
         if (attachment_count >= 3) {
             $("#attachment_upload").attr("disabled", "disabled");
         } else {
@@ -538,8 +538,17 @@ require("./libs/UserSuspend.js");
 
 $(function () {
     icheck.initRadio();
-    FormUtility.locationSelector($("#country"));
-    FormUtility.locationSelector($("#city"));
+
+    var $country = $("#country");
+    var $city = $("#city");
+
+    if ($country.length) {
+        FormUtility.locationSelector($country);
+    }
+
+    if ($city.length) {
+        FormUtility.locationSelector($city);
+    }
 
     FormUtility.editor();
     new _libsProjectUpdater2["default"]().initSelectTag($("[data-select-tags=expertises]"));

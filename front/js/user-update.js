@@ -7,8 +7,17 @@ require("./libs/UserSuspend.js");
 
 $(() => {
     icheck.initRadio();
-    FormUtility.locationSelector($("#country"));
-    FormUtility.locationSelector($("#city"));
+
+    var $country = $("#country");
+    var $city    = $("#city");
+
+    if ($country.length) {
+        FormUtility.locationSelector($country);
+    }
+
+    if ($city.length) {
+        FormUtility.locationSelector($city);
+    }
 
     FormUtility.editor();
     new ProjectUpdater().initSelectTag($("[data-select-tags=expertises]"));

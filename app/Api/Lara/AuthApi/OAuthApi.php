@@ -15,7 +15,7 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
     public function getCSRFToken()
     {
         $url = $this->hwtrek_url;
-        $this->curl->get($url);
+        $this->get($url);
 
         return $this->curl->getResponseCookie('csrf');
     }
@@ -30,12 +30,11 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
         $url = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
         $this->curl->setBasicAuthentication($username, $password);
         $this->curl->setHeader('X-Csrf-Token', $csrf);
-        $this->curl->setReferer($this->hwtrek_url);
-        $this->curl->post($url, ['grant_type' => GrantTypeRegistry::PASSWORD]);
+        $this->post($url, ['grant_type' => GrantTypeRegistry::PASSWORD]);
 
-
-        $this->curl->setHeader('Authorization', "{$this->curl->response->token_type} {$this->curl->response->access_token}");
-
+        if ($this->curl->error) {
+            return $this->response();
+        }
 
         return $this->response((array) $this->curl->response);
     }
@@ -49,7 +48,29 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
         $client_secret   = config('api.hwtrek_client_secret');
         $url             = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
         $this->curl->setBasicAuthentication($client_id, $client_secret);
-        $this->curl->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
+        $this->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
+
+        return $this->response((array) $this->curl->response);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function profile()
+    {
+        $authorization = session('token_type') . ' ' . session('access_token');
+
+        $this->curl->setHeader('Authorization', $authorization);
+
+        $this->curl->get('https://dev.hwtrek.com/apis/users/1145/profile/setting');
+
+        if ($this->curl->error) {
+            return $this->response();
+        }
 
         return $this->response((array) $this->curl->response);
     }

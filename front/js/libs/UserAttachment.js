@@ -125,7 +125,7 @@ $(function () {
     function check_attachment_amount()
     {
         var attachment_count = $(".photo-preview").length;
-        console.log(attachment_count);
+
         if (attachment_count >= 3) {
             $("#attachment_upload").attr("disabled", "disabled");
         } else {
