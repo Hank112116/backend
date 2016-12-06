@@ -2,7 +2,7 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::post('login', 'AuthController@login');
+Route::post('login', 'AuthController@login')->middleware(['throttle:10,1']);
 Route::get('logout', 'AuthController@logout');
 
 Route::group(['middleware' => 'route_filter:adminer'], function () {

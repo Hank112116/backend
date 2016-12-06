@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
         'auth'         => 'Backend\Http\Middleware\Authenticate',
         'auth.basic'   => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
         'guest'        => 'Backend\Http\Middleware\RedirectIfAuthenticated',
-        'route_filter' => 'Backend\Http\Middleware\RouteFilter'
+        'route_filter' => 'Backend\Http\Middleware\RouteFilter',
+        'throttle'     => 'Backend\Http\Middleware\ThrottleMiddleware'
     ];
 }
