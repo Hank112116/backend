@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c10d01dddbfccff1e319397ed3f49f92",
-    "content-hash": "226e65a3a8c8b6e64665ae15f7fc6e42",
+    "hash": "23a2c986a2648e11d72669e5ac5b61e6",
+    "content-hash": "edabe1580deddfb4a0264ec328ba746d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1523,62 +1523,6 @@
                 "random"
             ],
             "time": "2016-03-18 20:34:03"
-        },
-        {
-            "name": "php-curl-class/php-curl-class",
-            "version": "4.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "debe0a89ee1eb9a2f15c0bb63ce8b347130af50d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/debe0a89ee1eb9a2f15c0bb63ce8b347130af50d",
-                "reference": "debe0a89ee1eb9a2f15c0bb63ce8b347130af50d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Curl\\": "src/Curl/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Unlicense"
-            ],
-            "authors": [
-                {
-                    "name": "Zach Borboa"
-                }
-            ],
-            "description": "PHP Curl Class is an object-oriented wrapper of the PHP cURL extension.",
-            "homepage": "https://github.com/php-curl-class/php-curl-class",
-            "keywords": [
-                "api",
-                "class",
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "json",
-                "php",
-                "requests",
-                "rest",
-                "restful",
-                "web service",
-                "xml"
-            ],
-            "time": "2016-07-25 19:31:39"
         },
         {
             "name": "phpmailer/phpmailer",

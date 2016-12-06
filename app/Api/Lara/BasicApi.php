@@ -4,8 +4,10 @@ namespace Backend\Api\Lara;
 
 use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Facades\Log;
+use GuzzleHttp\Exception\ConnectException;
+use Psr\Http\Message\ResponseInterface;
 use Illuminate\Http\Response;
-use Curl\Curl;
+use GuzzleHttp\Client;
 
 /**
  * HWTrek API
@@ -13,158 +15,189 @@ use Curl\Curl;
  **/
 abstract class BasicApi
 {
-    protected $curl;
     protected $hwtrek_url;
+    protected $client;
 
     public function __construct()
     {
         $this->hwtrek_url = 'https://' . config('app.front_domain');
-        $this->curl       = $this->initCurl();
+        $this->client     = $this->initClient();
     }
 
     /**
      * @param $url
-     * @param array $data
+     * @param array $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function get($url, $data = [])
+    protected function get($url, $options = [])
     {
-        $this->curl->get($url, $data);
+        try {
+            $response = $this->client->get($url, $options);
 
-        $data['method'] = 'GET';
-        $data['url']    = $url;
-        $this->recordActionLog($data);
+            $this->recordActionLog($url, $options, $response);
 
-        return $this->response((array) $this->curl->response);
+            return $this->response($response);
+        } catch (ConnectException $e) {
+            Log::error($e->getMessage());
+
+            return $this->connectExceptionResponse();
+        }
     }
 
     /**
      * @param $url
-     * @param array $data
+     * @param array $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function post($url, $data = [])
+    protected function post($url, $options = [])
     {
-        $this->curl->post($url, $data);
+        try {
+            $response = $this->client->post($url, $options);
 
-        $data['method'] = 'POST';
-        $data['url']    = $url;
-        $this->recordActionLog($data);
+            $this->recordActionLog($url, $options, $response);
 
-        return $this->response((array) $this->curl->response);
+            return $this->response($response);
+        } catch (ConnectException $e) {
+            Log::error($e->getMessage());
+
+            return $this->connectExceptionResponse();
+        }
     }
 
     /**
      * @param $url
-     * @param array $data
+     * @param array $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function patch($url, $data = [])
+    protected function patch($url, $options = [])
     {
-        $this->curl->patch($url, json_encode($data));
+        try {
+            $response = $this->client->patch($url, $options);
 
-        $data['method'] = 'PATCH';
-        $data['url']    = $url;
-        $this->recordActionLog($data);
+            $this->recordActionLog($url, $options, $response);
 
-        return $this->response((array) $this->curl->response);
+            return $this->response($response);
+        } catch (ConnectException $e) {
+            Log::error($e->getMessage());
+
+            return $this->connectExceptionResponse();
+        }
     }
 
     /**
      * @param $url
-     * @param array $data
+     * @param array $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function put($url, $data = [])
+    protected function put($url, $options = [])
     {
-        $this->curl->put($url, $data);
+        try {
+            $response = $this->client->put($url, $options);
 
-        $data['method'] = 'PUT';
-        $data['url']    = $url;
-        $this->recordActionLog($data);
+            $this->recordActionLog($url, $options, $response);
 
-        return $this->response((array) $this->curl->response);
+            return $this->response($response);
+        } catch (ConnectException $e) {
+            Log::error($e->getMessage());
+
+            return $this->connectExceptionResponse();
+        }
     }
 
     /**
      * @param $url
-     * @param array $query_parameters
-     * @param array $data
+     * @param array $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function delete($url, $query_parameters = [], $data = [])
+    protected function delete($url, $options = [])
     {
-        $this->curl->delete($url, $query_parameters, $data);
+        try {
+            $response = $this->client->delete($url, $options);
 
-        $data['method'] = 'DELETE';
-        $data['url']    = $url;
-        $this->recordActionLog($data);
+            $this->recordActionLog($url, $options, $response);
 
-        return $this->response((array) $this->curl->response);
+            return $this->response($response);
+        } catch (ConnectException $e) {
+            Log::error($e->getMessage());
+
+            return $this->connectExceptionResponse();
+        }
     }
 
     /**
-     * @return int
+     * @param ResponseInterface $response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function getHttpStatusCode()
+    protected function response(ResponseInterface $response)
     {
-        return $this->curl->httpStatusCode;
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return Response::create($data, $response->getStatusCode());
     }
 
     /**
-     * @param int $http_code
-     * @param array $data
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function response($data = [])
+    protected function connectExceptionResponse()
     {
-        if ($this->getHttpStatusCode() === 0) {
-            session()->put(OAuthKey::API_SERVER_STATUS, 'stop');
+        session()->put(OAuthKey::API_SERVER_STATUS, 'stop');
 
-            return Response::create([], Response::HTTP_GATEWAY_TIMEOUT);
+        return Response::create([], Response::HTTP_GATEWAY_TIMEOUT);
+    }
+
+    /**
+     * @return Client
+     */
+    private function initClient()
+    {
+        $config = [
+            'timeout'   => '25.0',
+            'cookies'   => true,
+            'verify'    => config('api.curl_ssl_verifypeer'),
+            'headers'   => [
+                'X-Requested-With' => 'XMLHttpRequest',
+                'Connection'       => 'keep-alive',
+                'Referer'          => $this->hwtrek_url
+            ],
+            'http_errors' => false
+        ];
+
+        $config  = $this->appendAuthorizationHeader($config);
+
+        $client = new Client($config);
+
+        return $client;
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function appendAuthorizationHeader(array $options)
+    {
+        if (session()->has(OAuthKey::TOKEN_TYPE) and session()->has(OAuthKey::ACCESS_TOKEN)) {
+            $authorization = session(OAuthKey::TOKEN_TYPE) . ' ' . session(OAuthKey::ACCESS_TOKEN);
+            $options['headers']['Authorization'] = $authorization;
         }
 
-        return Response::create($data, $this->getHttpStatusCode());
+        return $options;
     }
 
     /**
-     * @return Curl
+     * @param string $url
+     * @param array $options
+     * @param ResponseInterface $response
      */
-    private function initCurl()
+    private function recordActionLog(string $url,array $options, ResponseInterface $response)
     {
-        $cookie_file = config('app.tmp_folder') . session()->getId();
+        $data = [
+            'url'      => $url,
+            'options'  => $options,
+            'response' => [
+                'http_code' => $response->getStatusCode(),
+            ]
+        ];
 
-        $curl = new Curl();
-
-        // Saving Cookie with CURL
-        $curl->setHeader('Connection', 'keep-alive');
-        $curl->setCookieJar($cookie_file);
-        $curl->setCookieFile($cookie_file);
-        $curl->setOpt(CURLOPT_RETURNTRANSFER, true);
-        $curl->setOpt(CURLOPT_COOKIESESSION, true);
-        $curl->setOpt(CURLOPT_TIMEOUT, 30);
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, config('api.curl_ssl_verifypeer'));
-        $curl->setReferer($this->hwtrek_url);
-        $curl->setHeader('Content-Type', 'application/json');
-        $curl->setHeader('X-Requested-With', 'XMLHttpRequest');
-
-        return $curl;
-    }
-
-    /**
-     * Record api action log
-     *
-     * @param $data
-     */
-    private function recordActionLog($data)
-    {
-        if ($this->curl->error) {
-            Log::error('Call api fail', $data + [
-                    'error_code' => $this->curl->errorCode,
-                    'message'    => $this->curl->errorMessage
-                ]);
-        } else {
-            Log::info('Call api', $data);
-        }
+        Log::info('Call api', $data);
     }
 }

@@ -3,12 +3,11 @@
 namespace Backend\Api\Lara\UserApi;
 
 use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
-use Backend\Api\Lara\HWTrekApi;
+use Backend\Api\Lara\BasicApi;
 use Backend\Enums\URI\API\HWTrek\UserApiEnum;
-use Backend\Enums\URI\API\HWTrekApiEnum;
 use Backend\Model\Eloquent\User;
 
-class ProfileApi extends HWTrekApi implements ProfileApiInterface
+class ProfileApi extends BasicApi implements ProfileApiInterface
 {
     private $user;
 
@@ -25,8 +24,8 @@ class ProfileApi extends HWTrekApi implements ProfileApiInterface
     {
         $uri = str_replace('(:num)', $this->user->user_id, UserApiEnum::PRIVILEGE);
         $url = $this->hwtrek_url . $uri;
-        $r   = $this->delete($url);
-        return $this->response((array) $r);
+
+        return $this->delete($url);
     }
 
     /**
@@ -36,8 +35,8 @@ class ProfileApi extends HWTrekApi implements ProfileApiInterface
     {
         $uri = str_replace('(:num)', $this->user->user_id, UserApiEnum::PRIVILEGE);
         $url = $this->hwtrek_url . $uri;
-        $r   = $this->post($url);
-        return $this->response((array) $r);
+
+        return $this->post($url);
     }
 
     /**
@@ -45,10 +44,15 @@ class ProfileApi extends HWTrekApi implements ProfileApiInterface
      */
     public function approveExpert($user_type)
     {
-        $data = ['userType' => $user_type];
         $uri = str_replace('(:num)', $this->user->user_id, UserApiEnum::APPROVE_EXPERT);
         $url = $this->hwtrek_url . $uri;
-        $r    = $this->patch($url, $data);
-        return $this->response((array) $r);
+
+        $options = [
+            'json' => [
+                'userType' => $user_type
+            ]
+        ];
+
+        return $this->patch($url, $options);
     }
 }

@@ -2,12 +2,13 @@
 namespace Backend\Api\Lara\UserApi;
 
 use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
+use Backend\Api\Lara\BasicApi;
 use Backend\Enums\URI\API\HWTrek\UserApiEnum;
 use Backend\Api\Lara\HWTrekApi;
 use Backend\Model\Eloquent\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
+class AttachmentApi extends BasicApi implements AttachmentApiInterface
 {
     private $url;
     private $user;
@@ -33,7 +34,12 @@ class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
      */
     public function updateAttachment(array $attachments)
     {
-        return $this->patch($this->url, ['attachments' => $attachments]);
+        $options = [
+            'json' => [
+                'attachments' => $attachments
+            ]
+        ];
+        return $this->patch($this->url, $options);
     }
 
     /**
@@ -42,15 +48,23 @@ class AttachmentApi extends HWTrekApi implements AttachmentApiInterface
     public function putAttachment(UploadedFile $file)
     {
         $upload_dir = '/tmp/';
+
         $file->move($upload_dir, $file->getClientOriginalName());
         $file_path = $upload_dir . $file->getClientOriginalName();
-        $fp        = fopen($file_path, "r");
-        $this->curl->setHeader('Content-Type', 'multipart/form-data');
-        $this->curl->setOpt(CURLOPT_INFILE, $fp);
-        $this->curl->setOpt(CURLOPT_INFILESIZE, filesize($file_path));
-        $r = $this->post($this->url, ['file' => "@{$file_path}"]);
-        fclose($fp);
+
+        $options = [
+            'multipart' => [
+                [
+                    'name'     => 'file',
+                    'contents' => fopen($file_path, "r"),
+                ]
+            ]
+        ];
+
+        $response = $this->post($this->url, $options);
+
         unlink($file_path);
-        return $r;
+
+        return $response;
     }
 }

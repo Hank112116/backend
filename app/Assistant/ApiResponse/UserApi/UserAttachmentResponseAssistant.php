@@ -20,9 +20,10 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
     {
         $attachments = $this->deserialize();
 
-        foreach ($attachments as $attachment) {
-            return (!is_null($attachment) and $attachment != 'null');
+        if (is_null($attachments)) {
+            return false;
         }
-        return false;
+
+        return true;
     }
 }

@@ -6,41 +6,41 @@ use Backend\Api\ApiInterfaces\AuthApi\OAuthApiInterface;
 use Backend\Api\Lara\BasicApi;
 use Backend\Enums\GrantTypeRegistry;
 use Backend\Enums\URI\API\HWTrekApiEnum;
+use Backend\Facades\Log;
+use GuzzleHttp\Cookie\SetCookie;
+use GuzzleHttp\Exception\ConnectException;
 
-class OAuthApi extends BasicApi  implements OAuthApiInterface
+class OAuthApi extends BasicApi implements OAuthApiInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getCSRFToken()
-    {
-        $url = $this->hwtrek_url;
-        $this->get($url);
-
-        return $this->curl->getResponseCookie('csrf');
-    }
-
     /**
      * {@inheritDoc}
      */
     public function password($username, $password)
     {
-        $csrf          = $this->getCSRFToken();
-        $client_id     = config('api.hwtrek_client_id');
-        $client_secret = config('api.hwtrek_client_secret');
+        $csrf_token = $this->getCSRFToken();
+
+        if (is_null($csrf_token)) {
+
+        }
 
         $url = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
 
-        $this->curl->setHeader('X-Csrf-Token', $csrf);
-        $this->curl->setBasicAuthentication($client_id, $client_secret);
-
-        $post_data = [
-            'grant_type'    => GrantTypeRegistry::PASSWORD,
-            'username'      => $username,
-            'password'      =>$password
+        $options = [
+            'headers' => [
+                'X-Csrf-Token'  => $csrf_token
+            ],
+            'json'    => [
+                'grant_type'    => GrantTypeRegistry::PASSWORD,
+                'username'      => $username,
+                'password'      => $password
+            ],
+            'auth'    => [
+                config('api.hwtrek_client_id'),
+                config('api.hwtrek_client_secret'),
+            ],
         ];
 
-        return $this->post($url, $post_data);
+        return $this->post($url, $options);
     }
 
     /**
@@ -48,11 +48,47 @@ class OAuthApi extends BasicApi  implements OAuthApiInterface
      */
     public function clientCredentials()
     {
-        $client_id       = config('api.hwtrek_client_id');
-        $client_secret   = config('api.hwtrek_client_secret');
         $url             = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
-        $this->curl->setBasicAuthentication($client_id, $client_secret);
 
-        return $this->post($url, ['grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS]);
+        $options = [
+            'json'    => [
+                'grant_type'    => GrantTypeRegistry::CLIENT_CREDENTIALS,
+            ],
+            'auth'    => [
+                config('api.hwtrek_client_id'),
+                config('api.hwtrek_client_secret'),
+            ],
+        ];
+
+        return $this->post($url, $options);
+    }
+
+    /**
+     * Access HWTrek home page, get CSRF token
+     *
+     * @return string
+     */
+    private function getCSRFToken()
+    {
+        try {
+            $url = $this->hwtrek_url;
+
+            $response = $this->client->get($url);
+
+            $cookies = $response->getHeader('Set-Cookie');
+
+            foreach ($cookies as $cookie) {
+                $set_cookie = SetCookie::fromString($cookie);
+                if ($set_cookie->getName() === 'csrf') {
+                    return $set_cookie->getValue();
+                }
+            }
+
+            return null;
+        } catch (ConnectException $e) {
+            Log::error($e->getMessage());
+
+            return null;
+        }
     }
 }
