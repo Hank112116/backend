@@ -41,6 +41,11 @@ class AdminerRepo implements AdminerInterface
         return $this->adminer->with(['role', 'user'])->find($id);
     }
 
+    public function findByEmail($email)
+    {
+        return $this->adminer->where('email', $email)->first();
+    }
+
     public function findHWTrekMember($hwtrek_member)
     {
         return $this->adminer->where('hwtrek_member', $hwtrek_member)->first();
@@ -75,6 +80,10 @@ class AdminerRepo implements AdminerInterface
 
     public function validCreate($input)
     {
+        if (!empty($input['user_id'])) {
+            unset($this->rules['password']);
+        }
+
         $validator = Validator::make($input, $this->rules);
 
         if ($validator->passes()) {
@@ -116,8 +125,8 @@ class AdminerRepo implements AdminerInterface
             unset($this->rules['email']);
         }
 
-        if (!array_get($input, 'password')) {
-            unset($this->rules[ 'password' ]);
+        if (!empty($input['user_id'])) {
+            unset($this->rules['password']);
         }
 
         $validator = Validator::make($input, $this->rules);

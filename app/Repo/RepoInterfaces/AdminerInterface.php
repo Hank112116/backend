@@ -19,6 +19,12 @@ interface AdminerInterface
     public function find($id);
 
     /**
+     * @param $email
+     * @return Adminer
+     */
+    public function findByEmail($email);
+
+    /**
      * @param $hwtrek_member
      * @return Adminer
      */

@@ -3,10 +3,9 @@
   color: #00415d;
   background-color: #fff;
   border-color: #fff;
-  text-align: center;
 }
 
-/* line 7, ../../front/sass/modules/_login-form.scss */
+/* line 6, ../../front/sass/modules/_login-form.scss */
 .panel-login > .panel-heading a {
   text-decoration: none;
   color: #666;
@@ -17,8 +16,27 @@
   transition: all 0.1s linear;
 }
 
-/* line 16, ../../front/sass/modules/_login-form.scss */
+/* line 15, ../../front/sass/modules/_login-form.scss */
 .panel-login > .panel-heading a.active {
   color: #029f5b;
   font-size: 18px;
+}
+
+/* line 20, ../../front/sass/modules/_login-form.scss */
+.login-error-msg {
+  color: red;
+}
+/* line 22, ../../front/sass/modules/_login-form.scss */
+.login-error-msg .triangle {
+  display: table-cell;
+}
+/* line 26, ../../front/sass/modules/_login-form.scss */
+.login-error-msg .message {
+  display: table-cell;
+  padding-left: 5px;
+}
+
+/* line 32, ../../front/sass/modules/_login-form.scss */
+.password-error {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 0, 0, 0.6);
 }

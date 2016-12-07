@@ -54,24 +54,34 @@ class Adminer extends Eloquent implements AuthenticatableContract
     {
         return $this->role->isAdmin();
     }
+
     public function isManager()
     {
         return $this->role->isManager();
     }
+
     public function isManagerHead()
     {
         return $this->role->isManagerHead();
     }
+
     public function isFrontendPM()
     {
         return $this->role->isFrontendPM();
     }
+
     public function isBackendPM()
     {
         return $this->role->isBackendPM();
     }
+
     public function isEditor()
     {
         return $this->role->isEditor();
+    }
+
+    public function hasHWTrekMember()
+    {
+        return !is_null($this->hwtrek_member);
     }
 }

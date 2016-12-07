@@ -2,7 +2,6 @@
   color: #00415d;
   background-color: #fff;
   border-color: #fff;
-  text-align:center;
 }
 .panel-login>.panel-heading a{
   text-decoration: none;
@@ -16,4 +15,20 @@
 .panel-login>.panel-heading a.active{
   color: #029f5b;
   font-size: 18px;
+}
+
+.login-error-msg {
+  color: red;
+  .triangle {
+    display: table-cell;
+  }
+
+  .message {
+    display: table-cell;
+    padding-left: 5px;
+  }
+}
+
+.password-error {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255, 0, 0, 0.6);
 }

@@ -25,7 +25,7 @@ class AfterCheckSourceServer
                 auth()->logout();
                 session()->clear();
 
-                Noty::warn(trans()->trans('oauth.source-server-aberrant'));
+                session()->flash('login_error_msg', trans()->trans('oauth.source-server-aberrant'));
 
                 return redirect('/');
             }
