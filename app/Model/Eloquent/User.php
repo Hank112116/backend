@@ -79,6 +79,11 @@ class User extends Eloquent
 
     private $expertise_tags = null;
 
+    public function id()
+    {
+        return $this->user_id;
+    }
+
     public function projects()
     {
         return $this->hasMany(Project::class)->orderBy('project_id', 'desc');

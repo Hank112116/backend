@@ -3,12 +3,11 @@
 namespace Backend\Api\Lara\SolutionApi;
 
 use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
-use Backend\Api\Lara\HWTrekApi;
+use Backend\Api\Lara\BasicApi;
 use Backend\Enums\URI\API\HWTrek\SolutionApiEnum;
-use Backend\Enums\URI\API\HWTrekApiEnum;
 use Backend\Model\Eloquent\Solution;
 
-class ApproveApi extends HWTrekApi implements ApproveApiInterface
+class ApproveApi extends BasicApi implements ApproveApiInterface
 {
     private $solution;
 
@@ -25,8 +24,8 @@ class ApproveApi extends HWTrekApi implements ApproveApiInterface
     {
         $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::PUBLICITY);
         $url = $this->hwtrek_url . $uri;
-        $r = $this->post($url);
-        return $this->response((array) $r);
+
+        return $this->post($url);
     }
 
     /**
@@ -36,7 +35,7 @@ class ApproveApi extends HWTrekApi implements ApproveApiInterface
     {
         $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::PUBLICITY);
         $url = $this->hwtrek_url . $uri;
-        $r = $this->delete($url);
-        return $this->response((array) $r);
+
+        return $this->delete($url);
     }
 }

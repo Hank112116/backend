@@ -21,7 +21,8 @@ module.exports = [
     'user-list.js',
     'event-report-list.js',
     'event-questionnaire.js',
-    'project-list.js'
+    'project-list.js',
+    'login.js'
 ];
 
 

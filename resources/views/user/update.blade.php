@@ -187,23 +187,6 @@
         </div>
         
         @if (!$is_restricted)
-        {{--
-        <div class="form-group">
-            <label for="role" class="col-md-3">Role</label>
-            <div class="col-md-5">                
-                {!! Form::radio('user_role', '0', $user->user_role==0, ["id"=>"user_role_0"]) !!}
-                <label for="user_role_0" class='iradio-lable'>Member</label>
-                
-                {!! Form::radio('user_role', '1', $user->user_role==1, ["id"=>"user_role_1"]) !!}
-                <label for="user_role_1" class='iradio-lable'>Manager</label>
-
-                {!! Form::radio('user_role', '2', $user->user_role==2, ["id"=>"user_role_2"]) !!}
-                <label for="user_role_2" class='iradio-lable'>Admin</label>
-            </div>
-            <div class="col-md-5"></div>
-        </div>
-        --}}
-
         <div class="form-group">
             <label for="country" class="col-md-3">Address</label>
             <div class="col-md-5">
@@ -295,7 +278,7 @@
                         <div class="panel-heading">Attachments</div>
 
                         <div class="panel-body-attachment-list" style="margin-left: 10px; margin-bottom: 10px;">
-                            @if ($attachments != 'null')
+                            @if ($attachments)
                                 @foreach($attachments as $attachment)
                                     <div class="photo-preview">
                                         <a target="_blank" href="{{ $attachment->url }}">

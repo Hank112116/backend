@@ -112,7 +112,7 @@
 
 		</div>
 	</div>
-	@if ($attachments != 'null')
+	@if ($attachments)
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">

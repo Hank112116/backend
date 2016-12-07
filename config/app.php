@@ -19,6 +19,8 @@ return [
     'backend_domain'   => env('BACKEND_DOMAIN', 'backend.hwtrek.com'),
     'pass_code'        => 'J66UtuTp4Ycny1k67nrjKalA02bE5a0Q',
 
+    'tmp_folder'      => storage_path('app/tmp/'),
+
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration

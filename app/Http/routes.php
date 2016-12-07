@@ -3,6 +3,8 @@
 Route::get('/', 'HomeController@index');
 
 Route::post('login', 'AuthController@login')->middleware(['throttle:10,1']);
+Route::post('oauth-login', 'AuthController@oauthLogin')->middleware(['throttle:10,1']);
+
 Route::get('logout', 'AuthController@logout');
 
 Route::group(['middleware' => 'route_filter:adminer'], function () {
@@ -23,7 +25,7 @@ Route::group(['middleware' => 'route_filter:adminer'], function () {
     Route::post('adminer/role/update/{id}', 'AdminerController@roleUpdate');
 });
 
-Route::group(['middleware' => 'route_filter:user'], function () {
+Route::group(['middleware' => ['route_filter:user', 'check_source_server']], function () {
 
     Route::get('user/all', 'UserController@showList');
     Route::get('user/search', 'UserController@showSearch');
@@ -50,7 +52,7 @@ Route::group(['middleware' => 'route_filter:user'], function () {
 });
 
 // Project
-Route::group(['middleware' => 'route_filter:project'], function () {
+Route::group(['middleware' => ['route_filter:project', 'check_source_server']], function () {
 
     Route::get('project/all', 'ProjectController@showList');
 
@@ -79,7 +81,7 @@ Route::group(['middleware' => 'route_filter:project'], function () {
 });
 
 // Solution
-Route::group(['middleware' => 'route_filter:solution'], function () {
+Route::group(['middleware' => ['route_filter:solution', 'check_source_server']], function () {
     Route::get('solution/all', 'SolutionController@showList');
     Route::get('solution/drafts', 'SolutionController@showDraftSolutions');
     Route::get('solution/deleted', 'SolutionController@showDeletedSolutions');

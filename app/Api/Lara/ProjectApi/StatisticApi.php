@@ -3,11 +3,11 @@
 namespace Backend\Api\Lara\ProjectApi;
 
 use Backend\Api\ApiInterfaces\ProjectApi\StatisticApiInterface;
-use Backend\Api\Lara\HWTrekApi;
+use Backend\Api\Lara\BasicApi;
 use Backend\Enums\URI\API\HWTrek\ProjectApiEnum;
 use Illuminate\Support\Collection;
 
-class StatisticApi extends HWTrekApi implements StatisticApiInterface
+class StatisticApi extends BasicApi implements StatisticApiInterface
 {
     private $projects;
 
@@ -27,7 +27,7 @@ class StatisticApi extends HWTrekApi implements StatisticApiInterface
             $project_ids[] = $project->project_id;
         }
         $url = $this->hwtrek_url . ProjectApiEnum::PROJECT_STATISTICS . '?projectIds=' . json_encode($project_ids);
-        $r   = $this->get($url);
-        return $this->response((array) $r);
+
+        return $this->get($url);
     }
 }

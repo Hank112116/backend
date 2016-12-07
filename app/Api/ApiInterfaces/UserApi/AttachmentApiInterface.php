@@ -2,25 +2,25 @@
 
 namespace Backend\Api\ApiInterfaces\UserApi;
 
-use Backend\Model\Eloquent\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response;
 
 interface AttachmentApiInterface
 {
     /**
-     * @return mixed
+     * @return Response
      */
     public function getAttachment();
 
     /**
      * @param array $attachments
-     * @return mixed
+     * @return Response
      */
     public function updateAttachment(array $attachments);
 
     /**
      * @param UploadedFile $file
-     * @return mixed
+     * @return Response
      */
     public function putAttachment(UploadedFile $file);
 }
