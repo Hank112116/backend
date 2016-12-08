@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class Adminer extends Eloquent implements AuthenticatableContract
 {
-
     use Authenticatable;
     use SoftDeletes;
 
@@ -83,5 +82,14 @@ class Adminer extends Eloquent implements AuthenticatableContract
     public function hasHWTrekMember()
     {
         return !is_null($this->hwtrek_member);
+    }
+
+    public function handleDuplicateLoginSession()
+    {
+        // if has duplicate login, user_id set 0
+        \DB::table('admin_sessions')
+            ->where('user_id', $this->id())
+            ->where('id', '<>', session()->getId())
+            ->update(['user_id' => 0]);
     }
 }

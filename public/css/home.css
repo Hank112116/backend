@@ -6057,7 +6057,7 @@ body.stop-scrolling {
   padding-top: 10px;
   color: #333333;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 /* line 32, ../../front/sass/modules/_common-main.scss */
@@ -6084,7 +6084,7 @@ body.stop-scrolling {
   padding-right: 15px;
   -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
-  margin-top: 7%;
+  margin-top: 3%;
   padding-top: 40px;
   padding-bottom: 40px;
   border: 1px solid #eeeeee;
@@ -6104,7 +6104,7 @@ body.stop-scrolling {
   }
 }
 /* line 19, ../../front/sass/home.scss */
-.info form input, .info form > button {
+.info form input {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -6114,12 +6114,14 @@ body.stop-scrolling {
 }
 @media (min-width: 1200px) {
   /* line 19, ../../front/sass/home.scss */
-  .info form input, .info form > button {
+  .info form input {
     float: left;
     width: 100%;
   }
 }
-/* line 26, ../../front/sass/home.scss */
+/* line 25, ../../front/sass/home.scss */
 .info form button {
-  width: 100%;
+  width: 30%;
+  float: right;
+  font-size: 18px;
 }

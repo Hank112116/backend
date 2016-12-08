@@ -3,7 +3,6 @@
 namespace Backend\Http\Middleware;
 
 use Closure;
-use Noty;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
 /**

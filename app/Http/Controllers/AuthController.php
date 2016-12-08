@@ -52,10 +52,8 @@ class AuthController extends BaseController
                 $response = $this->oauth_api->password($email, $password);
 
                 if (!$response->isOk()) {
-                    auth()->logout();
-
                     session()->flash('login_error_msg', trans()->trans('oauth.oauth-error'));
-                    session()->flash('login_oauth_email', $user->email);
+                    session()->flash('login_oauth_email', $email);
                     session()->flash('login_password_error', true);
 
                     return $this->loginFail($email);
@@ -69,6 +67,8 @@ class AuthController extends BaseController
                     return $this->loginFail($email);
                 }
 
+                $adminer->handleDuplicateLoginSession();
+
                 return $this->loginSuccess($response);
             }
         }
@@ -76,11 +76,8 @@ class AuthController extends BaseController
         $adminer = $this->admin_repo->findByEmail($email);
 
         if ($adminer) {
-
             if ($adminer->hasHWTrekMember()) {
-                $user = $this->user_repo->find($adminer->user->user_id);
-
-                session()->flash('login_oauth_email', $user->email);
+                session()->flash('login_oauth_email', $email);
                 session()->flash('login_error_msg', trans()->trans('oauth.oauth-error'));
 
                 return $this->loginFail($email);
@@ -91,9 +88,9 @@ class AuthController extends BaseController
                 'password' => $password
             ];
 
-            if (!auth()->attempt($cert)) {
+            if (!auth()->guard('web')->attempt($cert)) {
                 session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
-                session()->flash('login_oauth_email', $adminer->email);
+                session()->flash('login_oauth_email', $email);
                 session()->flash('login_password_error', true);
 
                 return $this->loginFail($email);
@@ -103,16 +100,18 @@ class AuthController extends BaseController
             $response = $this->oauth_api->clientCredentials();
 
             if (!$response->isOk()) {
-                auth()->logout();
                 session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
 
                 return $this->loginFail($email);
             }
 
+            $adminer->handleDuplicateLoginSession();
+
             return $this->loginSuccess($response);
         }
 
         session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
+
         return $this->loginFail($email);
     }
 
