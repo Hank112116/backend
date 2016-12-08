@@ -41,44 +41,33 @@ class AuthController extends BaseController
         $email    = $request->get('email');
         $password = $request->get('password');
 
-        $user = $this->user_repo->byMail($email);
-
-        // Check bind HWTrek account
-        if ($user) {
-            $adminer = $this->admin_repo->findHWTrekMember($user->id());
-
-            if ($adminer) {
-                // OAuth password authorization
-                $response = $this->oauth_api->password($email, $password);
-
-                if (!$response->isOk()) {
-                    session()->flash('login_error_msg', trans()->trans('oauth.oauth-error'));
-                    session()->flash('login_oauth_email', $email);
-                    session()->flash('login_password_error', true);
-
-                    return $this->loginFail($email);
-                }
-
-                auth()->loginUsingId($adminer->id());
-
-                if (auth()->check() === false) {
-                    session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
-
-                    return $this->loginFail($email);
-                }
-
-                $adminer->handleDuplicateLoginSession();
-
-                return $this->loginSuccess($response);
-            }
-        }
-
         $adminer = $this->admin_repo->findByEmail($email);
 
-        if ($adminer) {
-            if ($adminer->hasHWTrekMember()) {
-                session()->flash('login_oauth_email', $email);
+        session()->flash('login_oauth_email', $email);
+
+        if (empty($adminer)) {
+            session()->flash('login_error_msg', trans()->trans('oauth.account-not-exist'));
+            return $this->loginFail($email);
+        }
+
+        if ($adminer->hasHWTrekMember()) {
+            // OAuth password authorization
+            $response = $this->oauth_api->password($email, $password);
+
+            if (!$response->isOk()) {
                 session()->flash('login_error_msg', trans()->trans('oauth.oauth-error'));
+                session()->flash('login_password_error', true);
+
+                return $this->loginFail($email);
+            }
+
+            auth()->loginUsingId($adminer->id());
+        } else {
+            // OAuth client_credentials authorization
+            $response = $this->oauth_api->clientCredentials();
+
+            if (!$response->isOk()) {
+                session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
 
                 return $this->loginFail($email);
             }
@@ -90,29 +79,14 @@ class AuthController extends BaseController
 
             if (!auth()->guard('web')->attempt($cert)) {
                 session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
-                session()->flash('login_oauth_email', $email);
                 session()->flash('login_password_error', true);
 
                 return $this->loginFail($email);
             }
-
-            // OAuth client_credentials authorization
-            $response = $this->oauth_api->clientCredentials();
-
-            if (!$response->isOk()) {
-                session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
-
-                return $this->loginFail($email);
-            }
-
-            $adminer->handleDuplicateLoginSession();
-
-            return $this->loginSuccess($response);
         }
+        $adminer->handleDuplicateLoginSession();
 
-        session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
-
-        return $this->loginFail($email);
+        return $this->loginSuccess($response);
     }
 
     /**
