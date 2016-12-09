@@ -41,64 +41,50 @@ class AuthController extends BaseController
         $email    = $request->get('email');
         $password = $request->get('password');
 
-        $cert = [
-            'email'    => $email,
-            'password' => $password
-        ];
+        $adminer = $this->admin_repo->findByEmail($email);
 
-        if (!auth()->attempt($cert)) {
-            return $this->loginFail($email);
-        }
-
-        // OAuth client_credentials authorization
-        $response = $this->oauth_api->clientCredentials();
-
-        if (!$response->isOk()) {
-            auth()->logout();
-
-            return $this->loginFail($email);
-        }
-
-        return $this->loginSuccess($response);
-    }
-
-    /**
-     * OAuth login
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function oauthLogin(Request $request)
-    {
-        $email    = $request->get('email');
-        $password = $request->get('password');
-
-        // Check backend user has bind hwtrek user
-        $user = $this->user_repo->byMail($email);
-
-        if (empty($user)) {
-            return $this->loginFail($email);
-        }
-
-        $adminer = $this->admin_repo->findHWTrekMember($user->id());
+        session()->flash('login_oauth_email', $email);
 
         if (empty($adminer)) {
+            session()->flash('login_error_msg', trans()->trans('oauth.account-not-exist'));
             return $this->loginFail($email);
         }
 
-        // OAuth password authorization
-        $response = $this->oauth_api->password($email, $password);
-        
-        if (!$response->isOk()) {
-            auth()->logout();
-            return $this->loginFail($email);
-        }
+        if ($adminer->hasHWTrekMember()) {
+            // OAuth password authorization
+            $response = $this->oauth_api->password($email, $password);
 
-        auth()->loginUsingId($adminer->id());
+            if (!$response->isOk()) {
+                session()->flash('login_error_msg', trans()->trans('oauth.oauth-error'));
+                session()->flash('login_password_error', true);
 
-        if (auth()->check() === false) {
-            return $this->loginFail($email);
+                return $this->loginFail($email);
+            }
+
+            auth()->loginUsingId($adminer->id());
+        } else {
+            // OAuth client_credentials authorization
+            $response = $this->oauth_api->clientCredentials();
+
+            if (!$response->isOk()) {
+                session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
+
+                return $this->loginFail($email);
+            }
+
+            $cert = [
+                'email'    => $email,
+                'password' => $password
+            ];
+
+            if (!auth()->guard('web')->attempt($cert)) {
+                session()->flash('login_error_msg', trans()->trans('oauth.login-fail'));
+                session()->flash('login_password_error', true);
+
+                return $this->loginFail($email);
+            }
         }
+        $adminer->handleDuplicateLoginSession();
 
         return $this->loginSuccess($response);
     }
@@ -157,9 +143,7 @@ class AuthController extends BaseController
     private function loginFail($email)
     {
         if (session(OAuthKey::API_SERVER_STATUS) === 'stop') {
-            Noty::warn(trans()->trans('oauth.source-server-aberrant'));
-        } else {
-            Noty::warn('Login fail.');
+            session()->flash('login_error_msg', trans()->trans('oauth.source-server-aberrant'));
         }
 
         $log_action = 'Log in';

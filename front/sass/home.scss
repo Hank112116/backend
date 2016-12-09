@@ -9,22 +9,23 @@
   @include make-md-column(4);
   @include make-md-column-offset(4);
   @include box-shadow(1px 2px 3px rgba(0, 0, 0, .3));
-  margin-top: 7%;
+  margin-top: 3%;
   padding-top: 40px;
   padding-bottom: 40px;
   border: 1px solid $gray-lighter;
   background-color: rgba(255, 255, 255, .5);
 
   form {
-    input,
-    & > button {
+    input {
       @include make-lg-column(12);
       margin-bottom: 20px;
       font-size: $font-size-large;
 	}
 
     button {
-      width: 100%;
+      width: 30%;
+      float: right;
+      font-size: $font-size-large;
 	}
   }
 }

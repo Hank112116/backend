@@ -3,7 +3,6 @@
 Route::get('/', 'HomeController@index');
 
 Route::post('login', 'AuthController@login')->middleware(['throttle:10,1']);
-Route::post('oauth-login', 'AuthController@oauthLogin')->middleware(['throttle:10,1']);
 
 Route::get('logout', 'AuthController@logout');
 

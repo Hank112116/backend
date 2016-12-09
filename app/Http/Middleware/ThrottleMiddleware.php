@@ -3,7 +3,6 @@
 namespace Backend\Http\Middleware;
 
 use Closure;
-use Noty;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
 /**
@@ -25,7 +24,7 @@ class ThrottleMiddleware extends ThrottleRequests
         $key = $this->resolveRequestSignature($request);
 
         if ($this->limiter->tooManyAttempts($key, $limit, $time)) {
-            Noty::warn('To Many Request');
+            session()->flash('login_error_msg', trans()->trans('oauth.to-many-request'));
             return redirect('/');
         }
 
