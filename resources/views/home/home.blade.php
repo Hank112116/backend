@@ -7,7 +7,7 @@
 
 @section('content')
 	<div class="page-header">
-	  <h2>Welcome to HWTrek Backend System</h2>
+		<h2>Welcome to HWTrek Backend System</h2>
 	</div>
 
 	@if(!auth()->check())
