@@ -459,7 +459,7 @@ class UserRepo implements UserInterface
             if ($user->isPendingExpert()) {
                 $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
                 $profile_api->approveExpert($data['user_type']);
-                Log::info('Approve pending expert ' . $id, ['user_id' => $id]);
+                Log::info('User Approved to Expert', ['user_id' => $id]);
             }
         }
 

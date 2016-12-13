@@ -48,7 +48,7 @@ class OAuthApi extends BasicApi implements OAuthApiInterface
      */
     public function clientCredentials()
     {
-        $url             = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
+        $url = $this->hwtrek_url . HWTrekApiEnum::OAUTH_TOKEN;
 
         $options = [
             'json'    => [
