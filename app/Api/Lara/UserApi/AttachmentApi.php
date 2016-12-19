@@ -1,52 +1,50 @@
 <?php
+
 namespace Backend\Api\Lara\UserApi;
 
 use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
 use Backend\Api\Lara\BasicApi;
+use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Enums\URI\API\HWTrek\UserApiEnum;
-use Backend\Api\Lara\HWTrekApi;
 use Backend\Model\Eloquent\User;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AttachmentApi extends BasicApi implements AttachmentApiInterface
 {
-    private $url;
-    private $user;
-
-    public function __construct(User $user)
+    /**
+     * {@inheritDoc}
+     */
+    public function getAttachment(User $user)
     {
-        parent::__construct();
-        $this->user = $user;
-        $uri        = str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
-        $this->url  = $this->hwtrek_url . $uri;
+        $uri  = $this->hwtrek_url . str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
+
+        return $this->get($uri);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAttachment()
+    public function updateAttachment(User $user, array $attachments)
     {
-        return $this->get($this->url);
-    }
+        $uri = $this->hwtrek_url . str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function updateAttachment(array $attachments)
-    {
         $options = [
             'json' => [
                 'attachments' => $attachments
             ]
         ];
-        return $this->patch($this->url, $options);
+        return $this->patch($uri, $options);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function putAttachment(UploadedFile $file)
+    public function putAttachment(User $user, UploadedFile $file)
     {
+        $uri  = $this->hwtrek_url . str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
+
         $upload_dir = '/tmp/';
 
         $file->move($upload_dir, $file->getClientOriginalName());
@@ -61,7 +59,7 @@ class AttachmentApi extends BasicApi implements AttachmentApiInterface
             ]
         ];
 
-        $response = $this->post($this->url, $options);
+        $response = $this->post($uri, $options);
 
         unlink($file_path);
 

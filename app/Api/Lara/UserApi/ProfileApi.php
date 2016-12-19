@@ -9,20 +9,12 @@ use Backend\Model\Eloquent\User;
 
 class ProfileApi extends BasicApi implements ProfileApiInterface
 {
-    private $user;
-
-    public function __construct(User $user)
-    {
-        parent::__construct();
-        $this->user = $user;
-    }
-
     /**
      * {@inheritDoc}
      */
-    public function disable()
+    public function disable(User $user)
     {
-        $uri = str_replace('(:num)', $this->user->user_id, UserApiEnum::PRIVILEGE);
+        $uri = str_replace('(:num)', $user->user_id, UserApiEnum::PRIVILEGE);
         $url = $this->hwtrek_url . $uri;
 
         return $this->delete($url);
@@ -31,9 +23,9 @@ class ProfileApi extends BasicApi implements ProfileApiInterface
     /**
      * {@inheritDoc}
      */
-    public function enable()
+    public function enable(User $user)
     {
-        $uri = str_replace('(:num)', $this->user->user_id, UserApiEnum::PRIVILEGE);
+        $uri = str_replace('(:num)', $user->user_id, UserApiEnum::PRIVILEGE);
         $url = $this->hwtrek_url . $uri;
 
         return $this->post($url);
@@ -42,9 +34,9 @@ class ProfileApi extends BasicApi implements ProfileApiInterface
     /**
      * {@inheritDoc}
      */
-    public function approveExpert($user_type)
+    public function approveExpert(User $user, $user_type)
     {
-        $uri = str_replace('(:num)', $this->user->user_id, UserApiEnum::APPROVE_EXPERT);
+        $uri = str_replace('(:num)', $user->user_id, UserApiEnum::APPROVE_EXPERT);
         $url = $this->hwtrek_url . $uri;
 
         $options = [

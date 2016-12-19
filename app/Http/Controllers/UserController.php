@@ -173,8 +173,8 @@ class UserController extends BaseController
         }
 
         /* @var AttachmentApiInterface $attachment_api */
-        $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-        $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment());
+        $attachment_api = app()->make(AttachmentApiInterface::class);
+        $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment($user));
 
         if ($attachment_assist->haveAttachments()) {
             $attachments = $attachment_assist->deserialize();
@@ -227,8 +227,8 @@ class UserController extends BaseController
         }
 
         /* @var AttachmentApiInterface $attachment_api */
-        $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-        $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment());
+        $attachment_api = app()->make(AttachmentApiInterface::class);
+        $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment($user));
 
         if ($attachment_assist->haveAttachments()) {
             $attachments = $attachment_assist->deserialize();
@@ -295,8 +295,8 @@ class UserController extends BaseController
                     $attachments['delete'][] = $row;
                 }
                 /* @var AttachmentApiInterface $attachment_api*/
-                $attachment_api = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-                $r = $attachment_api->updateAttachment($attachments);
+                $attachment_api = app()->make(AttachmentApiInterface::class);
+                $r = $attachment_api->updateAttachment($user, $attachments);
             }
         }
 
@@ -368,8 +368,8 @@ class UserController extends BaseController
         $user = $this->user_repo->find($this->request->get('user_id'));
         $file = $this->request->file()[0];
         /* @var AttachmentApiInterface $attachment_api */
-        $attachment_api      = app()->make(AttachmentApiInterface::class, ['user' => $user]);
-        $response_assistant  = UserAttachmentResponseAssistant::create($attachment_api->putAttachment($file));
+        $attachment_api      = app()->make(AttachmentApiInterface::class);
+        $response_assistant  = UserAttachmentResponseAssistant::create($attachment_api->putAttachment($user, $file));
         Log::info('Upload attachment', $response_assistant->decode());
         return $response_assistant->serialize();
     }
@@ -383,9 +383,13 @@ class UserController extends BaseController
         }
         $user_id = $this->request->get('user_id');
         $user    = $this->user_repo->find($user_id);
-        $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
+
+        /* @var ProfileApiInterface $profile_api */
+        $profile_api = app()->make(ProfileApiInterface::class);
+
         Log::info('Suspend User ' . $user_id, ['user_id' => $user_id]);
-        return $profile_api->disable();
+
+        return $profile_api->disable($user);
     }
 
     public function enable()
@@ -397,9 +401,13 @@ class UserController extends BaseController
         }
         $user_id = $this->request->get('user_id');
         $user    = $this->user_repo->find($user_id);
-        $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
+
+        /* @var ProfileApiInterface $profile_api */
+        $profile_api = app()->make(ProfileApiInterface::class);
+
         Log::info('Unsuspend User ' . $user_id, ['user_id' => $user_id]);
-        return $profile_api->enable();
+
+        return $profile_api->enable($user);
     }
 
     public function updateMemo()

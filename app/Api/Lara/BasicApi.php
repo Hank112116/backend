@@ -18,10 +18,10 @@ abstract class BasicApi
     protected $hwtrek_url;
     protected $client;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
         $this->hwtrek_url = 'https://' . config('app.front_domain');
-        $this->client     = $this->initClient();
+        $this->client     = $client;
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class BasicApi
 
             return $this->response($response);
         } catch (ConnectException $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), $e->getTrace());
 
             return $this->connectExceptionResponse();
         }
@@ -58,7 +58,7 @@ abstract class BasicApi
 
             return $this->response($response);
         } catch (ConnectException $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), $e->getTrace());
 
             return $this->connectExceptionResponse();
         }
@@ -78,7 +78,7 @@ abstract class BasicApi
 
             return $this->response($response);
         } catch (ConnectException $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), $e->getTrace());
 
             return $this->connectExceptionResponse();
         }
@@ -98,7 +98,7 @@ abstract class BasicApi
 
             return $this->response($response);
         } catch (ConnectException $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), $e->getTrace());
 
             return $this->connectExceptionResponse();
         }
@@ -118,7 +118,7 @@ abstract class BasicApi
 
             return $this->response($response);
         } catch (ConnectException $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), $e->getTrace());
 
             return $this->connectExceptionResponse();
         }
@@ -140,47 +140,9 @@ abstract class BasicApi
      */
     protected function connectExceptionResponse()
     {
-        session()->put(OAuthKey::API_SERVER_STATUS, 'stop');
+        session()->flash(OAuthKey::API_SERVER_STATUS, 'stop');
 
-        return Response::create([], Response::HTTP_SERVICE_UNAVAILABLE ,['Retry-After' => '120']);
-    }
-
-    /**
-     * @return Client
-     */
-    private function initClient()
-    {
-        $config = [
-            'timeout'   => '25.0',
-            'cookies'   => true,
-            'verify'    => config('api.curl_ssl_verifypeer'),
-            'headers'   => [
-                'X-Requested-With' => 'XMLHttpRequest',
-                'Connection'       => 'keep-alive',
-                'Referer'          => $this->hwtrek_url
-            ],
-            'http_errors' => false
-        ];
-
-        $config  = $this->appendAuthorizationHeader($config);
-
-        $client = new Client($config);
-
-        return $client;
-    }
-
-    /**
-     * @param array $options
-     * @return array
-     */
-    protected function appendAuthorizationHeader(array $options)
-    {
-        if (session()->has(OAuthKey::TOKEN_TYPE) and session()->has(OAuthKey::ACCESS_TOKEN)) {
-            $authorization = session(OAuthKey::TOKEN_TYPE) . ' ' . session(OAuthKey::ACCESS_TOKEN);
-            $options['headers']['Authorization'] = $authorization;
-        }
-
-        return $options;
+        return Response::create([], Response::HTTP_SERVICE_UNAVAILABLE ,['Retry-After' => 120]);
     }
 
     /**

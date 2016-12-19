@@ -2,21 +2,29 @@
 
 namespace Backend\Api\ApiInterfaces\UserApi;
 
+use Backend\Model\Eloquent\User;
+
 interface ProfileApiInterface
 {
     /**
-     * @return mixed
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function disable();
+    public function disable(User $user);
 
     /**
-     * @return mixed
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function enable();
+    public function enable(User $user);
 
     /**
+     * @param User $user
      * @param $user_type
-     * @return mixed
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function approveExpert($user_type);
+    public function approveExpert(User $user, $user_type);
 }

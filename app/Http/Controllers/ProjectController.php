@@ -304,9 +304,9 @@ class ProjectController extends BaseController
             return response()->json($res);
         }
         /* @var ReleaseApiInterface $release_api*/
-        $release_api = app()->make(ReleaseApiInterface::class, ['project' => $project]);
+        $release_api = app()->make(ReleaseApiInterface::class);
 
-        $response = $release_api->releaseSchedule();
+        $response = $release_api->releaseSchedule($project);
 
         if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
             $error_message = json_decode($response->getContent());

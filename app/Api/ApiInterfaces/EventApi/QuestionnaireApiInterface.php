@@ -2,10 +2,13 @@
 
 namespace Backend\Api\ApiInterfaces\EventApi;
 
+use Backend\Model\Eloquent\User;
+
 interface QuestionnaireApiInterface
 {
     /**
-     * @return mixed
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sendNotificationMail();
+    public function sendNotificationMail(User $user);
 }

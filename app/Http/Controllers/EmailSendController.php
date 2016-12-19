@@ -86,9 +86,9 @@ class EmailSendController extends BaseController
             
         }
         /* @var ReleaseApiInterface $release_api*/
-        $release_api = app()->make(ReleaseApiInterface::class, ['project' => $project]);
+        $release_api = app()->make(ReleaseApiInterface::class);
 
-        $response    = $release_api->staffRecommendExperts();
+        $response    = $release_api->staffRecommendExperts($project);
 
         if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
             $res   = ['status' => 'fail', 'msg' => $response->getContent()];

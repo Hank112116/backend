@@ -9,20 +9,12 @@ use Backend\Model\Eloquent\Project;
 
 class ReleaseApi extends BasicApi implements ReleaseApiInterface
 {
-    private $project;
-
-    public function __construct(Project $project)
-    {
-        parent::__construct();
-        $this->project = $project;
-    }
-
     /**
      * {@inheritDoc}
      */
-    public function releaseSchedule()
+    public function releaseSchedule(Project $project)
     {
-        $uri = str_replace('(:any)', $this->project->uuid, ProjectApiEnum::RELEASE);
+        $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::RELEASE);
         $url = $this->hwtrek_url . $uri;
 
         return $this->patch($url);
@@ -31,9 +23,9 @@ class ReleaseApi extends BasicApi implements ReleaseApiInterface
     /**
      * {@inheritDoc}
      */
-    public function staffRecommendExperts()
+    public function staffRecommendExperts(Project $project)
     {
-        $uri = str_replace('(:any)', $this->project->uuid, ProjectApiEnum::STAFF_RECOMMEND_EXPERTS);
+        $uri = str_replace('(:any)',$project->uuid, ProjectApiEnum::STAFF_RECOMMEND_EXPERTS);
         $url = $this->hwtrek_url . $uri;
 
         return $this->post($url);

@@ -2,15 +2,19 @@
 
 namespace Backend\Api\ApiInterfaces\SolutionApi;
 
+use Backend\Model\Eloquent\Solution;
+
 interface ApproveApiInterface
 {
     /**
-     * @return mixed
+     * @param Solution $solution
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function approve();
+    public function approve(Solution $solution);
 
     /**
-     * @return mixed
+     * @param Solution $solution
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function reject();
+    public function reject(Solution $solution);
 }

@@ -97,6 +97,7 @@ return [
         'Backend\Providers\ApiServiceProvider',
         'Backend\Providers\ModelServiceProvider',
         'Backend\Providers\LoggerServiceProvider',
+        'Backend\Providers\GuzzleServiceProvider',
     ],
 
     /*

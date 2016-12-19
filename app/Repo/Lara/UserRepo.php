@@ -457,8 +457,12 @@ class UserRepo implements UserInterface
             $user->expert_approved_at = ($user->isPendingExpert()) ? Carbon::now() : null;
 
             if ($user->isPendingExpert()) {
-                $profile_api = app()->make(ProfileApiInterface::class, ['user' => $user]);
-                $profile_api->approveExpert($data['user_type']);
+
+                /* @var ProfileApiInterface  $user*/
+                $profile_api = app()->make(ProfileApiInterface::class);
+
+                $profile_api->approveExpert($user, $data['user_type']);
+
                 Log::info('User Approved to Expert', ['user_id' => $id]);
             }
         }

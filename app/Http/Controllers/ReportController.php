@@ -164,10 +164,11 @@ class ReportController extends BaseController
 
         if ($this->event_repo->approveEventUser($user_id, $event_id)) {
 
-            $user      = $this->user_repo->find($user_id);
+            $user = $this->user_repo->find($user_id);
+
             /* @var QuestionnaireApiInterface $event_api*/
-            $event_api = app()->make(QuestionnaireApiInterface::class, ['user' => $user]);
-            $event_api->sendNotificationMail();
+            $event_api = app()->make(QuestionnaireApiInterface::class);
+            $event_api->sendNotificationMail($user);
 
             $log_data = [
                 'user_id'  => $user_id,

@@ -47,11 +47,15 @@ $(function () {
                 user_id: user_id
             },
             dataType: "JSON",
-            success: function success() {
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.href = "/user/detail/" + user_id;
-            },
             statusCode: {
+                201: function() {
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.href = "/user/detail/" + user_id;
+                },
+                204: function () {
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.href = "/user/detail/" + user_id;
+                },
                 400: function(feeback) {
                     var error_message = feeback.responseJSON.error.message;
                     Notifier.showTimedMessage(error_message, "warning", 2);

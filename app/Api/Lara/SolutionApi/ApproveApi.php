@@ -9,20 +9,12 @@ use Backend\Model\Eloquent\Solution;
 
 class ApproveApi extends BasicApi implements ApproveApiInterface
 {
-    private $solution;
-
-    public function __construct(Solution $solution)
-    {
-        parent::__construct();
-        $this->solution = $solution;
-    }
-
     /**
      * {@inheritDoc}
      */
-    public function approve()
+    public function approve(Solution $solution)
     {
-        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::PUBLICITY);
+        $uri = str_replace('(:num)', $solution->solution_id, SolutionApiEnum::PUBLICITY);
         $url = $this->hwtrek_url . $uri;
 
         return $this->post($url);
@@ -31,9 +23,9 @@ class ApproveApi extends BasicApi implements ApproveApiInterface
     /**
      * {@inheritDoc}
      */
-    public function reject()
+    public function reject(Solution $solution)
     {
-        $uri = str_replace('(:num)', $this->solution->solution_id, SolutionApiEnum::PUBLICITY);
+        $uri = str_replace('(:num)', $solution->solution_id, SolutionApiEnum::PUBLICITY);
         $url = $this->hwtrek_url . $uri;
 
         return $this->delete($url);

@@ -231,9 +231,13 @@ class SolutionController extends BaseController
     public function approve($solution_id)
     {
         $solution = $this->solution_repo->find($solution_id);
-        $approve_api = app()->make(ApproveApiInterface::class, ['solution' => $solution]);
+
+        /* @var ApproveApiInterface $approve_api*/
+        $approve_api = app()->make(ApproveApiInterface::class);
+
         Log::info('Solution approved', ['solution_id' => $solution_id]);
-        return $approve_api->approve();
+
+        return $approve_api->approve($solution);
     }
 
     //change solution type to program (solution table:is_program)
@@ -312,9 +316,13 @@ class SolutionController extends BaseController
     public function reject($solution_id)
     {
         $solution = $this->solution_repo->find($solution_id);
-        $approve_api = app()->make(ApproveApiInterface::class, ['solution' => $solution]);
+
+        /* @var ApproveApiInterface $approve_api*/
+        $approve_api = app()->make(ApproveApiInterface::class);
+
         Log:info('Solution rejected', ['solution_id' => $solution_id]);
-        return $approve_api->reject();
+
+        return $approve_api->reject($solution);
     }
 
     public function approveEdition($solution_id)
