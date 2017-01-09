@@ -39,8 +39,8 @@ class ApiServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface',
-            'Backend\Api\Lara\SolutionApi\ApproveApi'
+            'Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface',
+            'Backend\Api\Lara\SolutionApi\SolutionApi'
         );
 
         $this->app->bind(

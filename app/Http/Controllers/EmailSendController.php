@@ -83,7 +83,6 @@ class EmailSendController extends BaseController
             $data['date_send']  = $date;
             $this->applicant_repo->insertItem($data);
             $this->pme_repo->insertItem($data);
-            
         }
         /* @var ReleaseApiInterface $release_api*/
         $release_api = app()->make(ReleaseApiInterface::class);

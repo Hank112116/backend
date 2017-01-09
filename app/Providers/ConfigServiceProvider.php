@@ -20,6 +20,5 @@ class ConfigServiceProvider extends ServiceProvider
         config([
             //
         ]);
-
     }
 }

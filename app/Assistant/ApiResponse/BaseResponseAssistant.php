@@ -4,7 +4,7 @@ namespace Backend\Assistant\ApiResponse;
 
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class BaseResponseAssistant
+abstract class BaseResponseAssistant implements \JsonSerializable
 {
     /* @var Response $response*/
     protected $response;
@@ -14,13 +14,18 @@ abstract class BaseResponseAssistant
         return json_decode($this->response->getContent());
     }
 
+    /**
+     * @return array
+     */
     public function decode()
     {
         return json_decode($this->response->getContent(), true);
     }
 
-    public function serialize()
+    public function jsonSerialize()
     {
-        return $this->response->getContent();
+        return $this->normalize();
     }
+
+    abstract public function normalize();
 }

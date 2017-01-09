@@ -10,10 +10,15 @@ class LinkGen
     /**
      * Gen a link to output the page to csv
      **/
-    public static function csv($all = false)
+    public static function csv($all = false, $limit = null)
     {
         $num = $all?  'all' : 'this';
         $tail = (request()->all()? '&' : '?') . "csv={$num}";
+
+        if (!is_null($limit)) {
+            $tail = $tail . '&pp=' . $limit;
+        }
+
         return request()->fullUrl() . $tail;
     }
 

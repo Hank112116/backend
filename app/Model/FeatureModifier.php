@@ -5,9 +5,10 @@ use Backend\Model\ModelInterfaces\FeatureModifierInterface;
 
 class FeatureModifier implements FeatureModifierInterface
 {
-    public function __construct(
-        Feature $feature
-    ) {
+    private $feature;
+
+    public function __construct(Feature $feature)
+    {
         $this->feature = $feature;
     }
 
@@ -21,6 +22,29 @@ class FeatureModifier implements FeatureModifierInterface
             $feature->block_type = $data['to_block_type'];
             $feature->save();
         }
+    }
 
+    public function solutionFeatureToProgram($solution_id)
+    {
+        $feature = $this->feature
+            ->where('block_data', $solution_id)
+            ->where('block_type', Feature::TYPE_SOLUTION)
+            ->first();
+        if ($feature) {
+            $feature->block_type = Feature::TYPE_PROGRAM;
+            $feature->save();
+        }
+    }
+
+    public function programFeatureToNormalSolution($solution_id)
+    {
+        $feature = $this->feature
+            ->where('block_data', $solution_id)
+            ->where('block_type', Feature::TYPE_PROGRAM)
+            ->first();
+        if ($feature) {
+            $feature->block_type = Feature::TYPE_SOLUTION;
+            $feature->save();
+        }
     }
 }

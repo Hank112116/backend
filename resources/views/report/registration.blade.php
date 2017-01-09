@@ -66,9 +66,10 @@
     <div class="row text-center">
         <h4>
             {!! $users->total() !!} result |
+            {!! $users->active !!} active |
             {!! $users->not_approve !!} not approve |
             {!! $users->email_not_verify !!} email not verify |
-            {!! $users->account_suspend !!} account suspend |
+            {!! $users->account_suspend !!} account suspend
         </h4>
     </div>
     <div class="row">
@@ -95,6 +96,7 @@
                     </th>
                     <th>Email<br/>Verify</th>
                     <th>Active</th>
+                    <th>Suspended At</th>
                     <th>Action</th>
                     <th></th>
                 </tr>

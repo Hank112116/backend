@@ -2,6 +2,7 @@
 
 return [
     'admin-update'          => 'Update successful',
+    'admin-update-fail'     => 'Update fail',
     'admin-update-ongoing'  => 'Update ongoing-edition solution successful',
     'reject'                => 'Reject successful. Remember to send an email to solution owner',
     'approve'               => 'Approve successful. Remember to send an email to solution owner',

@@ -1,76 +1,37 @@
 <?php namespace Backend\Model;
 
 use Backend\Model\Eloquent\Solution;
-use Backend\Model\Eloquent\DuplicateSolution;
 use ImageUp;
 use Carbon;
 use Backend\Model\ModelInterfaces\SolutionModifierInterface;
 
 class SolutionModifier implements SolutionModifierInterface
 {
-    private static $update_columns = [
-        'user_id',
-        'solution_type', 'solution_detail',
-        'solution_title', 'solution_summary',
-        'description', 'solution_application_compatibility',
-
-        'business_prospect_reference', 'business_prospect_reference_other',
-        'project_category_co_work', 'project_category_co_work_other',
-
-        'solution_obtained', 'solution_obtained_other',
-        'customer_portfolio',
-
-        'tags', 'is_deleted',
-    ];
-
-    private static $ongoing_update_columns = [
-        //'user_id',
-
-        'solution_type', 'solution_detail',
-        'solution_title', 'solution_summary',
-        'image', 'image_gallery',
-
-        'description', 'solution_application_compatibility',
-
-        'business_prospect_reference', 'business_prospect_reference_other',
-        'project_category_co_work', 'project_category_co_work_other',
-
-        'solution_obtained', 'solution_obtained_other',
-        'customer_portfolio',
-
-        'tags',
-    ];
+    private static $update_columns = ['user_id',];
 
     private $image_uploader;
+    private $solution;
 
     public function __construct(
         Solution $solution,
-        DuplicateSolution $duplicate,
         ImageUp $image_uploader
     ) {
         $this->solution       = $solution;
-        $this->duplicate      = $duplicate;
         $this->image_uploader = $image_uploader;
     }
 
+    // TODO Remove use, wait update API
     public function update($solution_id, $data)
     {
         $solution = $this->solution->find($solution_id);
 
-        $setter = array_only($data, self::$update_columns);
-        $setter = array_merge(
-            $setter,
-            $this->updateImageGalleries($solution, $data)
-        );
+        $setter = $this->updateImageGalleries($solution, $data);
 
-        $solution->fill($setter);
-        $solution->update_time = Carbon::now();
-
-        if ($solution->is_deleted) {
-            $solution->deleted_date = $solution->update_time;
-        }
+        $solution->image = $setter['image'];
 
         $solution->save();
+
+        return $setter['image_gallery'];
     }
 
     public function managerApprove($solution_id)
@@ -146,45 +107,6 @@ class SolutionModifier implements SolutionModifierInterface
         $this->updateSolution($solution_id, $this->solution->off_shelf_status);
     }
 
-    public function ongoingUpdate($solution_id, $data)
-    {
-        $duplicate = $this->duplicate->find($solution_id);
-
-        $setter = array_only($data, self::$ongoing_update_columns);
-        $setter = array_merge(
-            $setter,
-            $this->updateImageGalleries($duplicate, $data)
-        );
-
-        $duplicate->fill($setter);
-        $duplicate->update_time = Carbon::now();
-        $duplicate->save();
-    }
-
-    public function ongoingManagerApprove($solution_id)
-    {
-        $this->duplicate->where('solution_id', $solution_id)->update(
-            [
-            'is_manager_approved' => 1,
-            ]
-        );
-    }
-
-    public function ongoingApprove($solution_id)
-    {
-        $duplicate = $this->duplicate->find($solution_id);
-        $duplicate->delete(); // Delete duplicate project after copy
-
-        $data = array_only($duplicate->toArray(), self::$ongoing_update_columns);
-        $data = array_merge($data, $this->solution->on_shelf_status);
-        $this->updateSolution($solution_id, $data);
-    }
-
-    public function ongoingReject($solution_id)
-    {
-        $this->duplicate->where('solution_id', $solution_id)->delete();
-    }
-
     private function updateSolution($solution_id, $data)
     {
         $solution = $this->solution->find($solution_id);
@@ -233,7 +155,7 @@ class SolutionModifier implements SolutionModifierInterface
 
         return [
             'image'         => $cover ?: $solution->image,
-            'image_gallery' => json_encode($gallery)
+            'image_gallery' => $gallery
         ];
     }
 

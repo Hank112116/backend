@@ -6,16 +6,27 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OAuthResponseAssistant extends BaseResponseAssistant
 {
+    /**
+     * OAuthResponseAssistant constructor.
+     * @param Response $response
+     */
     public function __construct(Response $response)
     {
         $this->response = $response;
     }
 
+    /**
+     * @param Response $response
+     * @return OAuthResponseAssistant
+     */
     public static function create(Response $response)
     {
         return new OAuthResponseAssistant($response);
     }
 
+    /**
+     * @return string
+     */
     public function getAccessToken()
     {
         $response = $this->decode();
@@ -23,6 +34,9 @@ class OAuthResponseAssistant extends BaseResponseAssistant
         return $response[OAuthKey::ACCESS_TOKEN];
     }
 
+    /**
+     * @return string
+     */
     public function getTokenType()
     {
         $response = $this->decode();
@@ -30,6 +44,9 @@ class OAuthResponseAssistant extends BaseResponseAssistant
         return $response[OAuthKey::TOKEN_TYPE];
     }
 
+    /**
+     * @return array
+     */
     public function normalize()
     {
         return [

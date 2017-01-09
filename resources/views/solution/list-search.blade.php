@@ -1,4 +1,4 @@
-{!! Form::open(['action' => ['SolutionController@showSearch'], 'method' => 'GET', 'name' => 'search-form']) !!}
+{!! Form::open(['action' => ['SolutionController@showList'], 'method' => 'GET', 'name' => 'search-form']) !!}
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">
@@ -37,13 +37,13 @@
                     'all'              => 'All Type',
                     'solution'         => 'Solution',
                     'program'          => 'Program',
-                    'unfinished'       => 'Unfinished',
+                    'draft'            => 'Unfinished',
                     'on-shelf'         => 'On Shelf',
                     'off-shelf'        => 'Off Shelf',
-                    'pending-approve'  => 'Pending for Approve',
+                    'submitted'        => 'Pending for Approve',
                     'pending-program'  => 'Pending for Program',
                     'pending-solution' => 'Pending for Solution',
-                    'deleted'          => 'Deleted'
+                    'archived'         => 'Deleted'
                 ], request('status'), ['class'=>'form-control']) !!}
         </div>
     </div>

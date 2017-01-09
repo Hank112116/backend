@@ -81,19 +81,13 @@ Route::group(['middleware' => ['route_filter:project', 'check_source_server']], 
 
 // Solution
 Route::group(['middleware' => ['route_filter:solution', 'check_source_server']], function () {
-    Route::get('solution/all', 'SolutionController@showList');
-    Route::get('solution/drafts', 'SolutionController@showDraftSolutions');
-    Route::get('solution/deleted', 'SolutionController@showDeletedSolutions');
+    Route::get('solution', 'SolutionController@showList');
 
-    Route::get('solution/search', 'SolutionController@showSearch');
     Route::get('solution/detail/{id}', 'SolutionController@showDetail');
     Route::get('solution/update/{id}', 'SolutionController@showUpdate');
 
     Route::post('solution/approve/{id}', 'SolutionController@approve');
     Route::post('solution/reject/{id}', 'SolutionController@reject');
-
-    Route::get('solution/approve-edition/{id}', 'SolutionController@approveEdition');
-    Route::get('solution/reject-edition/{id}', 'SolutionController@rejectEdition');
 
     Route::get('solution/on-shelf/{id}', 'SolutionController@onShelf');
     Route::get('solution/off-shelf/{id}', 'SolutionController@offShelf');
@@ -106,7 +100,6 @@ Route::group(['middleware' => ['route_filter:solution', 'check_source_server']],
     Route::get('solution/comments/solutions/private/{comment_id}', 'CommentController@togglePrivate');
 
     Route::post('solution/update/{id}', 'SolutionController@update');
-    Route::post('solution/update-ongoing/{id}', 'SolutionController@updateOngoing');
     Route::post('solution/to-program', 'SolutionController@toProgram');
     Route::post('solution/to-solution', 'SolutionController@toSolution');
     Route::post('solution/cancel-pending-program', 'SolutionController@cancelPendingProgram');

@@ -11,11 +11,18 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
         $this->response = $response;
     }
 
+    /**
+     * @param Response $response
+     * @return UserAttachmentResponseAssistant
+     */
     public static function create(Response $response)
     {
         return new UserAttachmentResponseAssistant($response);
     }
 
+    /**
+     * @return bool
+     */
     public function haveAttachments()
     {
         $attachments = $this->deserialize();
@@ -25,5 +32,13 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
         }
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function normalize()
+    {
+        return $this->decode();
     }
 }

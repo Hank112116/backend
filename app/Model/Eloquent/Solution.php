@@ -414,7 +414,6 @@ class Solution extends Eloquent
             default:
                 return 'N/A';
         }
-
     }
     
     public function textLastUpdateDate()

@@ -61,7 +61,6 @@ class ModelServiceProvider extends ServiceProvider
             function ($app) {
                 return new SolutionModifier(
                     new \Backend\Model\Eloquent\Solution(),
-                    new \Backend\Model\Eloquent\DuplicateSolution(),
                     new \ImageUp()
                 );
             }

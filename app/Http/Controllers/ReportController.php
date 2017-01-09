@@ -50,9 +50,7 @@ class ReportController extends BaseController
             'dstart' => 'date|required_with:dend',
             'dend'   => 'date|required_with:dstart',
         ]);
-
     }
-
 
     public function showCommentReport()
     {
@@ -163,7 +161,6 @@ class ReportController extends BaseController
         $event_id = $this->request->get('event_id');
 
         if ($this->event_repo->approveEventUser($user_id, $event_id)) {
-
             $user = $this->user_repo->find($user_id);
 
             /* @var QuestionnaireApiInterface $event_api*/

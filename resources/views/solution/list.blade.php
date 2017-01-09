@@ -14,16 +14,20 @@
 
 <div class="page-header">
     <h1>
-        {!! $title !!}
+        Solutions
 
         @if($has_wait_approve_solutions)
         <span class='header-notice fa fa-bell icon-vibrate'></span>
         @endif
     </h1>
 
-    @if(!$is_restricted)
-        @include('layouts.get-csv')
-    @endif
+    <div id="output_all" class='header-output'>
+        @if(auth()->user()->isAdmin())
+            <a class="btn-mini header-output-link" href="{!! LinkGen::csv(true, $total_count) !!}">
+                CSV
+            </a>
+        @endif
+    </div>
 </div>
 
 <div class="search-bar">
@@ -54,98 +58,90 @@
             <tbody>
             @foreach($solutions as $solution)
             <tr>
-                <td>{!! $solution->solution_id !!}</td>
+                <td>{!! $solution->getId() !!}</td>
 
                 <td class="table--name">
-                    <a href="{!! $solution->textFrontLink() !!}" target="_blank">
-                        {{ $solution->textTitle() }}
+                    <a href="{!! $solution->getUrl() !!}" target="_blank">
+                        {{ $solution->getTitle() }}
                     </a>
                 </td>
                 <td>
-                    {!! $solution->textType() !!} <br/>
+                    {!! $solution->getTextType() !!} <br/>
                     @if(auth()->user()->isBackendPM() || auth()->user()->isManagerHead() || auth()->user()->isAdmin())
-                        @if($solution->isSolution())                     
+                        @if($solution->isSolution())
                              <span class="solution-sub-category">
-                                <input type="checkbox"  class="approve_program" rel="{!! $solution->solution_id !!}"> To Program
+                                <input type="checkbox"  class="approve_program" rel="{!! $solution->getId() !!}"> To Program
                             </span>
                         @elseif($solution->isProgram())
                             <span class="solution-sub-category">
-                                <input type="checkbox"  class="approve_solution" rel="{!! $solution->solution_id !!}"> To Solution
+                                <input type="checkbox"  class="approve_solution" rel="{!! $solution->getId() !!}"> To Solution
                             </span>
                         @elseif($solution->isPendingSolution())
                             <span class="solution-sub-category">
-                                <input type="checkbox"  class="cancel_solution" rel="{!! $solution->solution_id !!}"> Cancel
+                                <input type="checkbox"  class="cancel_solution" rel="{!! $solution->getId() !!}"> Cancel
                             </span>
                         @elseif($solution->isPendingProgram())
                             <span class="solution-sub-category">
-                                <input type="checkbox"  class="cancel_program" rel="{!! $solution->solution_id !!}"> Cancel
+                                <input type="checkbox"  class="cancel_program" rel="{!! $solution->getId() !!}"> Cancel
                             </span>
                         @endif
                     @endif
                 </td>
                 <td>
-                    {!! $solution->textMainCategory() !!} <br/>
+                    {!! $solution->getTextCategory() !!} <br/>
 
                     <span class="solution-sub-category">
-                        {!! $solution->textSubCategory() !!}
+                        {!! $solution->getTextSubCategory() !!}
                     </span>
                 </td>
 
                 <td>
-                    <a href="{!! $solution->user->textFrontLink() !!}" target="_blank">
-                        {{ $solution->user->textFullName() }}
+                    <a href="{!! $solution->getOwnerUrl() !!}" target="_blank">
+                        {{ $solution->getOwnerFullName() }}
                     </a>
                 </td>
 
-                <td>{{ $solution->user->country }}<br/>{{ $solution->user->city }}</td>
+                <td>{{ $solution->getOwnerLocation() }}</td>
 
                 <td>
-                    {!! $solution->textStatus() !!}
+                    {!! $solution->getTextStatus() !!}
                     @if($solution->isDeleted())
-                        <br/><i class="fa fa-trash" title="deleted"></i> <span class="table--text-light">{{ $solution->textDeletedTime() }}</span>
+                        <br/><i class="fa fa-trash" title="deleted"></i> <span class="table--text-light">{{ $solution->getTextDeleteDate() }}</span>
                     @endif
                 </td>
 
-                <td>{{ $solution->textApproveDate() }}</td>
+                <td>{{ $solution->getTextApprovedDate() }}</td>
 
-                <td>{{ $solution->textLastUpdateDate() }}</td>
+                <td>{{ $solution->getTextLastUpdateDate() }}</td>
 
                 <td>
-                    @if($solution->is_manager_approved)
+                    @if($solution->isManagerApproved())
                         <i class="fa fa-check"></i>
                     @endif
                 </td>
 
                 <td>
                     {!! link_to_action('SolutionController@showDetail', 'DETAIL',
-                    $solution->solution_id, ['class' => 'btn-mini']) !!}
+                    $solution->getId(), ['class' => 'btn-mini']) !!}
 
-                    @if($solution->is_wait_approve_draft && !$is_restricted)
+                    @if($solution->isWaitPublish() && !$is_restricted)
                         @if(!auth()->user()->isFrontendPM())
                             {!! link_to_action( 'SolutionController@showUpdate', 'Edit & Approve',
-                            $solution->solution_id, ['class' => 'btn-mini btn-danger']) !!}
-                        @endif
-                    @elseif($solution->is_wait_approve_ongoing && !$is_restricted)
-                        @if(!auth()->user()->isFrontendPM())
-                            <a href="{!! action('SolutionController@showUpdate', $solution->solution_id) !!}" class="btn-mini btn-danger">
-                                Edit & Approve <i class="fa fa-copy"></i>
-                            </a>
+                            $solution->getId(), ['class' => 'btn-mini btn-danger']) !!}
                         @endif
                     @else
-
                         {!! link_to_action( 'SolutionController@showUpdate', 'EDIT',
-                        $solution->solution_id, ['class' => 'btn-mini']) !!}
-
+                        $solution->getId(), ['class' => 'btn-mini']) !!}
                     @endif
 
                     @if(auth()->user()->isAdmin() || auth()->user()->isManagerHead())
                         @if($solution->isPendingProgram())
-                            <a href="javascript:void(0)" title="Upgrade Solution to Program" class="btn-mini btn-danger approve_pending_program" rel="{!! $solution->solution_id !!}">
+                            <a href="javascript:void(0)" title="Upgrade Solution to Program" class="btn-mini btn-danger approve_pending_program" rel="{!! $solution->getId() !!}">
                                 <i class="fa fa-long-arrow-up"></i> Up
                             </a>
                         @endif
                         @if($solution->isPendingSolution())
-                            <a href="javascript:void(0)" title="Change Program to Solution" class="btn-mini btn-danger approve_pending_solution" rel="{!! $solution->solution_id !!}">
+                            <a href="javascript:void(0)" title="Change Program to Solution" class="btn-mini btn-danger approve_pending_solution" rel="{!! $solution->getId() !!}">
                                 <i class="fa fa-long-arrow-down"></i> Down
                             </a>
                         @endif

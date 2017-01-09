@@ -11,7 +11,6 @@ use Backend\Facades\Log;
 use Illuminate\Support\Collection;
 use Mews\Purifier\Purifier;
 
-
 class CommentRepo implements CommentInterface
 {
     use PaginateTrait;

@@ -285,7 +285,6 @@ class ReportRepo implements ReportInterface
                         }
                         break;
                 }
-
             });
         }
 
@@ -305,7 +304,6 @@ class ReportRepo implements ReportInterface
                         }
                         break;
                 }
-
             });
         }
 
@@ -345,7 +343,6 @@ class ReportRepo implements ReportInterface
                         }
                         break;
                 }
-
             });
         }
 
@@ -532,7 +529,6 @@ class ReportRepo implements ReportInterface
                 $approve_event_users = $this->appendStatistics($approve_event_users, $join_event_summary);
                 $approve_event_users = $this->appendStatistics($approve_event_users, $approve_event_summary);
                 break;
-
         }
         return $approve_event_users;
     }
@@ -553,7 +549,13 @@ class ReportRepo implements ReportInterface
         })->count();
 
         $result['account_suspend'] = $users->filter(function (User $item) {
-            if (!$item->isActive()) {
+            if ($item->isSuspended()) {
+                return $item;
+            }
+        })->count();
+
+        $result['active'] = $users->filter(function (User $item) {
+            if ($item->isActive() and $item->isEmailVerify() and !$item->isSuspended()) {
                 return $item;
             }
         })->count();
@@ -570,7 +572,6 @@ class ReportRepo implements ReportInterface
                     return $item;
                 }
             }
-
         })->count();
 
         $result['prototype_count'] = $approve_event_users->filter(function ($item) {
@@ -712,7 +713,6 @@ class ReportRepo implements ReportInterface
                         $summary['ait_rejected'] = $summary['ait_rejected'] + 1;
                         break;
                 }
-
             } else {
                 if ($event_user->isDropped()) {
                     $summary['meetup_dropped'] = $summary['meetup_dropped'] + 1;

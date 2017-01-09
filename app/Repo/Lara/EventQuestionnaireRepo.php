@@ -44,7 +44,6 @@ class EventQuestionnaireRepo implements EventQuestionnaireInterface
             }
 
             $questionnaires[$index] = $row;
-
         }
         return $questionnaires;
     }

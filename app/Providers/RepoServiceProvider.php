@@ -61,8 +61,6 @@ class RepoServiceProvider extends ServiceProvider
             function ($app) {
                 return new Lara\SolutionRepo(
                     new \Backend\Model\Eloquent\Solution(),
-                    $app->make('Backend\Repo\RepoInterfaces\DuplicateSolutionInterface'),
-                    $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
                     $app->make('Backend\Model\ModelInterfaces\SolutionModifierInterface'),
                     $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
                     $app->make('Backend\Model\ModelInterfaces\FeatureModifierInterface'),
@@ -70,19 +68,6 @@ class RepoServiceProvider extends ServiceProvider
                     new SolutionCertification(),
                     new \ImageUp(),
                     $app->make('Backend\Repo\RepoInterfaces\UserInterface')
-                );
-            }
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\DuplicateSolutionInterface',
-            function ($app) {
-                return new Lara\DuplicateSolutionRepo(
-                    new \Backend\Model\Eloquent\Solution(),
-                    new \Backend\Model\Eloquent\DuplicateSolution(),
-                    $app->make('Backend\Repo\RepoInterfaces\ExpertiseInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\SolutionModifierInterface'),
-                    new \ImageUp()
                 );
             }
         );

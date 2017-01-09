@@ -25,7 +25,7 @@ class ReleaseApi extends BasicApi implements ReleaseApiInterface
      */
     public function staffRecommendExperts(Project $project)
     {
-        $uri = str_replace('(:any)',$project->uuid, ProjectApiEnum::STAFF_RECOMMEND_EXPERTS);
+        $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::STAFF_RECOMMEND_EXPERTS);
         $url = $this->hwtrek_url . $uri;
 
         return $this->post($url);

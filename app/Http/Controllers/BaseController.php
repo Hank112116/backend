@@ -58,10 +58,16 @@ abstract class BaseController extends Controller
    //     }
    // }
 
+    /**
+     * @param $output
+     * @param string $name
+     * @return int
+     */
     protected function outputArrayToCsv($output, $name = 'output')
     {
         $result = $this->getOutputArray($output);
         $writer = Writer::createFromFileObject(new \SplTempFileObject);
+
         return $writer->insertAll($result)->output($name . '.csv');
     }
 
