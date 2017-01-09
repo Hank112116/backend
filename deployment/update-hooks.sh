@@ -7,7 +7,7 @@
 source $(dirname $0)/config.sh
 
 repo_git_hooks_folder="${REPO_ROOT}/.git-hooks"
-local_git_hooks_folder="${REPO_ROOT}/.git/hooks"
+local_git_hooks_folder="${REPO_ROOT}/.git-hooks"
 # use relative path for symbol link, this reference to local_git_hooks_floder
 # need to change to that folder before create link
 rel_repo_git_hooks_folder="../../.git-hooks"
