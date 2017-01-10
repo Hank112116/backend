@@ -173,14 +173,9 @@ class UserController extends BaseController
         }
 
         /* @var AttachmentApiInterface $attachment_api */
-        $attachment_api = app()->make(AttachmentApiInterface::class);
+        $attachment_api    = app()->make(AttachmentApiInterface::class);
         $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment($user));
-
-        if ($attachment_assist->haveAttachments()) {
-            $attachments = $attachment_assist->deserialize();
-        } else {
-            $attachments = null;
-        }
+        $attachments       = $attachment_assist->getAttachments();
 
         $data = [
             'expertises'        => $this->expertise_repo->getTags(),
@@ -227,14 +222,9 @@ class UserController extends BaseController
         }
 
         /* @var AttachmentApiInterface $attachment_api */
-        $attachment_api = app()->make(AttachmentApiInterface::class);
+        $attachment_api    = app()->make(AttachmentApiInterface::class);
         $attachment_assist = UserAttachmentResponseAssistant::create($attachment_api->getAttachment($user));
-
-        if ($attachment_assist->haveAttachments()) {
-            $attachments = $attachment_assist->deserialize();
-        } else {
-            $attachments = null;
-        }
+        $attachments       = $attachment_assist->getAttachments();
 
         $front_domain   = config('app.front_domain');
 
@@ -371,7 +361,7 @@ class UserController extends BaseController
         $attachment_api      = app()->make(AttachmentApiInterface::class);
         $response_assistant  = UserAttachmentResponseAssistant::create($attachment_api->putAttachment($user, $file));
         Log::info('Upload attachment', $response_assistant->decode());
-        return $response_assistant->serialize();
+        return json_encode($response_assistant->getAttachment());
     }
 
     public function disable()

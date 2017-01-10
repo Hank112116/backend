@@ -2,6 +2,8 @@
 namespace Backend\Assistant\ApiResponse\UserApi;
 
 use Backend\Assistant\ApiResponse\BaseResponseAssistant;
+use Backend\Model\Attachment;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserAttachmentResponseAssistant extends BaseResponseAssistant
@@ -25,7 +27,7 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
      */
     public function haveAttachments()
     {
-        $attachments = $this->deserialize();
+        $attachments = $this->decode();
 
         if (is_null($attachments)) {
             return false;
@@ -35,10 +37,28 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
     }
 
     /**
-     * @return array
+     * @return Collection
      */
-    public function normalize()
+    public function getAttachments()
     {
-        return $this->decode();
+        $collection = Collection::make();
+
+        if (!$this->haveAttachments()) {
+            return $collection;
+        }
+
+        foreach ($this->decode() as $item) {
+            $collection->push(new Attachment($item));
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @return Attachment
+     */
+    public function getAttachment()
+    {
+        return new Attachment($this->decode());
     }
 }

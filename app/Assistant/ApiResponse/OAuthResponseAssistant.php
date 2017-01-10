@@ -43,15 +43,4 @@ class OAuthResponseAssistant extends BaseResponseAssistant
 
         return $response[OAuthKey::TOKEN_TYPE];
     }
-
-    /**
-     * @return array
-     */
-    public function normalize()
-    {
-        return [
-            OAuthKey::ACCESS_TOKEN  => $this->getAccessToken(),
-            OAuthKey::TOKEN_TYPE    => $this->getTokenType()
-        ];
-    }
 }

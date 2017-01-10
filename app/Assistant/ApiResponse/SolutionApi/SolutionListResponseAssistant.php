@@ -82,12 +82,4 @@ class SolutionListResponseAssistant extends BaseResponseAssistant
 
         return $paginator;
     }
-
-    /**
-     * @return array
-     */
-    public function normalize()
-    {
-        return $this->decode();
-    }
 }

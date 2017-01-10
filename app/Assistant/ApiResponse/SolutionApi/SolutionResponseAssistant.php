@@ -30,12 +30,4 @@ class SolutionResponseAssistant extends BaseResponseAssistant
 
         return new DetailSolution($response);
     }
-
-    /**
-     * @return array
-     */
-    public function normalize()
-    {
-        return $this->decode();
-    }
 }
