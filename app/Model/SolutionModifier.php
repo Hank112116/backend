@@ -7,8 +7,6 @@ use Backend\Model\ModelInterfaces\SolutionModifierInterface;
 
 class SolutionModifier implements SolutionModifierInterface
 {
-    private static $update_columns = ['user_id',];
-
     private $image_uploader;
     private $solution;
 
@@ -18,20 +16,6 @@ class SolutionModifier implements SolutionModifierInterface
     ) {
         $this->solution       = $solution;
         $this->image_uploader = $image_uploader;
-    }
-
-    // TODO Remove use, wait update API
-    public function update($solution_id, $data)
-    {
-        $solution = $this->solution->find($solution_id);
-
-        $setter = $this->updateImageGalleries($solution, $data);
-
-        $solution->image = $setter['image'];
-
-        $solution->save();
-
-        return $setter['image_gallery'];
     }
 
     public function managerApprove($solution_id)
@@ -117,8 +101,10 @@ class SolutionModifier implements SolutionModifierInterface
         }
     }
 
-    private function updateImageGalleries($solution, $data)
+    public function updateImageGalleries($solution_id, $data)
     {
+        $solution = $this->solution->find($solution_id);
+
         $gallery = $solution->image_gallery ? json_decode($solution->image_gallery, true) : [];
 
         $cover = '';

@@ -2,14 +2,13 @@
 
 @import "vendor/bootstrap/pagination";
 @import "vendor/fronteed/icheck/blue";
-
 @import "modules/page-header-with-btn";
 @import "modules/list-search";
 @import "modules/list-table";
 @import "modules/list-icon";
-
 @import "pages/solution/common";
+@import "vendor/bootstrap-sass-datepicker/datepicker";
 
 .pagination-container {
-	text-align : center;
+  text-align: center;
 }

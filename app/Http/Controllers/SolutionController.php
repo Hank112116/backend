@@ -58,7 +58,7 @@ class SolutionController extends BaseController
 
         $solution_list_assistant = SolutionListResponseAssistant::create($response);
 
-        $solutions = $solution_list_assistant->getSolutionListPaginate();
+        $solutions = $solution_list_assistant->getSolutionListPaginate($this->per_page);
 
         if ($solutions->count() == 0) {
             Noty::warnLang('common.no-search-result');
@@ -103,7 +103,7 @@ class SolutionController extends BaseController
         $solution_assistant = SolutionResponseAssistant::create($response);
 
         $solution = $solution_assistant->getSolution();
-        $solution->getTextTags();
+
         if (is_null($solution)) {
             Noty::warnLang('user.no-user');
             return redirect()->action('SolutionController@showList');
@@ -160,11 +160,13 @@ class SolutionController extends BaseController
             }
         }
 
-        $image_gallery = $this->solution_repo->update($solution_id, $this->request->all());
+        // TODO use upload solution picture API
+        $image_gallery = $this->solution_repo->updateImageGalleries($solution_id, $this->request->all());
 
         $modify_data = [
             'ownerId'   => $this->request->get('user_id'),
-            'showcase'  => $image_gallery
+            'image'     => $image_gallery['image'],
+            'showcase'  => $image_gallery['image_gallery'],
         ];
 
         $response = $this->solution_api->modifySolution($solution_id, $modify_data);
@@ -181,10 +183,10 @@ class SolutionController extends BaseController
     //change solution type to program (solution table:is_program)
     public function toProgram()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
-            if (auth()->user()->isBackendPM()) {
+            if ($this->auth_user->isBackendPM()) {
                 $response = $this->solution_api->changeToPendingToProgram($solution_id);
 
                 Log::info('Solution pending to program', ['solution_id' => $solution_id]);
@@ -204,10 +206,10 @@ class SolutionController extends BaseController
     //change solution type to program (solution table:is_program)
     public function toSolution()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
-            if (auth()->user()->isBackendPM()) {
+            if ($this->auth_user->isBackendPM()) {
                 $response = $this->solution_api->changeToPendingToNormalSolution($solution_id);
 
                 Log::info('Program pending to solution', ['solution_id' => $solution_id]);
@@ -227,7 +229,7 @@ class SolutionController extends BaseController
     //cancel pending solution to program
     public function cancelPendingSolution()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
             $response = $this->solution_api->changeToProgram($solution_id);
@@ -242,7 +244,7 @@ class SolutionController extends BaseController
     //cancel pending program to solution
     public function cancelPendingProgram()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
             $response = $this->solution_api->changeToNormalSolution($solution_id);
@@ -270,13 +272,18 @@ class SolutionController extends BaseController
 
     public function onShelf($solution_id)
     {
+        $response = $this->solution_api->onShelf($solution_id);
+
+        if (!$response->isOk()) {
+            Noty::warn('The solution on shelf fail.');
+        }
+
         $log_action = 'Solution on shelf';
         $log_data   = [
             'solution_id' => $solution_id,
         ];
         Log::info($log_action, $log_data);
 
-        $this->solution_repo->onShelf($solution_id);
         Noty::successLang('solution.on-shelf');
 
         return redirect()->action('SolutionController@showDetail', $solution_id);
@@ -284,13 +291,18 @@ class SolutionController extends BaseController
 
     public function offShelf($solution_id)
     {
+        $response = $this->solution_api->offShelf($solution_id);
+
+        if (!$response->isOk()) {
+            Noty::warn('The solution off shelf fail.');
+        }
+
         $log_action = 'Solution off shelf';
         $log_data   = [
             'solution_id' => $solution_id,
         ];
         Log::info($log_action, $log_data);
 
-        $this->solution_repo->offShelf($solution_id);
         Noty::successLang('solution.off-shelf');
 
         return redirect()->action('SolutionController@showDetail', $solution_id);

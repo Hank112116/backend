@@ -2,6 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Model\Eloquent\Adminer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Routing\Controller;
@@ -18,6 +19,9 @@ abstract class BaseController extends Controller
     protected $per_page = null;
     protected $is_restricted_adminer;
     protected $is_limitied_editor;
+
+    /* @var Adminer $auth_user */
+    protected $auth_user;
 
     /* @var Request $request */
     protected $request;
@@ -44,6 +48,7 @@ abstract class BaseController extends Controller
 
         $this->is_restricted_adminer = auth()->user()->isRestricted($this->cert);
         $this->is_limitied_editor    = auth()->user()->isLimitedEditor($this->cert);
+        $this->auth_user             = auth()->user();
     }
 
    /**

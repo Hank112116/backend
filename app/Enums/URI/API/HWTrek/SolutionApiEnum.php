@@ -13,4 +13,5 @@ class SolutionApiEnum extends HWTrekApiEnum
     const SOLUTION   = self::API . '/solutions/(:num)';
     const PUBLICITY  = self::SOLUTION . '/publicity';
     const TYPE       = self::SOLUTION . '/type';
+    const VISIBILITY = self::SOLUTION . '/visibility';
 }

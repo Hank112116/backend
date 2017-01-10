@@ -140,4 +140,38 @@ class SolutionApi extends BasicApi implements SolutionApiInterface
 
         return $this->patch($url, $data);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onShelf(int $solution_id)
+    {
+        $uri = str_replace('(:num)', $solution_id, SolutionApiEnum::VISIBILITY);
+        $url = $this->hwtrek_url . $uri;
+
+        $data = [
+            'json' => [
+                'visibility' => 'public'
+            ]
+        ];
+
+        return $this->patch($url, $data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function offShelf(int $solution_id)
+    {
+        $uri = str_replace('(:num)', $solution_id, SolutionApiEnum::VISIBILITY);
+        $url = $this->hwtrek_url . $uri;
+
+        $data = [
+            'json' => [
+                'visibility' => 'private'
+            ]
+        ];
+
+        return $this->patch($url, $data);
+    }
 }

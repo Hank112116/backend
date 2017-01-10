@@ -71,11 +71,12 @@ class SolutionListResponseAssistant extends BaseResponseAssistant
     }
 
     /**
+     * @param int $limit
      * @return Paginator
      */
-    public function getSolutionListPaginate()
+    public function getSolutionListPaginate(int $limit)
     {
-        $paginator = new Paginator($this->getSolutionList(), $this->getTotalCount(), 200);
+        $paginator = new Paginator($this->getSolutionList(), $this->getTotalCount(), $limit);
 
         $paginator->setPath('/' . \Request::path());
 

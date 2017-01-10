@@ -46,7 +46,11 @@
 			<!-- Title -->
 			<div class="data-group">
 			  	<span class="label">Title</span>
-			  	<span class="content">{{ $solution->getTitle() }}</span>
+			  	<span class="content">
+					<a href="{{$solution->getUrl()}}" target="_blank">
+					{{ $solution->getTitle() }}
+					</a>
+				</span>
 			</div>
 
 			<!-- Category, User -->

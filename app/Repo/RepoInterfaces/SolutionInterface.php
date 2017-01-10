@@ -56,7 +56,7 @@ interface SolutionInterface
      * @param $data
      * @return array
      */
-    public function update($id, $data);
+    public function updateImageGalleries($id, $data);
 
     /**
      * @param $id

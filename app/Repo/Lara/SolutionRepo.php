@@ -135,9 +135,9 @@ class SolutionRepo implements SolutionInterface
         $this->solution_modifier->offShelf($solution_id);
     }
 
-    public function update($solution_id, $data)
+    public function updateImageGalleries($solution_id, $data)
     {
-        return $this->solution_modifier->update($solution_id, $data);
+        return $this->solution_modifier->updateImageGalleries($solution_id, $data);
     }
 
     /*

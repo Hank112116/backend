@@ -58,4 +58,16 @@ interface SolutionApiInterface
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function modifySolution(int $solution_id, array $data);
+
+    /**
+     * @param int $solution_id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function onShelf(int $solution_id);
+
+    /**
+     * @param int $solution_id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function offShelf(int $solution_id);
 }

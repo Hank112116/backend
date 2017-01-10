@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v3.0.0
+* [NEW]    new OAuth login (@Hank)
+* [NEW]    login limit [#issue 48](https://gitlab.hwtrek.com/HWTrek/backend/issues/48) (@Hank)
+* [NEW]    new duplicate login check (@Hank)
+* [CHANGE] revise action log [#issue 45](https://gitlab.hwtrek.com/HWTrek/backend/issues/45) (@Hank)
+* [CHANGE] refactor curl to guzzle client (@Hank)
+* [CHANGE] revise login page (@Hank)
+* [CHANGE] integrate solution list API (@Hank)
+* [CHANGE] integrate solution detail API (@Hank)
+* [CHANGE] integrate solution edit API (@Hank)
+* [CHANGE] integrate solution change type API (@Hank)
+* [CHANGE] integrate on shelf solution API (@Hank)
+* [CHANGE] revise export CSV function (@Hank)
+* [CHANGE] remove duplicate solution related code (@Hank)
+* [FIXED]  fix user registration report error (@Hank)
+* [FIXED]  fix project referral data error [#issue 47](https://gitlab.hwtrek.com/HWTrek/backend/issues/47) (@Hank)
+* [FIXED]  fix owner info error of solution edit page [#issue 38](https://gitlab.hwtrek.com/HWTrek/backend/issues/38) (@Hank)
+
 ## v2.6.6
 * [FIXED] fix uppercase/lowercase error of project uri file (@Hank) 
 

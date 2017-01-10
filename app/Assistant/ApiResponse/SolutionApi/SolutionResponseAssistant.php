@@ -22,7 +22,6 @@ class SolutionResponseAssistant extends BaseResponseAssistant
      */
     public function getSolution()
     {
-
         if (!$this->response->isOk()) {
             return null;
         }
