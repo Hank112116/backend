@@ -1,13 +1,14 @@
 <?php
 namespace Backend\Model\Solution\Entity;
 
+use Backend\Contracts\Serializable;
 use Backend\Enums\API\Response\Key\SolutionKey;
 use Backend\Enums\API\Response\Key\UserKey;
 use Backend\Model\Eloquent\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-class BasicSolution
+class BasicSolution implements Serializable
 {
     const TYPE_NORMAL_SOLUTION  = 'normal-solution';
     const TYPE_PROGRAM          = 'program';
@@ -392,5 +393,59 @@ class BasicSolution
     public function isOngoing()
     {
         return $this->isOnShelf() or $this->isOffShelf();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param array $data
+     * @return BasicSolution
+     */
+    public static function denormalize(array $data)
+    {
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException("'{$data}' is not a valid array format");
+        }
+
+        return new BasicSolution($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param $serialized
+     * @return BasicSolution
+     */
+    public static function deserialize($serialized)
+    {
+        $result = json_decode($serialized, true);
+
+        if (!is_array($result)) {
+            throw new \InvalidArgumentException("'{$serialized}' is not a valid array format");
+        }
+
+        return static::denormalize($result);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function normalize()
+    {
+        return $this->data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function serialize()
+    {
+        return json_encode($this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->normalize();
     }
 }

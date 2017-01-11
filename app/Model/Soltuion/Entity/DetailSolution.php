@@ -2,10 +2,8 @@
 namespace Backend\Model\Solution\Entity;
 
 use Backend\Enums\API\Response\Key\SolutionKey;
-use Backend\Enums\API\Response\Key\UserKey;
 use Backend\Facades\Log;
 use Backend\Model\Solution\Certification\CertificationFactory;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class DetailSolution extends BasicSolution
@@ -145,5 +143,33 @@ class DetailSolution extends BasicSolution
     public function getServedCustomers()
     {
         return $this->data[SolutionKey::KEY_SERVED_CUSTOMERS];
+    }
+
+    /**
+     * @param array $data
+     * @return DetailSolution
+     */
+    public static function denormalize(array $data)
+    {
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException("'{$data}' is not a valid array format");
+        }
+
+        return new DetailSolution($data);
+    }
+
+    /**
+     * @param $serialized
+     * @return BasicSolution
+     */
+    public static function deserialize($serialized)
+    {
+        $result = json_decode($serialized, true);
+
+        if (!is_array($result)) {
+            throw new \InvalidArgumentException("'{$serialized}' is not a valid array format");
+        }
+
+        return static::denormalize($result);
     }
 }

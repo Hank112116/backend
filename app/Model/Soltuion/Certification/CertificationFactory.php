@@ -50,7 +50,7 @@ class CertificationFactory
             case CertificationEnum::WIFI:
                 return new WiFi();
             default:
-                throw new \InvalidArgumentException("'{$id}' is not a valid certification id");
+                throw new \InvalidArgumentException("'{$key}' is not a valid certification id");
         }
     }
 }

@@ -48,7 +48,7 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
         }
 
         foreach ($this->decode() as $item) {
-            $collection->push(new Attachment($item));
+            $collection->push(Attachment::denormalize($item));
         }
 
         return $collection;
@@ -59,6 +59,6 @@ class UserAttachmentResponseAssistant extends BaseResponseAssistant
      */
     public function getAttachment()
     {
-        return new Attachment($this->decode());
+        return Attachment::denormalize($this->decode());
     }
 }

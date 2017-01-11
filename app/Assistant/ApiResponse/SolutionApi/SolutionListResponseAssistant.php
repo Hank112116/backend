@@ -64,7 +64,7 @@ class SolutionListResponseAssistant extends BaseResponseAssistant
         $solution_list = $response[SolutionKey::KEY_SOLUTION_LIST];
 
         foreach ($solution_list as $solution) {
-            $collection->push(new BasicSolution($solution));
+            $collection->push(BasicSolution::denormalize($solution));
         }
 
         return $collection;

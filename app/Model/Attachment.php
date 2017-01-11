@@ -1,7 +1,9 @@
 <?php
 namespace Backend\Model;
 
-class Attachment implements \JsonSerializable
+use Backend\Contracts\Serializable;
+
+class Attachment implements Serializable
 {
     const KEY_NAME     = 'name';
     const KEY_URL      = 'url';
@@ -43,8 +45,38 @@ class Attachment implements \JsonSerializable
         return $this->preview[0];
     }
 
-    public function jsonSerialize()
+    public function normalize()
     {
         return $this->data;
+    }
+
+    public static function denormalize(array $data)
+    {
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException("'{$data}' is not a valid array format");
+        }
+
+        return new Attachment($data);
+    }
+
+    public function serialize()
+    {
+        return json_encode($this);
+    }
+
+    public static function deserialize($serialized)
+    {
+        $result = json_decode($serialized, true);
+
+        if (!is_array($result)) {
+            throw new \InvalidArgumentException("'{$serialized}' is not a valid array format");
+        }
+
+        return static::denormalize($result);
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->normalize();
     }
 }

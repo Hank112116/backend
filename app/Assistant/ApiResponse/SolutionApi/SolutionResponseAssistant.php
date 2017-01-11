@@ -28,6 +28,6 @@ class SolutionResponseAssistant extends BaseResponseAssistant
 
         $response = $this->decode();
 
-        return new DetailSolution($response);
+        return DetailSolution::denormalize($response);
     }
 }
