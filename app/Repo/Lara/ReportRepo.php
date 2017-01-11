@@ -112,8 +112,6 @@ class ReportRepo implements ReportInterface
 
         $users = $this->user_repo->byDateRange($timeRange[0], $timeRange[1]);
 
-        $summary = $this->getRegistrationSummary($users);
-
         if ($filter === 'expert') {
             $users = $this->user_repo->filterExpertsWithToBeExperts($users);
         }
@@ -121,7 +119,10 @@ class ReportRepo implements ReportInterface
             $users = $this->user_repo->filterCreatorWithoutToBeExperts($users);
         }
 
+        $summary = $this->getRegistrationSummary($users);
+
         $users = $this->user_repo->byCollectionPage($users, $page, $per_page);
+
         $users = $this->appendStatistics($users, $summary);
         return $users;
     }
