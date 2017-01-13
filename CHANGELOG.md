@@ -4,6 +4,7 @@
 * [NEW]    new OAuth login (@Hank)
 * [NEW]    login limit [#issue 48](https://gitlab.hwtrek.com/HWTrek/backend/issues/48) (@Hank)
 * [NEW]    new duplicate login check (@Hank)
+* [NEW]    create redis server (@Hank)
 * [CHANGE] revise action log [#issue 45](https://gitlab.hwtrek.com/HWTrek/backend/issues/45) (@Hank)
 * [CHANGE] refactor curl to guzzle client (@Hank)
 * [CHANGE] revise login page (@Hank)
