@@ -12,7 +12,7 @@ return [
 
     'key'              => env('APP_KEY', 'SomeRandomString'),
     'env'              => env('APP_ENV', 'production'),
-    'cipher'           => MCRYPT_RIJNDAEL_128,
+    'cipher'           => 'AES-256-CBC',
 
     'debug'            => env('APP_DEBUG'),
     'front_domain'     => env('FRONT_DOMAIN', 'www.hwtrek.com'),
@@ -70,13 +70,13 @@ return [
         'Illuminate\Translation\TranslationServiceProvider',
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
+        'Illuminate\Notifications\NotificationServiceProvider',
 
 
         /*
          * Application Service Providers...
          */
         'Backend\Providers\AppServiceProvider',
-        'Backend\Providers\BusServiceProvider',
         'Backend\Providers\ConfigServiceProvider',
         'Backend\Providers\EventServiceProvider',
         'Backend\Providers\RouteServiceProvider',

@@ -717,7 +717,7 @@ class Project extends Eloquent
             $managers[] = $manager->pm_id;
         }
 
-        return Adminer::whereIn('hwtrek_member', $managers)->lists('name');
+        return Adminer::whereIn('hwtrek_member', $managers)->pluck('name');
     }
 
     public function getDeletedHubManagerNames()
@@ -730,7 +730,7 @@ class Project extends Eloquent
             $managers[] = $manager->pm_id;
         }
 
-        return Adminer::onlyTrashed()->whereIn('hwtrek_member', $managers)->lists('name');
+        return Adminer::onlyTrashed()->whereIn('hwtrek_member', $managers)->pluck('name');
     }
 
     public function recommendExpertTime()

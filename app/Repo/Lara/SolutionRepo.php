@@ -80,7 +80,7 @@ class SolutionRepo implements SolutionInterface
         }
 
         $solutions = $this->solution->with('user')
-            ->whereIn('user_id', $users->lists('user_id'))
+            ->whereIn('user_id', $users->pluck('user_id'))
             ->orderBy('solution_id', 'desc')
             ->get();
 

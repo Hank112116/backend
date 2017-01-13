@@ -130,7 +130,7 @@ class UserRepo implements UserInterface
             ->orWhere('is_sign_up_as_expert', '1')
             ->orWhere('is_apply_to_be_expert', '1')
             ->where('user_type', User::TYPE_CREATOR)
-            ->lists('user_id');
+            ->pluck('user_id');
     }
 
     public function byPage($page = 1, $limit = 20)

@@ -24,6 +24,6 @@ class Expertise extends Eloquent
             return [];
         }
 
-        return $this->whereIn('expertise_id', $ids)->lists('tag');
+        return $this->whereIn('expertise_id', $ids)->pluck('tag');
     }
 }
