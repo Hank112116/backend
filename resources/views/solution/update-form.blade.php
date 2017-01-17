@@ -41,7 +41,7 @@
 <div class="form-group">
     <label for="member" class="col-md-3">Solution Owner</label>
     <div id="owner-selector" class="col-md-5"
-         data-user = '{!! json_encode($solution->getUserInfo()) !!}'>
+         data-user = '{{ json_encode($solution->getUserInfo()) }}'>
     </div>
 </div>
 
