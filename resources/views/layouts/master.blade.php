@@ -36,7 +36,7 @@
     </script>
 
     <script src="{{ LinkGen::assets('js/vendor/vendors.js') }}"></script>
-    <script src="{{ LinkGen::assets('/js/common.js') }}"></script>
+    <script src="{{ LinkGen::assets('js/common.js') }}"></script>
     @yield('js')
 
 </body>

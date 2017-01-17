@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'Backend\Console\Commands\AccessLogCompress',
         'Backend\Console\Commands\AccessLogDecompress',
-        'Backend\Console\Commands\ClearTmpFile'
+        'Backend\Console\Commands\ClearTmpFile',
+        'Backend\Console\Commands\CalculateAssetsChecksum',
     ];
 
     /**

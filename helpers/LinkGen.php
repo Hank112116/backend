@@ -36,8 +36,17 @@ class LinkGen
             return secure_url($path);
         }
 
-        $check_sum = md5_file($path);
-        $path      = $path . '?v=' . $check_sum;
+        $assets_mapping = File::exists(config('assets.mapping'))
+            ? File::getRequire(config('assets.mapping')) : [];
+
+        if (array_key_exists($path, $assets_mapping)) {
+            $check_sum = $assets_mapping[$path];
+        } else {
+            $check_sum = md5_file($path);
+        }
+
+        $path = $path . '?v=' . $check_sum;
+
         return secure_url($path);
     }
 }
