@@ -105,7 +105,7 @@ class SolutionController extends BaseController
         $solution = $solution_assistant->getSolution();
 
         if (is_null($solution)) {
-            Noty::warnLang('user.no-user');
+            Noty::warnLang('solution.no-solution');
             return redirect()->action('SolutionController@showList');
         }
 
@@ -129,7 +129,7 @@ class SolutionController extends BaseController
         $solution = $solution_assistant->getSolution();
 
         if (is_null($solution)) {
-            Noty::warnLang('user.no-user');
+            Noty::warnLang('solution.no-solution');
             return redirect()->action('SolutionController@showList');
         }
 
