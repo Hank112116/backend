@@ -1,8 +1,9 @@
 # 部署環境需求
 
-- php > 5.4, mysql > 5.5, nginx > 1.7
-- extentions: php5-mcrypt php5-gd php5-curl php5-mysql
+- php > 7.0, mysql > 5.6, nginx > 1.10
+- extentions: php-mcrypt php-gd php-curl php-mysql
 - composer, [how to install](//getcomposer.org/download/)
+- redis-server > 2.8
 
 
 # 開發環境需求
