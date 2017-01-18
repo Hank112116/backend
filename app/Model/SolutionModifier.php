@@ -125,7 +125,7 @@ class SolutionModifier implements SolutionModifierInterface
             $gallery[$i] = [
                 Solution::GALLERY_URL         => $this->image_uploader->getThumbImage($image_name),
                 Solution::GALLERY_FILENAME    => $image_name,
-                Solution::GALLERY_DESCRIPTION => $data[$content_key],
+                Solution::GALLERY_DESCRIPTION => array_key_exists($content_key, $data) ? $data[$content_key] : '',
             ];
 
             if (array_key_exists('cover', $data) and $data['cover'] == $key) {
