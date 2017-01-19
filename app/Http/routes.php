@@ -24,7 +24,7 @@ Route::group(['middleware' => 'route_filter:adminer'], function () {
     Route::post('adminer/role/update/{id}', 'AdminerController@roleUpdate');
 });
 
-Route::group(['middleware' => ['route_filter:user', 'check_source_server']], function () {
+Route::group(['middleware' => ['route_filter:user', 'check_source_server', 'api_auth']], function () {
 
     Route::get('user/all', 'UserController@showList');
     Route::get('user/search', 'UserController@showSearch');
@@ -51,7 +51,7 @@ Route::group(['middleware' => ['route_filter:user', 'check_source_server']], fun
 });
 
 // Project
-Route::group(['middleware' => ['route_filter:project', 'check_source_server']], function () {
+Route::group(['middleware' => ['route_filter:project', 'check_source_server', 'api_auth']], function () {
 
     Route::get('project/all', 'ProjectController@showList');
 
@@ -80,7 +80,7 @@ Route::group(['middleware' => ['route_filter:project', 'check_source_server']], 
 });
 
 // Solution
-Route::group(['middleware' => ['route_filter:solution', 'check_source_server']], function () {
+Route::group(['middleware' => ['route_filter:solution', 'check_source_server', 'api_auth']], function () {
     Route::get('solution', 'SolutionController@showList');
 
     Route::get('solution/detail/{id}', 'SolutionController@showDetail');
