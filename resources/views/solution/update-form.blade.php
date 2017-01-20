@@ -12,7 +12,7 @@
 
 <div class="row">
     <div id="solution-gallery" class="solution-thumbs"
-         data-solution-cover="{!! $solution->image !!}"
+         data-solution-cover="{!! $solution->getImage() !!}"
          data-solution-gallery='{!! $image_gallery !!}'>
     </div>
 </div>
@@ -41,10 +41,11 @@
 <div class="form-group">
     <label for="member" class="col-md-3">Solution Owner</label>
     <div id="owner-selector" class="col-md-5"
-         data-user = '{!! $solution->user->toBasicJson() !!}'>
+         data-user = '{{ json_encode($solution->getUserInfo()) }}'>
     </div>
 </div>
 
+{{--
 <!-- Category -->
 <div id="category-wrapper" class="form-group">
 
@@ -252,3 +253,4 @@
         @include('solution.update-project-tags')
     </div>
 </div>
+--}}

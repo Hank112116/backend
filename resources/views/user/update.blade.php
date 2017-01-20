@@ -278,14 +278,14 @@
                         <div class="panel-heading">Attachments</div>
 
                         <div class="panel-body-attachment-list" style="margin-left: 10px; margin-bottom: 10px;">
-                            @if ($attachments)
+                            @if (!$attachments->isEmpty())
                                 @foreach($attachments as $attachment)
                                     <div class="photo-preview">
-                                        <a target="_blank" href="{{ $attachment->url }}">
-                                            <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
+                                        <a target="_blank" href="{{ $attachment->getUrl() }}">
+                                            <div style="background-image:url( {{$attachment->getPreview() }});" class="photo-thumb"></div>
                                         </a>
                                         <div class="file-info">
-                                            <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                            <span>{{ $attachment->getName() }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->getSize()) }}</span><span>)</span>
                                             <i style="cursor:pointer" class="fa fa-trash-o attachment-trash" attachment="{{ json_encode($attachment) }}"></i>
                                         </div>
                                     </div>

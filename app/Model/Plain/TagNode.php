@@ -149,7 +149,6 @@ class TagNode
     {
         $this->key = $tag;
         $this->name = $this->tags($all_tags)[$tag];
-
     }
 
     public static function tags($all_tags = null)

@@ -9,6 +9,5 @@ class CommentFollowerRepo implements CommentFollowerInterface
 {
     public function __construct()
     {
-
     }
 }

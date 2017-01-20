@@ -9,6 +9,5 @@ class NewCommentRepo implements NewCommentInterface
 {
     public function __construct()
     {
-
     }
 }

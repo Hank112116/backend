@@ -54,7 +54,6 @@ class ClearTmpFile extends Command
             try {
                 $this->info('Delete ' . $file->getRealPath());
                 File::delete($file);
-
             } catch (Exception $e) {
                 $msg = 'Delete error' . $file->getRealPath();
                 $this->error($msg);

@@ -13,7 +13,7 @@ local_git_hooks_folder="${REPO_ROOT}/.git/hooks"
 rel_repo_git_hooks_folder="../../.git-hooks"
 
 # Define git hooks
-hooks=( 'pre-commit' 'post-merge' )
+hooks=( 'pre-commit' 'post-merge' 'post-checkout' )
 
 cd ${local_git_hooks_folder}
 

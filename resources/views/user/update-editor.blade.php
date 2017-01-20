@@ -108,7 +108,7 @@
                 </div>
             </div>
         @endif
-        @if ($attachments)
+        @if (!$attachments->isEmpty())
             <div class="form-group">
                 <label for="industry" class="col-md-3">Attachments</label>
                 <div class="col-md-9 industry">
@@ -117,11 +117,11 @@
                         <div class="panel-body">
                             @foreach($attachments as $attachment)
                                 <div class="photo-preview">
-                                    <a target="_blank" href="{{ $attachment->url }}">
-                                        <div style="background-image:url( {{$attachment->previews[0]}});" class="photo-thumb"></div>
+                                    <a target="_blank" href="{{ $attachment->getUrl() }}">
+                                        <div style="background-image:url( {{$attachment->getPreview() }});" class="photo-thumb"></div>
                                     </a>
                                     <div class="file-info">
-                                        <span>{{ $attachment->name }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->size) }}</span><span>)</span>
+                                        <span>{{ $attachment->getName() }}</span><span> (</span><span>{{ ToolFunction::formatSizeUnits($attachment->getSize()) }}</span><span>)</span>
                                     </div>
                                 </div>
                             @endforeach

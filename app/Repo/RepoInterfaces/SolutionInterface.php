@@ -12,11 +12,6 @@ interface SolutionInterface
     public function all();
 
     /**
-     * @return DuplicateSolutionInterface
-     */
-    public function duplicateRepo();
-
-    /**
      * @param $id
      * @return Solution
      */
@@ -35,81 +30,6 @@ interface SolutionInterface
     public function findProgram($id);
 
     /**
-     * @param $id
-     * @return DuplicateSolution
-     */
-    public function findDuplicate($id);
-
-    /**
-     * @return Collection|Solution[]
-     */
-    public function drafts();
-
-    /**
-     * @param $page
-     * @param $limit
-     * @return \Illuminate\Pagination\LengthAwarePaginator|Solution[]
-     */
-    public function byPage($page, $limit);
-    
-    /**
-     * @param $page
-     * @param $limit
-     * @return \Illuminate\Pagination\LengthAwarePaginator|Solution[]
-     */
-    public function approvedSolutions($page, $limit);
-
-    /**
-     * @return mixed
-     */
-    public function waitApproveSolutions();
-
-    /**
-     * @return Collection|Solution[]
-     */
-    public function deletedSolutions();
-
-    /**
-     * @return Collection|Solution[]
-     */
-    public function program();
-
-    /**
-     * @return Collection|Solution[]
-     */
-    public function pendingProgram();
-
-    /**
-     * @return Collection|Solution[]
-     */
-    public function pendingSolution();
-
-    /**
-     * @return boolean
-     */
-    public function hasWaitApproveSolution();
-
-    /**
-     * @return boolean
-     */
-    public function hasWaitManagerApproveSolution();
-
-    /**
-     * @return boolean
-     */
-    public function hasProgram();
-
-    /**
-     * @return boolean
-     */
-    public function hasPendingProgram();
-
-    /**
-     * @return boolean
-     */
-    public function hasPendingSolution();
-
-    /**
      * @param $name
      * @return Collection|Solution[]
      */
@@ -120,14 +40,6 @@ interface SolutionInterface
      * @return Collection|Solution[]
      */
     public function byTitle($title);
-
-    /**
-     * @param $input
-     * @param $page
-     * @param $per_page
-     * @return Collection|Solution[]
-     */
-    public function byUnionSearch($input, $page, $per_page);
 
     /**
      * @return array
@@ -142,36 +54,9 @@ interface SolutionInterface
     /**
      * @param $id
      * @param $data
-     * @return void
+     * @return array
      */
-    public function update($id, $data);
-
-    /**
-     * @param $id
-     * @param $is_manager
-     * @return void
-     */
-    public function approve($id, $is_manager);
-
-    /**
-     * @param $id
-     * @param $is_manager
-     * @return void
-     */
-    public function toProgram($id, $is_manager);
-
-    /**
-     * @param $id
-     * @param $is_manager
-     * @return void
-     */
-    public function toSolution($id, $is_manager);
-
-    /**
-     * @param $id
-     * @return void
-     */
-    public function reject($id);
+    public function updateImageGalleries($id, $data);
 
     /**
      * @param $id
@@ -186,14 +71,14 @@ interface SolutionInterface
     public function offShelf($id);
 
     /**
-     * @param $solution_id
-     * @return boolean
-     */
-    public function isWaitApproveOngoing($solution_id);
-
-    /**
      * @param $solutions
      * @return array
      */
     public function toOutputArray($solutions);
+
+    /**
+     * @param $solutions
+     * @return mixed
+     */
+    public function configApprove($solutions);
 }

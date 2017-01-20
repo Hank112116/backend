@@ -292,9 +292,7 @@ class User extends Eloquent
 
     public function sendUserCommentCount()
     {
-        //dd($userComment->with('comment')->where('user_id', 852)->get());
         return $this->hasOne(NewComment::class, 'poster_id')->selectRaw('poster_id, count(*) as commentCount')->groupBy('poster_id');
-
     }
 
     //Use to get comment count which is be filtered or not be filtered
@@ -372,7 +370,7 @@ class User extends Eloquent
 
     public function isActive()
     {
-        return $this->active;
+        return $this->active and $this->isEmailVerify();
     }
 
     public function isPendingExpert()
@@ -391,6 +389,15 @@ class User extends Eloquent
             return false;
         } else {
             return true;
+        }
+    }
+
+    public function textSuspendedAt()
+    {
+        if ($this->suspended_at) {
+            return Carbon::parse($this->suspended_at)->toFormattedDateString();
+        } else {
+            return null;
         }
     }
 

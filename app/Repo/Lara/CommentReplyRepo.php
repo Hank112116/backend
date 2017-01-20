@@ -9,6 +9,5 @@ class CommentReplyRepo implements CommentReplyInterface
 {
     public function __construct()
     {
-
     }
 }

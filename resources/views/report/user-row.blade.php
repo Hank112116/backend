@@ -36,6 +36,7 @@
 
 <td>{!! $user->textEmailVerify() !!}</td>
 <td>{!! $user->textActive() !!}</td>
+<td>{{ $user->textSuspendedAt() }}</td>
 <td>
     @include('report.component.user-action', ['user' => $user])
 </td>

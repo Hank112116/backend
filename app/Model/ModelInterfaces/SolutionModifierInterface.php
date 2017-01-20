@@ -2,7 +2,7 @@
 
 interface SolutionModifierInterface
 {
-    public function update($solution_id, $data);
+    public function updateImageGalleries($solution_id, $data);
     public function approve($solution_id);
     public function managerApprove($solution_id);
     public function toProgram($solution_id);
@@ -10,9 +10,6 @@ interface SolutionModifierInterface
     public function toSolution($solution_id);
     public function managerToSolution($solution_id);
     public function reject($solution_id);
-
-    public function ongoingUpdate($solution_id, $data);
-    public function ongoingApprove($solution_id);
-    public function ongoingManagerApprove($solution_id);
-    public function ongoingReject($solution_id);
+    public function onShelf($solution_id);
+    public function offShelf($solution_id);
 }

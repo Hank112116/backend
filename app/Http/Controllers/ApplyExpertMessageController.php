@@ -5,7 +5,6 @@ namespace Backend\Http\Controllers;
 use Backend\Repo\RepoInterfaces\ApplyExpertMessageInterface;
 use Backend\Facades\Log;
 
-
 class ApplyExpertMessageController extends BaseController
 {
     private $apply_expert_message;

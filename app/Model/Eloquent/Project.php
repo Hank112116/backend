@@ -577,7 +577,7 @@ class Project extends Eloquent
         if ($funding_rounds) {
             foreach ($funding_rounds as $index => $funding_round) {
                 $tmp = array_merge($this->founding_round_default, $funding_round);
-                if (array_key_exists('round', $tmp)) {
+                if (array_key_exists('round', $tmp) and !is_null($tmp['round'])) {
                     $tmp['round'] = $this->funding_round_map[$tmp['round']];
                 } else {
                     $tmp['round'] = 'N/A';

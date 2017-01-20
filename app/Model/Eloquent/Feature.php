@@ -14,23 +14,32 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Feature extends Eloquent
 {
+    const TYPE_PROJECT  = 'project';
+    const TYPE_SOLUTION = 'solution';
+    const TYPE_EXPERT   = 'expert';
+    const TYPE_PROGRAM  = 'program';
 
     protected $table = 'home_page_demo';
     public $timestamps = false;
     public static $unguarded = true;
 
-    private static $types = ['project', 'expert', 'solution', 'program'];
+    private static $types = [
+        self::TYPE_PROJECT,
+        self::TYPE_SOLUTION,
+        self::TYPE_EXPERT,
+        self::TYPE_PROGRAM
+    ];
 
     public function getEntityId()
     {
         switch ($this->block_type) {
-            case 'project':
+            case self::TYPE_PROJECT:
                 return "project_{$this->block_data}";
-            case 'solution':
+            case self::TYPE_SOLUTION:
                 return "solution_{$this->block_data}";
-            case 'expert':
+            case self::TYPE_EXPERT:
                 return "expert_{$this->block_data}";
-            case 'program':
+            case self::TYPE_PROGRAM:
                 return "program_{$this->block_data}";
         }
     }
@@ -42,20 +51,20 @@ class Feature extends Eloquent
 
     public function isExpert()
     {
-        return $this->block_type == 'expert';
+        return $this->block_type == self::TYPE_EXPERT;
     }
 
     public function isProject()
     {
-        return $this->block_type == 'project';
+        return $this->block_type == self::TYPE_PROJECT;
     }
 
     public function isSolution()
     {
-        return $this->block_type == 'solution';
+        return $this->block_type == self::TYPE_SOLUTION;
     }
     public function isProgram()
     {
-        return $this->block_type == 'program';
+        return $this->block_type == self::TYPE_PROGRAM;
     }
 }
