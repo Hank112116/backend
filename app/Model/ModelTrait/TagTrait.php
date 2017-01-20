@@ -13,7 +13,6 @@ trait TagTrait
             if (!is_array($this->project_tags)) {
                 return [];
             }
-
         } else {
             $this->project_tags = [];
         }

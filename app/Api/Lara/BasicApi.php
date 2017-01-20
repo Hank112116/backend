@@ -142,7 +142,7 @@ abstract class BasicApi
     {
         session()->flash(OAuthKey::API_SERVER_STATUS, 'stop');
 
-        return Response::create([], Response::HTTP_SERVICE_UNAVAILABLE ,['Retry-After' => 120]);
+        return Response::create([], Response::HTTP_SERVICE_UNAVAILABLE, ['Retry-After' => 120]);
     }
 
     /**
@@ -150,7 +150,7 @@ abstract class BasicApi
      * @param array $options
      * @param ResponseInterface $response
      */
-    private function recordActionLog(string $url,array $options, ResponseInterface $response)
+    private function recordActionLog(string $url, array $options, ResponseInterface $response)
     {
         $data = [
             'url'      => $url,

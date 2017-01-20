@@ -227,7 +227,6 @@ class ProjectRepo implements ProjectInterface
             });
         }
 
-
         if (!empty($input['dstart']) and !empty($input['time_type'])) {
             $dstart = $input['dstart'];
 
@@ -239,8 +238,7 @@ class ProjectRepo implements ProjectInterface
 
             $time_type = $input['time_type'];
 
-            switch ($time_type)
-            {
+            switch ($time_type) {
                 case 'update':
                     $projects = $projects->whereBetween('update_time', [$dstart, $dend]);
 
@@ -267,8 +265,8 @@ class ProjectRepo implements ProjectInterface
                     $projects = $projects->whereIn('project_id', $project_statistic->pluck('id'));
                     break;
             }
-
         }
+
         $projects = $projects->get();
         $search_projects = $projects;
         $projects        = $this->getPaginateFromCollection($projects, $page, $per_page);

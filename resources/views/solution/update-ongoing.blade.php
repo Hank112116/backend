@@ -13,16 +13,16 @@
 
 @section('content')
 <div class="page-header">
-    <h1>{!! $solution->solution_title !!}</h1>
+    <h1>{!! $solution->getTitle() !!}</h1>
 
     <div>
-        @if( !$solution->is_manager_approved or auth()->user()->isAdmin() or auth()->user()->isManagerHead() )
-        <a href="{!! action('SolutionController@approveEdition', $solution->solution_id) !!}"
+        @if( !$solution->isManagerApproved() or auth()->user()->isAdmin() or auth()->user()->isManagerHead() )
+        <a href="{!! action('SolutionController@approveEdition', $solution->getId()) !!}"
             class="btn-mini btn-flat-green">
             <i class="fa fa-shield fa-fw"></i> Approve <i class="fa fa-copy"></i>
         </a>
 
-        <a href="{!! action('SolutionController@rejectEdition', $solution->solution_id) !!}"
+        <a href="{!! action('SolutionController@rejectEdition', $solution->getId()) !!}"
             class="btn-mini btn-flat-purple">
             <i class="fa fa-shield fa-fw"></i> Reject <i class="fa fa-copy"></i>
         </a>
@@ -32,7 +32,7 @@
 
 <div id="to-approve" class="form-container">
     {!! Form::open([
-    'action' => ['SolutionController@updateOngoing', $solution->solution_id],
+    'action' => ['SolutionController@updateOngoing', $solution->getId()],
     'method' => 'POST', 'class' => 'form-horizontal', 'role' => 'form',
     'enctype' => 'multipart/form-data' ]) !!}
 

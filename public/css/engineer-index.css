@@ -627,40 +627,90 @@ th {
 }
 
 /* line 221, ../../front/sass/elements/_icons.scss */
+.icon-categ-wearable:before {
+  content: "\e637";
+}
+
+/* line 224, ../../front/sass/elements/_icons.scss */
+.icon-categ-industrial:before {
+  content: "\e638";
+}
+
+/* line 227, ../../front/sass/elements/_icons.scss */
+.icon-categ-sports:before {
+  content: "\e639";
+}
+
+/* line 230, ../../front/sass/elements/_icons.scss */
+.icon-categ-toys:before {
+  content: "\e63a";
+}
+
+/* line 233, ../../front/sass/elements/_icons.scss */
+.icon-categ-audio-video-device:before {
+  content: "\e63b";
+}
+
+/* line 236, ../../front/sass/elements/_icons.scss */
+.icon-categ-smart-home:before {
+  content: "\e63c";
+}
+
+/* line 239, ../../front/sass/elements/_icons.scss */
+.icon-categ-tech-accessories:before {
+  content: "\e63d";
+}
+
+/* line 242, ../../front/sass/elements/_icons.scss */
+.icon-categ-auto:before {
+  content: "\e63e";
+}
+
+/* line 245, ../../front/sass/elements/_icons.scss */
+.icon-categ-health:before {
+  content: "\e63f";
+}
+
+/* line 248, ../../front/sass/elements/_icons.scss */
+.icon-categ-science:before {
+  content: "\e640";
+}
+
+/* line 251, ../../front/sass/elements/_icons.scss */
 .icon-play:before {
   content: "\e641";
 }
 
-/* line 224, ../../front/sass/elements/_icons.scss */
+/* line 254, ../../front/sass/elements/_icons.scss */
 .icon-bookmark:before {
   content: "\e642";
 }
 
-/* line 227, ../../front/sass/elements/_icons.scss */
+/* line 257, ../../front/sass/elements/_icons.scss */
 .icon-follower:before {
   content: "\e643";
 }
 
-/* line 230, ../../front/sass/elements/_icons.scss */
+/* line 260, ../../front/sass/elements/_icons.scss */
 .icon-customer-perk:before {
   content: "\e644";
 }
 
-/* line 233, ../../front/sass/elements/_icons.scss */
+/* line 263, ../../front/sass/elements/_icons.scss */
 .icon-lock:before {
   content: "\e645";
 }
 
-/* line 237, ../../front/sass/elements/_icons.scss */
+/* line 267, ../../front/sass/elements/_icons.scss */
 .fa.arrow {
   float: right;
 }
-/* line 239, ../../front/sass/elements/_icons.scss */
+/* line 269, ../../front/sass/elements/_icons.scss */
 .fa.arrow:before {
   content: "\f104";
 }
 
-/* line 244, ../../front/sass/elements/_icons.scss */
+/* line 274, ../../front/sass/elements/_icons.scss */
 .active > a > .fa.arrow:before {
   content: "\f107";
 }

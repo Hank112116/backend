@@ -12,26 +12,26 @@
 
 @section('content')
 	<div class="page-header">
-	    <h1>{{ $solution->solution_title }}</h1>
+	    <h1>{{ $solution->getTitle() }}</h1>
 
         <div>
             @if($solution->isOngoing() and !$is_restricted)
                 @if($solution->isOffShelf())
-                    <a href="{!! action('SolutionController@onShelf', $solution->solution_id) !!}"
+                    <a href="{!! action('SolutionController@onShelf', $solution->getId()) !!}"
                         class="btn-mini btn-flat-green">
                         <i class="fa fa-shield fa-fw"></i>On Shelf
                     </a>
                 @else
-                    <a href="{!! action('SolutionController@offShelf', $solution->solution_id) !!}"
+                    <a href="{!! action('SolutionController@offShelf', $solution->getId()) !!}"
                        class="btn-mini btn-flat-purple">
                         <i class="fa fa-shield fa-fw"></i>Off Shelf
                     </a>
                 @endif
             @endif
-            @if (!$is_restricted && $solution->isWaitApprove() and (!$solution->is_manager_approved or auth()->user()->isAdmin() or auth()->user()->isManagerHead()))
-            <button class="btn-mini btn-flat-green js-approve-solution" rel="{{ $solution->solution_id }}">
+            @if (!$is_restricted && $solution->isWaitPublish() and (!$solution->isManagerApproved() or auth()->user()->isAdmin() or auth()->user()->isManagerHead()))
+            <button class="btn-mini btn-flat-green js-approve-solution" rel="{{ $solution->getId() }}">
                 <i class="fa fa-shield fa-fw"></i> Approve</button>
-            <button class="btn-mini btn-flat-purple js-reject-solution" rel="{{ $solution->solution_id }}">
+            <button class="btn-mini btn-flat-purple js-reject-solution" rel="{{ $solution->getId() }}">
                 <i class="fa fa-shield fa-fw"></i> Reject</button>
             @endif
         </div>
@@ -40,7 +40,7 @@
 
     <div id="origin" class="active form-container">
 	   {!! Form::open([
-            'action' => ['SolutionController@update', $solution->solution_id],
+            'action' => ['SolutionController@update', $solution->getId()],
 			'method' => 'POST', 'class' => 'form-horizontal', 'role' => 'form',
 			'enctype' => 'multipart/form-data' ]) !!}
 

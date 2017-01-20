@@ -9,6 +9,5 @@ class UserCommentRepo implements UserCommentInterface
 {
     public function __construct()
     {
-
     }
 }

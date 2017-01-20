@@ -7,9 +7,6 @@ use Backend\Api\Lara\BasicApi;
 use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Enums\GrantTypeRegistry;
 use Backend\Enums\URI\API\HWTrekApiEnum;
-use Backend\Facades\Log;
-use GuzzleHttp\Cookie\SetCookie;
-use GuzzleHttp\Exception\ConnectException;
 
 class OAuthApi extends BasicApi implements OAuthApiInterface
 {
@@ -30,6 +27,9 @@ class OAuthApi extends BasicApi implements OAuthApiInterface
                 config('api.hwtrek_client_id'),
                 config('api.hwtrek_client_secret'),
             ],
+            'headers' => [
+                'X-Csrf-Token' => session()->get(OAuthKey::HWTREK_CSRF_TOKEN)
+            ]
         ];
 
         return $this->post($url, $options);
@@ -44,7 +44,7 @@ class OAuthApi extends BasicApi implements OAuthApiInterface
 
         $options = [
             'json'    => [
-                'grant_type'    => GrantTypeRegistry::CLIENT_CREDENTIALS,
+                'grant_type' => GrantTypeRegistry::CLIENT_CREDENTIALS,
             ],
             'auth'    => [
                 config('api.hwtrek_client_id'),

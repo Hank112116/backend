@@ -74,7 +74,7 @@ var SolutionGallery = React.createClass({
 			var image = this.props.galleries[num],
 				is_cover = false;
 
-			if(image && image.fileName == this.props.cover) {
+			if(image && image.fileUrl == this.props.cover) {
 				cover = image.fileUrl;
 				is_cover = true;
 			}

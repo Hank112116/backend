@@ -69,14 +69,16 @@ $(function () {
     $document.on("ifChecked", ".approve_program", function (e) {
         e.preventDefault();
         var solution_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Upgrade Solution to Program?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
+                    self.iCheck("uncheck");
                     post_data(solution_id, "/solution/to-program");
                 } else {
-                    return false;
+                    self.iCheck("uncheck");
                 }
             }
         });
@@ -85,14 +87,16 @@ $(function () {
     $document.on("ifChecked", ".approve_solution", function (e) {
         e.preventDefault();
         var solution_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Change Program to Solution?",
             confirmButton: "Yes, Approve!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
+                    self.iCheck("uncheck");
                     post_data(solution_id, "/solution/to-solution");
                 } else {
-                    return false;
+                    self.iCheck("uncheck");
                 }
             }
         });
@@ -101,14 +105,16 @@ $(function () {
     $document.on("ifChecked", ".cancel_solution", function (e) {
         e.preventDefault();
         var solution_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Cancel Pending Solution to Program?",
             confirmButton: "Yes, Cancel!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
+                    self.iCheck("uncheck");
                     post_data(solution_id, "/solution/cancel-pending-solution");
                 } else {
-                    return false;
+                    self.iCheck("uncheck");
                 }
             }
         });
@@ -117,14 +123,16 @@ $(function () {
     $document.on("ifChecked", ".cancel_program", function (e) {
         e.preventDefault();
         var solution_id = $(this).attr("rel");
+        var self = $(this);
         SweetAlert.alert({
             title: "Cancel Pending Program to Solution?",
             confirmButton: "Yes, Cancel!",
             handleOnConfirm: function handleOnConfirm(is_confirm) {
                 if (is_confirm) {
+                    self.iCheck("uncheck");
                     post_data(solution_id, "/solution/cancel-pending-program");
                 } else {
-                    return false;
+                    self.iCheck("uncheck");
                 }
             }
         });
@@ -137,13 +145,23 @@ $(function () {
                 solution_id: solution_id
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _() {
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.reload();
+                },
+                400: function _() {
+                    Notifier.showTimedMessage('Change type fail!', "warning", 2);
+                },
+                403: function _() {
+                    Notifier.showTimedMessage('Permissions denied!', "warning", 2);
+                },
+                404: function _() {
+                    Notifier.showTimedMessage('Solution not found!', "warning", 2);
+                },
+                500: function _() {
+                    Notifier.showTimedMessage('Change type fail!', "warning", 2);
                 }
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
             }
         });
     }

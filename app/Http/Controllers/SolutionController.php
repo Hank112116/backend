@@ -2,12 +2,17 @@
 
 namespace Backend\Http\Controllers;
 
-use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
+use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
+use Backend\Assistant\SolutionApi\SolutionListResponseAssistant;
+use Backend\Assistant\SolutionApi\SolutionResponseAssistant;
+use Backend\Enums\API\Response\Key\SolutionKey;
+use Backend\Model\ModelInterfaces\FeatureModifierInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Facades\Log;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Response;
 use Noty;
 
 class SolutionController extends BaseController
@@ -17,114 +22,70 @@ class SolutionController extends BaseController
     private $solution_repo;
     private $project_repo;
     private $adminer_repo;
+    private $solution_api;
+    private $feature_modifier;
 
     public function __construct(
         SolutionInterface $solution,
         ProjectInterface $project,
-        AdminerInterface $adminer
+        AdminerInterface $adminer,
+        SolutionApiInterface $solution_api,
+        FeatureModifierInterface $feature_modifier
     ) {
         parent::__construct();
 
-        $this->solution_repo = $solution;
-        $this->project_repo  = $project;
-        $this->adminer_repo  = $adminer;
+        $this->solution_repo    = $solution;
+        $this->project_repo     = $project;
+        $this->adminer_repo     = $adminer;
+        $this->solution_api     = $solution_api;
+        $this->feature_modifier = $feature_modifier;
     }
 
     public function showList()
     {
-        $solutions = $this->solution_repo->byPage($this->page, $this->per_page);
+        $query = [
+            SolutionKey::KEY_PAGE                => $this->page,
+            SolutionKey::KEY_LIMIT               => $this->per_page,
+            SolutionKey::KEY_SOLUTION_ID         => empty($this->request->get('solution_id')) ? null : $this->request->get('solution_id'),
+            SolutionKey::KEY_OWNER               => empty($this->request->get('user_name')) ? null : $this->request->get('user_name'),
+            SolutionKey::KEY_TITLE               => empty($this->request->get('solution_title')) ? null : $this->request->get('solution_title'),
+            SolutionKey::KEY_APPROVED_START_TIME => empty($this->request->get('dstart')) ? null : $this->request->get('dstart'),
+            SolutionKey::KEY_APPROVED_END_TIME   => empty($this->request->get('dend')) ? null : $this->request->get('dend'),
+            SolutionKey::KEY_STATUS              => $this->request->get('status') === 'all' ? null : $this->request->get('status')
+        ];
 
-        return $this->showSolutions($solutions);
-    }
+        $response = $this->solution_api->listSolutions($query);
 
-    public function showWaitApproveSolutions()
-    {
-        $solutions = $this->solution_repo->waitApproveSolutions();
+        $solution_list_assistant = SolutionListResponseAssistant::create($response);
 
-        return $this->showSolutions($solutions, $paginate = false);
-    }
+        $solutions = $solution_list_assistant->getSolutionListPaginate($this->per_page);
 
-    public function showDraftSolutions()
-    {
-        $solutions = $this->solution_repo->drafts();
-
-        return $this->showSolutions($solutions, $paginate = false);
-    }
-
-    public function showDeletedSolutions()
-    {
-        $solutions = $this->solution_repo->deletedSolutions();
-
-        return $this->showSolutions($solutions, $paginate = false, $title = 'deleted solutions');
-    }
-
-    public function showProgram()
-    {
-        $solutions = $this->solution_repo->program();
-
-        return $this->showSolutions($solutions, $paginate = false);
-    }
-
-    public function showPendingProgram()
-    {
-        $solutions = $this->solution_repo->pendingProgram();
-
-        return $this->showSolutions($solutions, $paginate = false);
-    }
-
-    public function showPendingSolution()
-    {
-        $solutions = $this->solution_repo->pendingSolution();
-
-        return $this->showSolutions($solutions, $paginate = false);
-    }
-
-    public function showSearch()
-    {
-        $solution   = $this->solution_repo->byUnionSearch($this->request->all(), $this->page, $this->per_page);
-        $log_action = 'Search solution';
-        Log::info($log_action, $this->request->all());
-
-        if ($solution->count() == 0) {
+        if ($solutions->count() == 0) {
             Noty::warnLang('common.no-search-result');
         }
 
-        return $this->showSolutions($solution, $paginate = true);
-    }
-
-    public function showSolutions($solutions, $paginate = true, $title = '')
-    {
         if ($this->request->has('csv')) {
             return $this->renderCsv($solutions);
         }
-        $has_wait_approve = auth()->user()->isBackendPM() ?
-            $this->solution_repo->hasWaitManagerApproveSolution() :
-            $this->solution_repo->hasWaitApproveSolution();
-
-        $has_program = $this->solution_repo->hasProgram();
-        $has_pending_up_program = $this->solution_repo->hasPendingProgram();
-        $has_pending_change_solution = $this->solution_repo->hasPendingSolution();
 
         return view('solution.list')->with([
-            'title'                        => $title ?: 'solutions',
-            'per_page'                     => $paginate? $this->per_page : '',
             'is_restricted'                => $this->is_restricted_adminer,
             'solutions'                    => $solutions,
-            'has_wait_approve_solutions'   => $has_wait_approve,
-            'has_program'                  => $has_program,
-            'has_pending_up_program'       => $has_pending_up_program,
-            'has_pending_change_solution'  => $has_pending_change_solution
+            'has_wait_approve_solutions'   => $solution_list_assistant->hasWaitPublishSolution(),
+            'total_count'                  => $solution_list_assistant->getTotalCount(),
         ]);
     }
 
+    /**
+     * @param $solutions
+     * @return int
+     */
     private function renderCsv($solutions)
     {
-        $output = $this->solution_repo->toOutputArray(
-            $this->request->get('csv') == 'all' ? $this->solution_repo->all() : $solutions
-        );
+        $output = $this->solution_repo->toOutputArray($solutions);
 
-        $csv_type   = $this->request->get('csv') == 'all' ? 'all' : 'this';
-        $log_action = 'CSV of Solution ('.$csv_type.')';
+        $log_action = 'CSV of Solution';
+
         Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'solutions');
@@ -137,24 +98,21 @@ class SolutionController extends BaseController
      **/
     public function showDetail($solution_id)
     {
-        $solution = $this->solution_repo->find($solution_id);
-        if (is_null($solution)) {
-            Noty::warnLang('user.no-user');
-            return redirect()->action('SolutionController@showList');
-        }
+        $response = $this->solution_api->getSolution($solution_id);
 
-        if ($solution->image_gallery) {
-            $image_gallery = json_decode($solution->image_gallery);
-            $image_gallery = str_replace('\n', '', json_encode($image_gallery, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_PRESERVE_ZERO_FRACTION));
-        } else {
-            $image_gallery = null;
+        $solution_assistant = SolutionResponseAssistant::create($response);
+
+        $solution = $solution_assistant->getSolution();
+
+        if (is_null($solution)) {
+            Noty::warnLang('solution.no-solution');
+            return redirect()->action('SolutionController@showList');
         }
 
         return view('solution.detail')->with([
             'is_restricted'    => $this->is_restricted_adminer,
-            'project_tag_tree' => $this->project_repo->projectTagTree(),
             'solution'         => $solution,
-            'image_gallery'    => $image_gallery
+            'image_gallery'    => json_encode($solution->getShowcase())
         ]);
     }
 
@@ -164,36 +122,22 @@ class SolutionController extends BaseController
      **/
     public function showUpdate($solution_id)
     {
-        $is_wait_approve_ongoing = $this->solution_repo->isWaitApproveOngoing($solution_id);
+        $response = $this->solution_api->getSolution($solution_id);
 
-        $solution = $is_wait_approve_ongoing ?
-            $this->solution_repo->findDuplicate($solution_id) : $this->solution_repo->find($solution_id);
+        $solution_assistant = SolutionResponseAssistant::create($response);
+
+        $solution = $solution_assistant->getSolution();
 
         if (is_null($solution)) {
-            Noty::warnLang('user.no-user');
+            Noty::warnLang('solution.no-solution');
             return redirect()->action('SolutionController@showList');
         }
 
-        if ($solution->image_gallery) {
-            $image_gallery = json_decode($solution->image_gallery);
-            $image_gallery = str_replace('\n', '', json_encode($image_gallery, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_PRESERVE_ZERO_FRACTION));
-        } else {
-            $image_gallery = null;
-        }
-
-        return view($is_wait_approve_ongoing ? 'solution.update-ongoing' : 'solution.update')
+        return view('solution.update')
             ->with([
-                'is_restricted'            => $this->is_restricted_adminer,
-                'project_tag_tree'         => $this->project_repo->projectTagTree(),
-
-                'category_options'         => $this->solution_repo->categoryOptions(),
-                'certification_options'    => $this->solution_repo->certificationOptions(),
-
-                'project_progress_options' => $this->project_repo->currentStageOptions(),
-                'project_category_options' => $this->project_repo->categoryOptions(),
-
-                'solution'                 => $solution,
-                'image_gallery'            => $image_gallery,
+                'is_restricted'  => $this->is_restricted_adminer,
+                'solution'       => $solution,
+                'image_gallery'  => json_encode($solution->getShowcase()),
             ]);
     }
 
@@ -210,146 +154,136 @@ class SolutionController extends BaseController
         ];
         Log::info($log_action, $log_data);
 
-        $this->solution_repo->update($solution_id, $this->request->all());
-        Noty::successLang('solution.admin-update');
+        if ($this->request->has('user_id')) {
+            if ($this->request->get('user_id') == '0') {
+                return redirect()->action('SolutionController@showUpdate', $solution_id);
+            }
+        }
 
-        return redirect()->action('SolutionController@showDetail', $solution_id);
-    }
+        // TODO use upload solution picture API
+        $image_gallery = $this->solution_repo->updateImageGalleries($solution_id, $this->request->all());
 
-    /**
-     * @param int $solution_id
-     * @return Response
-     **/
-    public function updateOngoing($solution_id)
-    {
-        $this->solution_repo->duplicateRepo()->update($solution_id, $this->request->all());
-        Noty::successLang('solution.admin-update-ongoing');
+        $modify_data = [
+            'ownerId'   => $this->request->get('user_id'),
+            'image'     => $image_gallery['image'],
+            'showcase'  => $image_gallery['image_gallery'],
+        ];
 
-        return redirect()->action('SolutionController@showUpdate', $solution_id);
-    }
+        $response = $this->solution_api->modifySolution($solution_id, $modify_data);
 
-    public function approve($solution_id)
-    {
-        $solution = $this->solution_repo->find($solution_id);
-
-        /* @var ApproveApiInterface $approve_api*/
-        $approve_api = app()->make(ApproveApiInterface::class);
-
-        Log::info('Solution approved', ['solution_id' => $solution_id]);
-
-        return $approve_api->approve($solution);
+        if ($response->isOk()) {
+            Noty::successLang('solution.admin-update');
+            return redirect()->action('SolutionController@showDetail', $solution_id);
+        } else {
+            Noty::warnLang('solution.admin-update-fail');
+            return redirect()->action('SolutionController@showUpdate', $solution_id);
+        }
     }
 
     //change solution type to program (solution table:is_program)
     public function toProgram()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
-            $solution = $this->solution_repo->find($solution_id);
-            if ($solution) {
-                $this->solution_repo->toProgram($solution_id, auth()->user()->isBackendPM());
-                $res   = ['status' => 'success'];
+
+            if ($this->auth_user->isBackendPM()) {
+                $response = $this->solution_api->changeToPendingToProgram($solution_id);
+
+                Log::info('Solution pending to program', ['solution_id' => $solution_id]);
             } else {
-                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+                $response = $this->solution_api->changeToProgram($solution_id);
+
+                $this->feature_modifier->solutionFeatureToProgram($solution_id);
+
+                Log::info('Solution to program', ['solution_id' => $solution_id]);
             }
         } else {
-            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+            $response = response('', Response::HTTP_FORBIDDEN);
         }
-        return response()->json($res);
+        return $response;
     }
+
     //change solution type to program (solution table:is_program)
     public function toSolution()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
-            $solution = $this->solution_repo->find($solution_id);
-            if ($solution) {
-                $this->solution_repo->toSolution($solution_id, auth()->user()->isBackendPM());
-                $res   = ['status' => 'success'];
+
+            if ($this->auth_user->isBackendPM()) {
+                $response = $this->solution_api->changeToPendingToNormalSolution($solution_id);
+
+                Log::info('Program pending to solution', ['solution_id' => $solution_id]);
             } else {
-                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
+                $response = $this->solution_api->changeToNormalSolution($solution_id);
+
+                $this->feature_modifier->programFeatureToNormalSolution($solution_id);
+
+                Log::info('Program to solution', ['solution_id' => $solution_id]);
             }
         } else {
-            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+            $response = response('', Response::HTTP_FORBIDDEN);
         }
-        return response()->json($res);
+        return $response;
     }
 
     //cancel pending solution to program
     public function cancelPendingSolution()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
-            $solution = $this->solution_repo->find($solution_id);
-            if ($solution) {
-                $this->solution_repo->toProgram($solution_id, false);
-                Log:info('Cancel pending to solution', ['solution_id' => $solution_id]);
-                $res   = ['status' => 'success'];
-            } else {
-                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
-            }
+
+            $response = $this->solution_api->changeToProgram($solution_id);
+
+            Log:info('Cancel pending to solution', ['solution_id' => $solution_id]);
         } else {
-            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+            $response = response('', Response::HTTP_FORBIDDEN);
         }
-        return response()->json($res);
+        return $response;
     }
 
     //cancel pending program to solution
     public function cancelPendingProgram()
     {
-        if (auth()->user()->isBackendPM() || auth()->user()->isAdmin() || auth()->user()->isManagerHead()) {
+        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
-            $solution = $this->solution_repo->find($solution_id);
-            if ($solution) {
-                $this->solution_repo->toSolution($solution_id, false);
-                Log:info('Cancel pending to program', ['solution_id' => $solution_id]);
-                $res   = ['status' => 'success'];
-            } else {
-                $res   = ['status' => 'fail', 'msg'=>'Not found solution id!'];
-            }
+
+            $response = $this->solution_api->changeToNormalSolution($solution_id);
+
+            Log:info('Cancel pending to program', ['solution_id' => $solution_id]);
         } else {
-            $res   = ['status' => 'fail', 'msg'=>'Permissions denied!'];
+            $response = response('', Response::HTTP_FORBIDDEN);
         }
-        return response()->json($res);
+        return $response;
+    }
+
+    public function approve($solution_id)
+    {
+        Log::info('Solution approved', ['solution_id' => $solution_id]);
+
+        return $this->solution_api->approve($solution_id);
     }
 
     public function reject($solution_id)
     {
-        $solution = $this->solution_repo->find($solution_id);
-
-        /* @var ApproveApiInterface $approve_api*/
-        $approve_api = app()->make(ApproveApiInterface::class);
-
         Log:info('Solution rejected', ['solution_id' => $solution_id]);
 
-        return $approve_api->reject($solution);
-    }
-
-    public function approveEdition($solution_id)
-    {
-        $this->solution_repo->duplicateRepo()->approve($solution_id, auth()->user()->isBackendPM());
-        Noty::successLang('solution.approve');
-
-        return redirect()->action('SolutionController@showDetail', $solution_id);
-    }
-
-    public function rejectEdition($solution_id)
-    {
-        $this->solution_repo->duplicateRepo()->reject($solution_id);
-        Noty::successLang('solution.reject');
-
-        return redirect()->action('SolutionController@showDetail', $solution_id);
+        return $this->solution_api->reject($solution_id);
     }
 
     public function onShelf($solution_id)
     {
+        $response = $this->solution_api->onShelf($solution_id);
+
+        if (!$response->isOk()) {
+            Noty::warn('The solution on shelf fail.');
+        }
+
         $log_action = 'Solution on shelf';
         $log_data   = [
             'solution_id' => $solution_id,
         ];
         Log::info($log_action, $log_data);
 
-        $this->solution_repo->onShelf($solution_id);
         Noty::successLang('solution.on-shelf');
 
         return redirect()->action('SolutionController@showDetail', $solution_id);
@@ -357,13 +291,18 @@ class SolutionController extends BaseController
 
     public function offShelf($solution_id)
     {
+        $response = $this->solution_api->offShelf($solution_id);
+
+        if (!$response->isOk()) {
+            Noty::warn('The solution off shelf fail.');
+        }
+
         $log_action = 'Solution off shelf';
         $log_data   = [
             'solution_id' => $solution_id,
         ];
         Log::info($log_action, $log_data);
 
-        $this->solution_repo->offShelf($solution_id);
         Noty::successLang('solution.off-shelf');
 
         return redirect()->action('SolutionController@showDetail', $solution_id);

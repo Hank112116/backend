@@ -9,18 +9,11 @@ abstract class BaseResponseAssistant
     /* @var Response $response*/
     protected $response;
 
-    public function deserialize()
-    {
-        return json_decode($this->response->getContent());
-    }
-
+    /**
+     * @return array
+     */
     public function decode()
     {
         return json_decode($this->response->getContent(), true);
-    }
-
-    public function serialize()
-    {
-        return $this->response->getContent();
     }
 }
