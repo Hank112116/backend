@@ -20,7 +20,6 @@ class UserController extends BaseController
 {
     protected $cert = 'user';
 
-    private $auth;
     private $user_repo;
     private $project_repo;
     private $solution_repo;
@@ -37,7 +36,6 @@ class UserController extends BaseController
         ApplyExpertMessageInterface $apply_expert_message
     ) {
         parent::__construct();
-        $this->auth           = auth()->user()->isAdmin() || auth()->user()->isManagerHead();
         $this->user_repo      = $user;
         $this->project_repo   = $project;
         $this->solution_repo  = $solution;
@@ -408,7 +406,7 @@ class UserController extends BaseController
             if ($input['route_path'] === 'report/registration') {
                 // make report project row view
                 $view = view()->make('report.user-row')
-                    ->with(['user' => $user, 'input' => $input,'is_super_admin' => $this->auth])
+                    ->with(['user' => $user, 'input' => $input,'is_super_admin' => auth()->user()->isSuperAdmin()])
                     ->render();
             } else {
                 if ($this->is_limitied_editor) {

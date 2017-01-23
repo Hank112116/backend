@@ -27,4 +27,14 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('storage:clear-tmp')->dailyAt('13:00');
     }
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
+    }
 }

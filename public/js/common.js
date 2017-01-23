@@ -22,6 +22,10 @@ $(function () {
     icheck.init();
 
     Notifier.showTimedMessage($("meta[name=noty-msg]").attr("content"), $("meta[name=noty-type]").attr("content"), 5);
+
+    $.ajaxSetup({
+        headers: { "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content") }
+    });
 });
 
 },{"./libs/Notifier":2,"./modules/icheck":3,"./modules/menu":4}],2:[function(require,module,exports){
