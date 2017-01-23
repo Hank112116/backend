@@ -22,13 +22,13 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            'Backend\Http\Middleware\EncryptCookies',
             'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
             'Illuminate\Session\Middleware\StartSession',
             'Illuminate\View\Middleware\ShareErrorsFromSession',
+            'Backend\Http\Middleware\VerifyCsrfToken',
             'Illuminate\Routing\Middleware\SubstituteBindings',
             'Backend\Http\Middleware\CheckDuplicateLogin',
-            'Backend\Http\Middleware\EncryptCookies',
-            'Backend\Http\Middleware\VerifyCsrfToken',
         ],
 
         'api' => [

@@ -69,7 +69,7 @@ class ReportController extends BaseController
                 'title'          => 'Comment Summary',
                 'users'          => $users,
                 'range'          => $this->request->get('range'),
-                'is_super_admin' => auth()->user()->isSuperAdmin(),
+                'is_super_admin' => $this->isSuperAdmin(),
             ]);
         return $template;
     }
@@ -97,7 +97,7 @@ class ReportController extends BaseController
                 'title'          => 'Registration Summary',
                 'users'          => $users,
                 'range'          => $this->request->get('range'),
-                'is_super_admin' => auth()->user()->isSuperAdmin(),
+                'is_super_admin' => $this->isSuperAdmin(),
             ]);
         return $template;
     }
@@ -131,7 +131,7 @@ class ReportController extends BaseController
                 'event_users'      => $join_event_users,
                 'event_list'       => $event_list,
                 'event_id'         => $event_id,
-                'is_super_admin'   => auth()->user()->isSuperAdmin(),
+                'is_super_admin'   => $this->isSuperAdmin(),
                 'begin_number'     => $begin_number,
                 'admins'           => $admins,
                 'dstart'           => $dstart,
@@ -207,7 +207,7 @@ class ReportController extends BaseController
                 'event_list'          => $event_list,
                 'event_id'            => $event_id,
                 'approve_event_users' => $approve_event_users,
-                'is_super_admin'      => auth()->user()->isSuperAdmin(),
+                'is_super_admin'      => $this->isSuperAdmin(),
                 'admins'              => $admins,
                 'dstart'              => $dstart,
                 'dend'                => $dend
@@ -270,7 +270,7 @@ class ReportController extends BaseController
                 'title'            => 'Project Report',
                 'projects'         => $projects,
                 'range'            => $this->request->get('range'),
-                'is_super_admin'   => auth()->user()->isSuperAdmin(),
+                'is_super_admin'   => $this->isSuperAdmin(),
                 'pm_ids'           => $pm_ids,
                 'input'            => $input,
                 'match_statistics' => $projects->match_statistics

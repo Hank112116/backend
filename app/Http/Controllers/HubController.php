@@ -7,13 +7,12 @@ use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Facades\Log;
+use Illuminate\View\View;
 use Mews\Purifier\Purifier;
 use Noty;
-use Carbon;
 
 class HubController extends BaseController
 {
-
     protected $cert = 'hub';
 
     private $hub_repo;
@@ -47,7 +46,7 @@ class HubController extends BaseController
     {
         return view('hub.questionnaires')
             ->with('questionnaires', $this->hub_repo->allQuestionnaires())
-            ->with('is_restricted', $this->is_restricted_adminer);
+            ->with('is_restricted', $this->isRestricted());
     }
 
     /**
@@ -66,7 +65,7 @@ class HubController extends BaseController
         return view('hub.schedules')
             ->with('schedules', $this->hub_repo->allSchedules())
             ->with('preview', $preview)
-            ->with('is_restricted', $this->is_restricted_adminer);
+            ->with('is_restricted', $this->isRestricted());
     }
 
     /**
@@ -95,7 +94,7 @@ class HubController extends BaseController
      * Show schedule manager update.
      * GET /hub/schedule-manager/{id}
      * @param $id
-     * @return $this
+     * @return View
      */
     public function showUpdateScheduleManager($id)
     {
@@ -130,8 +129,7 @@ class HubController extends BaseController
     }
 
     /**
-     * @param $expertId
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getExpert()
     {

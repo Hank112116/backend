@@ -69,7 +69,7 @@ class SolutionController extends BaseController
         }
 
         return view('solution.list')->with([
-            'is_restricted'                => $this->is_restricted_adminer,
+            'is_restricted'                => $this->isRestricted(),
             'solutions'                    => $solutions,
             'has_wait_approve_solutions'   => $solution_list_assistant->hasWaitPublishSolution(),
             'total_count'                  => $solution_list_assistant->getTotalCount(),
@@ -110,7 +110,7 @@ class SolutionController extends BaseController
         }
 
         return view('solution.detail')->with([
-            'is_restricted'    => $this->is_restricted_adminer,
+            'is_restricted'    => $this->isRestricted(),
             'solution'         => $solution,
             'image_gallery'    => json_encode($solution->getShowcase())
         ]);
@@ -135,7 +135,7 @@ class SolutionController extends BaseController
 
         return view('solution.update')
             ->with([
-                'is_restricted'  => $this->is_restricted_adminer,
+                'is_restricted'  => $this->isRestricted(),
                 'solution'       => $solution,
                 'image_gallery'  => json_encode($solution->getShowcase()),
             ]);
@@ -183,10 +183,10 @@ class SolutionController extends BaseController
     //change solution type to program (solution table:is_program)
     public function toProgram()
     {
-        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
+        if ($this->authUser()->isBackendPM() || $this->authUser()->isAdmin() || $this->authUser()->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
-            if ($this->auth_user->isBackendPM()) {
+            if ($this->authUser()->isBackendPM()) {
                 $response = $this->solution_api->changeToPendingToProgram($solution_id);
 
                 Log::info('Solution pending to program', ['solution_id' => $solution_id]);
@@ -206,10 +206,10 @@ class SolutionController extends BaseController
     //change solution type to program (solution table:is_program)
     public function toSolution()
     {
-        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
+        if ($this->authUser()->isBackendPM() || $this->authUser()->isAdmin() || $this->authUser()->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
-            if ($this->auth_user->isBackendPM()) {
+            if ($this->authUser()->isBackendPM()) {
                 $response = $this->solution_api->changeToPendingToNormalSolution($solution_id);
 
                 Log::info('Program pending to solution', ['solution_id' => $solution_id]);
@@ -229,7 +229,7 @@ class SolutionController extends BaseController
     //cancel pending solution to program
     public function cancelPendingSolution()
     {
-        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
+        if ($this->authUser()->isBackendPM() || $this->authUser()->isAdmin() || $this->authUser()->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
             $response = $this->solution_api->changeToProgram($solution_id);
@@ -244,7 +244,7 @@ class SolutionController extends BaseController
     //cancel pending program to solution
     public function cancelPendingProgram()
     {
-        if ($this->auth_user->isBackendPM() || $this->auth_user->isAdmin() || $this->auth_user->isManagerHead()) {
+        if ($this->authUser()->isBackendPM() || $this->authUser()->isAdmin() || $this->authUser()->isManagerHead()) {
             $solution_id = $this->request->get('solution_id');
 
             $response = $this->solution_api->changeToNormalSolution($solution_id);
