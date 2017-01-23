@@ -3,8 +3,8 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
-use Backend\Assistant\SolutionApi\SolutionListResponseAssistant;
-use Backend\Assistant\SolutionApi\SolutionResponseAssistant;
+use Backend\Assistant\ApiResponse\SolutionApi\SolutionListResponseAssistant;
+use Backend\Assistant\ApiResponse\SolutionApi\SolutionResponseAssistant;
 use Backend\Enums\API\Response\Key\SolutionKey;
 use Backend\Model\ModelInterfaces\FeatureModifierInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;

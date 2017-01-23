@@ -11,6 +11,7 @@ use Backend\Repo\RepoInterfaces\UserInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Noty;
+use Cache;
 
 class AuthController extends BaseController
 {
@@ -119,8 +120,9 @@ class AuthController extends BaseController
 
         session()->put('cert', $user->role->cert);
         session()->put('admin', $user->id);
-        session()->put(OAuthKey::ACCESS_TOKEN, $oauth_assistant->getAccessToken());
-        session()->put(OAuthKey::TOKEN_TYPE, $oauth_assistant->getTokenType());
+
+        Cache::put(OAuthKey::ACCESS_TOKEN, $oauth_assistant->getAccessToken(), config('api.ttl'));
+        Cache::put(OAuthKey::TOKEN_TYPE, $oauth_assistant->getTokenType(), config('api.ttl'));
 
         Noty::success('Welcome, ' . $user->name . ". Login success");
 

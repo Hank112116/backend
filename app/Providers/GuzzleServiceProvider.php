@@ -7,6 +7,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
+use Cache;
 
 /**
  * Class GuzzleServiceProvider
@@ -21,16 +22,16 @@ class GuzzleServiceProvider extends ServiceProvider
             $config = config('api.client_config');
 
             // Set Authorization header
-            if (session()->has(OAuthKey::TOKEN_TYPE) and session()->has(OAuthKey::ACCESS_TOKEN)) {
-                $authorization = session(OAuthKey::TOKEN_TYPE) . ' ' . session(OAuthKey::ACCESS_TOKEN);
+            if (Cache::has(OAuthKey::TOKEN_TYPE) and Cache::has(OAuthKey::ACCESS_TOKEN)) {
+                $authorization = Cache::get(OAuthKey::TOKEN_TYPE) . ' ' . Cache::get(OAuthKey::ACCESS_TOKEN);
                 $config['headers']['Authorization'] = $authorization;
             }
 
             // If has session cookies, generate cookies jar.
-            if (session()->has(OAuthKey::HWTREK_SESSION_COOKIES)) {
+            if (Cache::has(OAuthKey::HWTREK_SESSION_COOKIES)) {
                 $jar = new CookieJar();
 
-                $cookies = session()->get(OAuthKey::HWTREK_SESSION_COOKIES);
+                $cookies = Cache::get(OAuthKey::HWTREK_SESSION_COOKIES);
 
                 foreach ($cookies as $cookie) {
                     $set_cookie = SetCookie::fromString($cookie);
@@ -46,26 +47,26 @@ class GuzzleServiceProvider extends ServiceProvider
             }
 
             // Set X-Csrf-Token header
-            if (session()->has(OAuthKey::HWTREK_CSRF_TOKEN)) {
-                $config['headers']['X-Csrf-Token'] = session()->get(OAuthKey::HWTREK_CSRF_TOKEN);
+            if (Cache::has(OAuthKey::HWTREK_CSRF_TOKEN)) {
+                $config['headers']['X-Csrf-Token'] = Cache::get(OAuthKey::HWTREK_CSRF_TOKEN);
             }
 
             $client = new  Client($config);
 
             // Get CSRF Token and save set-cookie info
-            if (!session()->has(OAuthKey::HWTREK_SESSION_COOKIES)) {
+            if (!Cache::has(OAuthKey::HWTREK_SESSION_COOKIES)) {
                 try {
                     $response = $client->get('https://' . config('app.front_domain'));
 
                     $cookies = $response->getHeader('Set-Cookie');
 
-                    session()->set(OAuthKey::HWTREK_SESSION_COOKIES, $cookies);
+                    Cache::put(OAuthKey::HWTREK_SESSION_COOKIES, $cookies, config('api.ttl'));
 
                     foreach ($cookies as $cookie) {
                         $set_cookie = SetCookie::fromString($cookie);
                         if ($set_cookie->getName() === 'csrf') {
                             $csrf_token = $set_cookie->getValue();
-                            session()->set(OAuthKey::HWTREK_CSRF_TOKEN, $csrf_token);
+                            Cache::put(OAuthKey::HWTREK_CSRF_TOKEN, $csrf_token, config('api.ttl'));
                         }
                     }
                 } catch (ConnectException $e) {

@@ -2,6 +2,7 @@
 
 use Backend\Enums\API\Response\Key\OAuthKey;
 use Closure;
+use Cache;
 
 class ApiAuthorization
 {
@@ -14,7 +15,7 @@ class ApiAuthorization
      */
     public function handle($request, Closure $next)
     {
-        if (!session()->get(OAuthKey::ACCESS_TOKEN) or !session()->get(OAuthKey::TOKEN_TYPE)) {
+        if (!Cache::get(OAuthKey::ACCESS_TOKEN) or !Cache::get(OAuthKey::TOKEN_TYPE)) {
             auth()->logout();
             session()->clear();
             return redirect('/');
