@@ -2,7 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
-use Backend\Model\Eloquent\Adminer;
+use Backend\Model\ModelTrait\AuthTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Routing\Controller;
@@ -12,16 +12,10 @@ use League\Csv\Writer;
 
 abstract class BaseController extends Controller
 {
-
-    use DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs, ValidatesRequests, AuthTrait;
 
     protected $page = null;
     protected $per_page = null;
-    protected $is_restricted_adminer;
-    protected $is_limitied_editor;
-
-    /* @var Adminer $auth_user */
-    protected $auth_user;
 
     /* @var Request $request */
     protected $request;
@@ -31,24 +25,7 @@ abstract class BaseController extends Controller
         $request = app()->make('Illuminate\Http\Request');
         $this->page     = $this->page ?: $request->get('page', 1);
         $this->per_page = $this->per_page ?: $request->get('pp', 200);
-
         $this->request  = $request;
-
-        if (isset($this->cert)) {
-            $this->setCert();
-        }
-    }
-
-    protected function setCert()
-    {
-        if (!auth()->check()) {
-            $this->is_restricted_adminer = true;
-            return;
-        }
-
-        $this->is_restricted_adminer = auth()->user()->isRestricted($this->cert);
-        $this->is_limitied_editor    = auth()->user()->isLimitedEditor($this->cert);
-        $this->auth_user             = auth()->user();
     }
 
    /**

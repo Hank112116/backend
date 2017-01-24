@@ -291,7 +291,7 @@ class ProjectRepo implements ProjectInterface
         }
 
         $projects = $this->project->with($this->with_relations)
-            ->whereIn('user_id', $users->lists('user_id'))
+            ->whereIn('user_id', $users->pluck('user_id'))
             ->orderBy('project_id', 'desc')
             ->get();
 

@@ -7,6 +7,7 @@ use Backend\Api\Lara\BasicApi;
 use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Enums\GrantTypeRegistry;
 use Backend\Enums\URI\API\HWTrekApiEnum;
+use Cache;
 
 class OAuthApi extends BasicApi implements OAuthApiInterface
 {
@@ -28,7 +29,7 @@ class OAuthApi extends BasicApi implements OAuthApiInterface
                 config('api.hwtrek_client_secret'),
             ],
             'headers' => [
-                'X-Csrf-Token' => session()->get(OAuthKey::HWTREK_CSRF_TOKEN)
+                'X-Csrf-Token' => Cache::get(OAuthKey::HWTREK_CSRF_TOKEN)
             ]
         ];
 

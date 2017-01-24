@@ -14,4 +14,9 @@ $(function () {
         $("meta[name=noty-msg]").attr("content"),
         $("meta[name=noty-type]").attr("content"), 5
     );
+
+    $.ajaxSetup({
+        headers:
+            { "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content") }
+    });
 });

@@ -8,7 +8,7 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "laravel/framework": "5.2.*",
+    "laravel/framework": "5.3.*",
     "aws/aws-sdk-php": "~2.7",
     "rmccue/requests": ">=1.0",
     "hipchat/hipchat-php": ">=1.0.0",
@@ -40,7 +40,8 @@
   "autoload": {
     "classmap": [
       "database",
-      "helpers"
+      "helpers",
+      "routes"
     ],
     "psr-4": {
       "Backend\\": "app/"
@@ -54,11 +55,11 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "php artisan clear-compiled",
+      "Illuminate\\Foundation\\ComposerScripts::postInstall",
       "php artisan optimize"
     ],
     "post-update-cmd": [
-      "php artisan clear-compiled",
+      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "php artisan ide-helper:generate",
       "php artisan optimize"
     ],

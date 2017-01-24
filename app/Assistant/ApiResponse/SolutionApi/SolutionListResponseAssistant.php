@@ -1,5 +1,5 @@
 <?php
-namespace Backend\Assistant\SolutionApi;
+namespace Backend\Assistant\ApiResponse\SolutionApi;
 
 use Backend\Assistant\ApiResponse\BaseResponseAssistant;
 use Backend\Enums\API\Response\Key\SolutionKey;

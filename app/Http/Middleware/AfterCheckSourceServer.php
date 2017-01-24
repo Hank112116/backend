@@ -4,8 +4,7 @@ namespace Backend\Http\Middleware;
 
 use Backend\Enums\API\Response\Key\OAuthKey;
 use Closure;
-
-use Noty;
+use Cache;
 
 class AfterCheckSourceServer
 {
@@ -23,7 +22,10 @@ class AfterCheckSourceServer
         if (session()->has(OAuthKey::API_SERVER_STATUS)) {
             if (session(OAuthKey::API_SERVER_STATUS) === 'stop') {
                 auth()->logout();
+
                 session()->clear();
+
+                Cache::flush();
 
                 session()->flash('login_error_msg', trans()->trans('oauth.source-server-aberrant'));
 

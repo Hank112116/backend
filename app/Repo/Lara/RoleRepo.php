@@ -24,7 +24,7 @@ class RoleRepo implements RoleInterface
 
     public function allNames()
     {
-        return $this->role->lists('name', 'id');
+        return $this->role->pluck('name', 'id');
     }
 
     public function create($input)

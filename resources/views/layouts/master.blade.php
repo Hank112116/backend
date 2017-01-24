@@ -5,7 +5,7 @@
 	<title>HWTrek Backend</title>
 
     <meta name="env"    content="{!! App::environment() !!}">
-    <meta name="token"  content="{!! Session::token() !!}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="noty-msg"  content = "{{ Session::get('noty.msg') }}">
     <meta name="noty-type" content = "{!! Session::get('noty.type') !!} {!! Session::forget('noty') !!}">
@@ -36,7 +36,7 @@
     </script>
 
     <script src="{{ LinkGen::assets('js/vendor/vendors.js') }}"></script>
-    <script src="/js/common.js"></script>
+    <script src="{{ LinkGen::assets('js/common.js') }}"></script>
     @yield('js')
 
 </body>

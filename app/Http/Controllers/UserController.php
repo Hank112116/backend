@@ -20,7 +20,6 @@ class UserController extends BaseController
 {
     protected $cert = 'user';
 
-    private $auth;
     private $user_repo;
     private $project_repo;
     private $solution_repo;
@@ -37,7 +36,6 @@ class UserController extends BaseController
         ApplyExpertMessageInterface $apply_expert_message
     ) {
         parent::__construct();
-        $this->auth           = auth()->user()->isAdmin() || auth()->user()->isManagerHead();
         $this->user_repo      = $user;
         $this->project_repo   = $project;
         $this->solution_repo  = $solution;
@@ -49,7 +47,7 @@ class UserController extends BaseController
 
     public function showList()
     {
-        if ($this->is_restricted_adminer) {
+        if ($this->isRestricted()) {
             return $this->showExperts();
         }
 
@@ -67,7 +65,7 @@ class UserController extends BaseController
 
     public function showCreators()
     {
-        if ($this->is_restricted_adminer) {
+        if ($this->isRestricted()) {
             Noty::warnLang('common.no-permission');
 
             return redirect()->action('UserController@showList');
@@ -122,11 +120,11 @@ class UserController extends BaseController
             'to_expert_ids' => $this->user_repo->toBeExpertMemberIds(),
         ];
 
-        if ($this->is_limitied_editor) {
+        if ($this->isLimitedEditor()) {
             $view = 'user.list-editor';
         } else {
             $view                  = 'user.list';
-            $data['is_restricted'] = $this->is_restricted_adminer;
+            $data['is_restricted'] = $this->isRestricted();
         }
 
         $template = view($view)->with($data);
@@ -164,7 +162,7 @@ class UserController extends BaseController
             return redirect()->action('UserController@showList');
         }
 
-        if ($this->is_restricted_adminer and
+        if ($this->isRestricted() and
             !$user->isExpert()
         ) {
             Noty::warn('No access permission');
@@ -187,11 +185,11 @@ class UserController extends BaseController
             'attachments'       => $attachments
         ];
 
-        if ($this->is_limitied_editor) {
+        if ($this->isLimitedEditor()) {
             $view = 'user.detail-editor';
         } else {
             $view                  = 'user.detail';
-            $data['is_restricted'] = $this->is_restricted_adminer;
+            $data['is_restricted'] = auth()->user()->isRestricted($this->cert);
         }
 
         return view($view, $data);
@@ -210,7 +208,7 @@ class UserController extends BaseController
             return redirect()->action('UserController@showList');
         }
 
-        if ($this->is_restricted_adminer and !$user->isExpert()) {
+        if ($this->isRestricted() and !$user->isExpert()) {
             Noty::warn('No access permission');
 
             return redirect()->action('UserController@showList');
@@ -239,11 +237,11 @@ class UserController extends BaseController
             'front_domain'      => $front_domain
         ];
 
-        if ($this->is_limitied_editor) {
+        if ($this->isLimitedEditor()) {
             $view                 = 'user.update-editor';
         } else {
             $view                  = 'user.update';
-            $data['is_restricted'] = $this->is_restricted_adminer;
+            $data['is_restricted'] = $this->isRestricted();
         }
 
         return view($view, $data);
@@ -338,7 +336,7 @@ class UserController extends BaseController
         $view = view()->make('user.row')->with(
             [
                 'user'          => $user,
-                'is_restricted' => $this->is_restricted_adminer,
+                'is_restricted' => $this->isRestricted(),
                 'tag_tree'      => $this->expertise_repo->getTags()
             ]
         )->render();
@@ -408,10 +406,10 @@ class UserController extends BaseController
             if ($input['route_path'] === 'report/registration') {
                 // make report project row view
                 $view = view()->make('report.user-row')
-                    ->with(['user' => $user, 'input' => $input,'is_super_admin' => $this->auth])
+                    ->with(['user' => $user, 'input' => $input,'is_super_admin' => $this->isSuperAdmin()])
                     ->render();
             } else {
-                if ($this->is_limitied_editor) {
+                if ($this->isLimitedEditor()) {
                     $view = 'user.editor-row';
                 } else {
                     $view = 'user.row';
@@ -420,7 +418,7 @@ class UserController extends BaseController
                 $view = view()->make($view)->with(
                     [
                         'user'          => $user,
-                        'is_restricted' => $this->is_restricted_adminer,
+                        'is_restricted' => $this->isRestricted(),
                         'tag_tree'      => $this->expertise_repo->getTags()
                     ]
                 )->render();

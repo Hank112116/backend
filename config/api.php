@@ -14,5 +14,6 @@ return [
             'Referer'          => 'https://' . env('FRONT_DOMAIN', 'www.hwtrek.com'),
         ],
         'http_errors' => false
-    ]
+    ],
+    'ttl' => 720, // 6 hours
 ];

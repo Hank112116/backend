@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'Backend\Console\Commands\AccessLogCompress',
         'Backend\Console\Commands\AccessLogDecompress',
-        'Backend\Console\Commands\ClearTmpFile'
+        'Backend\Console\Commands\ClearTmpFile',
+        'Backend\Console\Commands\CalculateAssetsChecksum',
     ];
 
     /**
@@ -26,5 +27,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('storage:clear-tmp')->dailyAt('13:00');
+    }
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
     }
 }
