@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.0.1
+* [NEW]    add verify csrf token middleware (@Hank)
+* [NEW]    add js, css file checksum command (@Hank) 
+* [CHANGE] upgrade laravel 5.2 to 5.3 [#issue 53](https://gitlab.hwtrek.com/HWTrek/backend/issues/53)
+* [FIXED]  fix access token miss issue [#issue 54](https://gitlab.hwtrek.com/HWTrek/backend/issues/54)
+
 ## v3.0.0
 * [NEW]    new OAuth login (@Hank)
 * [NEW]    login limit [#issue 48](https://gitlab.hwtrek.com/HWTrek/backend/issues/48)
