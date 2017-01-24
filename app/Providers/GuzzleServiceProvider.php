@@ -71,10 +71,6 @@ class GuzzleServiceProvider extends ServiceProvider
                     }
                 } catch (ConnectException $e) {
                     Log::error($e->getMessage(), $e->getTrace());
-
-                    session()->flash(OAuthKey::API_SERVER_STATUS, 'stop');
-
-                    auth()->logout();
                 }
             }
 

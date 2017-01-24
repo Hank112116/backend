@@ -101,6 +101,8 @@ class AuthController extends BaseController
 
         session()->clear();
 
+        Cache::flush();
+
         Noty::success('Logout Success');
 
         return redirect('/');

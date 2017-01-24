@@ -15,9 +15,13 @@ class ApiAuthorization
      */
     public function handle($request, Closure $next)
     {
-        if (!Cache::get(OAuthKey::ACCESS_TOKEN) or !Cache::get(OAuthKey::TOKEN_TYPE)) {
+        if (!Cache::has(OAuthKey::ACCESS_TOKEN) or !Cache::has(OAuthKey::TOKEN_TYPE)) {
             auth()->logout();
+
             session()->clear();
+
+            Cache::flush();
+
             return redirect('/');
         }
 
