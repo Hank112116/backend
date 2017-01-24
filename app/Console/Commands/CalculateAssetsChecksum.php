@@ -24,14 +24,6 @@ class CalculateAssetsChecksum extends Command
     protected $description = 'Calculate checksum of js and css file';
 
     /**
-     * Create a new command instance.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return void
