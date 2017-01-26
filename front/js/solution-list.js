@@ -119,16 +119,16 @@ $(function () {
                     location.reload();
                 },
                 400: function() {
-                    Notifier.showTimedMessage('Change type fail!', "warning", 2);
+                    Notifier.showTimedMessage("Change type fail!", "warning", 2);
                 },
                 403: function() {
-                    Notifier.showTimedMessage('Permissions denied!', "warning", 2);
+                    Notifier.showTimedMessage("Permissions denied!", "warning", 2);
                 },
                 404: function() {
-                    Notifier.showTimedMessage('Solution not found!', "warning", 2);
+                    Notifier.showTimedMessage("Solution not found!", "warning", 2);
                 },
                 500: function() {
-                    Notifier.showTimedMessage('Change type fail!', "warning", 2);
+                    Notifier.showTimedMessage("Change type fail!", "warning", 2);
                 }
             }
         });

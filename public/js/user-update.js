@@ -4,8 +4,22 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.getCSRFToken = getCSRFToken;
+
+function getCSRFToken() {
+    return $("meta[name='csrf-token']").attr("content");
+}
+
+},{}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.locationSelector = locationSelector;
 exports.editor = editor;
+var CommonHelper = require("./CommonHelper");
+
 var isKeyEnter = function isKeyEnter(e) {
     var code = e.keyCode || e.which;
     return code == 13;
@@ -86,7 +100,7 @@ function editor() {
         convertVideoLinks: true,
         dragUpload: true,
         imageUpload: "/upload-editor-image",
-
+        uploadFields: { _token: CommonHelper.getCSRFToken() },
         imageUploadCallback: function imageUploadCallback(image, response) {
             if (response.status == "fail") {
                 Notifier.showMessage(response.msg, "warning");
@@ -100,7 +114,7 @@ function editor() {
     });
 }
 
-},{}],2:[function(require,module,exports){
+},{"./CommonHelper":1}],3:[function(require,module,exports){
 "use strict";
 
 /*
@@ -242,7 +256,7 @@ var ProjectUpdater = (function () {
 exports["default"] = ProjectUpdater;
 module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // jshint unused: false
 "use strict";
 
@@ -267,7 +281,7 @@ function alert(param) {
     });
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":16}],4:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":17}],5:[function(require,module,exports){
 /* jshint quotmark: false */
 "use strict";
 
@@ -410,7 +424,7 @@ $(function () {
     }
 });
 
-},{"../libs/SweetAlert":3}],5:[function(require,module,exports){
+},{"../libs/SweetAlert":4}],6:[function(require,module,exports){
 /* jshint quotmark: false */
 'use strict';
 
@@ -497,7 +511,7 @@ $(function () {
     }
 });
 
-},{"../libs/SweetAlert":3}],6:[function(require,module,exports){
+},{"../libs/SweetAlert":4}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -518,7 +532,7 @@ function initRadio() {
     });
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -558,7 +572,7 @@ $(function () {
     new _libsProjectUpdater2["default"]().initSelectTag($("[data-select-tags=expertises]"));
 });
 
-},{"./libs/FormUtility":1,"./libs/ProjectUpdater":2,"./libs/UserAttachment.js":4,"./libs/UserSuspend.js":5,"./modules/icheck":6}],8:[function(require,module,exports){
+},{"./libs/FormUtility":2,"./libs/ProjectUpdater":3,"./libs/UserAttachment.js":5,"./libs/UserSuspend.js":6,"./modules/icheck":7}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -590,7 +604,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -723,7 +737,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":10,"./handle-swal-dom":12,"./utils":15}],10:[function(require,module,exports){
+},{"./handle-dom":11,"./handle-swal-dom":13,"./utils":16}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -896,7 +910,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -977,7 +991,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":10,"./handle-swal-dom":12}],12:[function(require,module,exports){
+},{"./handle-dom":11,"./handle-swal-dom":13}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1130,7 +1144,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":8,"./handle-dom":10,"./injected-html":13,"./utils":15}],13:[function(require,module,exports){
+},{"./default-params":9,"./handle-dom":11,"./injected-html":14,"./utils":16}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1171,7 +1185,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1391,7 +1405,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":10,"./handle-swal-dom":12,"./utils":15}],15:[function(require,module,exports){
+},{"./handle-dom":11,"./handle-swal-dom":13,"./utils":16}],16:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1466,7 +1480,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1736,4 +1750,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":8,"./modules/handle-click":9,"./modules/handle-dom":10,"./modules/handle-key":11,"./modules/handle-swal-dom":12,"./modules/set-params":14,"./modules/utils":15}]},{},[7]);
+},{"./modules/default-params":9,"./modules/handle-click":10,"./modules/handle-dom":11,"./modules/handle-key":12,"./modules/handle-swal-dom":13,"./modules/set-params":15,"./modules/utils":16}]},{},[8]);

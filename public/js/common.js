@@ -15,6 +15,10 @@ var _libsNotifier = require("./libs/Notifier");
 
 var Notifier = _interopRequireWildcard(_libsNotifier);
 
+var _libsCommonHelper = require("./libs/CommonHelper");
+
+var CommonHelper = _interopRequireWildcard(_libsCommonHelper);
+
 window.Notifier = Notifier;
 
 $(function () {
@@ -24,11 +28,23 @@ $(function () {
     Notifier.showTimedMessage($("meta[name=noty-msg]").attr("content"), $("meta[name=noty-type]").attr("content"), 5);
 
     $.ajaxSetup({
-        headers: { "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content") }
+        headers: { "X-CSRF-TOKEN": CommonHelper.getCSRFToken() }
     });
 });
 
-},{"./libs/Notifier":2,"./modules/icheck":3,"./modules/menu":4}],2:[function(require,module,exports){
+},{"./libs/CommonHelper":2,"./libs/Notifier":3,"./modules/icheck":4,"./modules/menu":5}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getCSRFToken = getCSRFToken;
+
+function getCSRFToken() {
+    return $("meta[name='csrf-token']").attr("content");
+}
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -63,7 +79,7 @@ function showTimedMessage(content, level, sec) {
     }).log(content);
 }
 
-},{"../vendor/humane/humane":5}],3:[function(require,module,exports){
+},{"../vendor/humane/humane":6}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -84,7 +100,7 @@ function initRadio() {
     });
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -126,7 +142,7 @@ function init() {
     });
 }
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * humane.js
  * Humanized Messages for Notifications

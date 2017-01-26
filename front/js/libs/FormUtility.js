@@ -1,5 +1,7 @@
 "use strict";
 
+var CommonHelper = require("./CommonHelper");
+
 var isKeyEnter = function(e) {
     var code = e.keyCode || e.which;
     return code == 13;
@@ -79,7 +81,7 @@ export function editor() {
         convertVideoLinks: true,
         dragUpload: true,
         imageUpload: "/upload-editor-image",
-
+        uploadFields: {_token: CommonHelper.getCSRFToken()},
         imageUploadCallback: (image, response) => {
             if (response.status == "fail") {
                 Notifier.showMessage(response.msg, "warning");

@@ -3,6 +3,7 @@
 import * as menu from "./modules/menu";
 import * as icheck from "./modules/icheck";
 import * as Notifier from "./libs/Notifier";
+import * as CommonHelper from "./libs/CommonHelper";
 
 window.Notifier = Notifier;
 
@@ -17,6 +18,6 @@ $(function () {
 
     $.ajaxSetup({
         headers:
-            { "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content") }
+            { "X-CSRF-TOKEN": CommonHelper.getCSRFToken() }
     });
 });

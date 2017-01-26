@@ -4,8 +4,22 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.getCSRFToken = getCSRFToken;
+
+function getCSRFToken() {
+    return $("meta[name='csrf-token']").attr("content");
+}
+
+},{}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.locationSelector = locationSelector;
 exports.editor = editor;
+var CommonHelper = require("./CommonHelper");
+
 var isKeyEnter = function isKeyEnter(e) {
     var code = e.keyCode || e.which;
     return code == 13;
@@ -86,7 +100,7 @@ function editor() {
         convertVideoLinks: true,
         dragUpload: true,
         imageUpload: "/upload-editor-image",
-
+        uploadFields: { _token: CommonHelper.getCSRFToken() },
         imageUploadCallback: function imageUploadCallback(image, response) {
             if (response.status == "fail") {
                 Notifier.showMessage(response.msg, "warning");
@@ -100,7 +114,7 @@ function editor() {
     });
 }
 
-},{}],2:[function(require,module,exports){
+},{"./CommonHelper":1}],3:[function(require,module,exports){
 "use strict";
 
 /*
@@ -242,7 +256,7 @@ var ProjectUpdater = (function () {
 exports["default"] = ProjectUpdater;
 module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -413,7 +427,7 @@ var SolutionCategoryUpdater = (function () {
 exports["default"] = SolutionCategoryUpdater;
 module.exports = exports["default"];
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -498,7 +512,7 @@ var SolutionCustomerUpdater = (function () {
 exports["default"] = SolutionCustomerUpdater;
 module.exports = exports["default"];
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -594,7 +608,7 @@ function rejectSolution() {
     });
 }
 
-},{"./ProjectUpdater":2,"./SolutionCategoryUpdater":3,"./SolutionCustomerUpdater":4}],6:[function(require,module,exports){
+},{"./ProjectUpdater":3,"./SolutionCategoryUpdater":4,"./SolutionCustomerUpdater":5}],7:[function(require,module,exports){
 "use strict";
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
@@ -614,4 +628,4 @@ $(function () {
     SolutionUpdater.rejectSolution();
 });
 
-},{"./libs/FormUtility":1,"./libs/SolutionUpdater":5}]},{},[6]);
+},{"./libs/FormUtility":2,"./libs/SolutionUpdater":6}]},{},[7]);
