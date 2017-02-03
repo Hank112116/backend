@@ -2,10 +2,10 @@
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 
 class Handler extends ExceptionHandler
 {
-
     /**
      * A list of the exception types that should not be reported.
      *
@@ -37,6 +37,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof TokenMismatchException) {
+            \Noty::warn('CSRF token mismatch, please login again.');
+            return redirect('/');
+        }
+
         if ($this->isHttpException($e)) {
             return $this->renderHttpException($e);
         } else {
