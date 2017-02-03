@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v3.0.3
+* [FIXED] fix registration report data error (issue #56)
+
 ## v3.0.2
 * [NEW]   add TokenMismatchException handler (@Hank)
 * [FIXED] editor upload image error (issue #55)
