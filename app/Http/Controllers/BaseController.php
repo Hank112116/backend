@@ -28,18 +28,6 @@ abstract class BaseController extends Controller
         $this->request  = $request;
     }
 
-   /**
-    * Setup the layout used by the controller.
-    *
-    * @return void
-    */
-   // protected function setupLayout()
-   // {
-   //     if (!is_null($this->layout)) {
-   //         $this->layout = view($this->layout);
-   //     }
-   // }
-
     /**
      * @param $output
      * @param string $name

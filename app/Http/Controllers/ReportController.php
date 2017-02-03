@@ -16,7 +16,6 @@ use Noty;
 class ReportController extends BaseController
 {
     protected $cert = "report";
-    private $auth;
     private $adminer_repo;
     private $user_repo;
     private $report_repo;
@@ -81,7 +80,7 @@ class ReportController extends BaseController
      */
     public function showRegistrationReport()
     {
-        $this->filter = $this->auth ? $this->request->get('filter', 'all') : 'expert';
+        $this->filter = $this->authUser() ? $this->request->get('filter', 'all') : 'expert';
 
         if ($this->dateValidator()->fails()) {
             Noty::warn('The input parameter is wrong');
