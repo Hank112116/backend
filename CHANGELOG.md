@@ -1,18 +1,22 @@
 # CHANGELOG
 
+## v3.0.2
+* [NEW]   add TokenMismatchException handler (@Hank)
+* [FIXED] editor upload image error (issue #55)
+
 ## v3.0.1
 * [NEW]    add verify csrf token middleware (@Hank)
 * [NEW]    add js, css file checksum command (@Hank) 
-* [CHANGE] upgrade laravel 5.2 to 5.3 issue #53
-* [FIXED]  fix access token miss issue issue #54
+* [CHANGE] upgrade laravel 5.2 to 5.3 (issue #53)
+* [FIXED]  fix access token miss issue (issue #54)
 
 ## v3.0.0
 * [NEW]    new OAuth login (@Hank)
-* [NEW]    login limit issue #48
+* [NEW]    login limit (issue #48)
 * [NEW]    new duplicate login check (@Hank)
 * [NEW]    create redis server (@Hank)
 * [CHANGE] upgrade laravel 5.1 to 5.2 (@Hank)
-* [CHANGE] revise action log issue #45
+* [CHANGE] revise action log (issue #45)
 * [CHANGE] refactor curl to guzzle client (@Hank)
 * [CHANGE] revise login page (@Hank)
 * [CHANGE] integrate solution list API (@Hank)
@@ -23,8 +27,8 @@
 * [CHANGE] revise export CSV function (@Hank)
 * [CHANGE] remove duplicate solution related code (@Hank)
 * [FIXED]  fix user registration report error (@Hank)
-* [FIXED]  fix project referral data error issue #47
-* [FIXED]  fix owner info error of solution edit page issue #38
+* [FIXED]  fix project referral data error (issue #47)
+* [FIXED]  fix owner info error of solution edit page (issue #38)
 
 ## v2.6.6
 * [FIXED] fix uppercase/lowercase error of project uri file (@Hank) 
