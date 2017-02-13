@@ -228,56 +228,6 @@ class ReportController extends BaseController
         return $template;
     }
 
-    public function showProjectReport()
-    {
-        if ($this->dateValidator()->fails()) {
-            Noty::warn('The input parameter is wrong');
-            return redirect()->back();
-        }
-
-        $input = $this->request->all();
-
-        if (empty($input['time_type'])) {
-            $input['time_type'] = 'match';
-        }
-
-        if ($this->request->get('range')) {
-            $input['dstart']    = Carbon::parse($this->request->get('range') . ' days ago')->toDateString();
-        }
-
-        if (empty($this->request->get('range')) && empty($this->request->get('dstart'))) {
-            $input['dstart']    = Carbon::parse('7 days ago')->toDateString();
-        }
-
-        if (empty($input['dend'])) {
-            $input['dend']      = Carbon::parse('1 days ago')->toDateString();
-        }
-
-        $hwtrek_pms = $this->user_repo->findHWTrekPM();
-
-        $pm_ids = [];
-        if ($hwtrek_pms) {
-            foreach ($hwtrek_pms as $pm) {
-                $pm_ids[] = $pm->user_id;
-            }
-        }
-
-        Log::info('Search project report', $input);
-
-        $projects = $this->report_repo->getProjectReport($input, $this->page, $this->per_page);
-        $template = view('report.project')
-            ->with([
-                'title'            => 'Project Report',
-                'projects'         => $projects,
-                'range'            => $this->request->get('range'),
-                'is_super_admin'   => $this->isSuperAdmin(),
-                'pm_ids'           => $pm_ids,
-                'input'            => $input,
-                'match_statistics' => $projects->match_statistics
-            ]);
-        return $template;
-    }
-
     public function showMemberMatchingReport()
     {
         if ($this->dateValidator()->fails()) {
@@ -296,7 +246,7 @@ class ReportController extends BaseController
         }
 
         if (empty($input['dend'])) {
-            $input['dend']      = Carbon::parse('1 days ago')->toDateString();
+            $input['dend']      = Carbon::now()->toDateString();
         }
 
         $members = $this->report_repo->getMemberMatchingReport($input, $this->page, $this->per_page);

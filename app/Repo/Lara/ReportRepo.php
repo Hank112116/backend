@@ -148,12 +148,6 @@ class ReportRepo implements ReportInterface
         return $users;
     }
 
-    public function getProjectReport($input, $page, $per_page)
-    {
-        $projects = $this->project_repo->byUnionSearch($input, $page, $per_page, true);
-        return $projects;
-    }
-
     public function getMemberMatchingReport($input, $page, $per_page)
     {
         $message_related = $this->message_related
