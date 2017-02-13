@@ -71,15 +71,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-tag-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#internal-tag-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -113,15 +118,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#grade_dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#grade_dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -152,15 +162,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-description-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#internal-description-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -201,15 +216,20 @@ $(function () {
                 project_managers: JSON.stringify(managers)
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#schedule-manager-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#schedule-manager-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -246,15 +266,20 @@ $(function () {
                 time_type: time_type
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#project-report-action-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#project-report-action-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -300,8 +325,13 @@ $(function () {
                 expertId: expertId
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                $expert1Info.text(feeback.msg);
+            statusCode: {
+                200: function _(feeback) {
+                    $expert1Info.text(feeback.msg);
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -319,8 +349,13 @@ $(function () {
                 expertId: expertId
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                $expert2Info.text(feeback.msg);
+            statusCode: {
+                200: function _(feeback) {
+                    $expert2Info.text(feeback.msg);
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -346,16 +381,21 @@ $(function () {
                     PM: PM
                 },
                 dataType: "JSON",
-                success: function success(feeback) {
-                    if (feeback.status === "fail") {
-                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                        location.reload();
-                        return;
+                statusCode: {
+                    200: function _(feeback) {
+                        if (feeback.status === "fail") {
+                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                            location.reload();
+                            return;
+                        }
+                        $("#email-recommend-expert-dialog").dialog("close");
+                        Notifier.showTimedMessage("Send mail successful", "information", 2);
+                        var $project_row = $("#row-" + projectId);
+                        $project_row.html(feeback.view);
+                    },
+                    412: function _() {
+                        location.href = "/";
                     }
-                    $("#email-recommend-expert-dialog").dialog("close");
-                    Notifier.showTimedMessage("Send mail successful", "information", 2);
-                    var $project_row = $("#row-" + projectId);
-                    $project_row.html(feeback.view);
                 }
             });
         } else {

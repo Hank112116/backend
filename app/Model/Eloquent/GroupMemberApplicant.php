@@ -24,7 +24,27 @@ class GroupMemberApplicant extends Eloquent
     {
         return $this->hasOne(User::class, 'user_id', 'referral');
     }
-    
+
+    public function isPMReferral()
+    {
+        return $this->event === self::REFERRAL_PM or $this->event === self::APPLY_PM;
+    }
+
+    public function isUserReferral()
+    {
+        return $this->event === self::REFERRAL_USER or $this->event === self::APPLY_USER;
+    }
+
+    public function isSelfReferral()
+    {
+        return ($this->event === self::APPLY_PM or $this->event === self::APPLY_USER) and is_null($this->referral);
+    }
+
+    public function isMemberReferral()
+    {
+        return ($this->event === self::REFERRAL_PM or $this->event === self::REFERRAL_USER) and !is_null($this->referral);
+    }
+
     public function isRecommendExpert()
     {
         if (is_null($this->user)) {
@@ -49,5 +69,36 @@ class GroupMemberApplicant extends Eloquent
             }
         }
         return $project_id;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function projectOwner()
+    {
+        return $this->project()->user;
+    }
+
+    /**
+     * @return Project|null
+     */
+    public function project()
+    {
+        $project_id = $this->getAppliedProjectId();
+
+        if (is_null($project_id)) {
+            return null;
+        }
+
+        $project = new Project();
+
+        $project = $project->find($project_id);
+
+        return $project;
+    }
+
+    public function applyDate()
+    {
+        return $this->apply_date;
     }
 }

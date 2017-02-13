@@ -5,6 +5,7 @@ namespace Backend\Http\Controllers;
 use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
 use Backend\Facades\Log;
+use Backend\Model\Eloquent\MessageRelatedObject;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -275,5 +276,52 @@ class ReportController extends BaseController
                 'match_statistics' => $projects->match_statistics
             ]);
         return $template;
+    }
+
+    public function showMemberMatchingReport()
+    {
+        if ($this->dateValidator()->fails()) {
+            Noty::warn('The input parameter is wrong');
+            return redirect()->back();
+        }
+
+        $input = $this->request->all();
+
+        if ($this->request->get('range')) {
+            $input['dstart']    = Carbon::parse($this->request->get('range') . ' days ago')->toDateString();
+        }
+
+        if (empty($this->request->get('range')) && empty($this->request->get('dstart'))) {
+            $input['dstart']    = Carbon::parse('14 days ago')->toDateString();
+        }
+
+        if (empty($input['dend'])) {
+            $input['dend']      = Carbon::parse('1 days ago')->toDateString();
+        }
+
+        $members = $this->report_repo->getMemberMatchingReport($input, $this->page, $this->per_page);
+
+        return view('report.member-match.list')
+            ->with([
+                'members' => $members,
+                'input'   => $input,
+            ]);
+    }
+
+    public function showMatchingDate()
+    {
+        $input = $this->request->all();
+
+        $result = $this->report_repo->getDetailMatchingDataByUser($input['user_id'], $input['dstart'], $input['dend']);
+
+        return view('report.member-match.member-match-detail')
+            ->with([
+                'recommend_profile'  => $result['recommend']['profile'],
+                'recommend_project'  => $result['recommend']['project'],
+                'recommend_solution' => $result['recommend']['solution'],
+                'referrals_profile'  => $result['referrals']['profile'],
+                'referrals_project'  => $result['referrals']['project'],
+                'referrals_solution' => $result['referrals']['solution'],
+            ]);
     }
 }

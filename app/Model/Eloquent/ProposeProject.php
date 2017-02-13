@@ -4,14 +4,13 @@ namespace Backend\Model\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class ProposeSolution extends Eloquent
+class ProposeProject extends Eloquent
 {
-
     const EVENT_SUGGEST = 'suggest';
     const EVENT_PROPOSE = 'propose';
     const EVENT_CLICK   = 'click';
-    
-    protected $table = 'log_propose_solution';
+
+    protected $table = 'log_propose_project';
     protected $primaryKey = 'log_id';
 
     public function user()
@@ -27,31 +26,25 @@ class ProposeSolution extends Eloquent
 
     public function solution()
     {
-        return $this->belongsTo(Solution::class, 'solution_id', 'solution_id');
+        return $this->belongsTo(Solution::class, 'solution_id', 'solution_id')
+            ->select([
+                'solution_id', 'user_id', 'solution_title'
+            ]);
     }
 
     public function project()
     {
-        return $this->belongsTo(Project::class, 'project_id', 'project_id')
-            ->select(['project_id', 'uuid', 'user_id', 'project_title']);
+        return $this->belongsTo(Project::class, 'project_id', 'project_id');
     }
 
     public function isPMPropose()
     {
-        return $this->event ===  self::EVENT_SUGGEST;
+        return $this->event === self::EVENT_SUGGEST;
     }
 
     public function isUserPropose()
     {
         return $this->event ===  self::EVENT_PROPOSE;
-    }
-
-    /**
-     * @return User
-     */
-    public function projectOwner()
-    {
-        return $this->project->user;
     }
 
     /**
@@ -65,6 +58,14 @@ class ProposeSolution extends Eloquent
     public function solutionId()
     {
         return $this->solution_id;
+    }
+
+    /**
+     * @return User
+     */
+    public function projectOwner()
+    {
+        return $this->project->user;
     }
 
     public function projectId()

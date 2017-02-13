@@ -348,6 +348,9 @@ $(function () {
                     Notifier.showTimedMessage("Update fail", "warning", 2);
                     $(".fa-refresh").remove();
                 },
+                412: function _() {
+                    location.href = "/";
+                },
                 500: function _() {
                     Notifier.showTimedMessage("Server error", "warning", 2);
                     $(".fa-refresh").remove();
@@ -501,6 +504,9 @@ $(function () {
                 404: function _(feeback) {
                     var error_message = feeback.responseJSON.error.message;
                     Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                412: function _() {
+                    location.href = "/";
                 },
                 500: function _(feeback) {
                     var error_message = feeback.responseJSON.error.message;

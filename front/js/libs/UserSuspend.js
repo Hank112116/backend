@@ -68,6 +68,9 @@ $(function () {
                     var error_message = feeback.responseJSON.error.message;
                     Notifier.showTimedMessage(error_message, "warning", 2);
                 },
+                412: function() {
+                    location.href = "/";
+                },
                 500: function(feeback) {
                     var error_message = feeback.responseJSON.error.message;
                     Notifier.showTimedMessage(error_message, "warning", 2);

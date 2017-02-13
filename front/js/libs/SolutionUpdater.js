@@ -41,6 +41,9 @@ export function approveSolution() {
                 404: function($data) {
                     Notifier.showTimedMessage($data.responseJSON.error.message, "warning", 2);
                 },
+                412: function() {
+                    location.href = "/";
+                },
                 500: function() {
                     Notifier.showTimedMessage("Server error", "warning", 2);
                 }
@@ -67,6 +70,9 @@ export function rejectSolution() {
                 },
                 404: function($data) {
                     Notifier.showTimedMessage($data.responseJSON.error.message, "warning", 2);
+                },
+                412: function() {
+                    location.href = "/";
                 },
                 500: function() {
                     Notifier.showTimedMessage("Server error", "warning", 2);

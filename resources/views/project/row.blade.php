@@ -52,13 +52,6 @@
         @include('project.recommend-expert')
     @endif
 </td>
-
-<td>
-    @include('project.list-propose-statistic', ['propose_solution' => $project->getStatistic()])
-</td>
-<td>
-    @include('project.list-recommend-statistic', ['recommend_expert' => $project->getStatistic(), 'email_out_count' => $project->getEmailOutCount()])
-</td>
 <td>
     Community:{{ $project->getPageViewCount() }}<br/>
     Staff Referrals:{{ $project->getStaffReferredCount() }} <br/>

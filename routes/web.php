@@ -72,8 +72,6 @@ Route::group(['middleware' => ['route_filter:project', 'check_source_server', 'a
 
     Route::post('project/update/{id}', 'ProjectController@update');
     Route::post('project/update-memo', 'ProjectController@updateMemo');
-    Route::post('project/propose-solution', 'ProjectController@proposeSolution');
-    Route::post('project/recommend-expert', 'ProjectController@recommendExpert');
     Route::post('project/update-project-manager', 'ProjectController@updateManager');
     Route::post('project/approve-schedule', 'ProjectController@approveSchedule');
     Route::post('project/get-expert', 'ProjectController@getExpert');
@@ -130,8 +128,9 @@ Route::group([ 'middleware' => 'route_filter:report_full|registration_report' ],
 Route::group([ 'middleware' => 'route_filter:report_full|comment_report' ], function () {
     Route::get('report/comment', 'ReportController@showCommentReport');
 });
-Route::group([ 'middleware' => 'route_filter:report_full|project_report' ], function () {
-    Route::get('report/project', 'ReportController@showProjectReport');
+Route::group([ 'middleware' => 'route_filter:report_full|member_matching_report' ], function () {
+    Route::get('report/member-matching', 'ReportController@showMemberMatchingReport');
+    Route::post('report/matching-data', 'ReportController@showMatchingDate');
 });
 Route::group([ 'middleware' => 'route_filter:report_full|event_report' ], function () {
     Route::get('report/events', 'ReportController@showEventReport');

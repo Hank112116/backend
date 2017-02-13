@@ -42,8 +42,13 @@ $(function () {
                 expertId: expertId
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                $expert1Info.text(feeback.msg);
+            statusCode: {
+                200: function _(feeback) {
+                    $expert1Info.text(feeback.msg);
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -61,8 +66,13 @@ $(function () {
                 expertId: expertId
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                $expert2Info.text(feeback.msg);
+            statusCode: {
+                200: function _(feeback) {
+                    $expert2Info.text(feeback.msg);
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -88,16 +98,21 @@ $(function () {
                     PM: PM
                 },
                 dataType: "JSON",
-                success: function success(feeback) {
-                    if (feeback.status === "fail") {
-                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                        location.reload();
-                        return;
+                statusCode: {
+                    200: function _(feeback) {
+                        if (feeback.status === "fail") {
+                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                            location.reload();
+                            return;
+                        }
+                        $("#email-recommend-expert-dialog").dialog("close");
+                        Notifier.showTimedMessage("Send mail successful", "information", 2);
+                        var $project_row = $("#row-" + projectId);
+                        $project_row.html(feeback.view);
+                    },
+                    412: function _() {
+                        location.href = "/";
                     }
-                    $("#email-recommend-expert-dialog").dialog("close");
-                    Notifier.showTimedMessage("Send mail successful", "information", 2);
-                    var $project_row = $("#row-" + projectId);
-                    $project_row.html(feeback.view);
                 }
             });
         } else {

@@ -33,14 +33,19 @@ $(function () {
                 internal_selection: status
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#internal_selection_tour_dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.reload();
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#internal_selection_tour_dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
             }
         });
     });
@@ -56,14 +61,19 @@ $(function () {
                 internal_selection: status
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#internal_selection_meetup_dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.reload();
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#internal_selection_meetup_dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
             }
         });
     });
@@ -91,14 +101,19 @@ $(function () {
                 follow_pm: pm
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#follow_pm_dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.reload();
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#follow_pm_dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
             }
         });
     });
@@ -126,14 +141,19 @@ $(function () {
                 note: note
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#note_dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.reload();
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#note_dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
             }
         });
     });
@@ -161,14 +181,19 @@ $(function () {
                 internal_form_selection: status
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#pm_mark_form_status_dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    location.reload();
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#pm_mark_form_status_dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                location.reload();
             }
         });
     });

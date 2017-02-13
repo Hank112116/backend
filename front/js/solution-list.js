@@ -127,6 +127,9 @@ $(function () {
                 404: function() {
                     Notifier.showTimedMessage("Solution not found!", "warning", 2);
                 },
+                412: function() {
+                    location.href = "/";
+                },
                 500: function() {
                     Notifier.showTimedMessage("Change type fail!", "warning", 2);
                 }

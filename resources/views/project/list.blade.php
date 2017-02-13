@@ -37,8 +37,6 @@
                 <th>Status<br/><span class="table--text-light">Status Change</span></th>
                 <th>Company</th>
                 <th>Assigned PM<br/><span class="table--text-light">Email Out</span></th>
-                <th>Proposed</th>
-                <th>Referrals</th>
                 <th>Statistics</th>
                 <th>Internal description</th>
                 <th>Action</th>
@@ -63,8 +61,6 @@
     @include('project.dialog.add-tags-dialog')
     @include('project.dialog.description-dialog')
     @include('project.dialog.schedule-manager-dialog')
-    @include('project.dialog.propose-solution-dialog')
-    @include('project.dialog.recommend-expert-dialog')
     @include('report.dialog.project-report-action')
 </div>
 

@@ -66,6 +66,9 @@ $(function () {
                     Notifier.showTimedMessage("Update fail", "warning", 2);
                     $(".fa-refresh").remove();
                 },
+                412: function() {
+                    location.href = "/";
+                },
                 500: function() {
                     Notifier.showTimedMessage("Server error", "warning", 2);
                     $(".fa-refresh").remove();

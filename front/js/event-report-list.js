@@ -22,13 +22,18 @@ $(function () {
                             event_id: event_id
                         },
                         dataType: "JSON",
-                        success: function success(feeback) {
-                            if (feeback.status === "fail") {
-                                Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                                return;
+                        statusCode: {
+                            200: function (feeback) {
+                                if (feeback.status === "fail") {
+                                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                                    return;
+                                }
+                                Notifier.showTimedMessage("Update successful", "information", 2);
+                                window.location = "/report/tour-form?event=" + event_id;
+                            },
+                            412: function () {
+                                location.href = "/";
                             }
-                            Notifier.showTimedMessage("Update successful", "information", 2);
-                            window.location = "/report/tour-form?event=" + event_id;
                         }
                     });
                 }else{

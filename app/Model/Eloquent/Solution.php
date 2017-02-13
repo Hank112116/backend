@@ -107,13 +107,19 @@ class Solution extends Eloquent
         return $this->primaryKey;
     }
 
+    public function id()
+    {
+        return $this->solution_id;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class)
             ->select([
                 'user_id', 'user_name', 'last_name', 'country', 'city',
                 'user_type', 'is_sign_up_as_expert', 'is_apply_to_be_expert',
-                'country', 'city', 'company'
+                'country', 'city', 'company', 'email_verify', 'active', 'company_url',
+                'suspended_at'
             ]);
     }
 

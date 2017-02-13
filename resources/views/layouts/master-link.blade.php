@@ -41,11 +41,11 @@
                                     </a>
                                 </li>
                             @endif
-                            @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('project_report'))
+                            @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('member_matching_report'))
                                 <li>
-                                    <a href="{!! action('ReportController@showProjectReport', ['range'=>7]) !!}">
-                                        <i class="fa fa-send fa-fw"></i>
-                                        Projects
+                                    <a href="{!! action('ReportController@showMemberMatchingReport', ['range'=>14]) !!}">
+                                        <i class="fa fa-bar-chart fa-fw"></i>
+                                        Member Matching
                                     </a>
                                 </li>
                             @endif

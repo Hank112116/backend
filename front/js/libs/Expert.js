@@ -24,19 +24,24 @@ Expert.prototype._setSearchForm = function (block){
                 url: "/landing/find-expert/expert",
                 data: { id: $block.find(".search_id")[0].value },
                 dataType: "JSON",
-                success: function success(feeback) {
-                    $(block).find(".search_id")[0].value = "";
+                statusCode: {
+                    200: function (feeback) {
+                        $(block).find(".search_id")[0].value = "";
 
-                    if (feeback.status === "fail") {
-                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                        return;
+                        if (feeback.status === "fail") {
+                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                            return;
+                        }
+
+                        Notifier.showTimedMessage("Add successful", "information", 2);
+                        instance.$group.append(feeback.newBlock);
+                        instance._setExpertBlocks();
+                        instance._setSortTable(instance.$group);
+                        instance.textareaCount(instance.$group);
+                    },
+                    412: function () {
+                        location.href = "/";
                     }
-
-                    Notifier.showTimedMessage("Add successful", "information", 2);
-                    instance.$group.append(feeback.newBlock);
-                    instance._setExpertBlocks();
-                    instance._setSortTable(instance.$group);
-                    instance.textareaCount(instance.$group);
                 }
             });
         });
@@ -99,12 +104,17 @@ Expert.prototype.btnSubmit = function(){
                 description: description
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                Notifier.showTimedMessage("Update successful", "information", 2);
             }
         });
 

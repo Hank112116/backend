@@ -1,7 +1,6 @@
 "use strict";
 require("./libs/RecommendExpert.js");
 require("./libs/InternalProjectMemo.js");
-require("./libs/ProjectProposeRecommend.js");
 import * as SweetAlert from "./libs/SweetAlert";
 
 $(function () {
@@ -32,14 +31,19 @@ $(function () {
                 project_id: project_id
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row =  $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row =  $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     }

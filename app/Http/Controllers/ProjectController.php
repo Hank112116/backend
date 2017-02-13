@@ -260,6 +260,9 @@ class ProjectController extends BaseController
         return response()->json($res);
     }
 
+    /**
+     * TODO remove
+     */
     public function proposeSolution()
     {
         $project_id   = $this->request->get('project_id');
@@ -273,6 +276,9 @@ class ProjectController extends BaseController
         return response()->json($result);
     }
 
+    /**
+     * TODO remove
+     */
     public function recommendExpert()
     {
         $project_id     = $this->request->get('project_id');

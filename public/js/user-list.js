@@ -46,16 +46,21 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-tag-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $user_row = $("#row-" + user_id);
+                    $user_row.html(feeback.view);
+                    icheck.init();
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#internal-tag-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $user_row = $("#row-" + user_id);
-                $user_row.html(feeback.view);
-                icheck.init();
             }
         });
     });
@@ -86,16 +91,24 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-description-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    if (route_path === "report/member-matching") {
+                        location.reload();
+                    }
+                    var $user_row = $("#row-" + user_id);
+                    $user_row.html(feeback.view);
+                    icheck.init();
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#internal-description-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $user_row = $("#row-" + user_id);
-                $user_row.html(feeback.view);
-                icheck.init();
             }
         });
     });
@@ -128,16 +141,24 @@ $(function () {
                 time_type: time_type
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#user-report-action-dialog").dialog("close");
+                    if (route_path === "report/member-matching") {
+                        location.reload();
+                    }
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $user_row = $("#row-" + user_id);
+                    $user_row.html(feeback.view);
+                    icheck.init();
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#user-report-action-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $user_row = $("#row-" + user_id);
-                $user_row.html(feeback.view);
-                icheck.init();
             }
         });
     });
@@ -265,12 +286,17 @@ $(function () {
             data: {
                 user_id: user_id
             },
-            success: function success(feeback) {
-                $("#dialog").html(feeback);
-                $("#dialog").dialog({
-                    height: 270,
-                    width: 600
-                });
+            statusCode: {
+                200: function _(feeback) {
+                    $("#dialog").html(feeback);
+                    $("#dialog").dialog({
+                        height: 270,
+                        width: 600
+                    });
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -286,15 +312,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $user_row = $("#row-" + user_id);
+                    $user_row.html(feeback.view);
+                    icheck.init();
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $user_row = $("#row-" + user_id);
-                $user_row.html(feeback.view);
-                icheck.init();
             }
         });
     }

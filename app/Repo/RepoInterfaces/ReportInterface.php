@@ -7,4 +7,6 @@ interface ReportInterface
     public function getProjectReport($input, $page, $per_page);
     public function getEventReport($event_id, $input, $page, $per_page);
     public function getQuestionnaireReport($event_id, $input, $page, $per_page);
+    public function getMemberMatchingReport($input, $page, $per_page);
+    public function getDetailMatchingDataByUser($user_id, $dstart, $dend);
 }

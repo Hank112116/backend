@@ -158,7 +158,8 @@ class Project extends Eloquent
             ->select([
                 'user_id', 'user_name', 'last_name', 'user_type',
                 'is_sign_up_as_expert', 'is_apply_to_be_expert',
-                'company'
+                'company', 'active', 'company_url', 'suspended_at',
+                'user_role', 'email_verify'
             ]);
     }
 
@@ -170,6 +171,11 @@ class Project extends Eloquent
                 'is_sign_up_as_expert', 'is_apply_to_be_expert',
                 'company'
             ]);
+    }
+
+    public function id()
+    {
+        return $this->project_id;
     }
 
     public function projectTeam()

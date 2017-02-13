@@ -12,7 +12,7 @@ return [
         'Project'   => ['project' => 'Project Full', 'schedule_manager' => 'Schedule Manager'],
         'Solution'  => ['solution' => 'Solution Full', 'solution_restricted' => 'Solution Limited'],
         'Marketing' => ['marketing_full' => 'Marketing Full' , 'marketing_expert_list' => 'Home Expert List'],
-        'Report'    => ['report_full' => 'Report Full', 'registration_report' => 'Registration Report','project_report' => 'Project Report', 'comment_report' => 'Comment Report', 'event_report' => 'Event Report'],
+        'Report'    => ['report_full' => 'Report Full', 'registration_report' => 'Registration Report','member_matching_report' => 'Member Matching Report', 'comment_report' => 'Comment Report', 'event_report' => 'Event Report'],
     ],
     'default_admin'   => [
         'adminer', 'user', 'project', 'solution', 'front_page', 'marketing',

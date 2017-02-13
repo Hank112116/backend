@@ -40,15 +40,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-tag-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#internal-tag-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -82,15 +87,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#grade_dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#grade_dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -121,15 +131,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-description-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#internal-description-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -170,15 +185,20 @@ $(function () {
                 project_managers: JSON.stringify(managers)
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#schedule-manager-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#schedule-manager-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -215,183 +235,26 @@ $(function () {
                 time_type: time_type
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#project-report-action-dialog").dialog("close");
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                $("#project-report-action-dialog").dialog("close");
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
 });
 
 },{}],2:[function(require,module,exports){
-/* jshint quotmark: false */
-"use strict";
-
-$(function () {
-    var $document = $(document);
-    var $propose_dialog = $("#propose-solution-dialog");
-    var $recommend_dialog = $("#recommend-expert-dialog");
-    var $match_statistics_dialog = $("#project-match-statistics-dialog");
-    var $dstart = $("#statistic-start-date").val();
-    var $dend = $("#statistic-end-date").val();
-    var $pm_proposed = $("#pm-proposed");
-    var $user_proposed = $("#user-proposed");
-    $document.on("click", ".project_propose", function () {
-        $pm_proposed.html("");
-        $user_proposed.html("");
-        var $this = $(this);
-        var title = $this.attr("title");
-        var project_id = $this.attr("rel");
-        $.ajax({
-            type: "POST",
-            url: "/project/propose-solution",
-            data: {
-                project_id: project_id,
-                dstart: $dstart,
-                dend: $dend
-            },
-            dataType: "JSON",
-            success: function success(feeback) {
-                var staff_propose_list = "";
-                var user_propose_list = "";
-                $.each(feeback.staff_propose, function (index, value) {
-                    staff_propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" + "#" + value.solution_id + ". " + "<a href='" + value.solution_url + "' target='_blank' style='color: #428bca'> " + value.solution_title + " </a>" + " By " + "<a href='" + value.user_url + "' target='_blank' style='color: #428bca'> " + value.user_name + " </a>" + " At " + value.at_time + "</div>";
-                });
-                $.each(feeback.user_propose, function (index, value) {
-                    user_propose_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>" + "#" + value.solution_id + ". " + "<a href='" + value.solution_url + "' target='_blank' style='color: #428bca'> " + value.solution_title + " </a>" + " By " + "<a href='" + value.user_url + "' target='_blank' style='color: #428bca'> " + value.user_name + " </a>" + " At " + value.at_time + "</div>";
-                });
-                if (staff_propose_list === "") {
-                    staff_propose_list = "N/A";
-                }
-                if (user_propose_list === "") {
-                    user_propose_list = "N/A";
-                }
-                $pm_proposed.html(staff_propose_list);
-                $user_proposed.html(user_propose_list);
-            }
-        });
-        $propose_dialog.dialog({
-            title: title,
-            height: 500,
-            width: 1100
-        });
-    });
-
-    var $recommend_email_out = $("#email-out-recommend");
-    var $recommend_applicant = $("#applicant-recommend");
-    var $user_referral_applicant = $("#applicant-user-referral");
-    $document.on("click", ".project_recommend", function () {
-        $recommend_email_out.html("");
-        $recommend_applicant.html("");
-        $user_referral_applicant.html("");
-        var $this = $(this);
-        var title = $this.attr("title");
-        var project_id = $this.attr("rel");
-        $.ajax({
-            type: "POST",
-            url: "/project/recommend-expert",
-            data: {
-                project_id: project_id,
-                dstart: $dstart,
-                dend: $dend
-            },
-            dataType: "JSON",
-            success: function success(feeback) {
-                var applicant_recommend_list = "";
-                var email_out_recommend_list = "";
-                var applicant_user_referral_list = "";
-                $.each(feeback.staff_referral, function (index, value) {
-                    if (value.type == "email-out") {
-                        email_out_recommend_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>";
-                        if (value.company_name) {
-                            email_out_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a> from " + value.company_name;
-                        } else {
-                            email_out_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a>";
-                        }
-
-                        if (value.referral_user_name) {
-                            email_out_recommend_list += " By " + value.referral_user_name;
-                        }
-                        email_out_recommend_list += " At " + value.at_time;
-                        email_out_recommend_list += "</div>";
-                    }
-
-                    if (value.type == "applicant") {
-                        applicant_recommend_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>";
-                        if (value.company_name) {
-                            applicant_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a> from " + value.company_name;
-                        } else {
-                            applicant_recommend_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a>";
-                        }
-
-                        if (value.referral_user_name) {
-                            applicant_recommend_list += " By " + "<a href='" + value.referral_user_url + "' target='_blank' style='color: #428bca'> " + value.referral_user_name + " </a>";
-                        }
-                        applicant_recommend_list += " At " + value.at_time;
-                        applicant_recommend_list += "</div>";
-                    }
-                });
-
-                $.each(feeback.user_referral, function (index, value) {
-                    if (value.type == "applicant") {
-                        applicant_user_referral_list += "<div style='border-bottom: 1px solid #ddd; padding: 5px'>";
-                        if (value.company_name) {
-                            applicant_user_referral_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a> from " + value.company_name;
-                        } else {
-                            applicant_user_referral_list += "#" + value.user_id + ". " + "<a href='" + value.profile_url + "' target='_blank' style='color: #428bca'>" + value.user_name + " </a>";
-                        }
-
-                        if (value.referral_user_name) {
-                            applicant_user_referral_list += " By " + "<a href='" + value.referral_user_url + "' target='_blank' style='color: #428bca'> " + value.referral_user_name + " </a>";
-                        }
-                        applicant_user_referral_list += " At " + value.at_time;
-                        applicant_user_referral_list += "</div>";
-                    }
-                });
-
-                if (email_out_recommend_list === "") {
-                    email_out_recommend_list = "N/A";
-                }
-                if (applicant_recommend_list === "") {
-                    applicant_recommend_list = "N/A";
-                }
-                if (applicant_user_referral_list === "") {
-                    applicant_user_referral_list = "N/A";
-                }
-                $recommend_email_out.html(email_out_recommend_list);
-                $recommend_applicant.html(applicant_recommend_list);
-                $user_referral_applicant.html(applicant_user_referral_list);
-            }
-        });
-
-        $recommend_dialog.dialog({
-            title: title,
-            height: 680,
-            width: 1100
-        });
-    });
-    $(".match-statistics-btn").click(function () {
-        var statistics = JSON.parse($("#match-statistics").val());
-        var statistics_list = "";
-        $.each(statistics, function (index, value) {
-            console.log('My array has at position ' + index + ', this value: ' + value.total_count);
-            statistics_list += "<tr><td class='col-md-3'>" + index + "</td>" + "<td>Proposed:" + value.propose_count + " Referrals: " + value.recommend_count + " Total: " + value.total_count + "</td>" + "<td>Project: " + value.project_count + " </td>" + "</tr>";
-        });
-        $("#project-match-statistics-table").html(statistics_list);
-        $match_statistics_dialog.dialog({
-            height: 400,
-            width: 700
-        });
-    });
-});
-
-},{}],3:[function(require,module,exports){
 /* jshint quotmark: false */
 "use strict";
 
@@ -431,8 +294,13 @@ $(function () {
                 expertId: expertId
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                $expert1Info.text(feeback.msg);
+            statusCode: {
+                200: function _(feeback) {
+                    $expert1Info.text(feeback.msg);
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -450,8 +318,13 @@ $(function () {
                 expertId: expertId
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                $expert2Info.text(feeback.msg);
+            statusCode: {
+                200: function _(feeback) {
+                    $expert2Info.text(feeback.msg);
+                },
+                412: function _() {
+                    location.href = "/";
+                }
             }
         });
     });
@@ -477,16 +350,21 @@ $(function () {
                     PM: PM
                 },
                 dataType: "JSON",
-                success: function success(feeback) {
-                    if (feeback.status === "fail") {
-                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                        location.reload();
-                        return;
+                statusCode: {
+                    200: function _(feeback) {
+                        if (feeback.status === "fail") {
+                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                            location.reload();
+                            return;
+                        }
+                        $("#email-recommend-expert-dialog").dialog("close");
+                        Notifier.showTimedMessage("Send mail successful", "information", 2);
+                        var $project_row = $("#row-" + projectId);
+                        $project_row.html(feeback.view);
+                    },
+                    412: function _() {
+                        location.href = "/";
                     }
-                    $("#email-recommend-expert-dialog").dialog("close");
-                    Notifier.showTimedMessage("Send mail successful", "information", 2);
-                    var $project_row = $("#row-" + projectId);
-                    $project_row.html(feeback.view);
                 }
             });
         } else {
@@ -502,7 +380,7 @@ $(function () {
     });
 });
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 // jshint unused: false
 "use strict";
 
@@ -527,7 +405,7 @@ function alert(param) {
     });
 }
 
-},{"../vendor/sweetalert/sweetalert.es6.js":14}],5:[function(require,module,exports){
+},{"../vendor/sweetalert/sweetalert.es6.js":13}],4:[function(require,module,exports){
 "use strict";
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
@@ -538,7 +416,6 @@ var SweetAlert = _interopRequireWildcard(_libsSweetAlert);
 
 require("./libs/RecommendExpert.js");
 require("./libs/InternalProjectMemo.js");
-require("./libs/ProjectProposeRecommend.js");
 
 $(function () {
     var $document = $(document);
@@ -568,20 +445,25 @@ $(function () {
                 project_id: project_id
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function _(feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row = $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function _() {
+                    location.href = "/";
                 }
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row = $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     }
 });
 
-},{"./libs/InternalProjectMemo.js":1,"./libs/ProjectProposeRecommend.js":2,"./libs/RecommendExpert.js":3,"./libs/SweetAlert":4}],6:[function(require,module,exports){
+},{"./libs/InternalProjectMemo.js":1,"./libs/RecommendExpert.js":2,"./libs/SweetAlert":3}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -613,7 +495,7 @@ var defaultParams = {
 exports['default'] = defaultParams;
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -746,7 +628,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./handle-dom":8,"./handle-swal-dom":10,"./utils":13}],8:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9,"./utils":12}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -919,7 +801,7 @@ exports.fadeOut = fadeOut;
 exports.fireClick = fireClick;
 exports.stopEventPropagation = stopEventPropagation;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1000,7 +882,7 @@ var handleKeyDown = function handleKeyDown(event, params, modal) {
 exports['default'] = handleKeyDown;
 module.exports = exports['default'];
 
-},{"./handle-dom":8,"./handle-swal-dom":10}],10:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1153,7 +1035,7 @@ exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
 exports.fixVerticalPosition = fixVerticalPosition;
 
-},{"./default-params":6,"./handle-dom":8,"./injected-html":11,"./utils":13}],11:[function(require,module,exports){
+},{"./default-params":5,"./handle-dom":7,"./injected-html":10,"./utils":12}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1194,7 +1076,7 @@ var injectedHTML =
 exports["default"] = injectedHTML;
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1414,7 +1296,7 @@ var setParameters = function setParameters(params) {
 exports['default'] = setParameters;
 module.exports = exports['default'];
 
-},{"./handle-dom":8,"./handle-swal-dom":10,"./utils":13}],13:[function(require,module,exports){
+},{"./handle-dom":7,"./handle-swal-dom":9,"./utils":12}],12:[function(require,module,exports){
 /*
  * Allow user to pass their own params
  */
@@ -1489,7 +1371,7 @@ exports.isIE8 = isIE8;
 exports.logStr = logStr;
 exports.colorLuminance = colorLuminance;
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // SweetAlert
 // 2014-2015 (c) - Tristan Edwards
 // github.com/t4t5/sweetalert
@@ -1759,4 +1641,4 @@ if (typeof define === 'function' && define.amd) {
   module.exports = sweetAlert;
 }
 
-},{"./modules/default-params":6,"./modules/handle-click":7,"./modules/handle-dom":8,"./modules/handle-key":9,"./modules/handle-swal-dom":10,"./modules/set-params":12,"./modules/utils":13}]},{},[5]);
+},{"./modules/default-params":5,"./modules/handle-click":6,"./modules/handle-dom":7,"./modules/handle-key":8,"./modules/handle-swal-dom":9,"./modules/set-params":11,"./modules/utils":12}]},{},[4]);

@@ -37,15 +37,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#internal-tag-dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row =  $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#internal-tag-dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row =  $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
 
@@ -80,15 +85,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $( "#grade_dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row =  $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $( "#grade_dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row =  $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -120,15 +130,20 @@ $(function () {
                 route_path: route_path
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#internal-description-dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row =  $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $("#internal-description-dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row =  $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -169,15 +184,20 @@ $(function () {
                 project_managers: JSON.stringify(managers)
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#schedule-manager-dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row =  $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $("#schedule-manager-dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row =  $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
@@ -214,15 +234,20 @@ $(function () {
                 time_type: time_type
             },
             dataType: "JSON",
-            success: function success(feeback) {
-                if (feeback.status === "fail") {
-                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                    return;
+            statusCode: {
+                200: function (feeback) {
+                    if (feeback.status === "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    $("#project-report-action-dialog" ).dialog( "close" );
+                    Notifier.showTimedMessage("Update successful", "information", 2);
+                    var $project_row =  $("#row-" + project_id);
+                    $project_row.html(feeback.view);
+                },
+                412: function () {
+                    location.href = "/";
                 }
-                $("#project-report-action-dialog" ).dialog( "close" );
-                Notifier.showTimedMessage("Update successful", "information", 2);
-                var $project_row =  $("#row-" + project_id);
-                $project_row.html(feeback.view);
             }
         });
     });
