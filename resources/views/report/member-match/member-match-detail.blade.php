@@ -6,6 +6,7 @@
         </td>
         <td></td>
     </tr>
+    <?php $i = 1 ?>
     @foreach($recommend_profile as $object)
     <tr>
         <td class="col-md-4">
@@ -13,6 +14,7 @@
         </td>
         <td>
             @foreach($object['data'] as $item)
+                {{ $i }}.
                 <a href="{{ $item->getOperatorLink() }}" target="_blank" style="color: #428bca">#{{ $item->getOperatorName() }}</a>
                 {{ $item->action() }} {{ $item->object() }}
                 <a href="{{ $item->objectLink() }}" target="_blank" style="color: #428bca">
@@ -34,6 +36,7 @@
                 @if (!$loop->last)
                     <br/>
                 @endif
+                <?php $i ++ ?>
             @endforeach
         </td>
     </tr>
@@ -45,6 +48,7 @@
         </td>
         <td>
             @foreach($object['data'] as $item)
+                {{ $i }}.
                 <a href="{{ $item->getOperatorLink() }}" target="_blank" style="color: #428bca">#{{ $item->getOperatorName() }}</a>
                 {{ $item->action() }} {{ $item->object() }}
                 <a href="{{ $item->objectLink() }}" target="_blank" style="color: #428bca">
@@ -67,6 +71,7 @@
                 @if (!$loop->last)
                     <br/>
                 @endif
+                <?php $i ++ ?>
             @endforeach
         </td>
     </tr>
@@ -78,6 +83,7 @@
             </td>
             <td>
                 @foreach($object['data'] as $item)
+                    {{ $i }}.
                     <a href="{{ $item->getOperatorLink() }}" target="_blank" style="color: #428bca">#{{ $item->getOperatorName() }}</a>
                     {{ $item->action() }} {{ $item->object() }}
                     <a href="{{ $item->objectLink() }}" target="_blank" style="color: #428bca">
@@ -100,6 +106,7 @@
                     @if (!$loop->last)
                         <br/>
                     @endif
+                    <?php $i ++ ?>
                 @endforeach
             </td>
         </tr>
@@ -114,6 +121,7 @@
         </td>
         <td></td>
     </tr>
+    <?php $i = 1 ?>
     @foreach($referrals_profile as $object)
     <tr>
         <td class="col-md-4">
@@ -121,6 +129,7 @@
         </td>
         <td>
             @foreach($object['data'] as $item)
+                {{ $i }}.
                 <a href="{{ $item->getOperatorLink() }}" target="_blank" style="color: #428bca">#{{ $item->getOperatorName() }}</a>
                 {{ $item->action() }} {{ $item->object() }}
                 <a href="{{ $item->objectLink() }}" target="_blank" style="color: #428bca">
@@ -143,10 +152,12 @@
                 @if (!$loop->last)
                     <br/>
                 @endif
+                <?php $i ++ ?>
             @endforeach
         </td>
     </tr>
     @endforeach
+
     @foreach($referrals_project as $object)
         <tr>
             <td class="col-md-4">
@@ -154,6 +165,7 @@
             </td>
             <td>
                 @foreach($object['data'] as $item)
+                    {{ $i }}.
                     <a href="{{ $item->getOperatorLink() }}" target="_blank" style="color: #428bca">#{{ $item->getOperatorName() }}</a>
                     {{ $item->action() }} {{ $item->object() }}
                     <a href="{{ $item->objectLink() }}" target="_blank" style="color: #428bca">
@@ -176,10 +188,12 @@
                     @if (!$loop->last)
                         <br/>
                     @endif
+                    <?php $i++ ?>
                 @endforeach
             </td>
         </tr>
     @endforeach
+
     @foreach($referrals_solution as $object)
         <tr>
             <td class="col-md-4">
@@ -187,6 +201,7 @@
             </td>
             <td>
                 @foreach($object['data'] as $item)
+                    {{ $i }}.
                     <a href="{{ $item->getOperatorLink() }}" target="_blank" style="color: #428bca">#{{ $item->getOperatorName() }}</a>
                     {{ $item->action() }} {{ $item->object() }}
                     <a href="{{ $item->objectLink() }}" target="_blank" style="color: #428bca">
@@ -209,6 +224,7 @@
                     @if (!$loop->last)
                         <br/>
                     @endif
+                    <?php $i ++ ?>
                 @endforeach
             </td>
         </tr>
