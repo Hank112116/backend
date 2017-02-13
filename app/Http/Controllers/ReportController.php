@@ -238,11 +238,11 @@ class ReportController extends BaseController
         $input = $this->request->all();
 
         if ($this->request->get('range')) {
-            $input['dstart']    = Carbon::parse($this->request->get('range') . ' days ago')->toDateString();
+            $input['dstart']    = Carbon::parse($this->request->get('range') - 1 . ' days ago')->toDateString();
         }
 
         if (empty($this->request->get('range')) && empty($this->request->get('dstart'))) {
-            $input['dstart']    = Carbon::parse('14 days ago')->toDateString();
+            $input['dstart']    = Carbon::parse('13 days ago')->toDateString();
         }
 
         if (empty($input['dend'])) {

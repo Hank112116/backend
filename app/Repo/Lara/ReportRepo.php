@@ -150,10 +150,12 @@ class ReportRepo implements ReportInterface
 
     public function getMemberMatchingReport($input, $page, $per_page)
     {
+        $dend = Carbon::parse($input['dend'])->addDay()->toDateString();
+
         $message_related = $this->message_related
             ->select(['log_id', 'message_id', 'sender_id', 'receiver_id', 'type', 'object_type', 'object_id', 'attached_at'])
             ->with(['sender', 'receiver'])
-            ->whereBetween('attached_at', [$input['dstart'], $input['dend']])
+            ->whereBetween('attached_at', [$input['dstart'], $dend])
             ->where('has_submitted', true)
             ->whereIn('type', [MessageRelatedObject::TYPE_ATTACH, MessageRelatedObject::TYPE_PM_ATTACH])
             ->orderBy('attached_at', 'desc')
@@ -162,7 +164,7 @@ class ReportRepo implements ReportInterface
         $propose_solution = $this->propose_solution
             ->select(['log_id', 'proposer_id', 'propose_time', 'solution_id', 'project_id', 'event'])
             ->with(['user', 'project'])
-            ->whereBetween('propose_time', [$input['dstart'], $input['dend']])
+            ->whereBetween('propose_time', [$input['dstart'], $dend])
             ->whereIn('event', [ProposeSolution::EVENT_PROPOSE, ProposeSolution::EVENT_SUGGEST])
             ->orderBy('propose_time', 'desc')
             ->get();
@@ -170,7 +172,7 @@ class ReportRepo implements ReportInterface
         $propose_project = $this->propose_project
             ->select(['log_id', 'proposer_id', 'propose_time', 'solution_id', 'project_id', 'event'])
             ->with(['user', 'solution'])
-            ->whereBetween('propose_time', [$input['dstart'], $input['dend']])
+            ->whereBetween('propose_time', [$input['dstart'], $dend])
             ->whereIn('event', [ProposeProject::EVENT_PROPOSE, ProposeProject::EVENT_SUGGEST])
             ->orderBy('propose_time', 'desc')
             ->get();
@@ -178,7 +180,7 @@ class ReportRepo implements ReportInterface
         $group_member_applicant = $this->group_member_applicant
             ->select(['applicant_id', 'user_id', 'user_type', 'referral', 'apply_date', 'additional_privileges', 'event'])
             ->with(['user', 'referralUser'])
-            ->whereBetween('apply_date', [$input['dstart'], $input['dend']])
+            ->whereBetween('apply_date', [$input['dstart'], $dend])
             ->where('user_type', '<>', User::TYPE_CREATOR)
             ->orderBy('apply_date', 'desc')
             ->get();
@@ -508,7 +510,7 @@ class ReportRepo implements ReportInterface
         $data['referrals']['project']  = [];
         $data['referrals']['solution'] = [];
 
-
+        $dend = Carbon::parse($dend)->addDay()->toDateString();
         $user = $this->user_repo->find($user_id);
         $solutions = $user->solutions->pluck('solution_id');
         $projects  = $user->projects->pluck('project_id');
