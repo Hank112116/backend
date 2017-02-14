@@ -58,12 +58,24 @@
 
             <div class="col-md-5">
                 <div>
-                    {!! Form::radio('email_verify', Backend\Model\Eloquent\User::EMAIL_VERIFY, $user->verified()) !!}
+                    {!! Form::radio(
+                            'email_verify',
+                            Backend\Model\Eloquent\User::EMAIL_VERIFY,
+                            $user->verified(),
+                            ['id'=>'email_verify_2', 'disabled' => 'disabled']
+                        )
+                    !!}
                     <label for="active_1" class='iradio-lable'>Verify</label>
                 </div>
 
                 <div>
-                    {!! Form::radio('email_verify', Backend\Model\Eloquent\User::EMAIL_VERIFY_NONE, !$user->verified()) !!}
+                    {!! Form::radio(
+                            'email_verify',
+                            Backend\Model\Eloquent\User::EMAIL_VERIFY_NONE,
+                            !$user->verified(),
+                            ['id'=>'email_verify_1', 'disabled' => 'disabled']
+                        )
+                    !!}
                     <label for="active_0" class='iradio-lable'>None</label>
                 </div>
             </div>
@@ -76,12 +88,12 @@
             <label for="active" class="col-md-3">Active</label>
             <div class="col-md-5">
                 <div>
-                    {!! Form::radio('active', '1', $user->active==1, ["id"=>"active_1"]) !!}
+                    {!! Form::radio('active', '1', $user->active==1, ['id'=>'active_1']) !!}
                     <label for="active_1" class='iradio-lable'>Active</label>
                 </div>
 
                 <div>
-                    {!! Form::radio('active', '0', $user->active==0, ["id"=>"active_0"]) !!}
+                    {!! Form::radio('active', '0', $user->active==0, ['id'=>'active_0']) !!}
                     <label for="active_0" class='iradio-lable'>InActive</label>
                 </div>
             </div>

@@ -565,6 +565,7 @@ $(function () {
 
     var $country = $("#country");
     var $city = $("#city");
+    var $active = $("input[name='active']");
 
     if ($country.length) {
         FormUtility.locationSelector($country);
@@ -576,6 +577,21 @@ $(function () {
 
     FormUtility.editor();
     new _libsProjectUpdater2["default"]().initSelectTag($("[data-select-tags=expertises]"));
+
+    $active.on("ifChanged", function () {
+        var active = $("input[name='active']:checked").val();
+        var $email_verify_1 = $("#email_verify_1");
+        var $email_verify_2 = $("#email_verify_2");
+        if (active == 0) {
+            $email_verify_2.removeAttr("checked");
+            $email_verify_1.attr("checked", "checked");
+            $email_verify_1.iCheck("check");
+        } else if (active == 1) {
+            $email_verify_1.removeAttr("checked");
+            $email_verify_2.attr("checked", "checked");
+            $email_verify_2.iCheck("check");
+        }
+    });
 });
 
 },{"./libs/FormUtility":2,"./libs/ProjectUpdater":3,"./libs/UserAttachment.js":5,"./libs/UserSuspend.js":6,"./modules/icheck":7}],9:[function(require,module,exports){

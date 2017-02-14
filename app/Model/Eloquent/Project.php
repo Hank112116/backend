@@ -590,7 +590,8 @@ class Project extends Eloquent
                 }
 
                 if (!is_null($tmp['date'])) {
-                    $tmp['date'] = Carbon::createFromTimestamp($tmp['date'])->toDateString();
+                    $tmp['date'] = is_numeric($tmp['date']) ?
+                        Carbon::createFromTimestamp($tmp['date'])->toDateString() : $tmp['date'];
                 } else {
                     $tmp['date'] = 'N/A';
                 }

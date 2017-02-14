@@ -174,6 +174,13 @@ class MessageRelatedObject extends Eloquent
     public function getMessageTopicTag()
     {
         $message_group = \DB::table('message')
-            ->join('message_group', 'message.group_id', '=', 'message_group.id');
+            ->join('message_group', 'message.group_id', '=', 'message_group.id')
+            ->where('message.id', $this->message_id)
+            ->first();
+        $message_topic = \DB::table('message_topic')
+            ->where('id', $message_group->topic_id)
+            ->first();
+
+        return $message_topic['tag'];
     }
 }

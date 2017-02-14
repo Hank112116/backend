@@ -481,7 +481,10 @@ class UserRepo implements UserInterface
             $user->is_sign_up_as_expert = 0;
             $user->is_apply_to_be_expert = 0;
         }
-
+        
+        if (array_key_exists('active', $data)) {
+            $user->email_verify = $data['active'] ? User::EMAIL_VERIFY : User::EMAIL_VERIFY_NONE;
+        }
 
         $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
 
