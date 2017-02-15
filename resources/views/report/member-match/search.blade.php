@@ -22,7 +22,7 @@
 
     <div class="col-md-2">
         <div class="input-group">
-            {!! Form::text('description', request('description'), ['placeholder'=>"Internal description", 'class'=>"form-control"]) !!}
+            {!! Form::text('action', request('action'), ['placeholder'=>"Action Keywords", 'class'=>"form-control"]) !!}
         </div>
     </div>
     <div class="col-md-2 ">

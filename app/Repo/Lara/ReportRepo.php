@@ -448,11 +448,11 @@ class ReportRepo implements ReportInterface
             });
         }
 
-        if (!empty($input['description'])) {
-            $description = $input['description'];
+        if (!empty($input['action'])) {
+            $action = $input['action'];
 
-            $collections = $collections->filter(function (MemberMatch $item) use ($description) {
-                if (stristr($item->internalDescription(), $description)) {
+            $collections = $collections->filter(function (MemberMatch $item) use ($action) {
+                if (stristr($item->internalAction(), $action)) {
                     return $item;
                 }
             });
