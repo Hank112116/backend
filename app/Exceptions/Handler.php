@@ -4,6 +4,7 @@ use Backend\Facades\Log;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -15,6 +16,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         'Symfony\Component\HttpKernel\Exception\HttpException',
         'Illuminate\Session\TokenMismatchException',
+        'PDOException',
     ];
 
     /**
@@ -35,20 +37,25 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function render($request, Exception $e)
     {
         if ($e instanceof TokenMismatchException) {
-            Log::warning($e->getMessage());
+            Log::warning('CSRF token mismatch', $request->all());
             auth()->logout();
             session()->clear();
             \Noty::warn('CSRF token mismatch, please login again.');
             if ($request->ajax()) {
-                return response('', 412);
+                return response('', Response::HTTP_PRECONDITION_FAILED);
             } else {
                 return redirect('/');
             }
+        }
+
+        if ($e instanceof \PDOException) {
+            Log::error($e->getMessage(), $request->all());
+            return redirect('/');
         }
 
         if ($this->isHttpException($e)) {
