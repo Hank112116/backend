@@ -212,20 +212,14 @@ class ProjectController extends BaseController
         if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
             $project = $this->project_repo->find($input['project_id']);
 
-            if ($input['route_path'] === 'report/project') {
-                // make report project row view
-                $view = view()->make('report.project-row')
-                    ->with(['project' => $project, 'input' => $input, 'user_referral_total' => 0])
-                    ->render();
-            } else {
-                // make project row view
-                $view = view()->make('project.row')->with(
-                    [
-                        'project'       => $project,
-                        'tag_tree'      => TagNode::tags()
-                    ]
-                )->render();
-            }
+            // make project row view
+            $view = view()->make('project.row')->with(
+                [
+                    'project'       => $project,
+                    'tag_tree'      => TagNode::tags()
+                ]
+            )->render();
+
             $res  = ['status' => 'success', 'view' => $view];
         } else {
             $res   = ['status' => 'fail', "msg" => "Update Fail!"];
@@ -258,37 +252,6 @@ class ProjectController extends BaseController
         Log::info($log_action, $input);
 
         return response()->json($res);
-    }
-
-    /**
-     * TODO remove
-     */
-    public function proposeSolution()
-    {
-        $project_id   = $this->request->get('project_id');
-        $dstart       = $this->request->get('dstart');
-        $dend         = $this->request->get('dend');
-
-        $project    = $this->project_repo->find($project_id);
-        $statistics = $project->proposeSolutionStatistics($dstart, $dend);
-        $result['staff_propose'] = $statistics->internal_data;
-        $result['user_propose']  = $statistics->external_data;
-        return response()->json($result);
-    }
-
-    /**
-     * TODO remove
-     */
-    public function recommendExpert()
-    {
-        $project_id     = $this->request->get('project_id');
-        $dstart         = $this->request->get('dstart');
-        $dend           = $this->request->get('dend');
-        $project     = $this->project_repo->find($project_id);
-        $statistics  = $project->recommendExpertStatistics($dstart, $dend);
-        $result['staff_referral'] = $statistics->internal_data;
-        $result['user_referral']  = $statistics->external_data;
-        return response()->json($result);
     }
 
     /**

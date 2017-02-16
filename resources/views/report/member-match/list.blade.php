@@ -22,15 +22,17 @@
             Showing Match Stats from {{ $input['dstart'] }} to {{ $input['dend'] }}
         </h4>
     </div>
-    <div class="row text-center">
-        <h4>
-        @foreach($members->pm_statistic as $item)
-            {{ $item['name'] }}: {{ $item['referral_count'] }}
-            @if (!$loop->last)
-                |
-            @endif
-        @endforeach
-        </h4>
+    <div class="row col-md-offset-2">
+        <div class="text-center col-md-10">
+            @foreach($members->pm_statistic as $item)
+                @if ($loop->iteration % 7 != 0)
+                {{ $item->name() }}: {{ $item->getCountReferral() }}
+                    |
+                @else
+                    <br/>
+                @endif
+            @endforeach
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">

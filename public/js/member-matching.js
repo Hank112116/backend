@@ -201,7 +201,7 @@ $(function () {
         $dialog.dialog({
             title: "Matching data (User #" + user_id + ")",
             height: 600,
-            width: 1100
+            width: 1180
         });
     });
 });

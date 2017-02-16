@@ -1,7 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
 use Backend\Enums\EventEnum;
-use Backend\Model\Eloquent\EventQuestionnaireFeedback;
 use Backend\Model\Eloquent\User;
 use Backend\Model\Eloquent\ProposeSolution;
 use Backend\Model\Eloquent\GroupMemberApplicant;
@@ -11,6 +10,7 @@ use Backend\Model\Eloquent\ProposeProject;
 use Backend\Model\Eloquent\MessageRelatedObject;
 use Backend\Model\Report\Entity\MemberMatch;
 use Backend\Model\Report\Entity\MemberMatchDetail;
+use Backend\Model\Report\Entity\MemberMatchPM;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -187,11 +187,10 @@ class ReportRepo implements ReportInterface
 
         $pms = $this->user_repo->findHWTrekPM();
 
-        $pm_statistic = [];
+        $pm_statistic = Collection::make();
         /* @var User $pm */
         foreach ($pms as $pm) {
-            $pm_statistic[$pm->id()]['name']           = $pm->textFullName();
-            $pm_statistic[$pm->id()]['referral_count'] = 0;
+            $pm_statistic->put($pm->id(), new MemberMatchPM($pm));
         }
 
         $collections = Collection::make();
@@ -233,11 +232,8 @@ class ReportRepo implements ReportInterface
                 $collections->put($item->receiver->id(), $member_match);
             }
 
-            if (array_key_exists($item->sender->id(), $pm_statistic)) {
-                $pm_statistic[$item->sender->id()]['referral_count'] ++;
-            }
+            $pm_statistic = $this->statisticPM($pm_statistic, $item->sender);
         }
-
         /***************************/
         /*  ProposeSolution   */
         /***************************/
@@ -272,9 +268,8 @@ class ReportRepo implements ReportInterface
 
                 $collections->put($item->solutionOwner()->id(), $member_match);
             }
-            if (array_key_exists($item->user->id(), $pm_statistic)) {
-                $pm_statistic[$item->user->id()]['referral_count'] ++;
-            }
+
+            $pm_statistic = $this->statisticPM($pm_statistic, $item->user);
         }
 
         /***************************/
@@ -312,9 +307,7 @@ class ReportRepo implements ReportInterface
                 $collections->put($item->projectOwner()->id(), $member_match);
             }
 
-            if (array_key_exists($item->user->id(), $pm_statistic)) {
-                $pm_statistic[$item->user->id()]['referral_count'] ++;
-            }
+            $pm_statistic = $this->statisticPM($pm_statistic, $item->user);
         }
         /***************************/
         /*  GroupMemberApplicant   */
@@ -368,9 +361,7 @@ class ReportRepo implements ReportInterface
                     $collections->put($item->user->id(), $member_match);
                 }
 
-                if (array_key_exists($item->user->id(), $pm_statistic)) {
-                    $pm_statistic[$item->user->id()]['referral_count'] ++;
-                }
+                $pm_statistic = $this->statisticPM($pm_statistic, $item->user);
             } elseif ($item->isMemberReferral()) {
                 if ($collections->has($item->user->id())) {
                     $member_match = $collections->get($item->user->id());
@@ -394,9 +385,7 @@ class ReportRepo implements ReportInterface
                     $collections->put($item->user->id(), $member_match);
                 }
 
-                if (array_key_exists($item->referralUser->id(), $pm_statistic)) {
-                    $pm_statistic[$item->referralUser->id()]['referral_count'] ++;
-                }
+                $pm_statistic = $this->statisticPM($pm_statistic, $item->referralUser);
             }
         }
 
@@ -414,6 +403,19 @@ class ReportRepo implements ReportInterface
         $result->pm_statistic = $pm_statistic;
 
         return $result;
+    }
+
+    private function statisticPM(Collection $collection, User $user)
+    {
+        if ($collection->has($user->id())) {
+            $statistic = $collection->get($user->id());
+
+            $statistic->countReferral();
+
+            $collection->prepend($statistic, $user->id());
+        }
+
+        return $collection;
     }
 
     private function filterMemberMatchingReport(Collection $collections, $input)
@@ -547,6 +549,7 @@ class ReportRepo implements ReportInterface
             ->whereIn('type', [MessageRelatedObject::TYPE_ATTACH, MessageRelatedObject::TYPE_PM_ATTACH])
             ->orderBy('attached_at', 'desc')
             ->get();
+
         /* @var MessageRelatedObject $recommend */
         foreach ($attach_recommends as $recommend) {
             $r = [];
@@ -651,7 +654,6 @@ class ReportRepo implements ReportInterface
             ->orderBy('propose_time', 'desc')
             ->get();
 
-
         $propose_project_referrals = $this->propose_project
             ->select(['log_id', 'proposer_id', 'propose_time', 'solution_id', 'project_id', 'event'])
             ->with(['solution'])
@@ -673,7 +675,6 @@ class ReportRepo implements ReportInterface
             $r['on_time']      = $recommend->proposeTime();
             $data['recommend']['solution'][] = new MemberMatchDetail($r);
         }
-
 
         /* @var ProposeProject $referral */
         foreach ($propose_project_referrals as $referral) {
@@ -725,6 +726,7 @@ class ReportRepo implements ReportInterface
             ->where('user_type', '<>', User::TYPE_CREATOR)
             ->orderBy('apply_date', 'desc')
             ->get();
+
         /* @var GroupMemberApplicant  $recommend */
         foreach ($group_member_applicant_recommends as $recommend) {
             $r = [];
@@ -753,7 +755,6 @@ class ReportRepo implements ReportInterface
             $r['on_time']      = $referral->applyDate();
             $data['referrals']['profile'][] = new MemberMatchDetail($r);
         }
-
 
         /* @var GroupMemberApplicant  $referral */
         foreach ($group_member_applicant_referrals as $referral) {
