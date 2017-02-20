@@ -10,6 +10,11 @@ class ApplyExpertMessage extends Eloquent
     public $timestamps = false;
     public static $unguarded = true;
 
+    public function getKeyName()
+    {
+        return $this->primaryKey;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');

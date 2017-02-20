@@ -48,7 +48,6 @@ class MessageRelatedObject extends Eloquent
                 return $this->belongsTo(Solution::class, 'object_id', 'solution_id')
                     ->select('solution_id', 'user_id', 'solution_title');
                 break;
-                break;
         }
     }
 

@@ -5,11 +5,11 @@ namespace Backend\Http\Controllers;
 use Backend\Api\ApiInterfaces\AuthApi\OAuthApiInterface;
 use Backend\Assistant\ApiResponse\OAuthResponseAssistant;
 use Backend\Enums\API\Response\Key\OAuthKey;
-use Backend\Facades\Log;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Log;
 use Noty;
 use Cache;
 
@@ -99,7 +99,7 @@ class AuthController extends BaseController
     {
         auth()->logout();
 
-        session()->clear();
+        session()->flush();
 
         Cache::flush();
 

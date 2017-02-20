@@ -67,7 +67,7 @@
                 </tr>
             @endforeach
             </tbody>
-            <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
+            <input type="hidden" id="route-path" value="{{ Route::current()->uri() }}">
         </table>
     </div>
 </div>

@@ -58,7 +58,7 @@
             </table>
         </div>
     </div>
-    <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
+    <input type="hidden" id="route-path" value="{{ Route::current()->uri() }}">
     <div class="text-center">
         {!! $users->appends(request()->all())->render() !!}
     </div>

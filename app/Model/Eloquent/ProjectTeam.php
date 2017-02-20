@@ -12,6 +12,6 @@ class ProjectTeam extends Eloquent
 
     public function project()
     {
-        return $this->hasOne(Project::class, 'project_id', 'id');
+        return $this->belongsTo(Project::class, 'id', 'project_id');
     }
 }

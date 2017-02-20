@@ -18,7 +18,7 @@ class ApiAuthorization
         if (!Cache::has(OAuthKey::ACCESS_TOKEN) or !Cache::has(OAuthKey::TOKEN_TYPE)) {
             auth()->logout();
 
-            session()->clear();
+            session()->flush();
 
             Cache::flush();
 

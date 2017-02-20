@@ -11,6 +11,6 @@ class InternalUserMemo extends Eloquent
 
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }

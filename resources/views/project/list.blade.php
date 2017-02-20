@@ -64,7 +64,7 @@
     @include('report.dialog.project-report-action')
 </div>
 
-<input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
+<input type="hidden" id="route-path" value="{{ Route::current()->uri() }}">
 <div class="text-center">
     {!! $projects->appends(request()->all())->render() !!}
 </div>

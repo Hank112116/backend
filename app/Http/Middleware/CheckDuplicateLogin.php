@@ -22,7 +22,7 @@ class CheckDuplicateLogin
 
         if ($session and $session->user_id === 0) {
             auth()->logout();
-            session()->clear();
+            session()->flush();
             session()->flash('login_error_msg', trans()->trans('oauth.duplicate-login'));
 
             return redirect('/');

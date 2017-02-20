@@ -71,6 +71,7 @@ return [
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Notifications\NotificationServiceProvider',
+        'Illuminate\Redis\RedisServiceProvider',
 
 
         /*
@@ -87,7 +88,7 @@ return [
         'Collective\Html\HtmlServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'Mews\Purifier\PurifierServiceProvider',
-        'TillKruss\LaravelPhpRedis\RedisServiceProvider',
+        'Laravel\Tinker\TinkerServiceProvider',
 
         /*
          * Backend Service Providers...

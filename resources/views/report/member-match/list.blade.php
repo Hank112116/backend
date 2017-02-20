@@ -101,7 +101,7 @@
     </div>
     <div class="text-center">
         {!! $members->appends(request()->all())->render() !!}
-        <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
+        <input type="hidden" id="route-path" value="{{ Route::current()->uri() }}">
     </div>
     @include('report.dialog.user-report-action')
     @include('report.member-match.dialog.dialog')

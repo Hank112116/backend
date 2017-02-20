@@ -102,11 +102,6 @@ class Solution extends Eloquent
         DeleteReason::USER_SUSPEND => 'by user suspend'
     ];
 
-    public function getPrimaryKey()
-    {
-        return $this->primaryKey;
-    }
-
     public function id()
     {
         return $this->solution_id;
@@ -114,7 +109,7 @@ class Solution extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo(User::class)
+        return $this->belongsTo(User::class, 'user_id', 'user_id')
             ->select([
                 'user_id', 'user_name', 'last_name', 'country', 'city',
                 'user_type', 'is_sign_up_as_expert', 'is_apply_to_be_expert',

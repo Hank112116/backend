@@ -154,7 +154,7 @@ class Project extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo(User::class)
+        return $this->belongsTo(User::class, 'user_id', 'user_id')
             ->select([
                 'user_id', 'user_name', 'last_name', 'user_type',
                 'is_sign_up_as_expert', 'is_apply_to_be_expert',

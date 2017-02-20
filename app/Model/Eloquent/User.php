@@ -86,17 +86,17 @@ class User extends Eloquent
 
     public function projects()
     {
-        return $this->hasMany(Project::class)->orderBy('project_id', 'desc');
+        return $this->hasMany(Project::class, 'user_id', 'user_id')->orderBy('project_id', 'desc');
     }
 
     public function solutions()
     {
-        return $this->hasMany(Solution::class)->orderBy('solution_id', 'desc');
+        return $this->hasMany(Solution::class, 'user_id', 'user_id')->orderBy('solution_id', 'desc');
     }
 
     public function applyExpertMessage()
     {
-        return $this->hasMany(ApplyExpertMessage::class)->where('message', '!=', '')->orderBy('id', 'desc');
+        return $this->hasMany(ApplyExpertMessage::class, 'user_id', 'user_id')->where('message', '!=', '')->orderBy('id', 'desc');
     }
 
     public function internalUserMemo()
@@ -282,12 +282,12 @@ class User extends Eloquent
 
     public function sendProjectSolutionCommentCount()
     {
-        return $this->hasOne(Comment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+        return $this->hasOne(Comment::class, 'user_id', 'user_id')->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
     public function sendHubProjectSolutionCommentCount()
     {
-        return $this->hasOne(PmsTempComment::class)->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
+        return $this->hasOne(PmsTempComment::class, 'user_id', 'user_id')->selectRaw('user_id, count(*) as commentCount')->groupBy('user_id');
     }
 
     public function sendUserCommentCount()

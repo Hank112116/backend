@@ -116,6 +116,6 @@
         {!! $users->appends(request()->all())->render() !!}
     </div>
     @include('report.dialog.user-report-action')
-    <input type="hidden" id="route-path" value="{{ Route::getCurrentRoute()->getPath() }}">
+    <input type="hidden" id="route-path" value="{{ Route::current()->uri() }}">
 @stop
 

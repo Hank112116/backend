@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler
         if ($e instanceof TokenMismatchException) {
             Log::warning('CSRF token mismatch', $request->all());
             auth()->logout();
-            session()->clear();
+            session()->flush();
             \Noty::warn('CSRF token mismatch, please login again.');
             if ($request->ajax()) {
                 return response('', Response::HTTP_PRECONDITION_FAILED);

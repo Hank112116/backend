@@ -23,7 +23,7 @@ class AfterCheckSourceServer
             if (session(OAuthKey::API_SERVER_STATUS) === 'stop') {
                 auth()->logout();
 
-                session()->clear();
+                session()->flush();
 
                 Cache::flush();
 

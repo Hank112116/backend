@@ -12,11 +12,11 @@ class ProjectManager extends Eloquent
 
     public function project()
     {
-        return $this->hasOne(Project::class, 'project_id', 'project_id');
+        return $this->belongsTo(Project::class, 'project_id', 'project_id');
     }
 
     public function adminer()
     {
-        return $this->hasOne(Adminer::class, 'hwtrek_member', 'pm_id');
+        return $this->belongsTo(Adminer::class, 'pm_id', 'hwtrek_member');
     }
 }

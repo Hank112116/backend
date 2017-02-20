@@ -10,7 +10,7 @@
         <h2>Welcome to HWTrek Backend System</h2>
     </div>
 
-    @if(!auth()->check())
+    @unless(auth()->check())
         <div class="info">
             <div class="panel-heading">
                 <div class="row">
@@ -37,5 +37,5 @@
                 {!! Form::close() !!}
             </div>
         </div>
-    @endif
+    @endunless
 @stop
