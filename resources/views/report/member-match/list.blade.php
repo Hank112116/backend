@@ -11,7 +11,6 @@
     <script src="{{ LinkGen::assets('js/list.js') }}"></script>
     <script src="{{ LinkGen::assets('js/member-matching.js') }}"></script>
 @stop
-
 @section('content')
     <div class="page-header">
         <h1>Member Matching Report</h1>
@@ -72,6 +71,7 @@
                                 {{ $member->company() }}
                             </a>
                         </td>
+
                         <td>
                             <a href="javascript:void(0)" class="matching-data" rel="{{ $member->id() }}">
                                 PM: {{ $member->getCountPMRecommend() }}<br/>

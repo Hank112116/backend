@@ -199,6 +199,14 @@ class MemberMatch
     /**
      * @return bool
      */
+    public function isPremiumCreator()
+    {
+        return $this->user->isPremiumCreator();
+    }
+
+    /**
+     * @return bool
+     */
     public function isPremiumExpert()
     {
         return $this->user->isPremiumExpert();

@@ -9,7 +9,6 @@
     <div class="page-header">
         <h2>Welcome to HWTrek Backend System</h2>
     </div>
-
     @unless(auth()->check())
         <div class="info">
             <div class="panel-heading">

@@ -1,4 +1,4 @@
-@if($project->hub_approve and !$project->isDeleted() and !$project->profile->isDraft())
+@if($project->hub_approve and !$project->isDeleted() and !$project->profile()->isDraft())
     @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($project->date_added))
         and !$project->isDeleted()
     )

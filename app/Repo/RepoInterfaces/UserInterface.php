@@ -45,14 +45,14 @@ interface UserInterface
 
     /**
      * @param int $page
-     * @param int $limit
+     * @param int $per_page
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function experts($page, $per_page);
 
     /**
      * @param int $page
-     * @param int $limit
+     * @param int $per_page
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function creators($page, $per_page);
@@ -98,13 +98,16 @@ interface UserInterface
     public function byCompany($company);
 
     /**
-     * @param $company
+     * @param string $dstart
+     * @param string $dend
      * @return Collection|User[]
      */
     public function byDateRange($dstart, $dend);
 
     /**
-     * @param array $input
+     * @param $input
+     * @param $page
+     * @param $per_page
      * @return Collection|User[]
      */
     public function byUnionSearch($input, $page, $per_page);
@@ -174,6 +177,12 @@ interface UserInterface
      * @return Collection|User[]
      */
     public function filterToBeExpert(Collection $users);
+
+    /**
+     * @param Collection $users
+     * @return Collection|User[]
+     */
+    public function filterPremiumCreator(Collection $users);
 
     /**
      * @param $dstart

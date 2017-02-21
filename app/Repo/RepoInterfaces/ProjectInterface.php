@@ -1,7 +1,7 @@
 <?php namespace Backend\Repo\RepoInterfaces;
 
 use Backend\Model\Eloquent\Project;
-use Propel\Runtime\Collection\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface ProjectInterface
 {

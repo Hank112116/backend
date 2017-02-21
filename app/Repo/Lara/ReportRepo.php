@@ -140,6 +140,27 @@ class ReportRepo implements ReportInterface
             $users = $this->user_repo->filterCreatorWithoutToBeExperts($users);
         }
 
+        switch ($filter) {
+            case 'expert':
+                $users = $this->user_repo->filterExperts($users);
+                break;
+            case 'creator':
+                $users = $this->user_repo->filterCreator($users);
+                break;
+            case 'premium-expert':
+                $users = $this->user_repo->filterPremiumExperts($users);
+                break;
+            case 'premium-creator':
+                $users = $this->user_repo->filterPremiumCreator($users);
+                break;
+            case 'to-be-expert':
+                $users = $this->user_repo->filterToBeExpert($users);
+                break;
+            case 'pm':
+                $users = $this->user_repo->filterPM($users);
+                break;
+        }
+
         $summary = $this->getRegistrationSummary($users);
 
         $users = $this->user_repo->byCollectionPage($users, $page, $per_page);
@@ -466,12 +487,17 @@ class ReportRepo implements ReportInterface
             $collections = $collections->filter(function (MemberMatch $item) use ($status) {
                 switch ($status) {
                     case 'creator':
-                        if ($item->isCreator()) {
+                        if ($item->isCreator() and !$item->isPremiumCreator()) {
                             return $item;
                         }
                         break;
                     case 'expert':
-                        if ($item->isExpert()) {
+                        if ($item->isExpert() and !$item->isHWTrekPM() and !$item->isPremiumExpert()) {
+                            return $item;
+                        }
+                        break;
+                    case 'premium-creator':
+                        if ($item->isPremiumCreator()) {
                             return $item;
                         }
                         break;

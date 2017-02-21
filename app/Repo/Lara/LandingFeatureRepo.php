@@ -1,8 +1,8 @@
 <?php namespace Backend\Repo\Lara;
 
 use Backend\Repo\RepoInterfaces\UserInterface;
+use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Model\Eloquent\Feature;
-use Backend\Model\Eloquent\Project;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 
@@ -13,8 +13,12 @@ class LandingFeatureRepo implements LandingFeatureInterface
     private $solution;
     private $user;
 
-    public function __construct(Feature $feature, Project $project, SolutionInterface $solution, UserInterface $user)
-    {
+    public function __construct(
+        Feature $feature,
+        ProjectInterface $project,
+        SolutionInterface $solution,
+        UserInterface $user
+    ) {
         $this->feature  = $feature;
         $this->project  = $project;
         $this->solution = $solution;

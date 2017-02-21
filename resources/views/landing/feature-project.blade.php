@@ -43,7 +43,7 @@
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Status</span>
-                    <span class="content">{!! $project->profile->text_status !!}</span>
+                    <span class="content">{!! $project->profile()->text_status !!}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Submit</span>

@@ -51,9 +51,13 @@
             @endif
             @if($is_super_admin)
                 {!! Form::select('filter',[
-                    'all'     => 'Show All',
-                    'expert'  => 'Show Expert',
-                    'creator' => 'Show Creator',
+                    'all'             => 'Show All',
+                    'expert'          => 'Show Expert',
+                    'creator'         => 'Show Creator',
+                    'premium-expert'  => 'Show Premium Expert',
+                    'premium-creator' => 'Show Premium Creator',
+                    'to-be-expert'    => 'Show To Be Expert',
+                    'pm'              => 'Show HWTrek PM'
                 ],request('filter'),['class'=>'form-control']) !!}
             @endif
         </div>
