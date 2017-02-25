@@ -50,15 +50,12 @@ class LandingFeatureRepo implements LandingFeatureInterface
             case 'project':
                 $entity = $this->project->find($id);
                 break;
-
             case 'solution':
                 $entity = $this->solution->findSolution($id);
                 break;
-
             case 'program':
                 $entity = $this->solution->findProgram($id);
                 break;
-
             case 'expert':
                 $entity = $this->user->find($id);
                 break;

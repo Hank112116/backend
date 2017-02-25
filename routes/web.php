@@ -109,16 +109,17 @@ Route::group(['middleware' => 'route_filter:marketing'], function () {
     Route::get('landing/feature', 'LandingController@showFeature');
     Route::get('landing/hello', 'LandingController@showHello');
     Route::get('landing/expert', 'LandingController@showExpert');
+    Route::get('landing/low-priority', 'LandingController@showRestricted');
 
-    Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
-    Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
-    Route::post('landing/find-feature/{tyep}', 'LandingController@findFeatureEntity');
+    Route::post('landing/find-feature/{type}', 'LandingController@findFeatureEntity');
     Route::post('landing/find-refer-project', 'LandingController@findReferenceProject');
     Route::post('landing/update-feature', 'LandingController@updateFeature');
     Route::post('landing/update-refer', 'LandingController@updateReferenceProject');
     Route::post('landing/update-hello-redirect', 'LandingController@updateHelloRedirect');
-    Route::post('landing/find-expert/{tyep}', 'LandingController@findExpertEntity');
+    Route::post('landing/find-expert/{type}', 'LandingController@findExpertEntity');
     Route::post('landing/update-expert', 'LandingController@updateExpert');
+    Route::post('landing/add-object/{type}', 'LandingController@addRestrictedObject');
+    Route::post('landing/remove-restricted-object', 'LandingController@removeRestrictedObject');
 });
 
 // Report

@@ -22,7 +22,8 @@ module.exports = [
     'event-report-list.js',
     'event-questionnaire.js',
     'project-list.js',
-    'member-matching.js'
+    'member-matching.js',
+    'landing-restricted.js',
 ];
 
 

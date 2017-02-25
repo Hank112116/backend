@@ -1,0 +1,24 @@
+@import "common";
+@import "vendor/bootstrap/panels";
+@import "vendor/bootstrap/input-groups";
+@import "modules/page-header-with-btn";
+@import "modules/list-search";
+@import "modules/detail-data";
+
+.data-group {
+  width: 100%;
+
+  .label {
+    min-width: 6em;
+  }
+
+  &.group-half {
+    width: 48%;
+    margin-right: 1%;
+  }
+}
+
+.search-bar {
+  width: 70%;
+  margin-left: 7.5em;
+}

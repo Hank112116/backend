@@ -4,7 +4,7 @@ use ImageUp;
 use Validator;
 use Carbon\Carbon;
 use Backend\Facades\Log;
-use Backend\Model\Eloquent\PremiumUserOrder;
+use Backend\Model\Eloquent\PremiumAccountOrder;
 use Backend\Model\Eloquent\Expertise;
 use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Model\Eloquent\User;
@@ -342,7 +342,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isExpert() && !$user->isHWTrekPM() && !$user->isPremiumExpert();
+                return $user->isBasicExpert();
             }
         );
     }
@@ -360,7 +360,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isCreator() && !$user->isPendingExpert() && !$user->isPremiumCreator();
+                return $user->isBasicCreator();
             }
         );
     }
@@ -480,7 +480,7 @@ class UserRepo implements UserInterface
             }
 
             if ($data['user_type'] === User::TYPE_PREMIUM_CREATOR or $data['user_type'] === User::TYPE_PREMIUM_EXPERT) {
-                $premium_order             = new PremiumUserOrder();
+                $premium_order             = new PremiumAccountOrder();
                 $premium_order->user_id    = $user->id();
                 $premium_order->created_at = $change_time;
                 $premium_order->save();

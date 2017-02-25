@@ -76,9 +76,15 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\LandingFeatureInterface',
             'Backend\Repo\Lara\LandingFeatureRepo'
         );
+
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\LandingExpertInterface',
             'Backend\Repo\Lara\LandingExpertRepo'
+        );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\LandingRestrictedInterface',
+            'Backend\Repo\Lara\LandingRestrictedRepo'
         );
 
         $this->app->bind(

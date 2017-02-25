@@ -352,9 +352,14 @@ class User extends Eloquent
         return $commentCount + $hubCommentCount + $userCommentCount;
     }
 
+    public function isBasicCreator()
+    {
+        return $this->isType(self::IS_CREATOR_STATUS) and !$this->isPendingExpert();
+    }
+
     public function isCreator()
     {
-        return $this->isType(self::IS_CREATOR_STATUS) or $this->isPremiumCreator();
+        return $this->isBasicCreator() or $this->isPremiumCreator();
     }
 
     public function isPremiumCreator()
@@ -362,11 +367,14 @@ class User extends Eloquent
         return $this->isType(self::IS_PREMIUM_CREATOR_STATUS);
     }
 
+    public function isBasicExpert()
+    {
+        return $this->isType(self::IS_EXPERT_STATUS);
+    }
+
     public function isExpert()
     {
-        return $this->isType(self::IS_EXPERT_STATUS)
-        or $this->isPremiumExpert()
-        or $this->isHWTrekPM();
+        return $this->isBasicExpert() or $this->isPremiumExpert();
     }
 
     public function isToBeExpert()

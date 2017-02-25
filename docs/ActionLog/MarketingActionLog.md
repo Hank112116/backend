@@ -35,3 +35,37 @@ Log actions that made by marketing
     }
 
 ---
+
+### Add object to Low Priority List
+
+#### Log action
+`Low priority list add {object} id: {id}`
+
+* object
+    `user` or `project` or `solution`
+
+#### Log data
+
+    {
+      "adminer_id": "integer",
+      ...
+    }
+
+---
+
+### Revoke object to Low Priority List
+
+#### Log action
+`Low priority list revoke {object} id: {id}`
+
+* object
+    `user` or `project` or `solution`
+
+#### Log data
+
+    {
+      "adminer_id": "integer",
+      ...
+    }
+
+---

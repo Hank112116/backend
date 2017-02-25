@@ -487,12 +487,12 @@ class ReportRepo implements ReportInterface
             $collections = $collections->filter(function (MemberMatch $item) use ($status) {
                 switch ($status) {
                     case 'creator':
-                        if ($item->isCreator() and !$item->isPremiumCreator()) {
+                        if ($item->isBasicCreator()) {
                             return $item;
                         }
                         break;
                     case 'expert':
-                        if ($item->isExpert() and !$item->isHWTrekPM() and !$item->isPremiumExpert()) {
+                        if ($item->isBasicExpert()) {
                             return $item;
                         }
                         break;

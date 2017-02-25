@@ -3,11 +3,10 @@ namespace Backend\Model\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class PremiumUserOrder extends Eloquent
+class InvisibleUser extends Eloquent
 {
-    protected $table = 'premium_user_order';
-    protected $primaryKey = 'id';
-    protected $dates = ['created_at', 'expired_at', 'suspended_at'];
+    protected $table = 'invisible_user';
+    protected $primaryKey = 'user_id';
     public $timestamps = false;
     public static $unguarded = true;
 

@@ -42,7 +42,7 @@
         
         <div id="block-group">
             @foreach ($features as $feature)
-                @include('landing.feature-block', ['feature' => $feature])
+                @include('landing.feature-block', ['feature' => $feature, 'tag_tree' => $tag_tree])
             @endforeach
         </div>
         

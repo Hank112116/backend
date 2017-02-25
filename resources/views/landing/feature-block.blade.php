@@ -12,7 +12,7 @@
             @include('landing.feature-expert',   ['user' => $feature->entity])
 
         @elseif($feature->isProject())
-            @include('landing.feature-project',  ['project' => $feature->entity])
+            @include('landing.feature-project',  ['project' => $feature->entity, 'tag_tree' => $tag_tree])
 
         @elseif ($feature->isSolution())
             @include('landing.feature-solution', ['solution' => $feature->entity])
