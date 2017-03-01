@@ -3,10 +3,10 @@ namespace Backend\Model\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class InvisibleSolution extends Eloquent
+class LowPriorityUser extends Eloquent
 {
-    protected $table = 'invisible_solution';
-    protected $primaryKey = 'solution_id';
+    protected $table = 'low_priority_user';
+    protected $primaryKey = 'user_id';
     public $timestamps = false;
     public static $unguarded = true;
 
@@ -15,8 +15,8 @@ class InvisibleSolution extends Eloquent
         return $this->primaryKey;
     }
 
-    public function solution()
+    public function user()
     {
-        return $this->belongsTo(Solution::class, 'solution_id', 'solution_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

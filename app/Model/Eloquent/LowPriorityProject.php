@@ -3,9 +3,9 @@ namespace Backend\Model\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class InvisibleProject extends Eloquent
+class LowPriorityProject extends Eloquent
 {
-    protected $table = 'invisible_project';
+    protected $table = 'low_priority_project';
     protected $primaryKey = 'project_id';
     public $timestamps = false;
     public static $unguarded = true;

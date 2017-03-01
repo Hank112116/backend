@@ -1,8 +1,8 @@
 <?php namespace Backend\Repo\Lara;
 
-use Backend\Model\Eloquent\InvisibleProject;
-use Backend\Model\Eloquent\InvisibleSolution;
-use Backend\Model\Eloquent\InvisibleUser;
+use Backend\Model\Eloquent\LowPrioritySolution;
+use Backend\Model\Eloquent\LowPriorityProject;
+use Backend\Model\Eloquent\LowPriorityUser;
 use Backend\Repo\RepoInterfaces\LandingRestrictedInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
@@ -18,9 +18,9 @@ class LandingRestrictedRepo implements LandingRestrictedInterface
     private $solution_repo;
 
     public function __construct(
-        InvisibleUser $user,
-        InvisibleProject $project,
-        InvisibleSolution $solution,
+        LowPriorityUser $user,
+        LowPriorityProject $project,
+        LowPrioritySolution $solution,
         UserInterface $user_repo,
         ProjectInterface $project_repo,
         SolutionInterface $solution_repo
@@ -102,13 +102,13 @@ class LandingRestrictedRepo implements LandingRestrictedInterface
     {
         switch ($type) {
             case 'user':
-                return InvisibleUser::destroy($id);
+                return LowPriorityUser::destroy($id);
                 break;
             case 'project':
-                return InvisibleProject::destroy($id);
+                return LowPriorityProject::destroy($id);
                 break;
             case 'solution':
-                return InvisibleSolution::destroy($id);
+                return LowPrioritySolution::destroy($id);
                 break;
         }
         return false;
@@ -118,17 +118,17 @@ class LandingRestrictedRepo implements LandingRestrictedInterface
     {
         switch ($type) {
             case 'user':
-                $invisible_user = new InvisibleUser();
+                $invisible_user = new LowPriorityUser();
                 $invisible_user->user_id = $id;
                 return $invisible_user->save();
                 break;
             case 'project':
-                $invisible_project = new InvisibleProject();
+                $invisible_project = new LowPriorityProject();
                 $invisible_project->project_id = $id;
                 return $invisible_project->save();
                 break;
             case 'solution':
-                $invisible_solution = new InvisibleSolution();
+                $invisible_solution = new LowPrioritySolution();
                 $invisible_solution->solution_id = $id;
                 return $invisible_solution->save();
                 break;
