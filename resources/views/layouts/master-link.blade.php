@@ -112,6 +112,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{!! action('LandingController@showRestricted') !!}">
+                                <i class="fa fa-sort-amount-desc fa-fw"></i> Low Priority List
+                            </a>
+                        </li>
+                        <li>
                             <a href="{!! action('LandingController@showHello') !!}">
                                 <i class="fa fa-tag fa-fw"></i> Hello
                             </a>

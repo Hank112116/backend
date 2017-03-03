@@ -183,6 +183,14 @@ class MemberMatch
     /**
      * @return bool
      */
+    public function isBasicCreator()
+    {
+        return $this->user->isBasicCreator();
+    }
+
+    /**
+     * @return bool
+     */
     public function isCreator()
     {
         return $this->user->isCreator();
@@ -191,9 +199,25 @@ class MemberMatch
     /**
      * @return bool
      */
+    public function isBasicExpert()
+    {
+        return $this->user->isBasicExpert();
+    }
+
+    /**
+     * @return bool
+     */
     public function isExpert()
     {
         return $this->user->isExpert();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPremiumCreator()
+    {
+        return $this->user->isPremiumCreator();
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Backend\Model\Eloquent;
 
 use Backend\Repo\RepoInterfaces\ExpertiseInterface;
 use UrlFilter;
-use Carbon;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class User extends Eloquent
@@ -13,6 +12,11 @@ class User extends Eloquent
     protected $table      = 'user';
     protected $primaryKey = 'user_id';
     protected $appends    = ['image_url', 'full_name'];
+    protected $dates      = [
+        'date_added', 'suspended_at', 'updated_at',
+        'expert_approved_at', 'export_to_mailchimp_success_at',
+        'export_to_mailchimp_failed_at'
+    ];
 
     public $timestamps = false; // not use created_at, updated_at
 
@@ -29,10 +33,11 @@ class User extends Eloquent
         self::ROLE_ADMIN   => 'Admin'
     ];
 
-    const TYPE_CREATOR        = 'creator';
-    const TYPE_EXPERT         = 'expert';
-    const TYPE_PM             = 'pm';
-    const TYPE_PREMIUM_EXPERT = 'premium-expert';
+    const TYPE_CREATOR         = 'creator';
+    const TYPE_EXPERT          = 'expert';
+    const TYPE_PM              = 'pm';
+    const TYPE_PREMIUM_EXPERT  = 'premium-expert';
+    const TYPE_PREMIUM_CREATOR = 'premium-creator';
 
     const EMAIL_VERIFY_NONE     = '1';
     const EMAIL_VERIFY          = '2';
@@ -48,6 +53,10 @@ class User extends Eloquent
 
     const IS_CREATOR_STATUS = [
         'user_type'             => self::TYPE_CREATOR
+    ];
+
+    const IS_PREMIUM_CREATOR_STATUS = [
+        'user_type' => self::TYPE_PREMIUM_CREATOR
     ];
 
     const IS_EXPERT_STATUS = [
@@ -124,6 +133,11 @@ class User extends Eloquent
         return $query->where('user_type', self::TYPE_PREMIUM_EXPERT);
     }
 
+    public function scopeQueryPremiumCreator($query)
+    {
+        return $query->where('user_type', self::TYPE_PREMIUM_CREATOR);
+    }
+
     public function scopeQueryPendingToBeExpert($query)
     {
         return $query->where('user_type', self::TYPE_CREATOR)
@@ -163,6 +177,8 @@ class User extends Eloquent
             return 'Premium Expert';
         } elseif ($this->isType(self::IS_CREATOR_STATUS)) {
             return 'Creator';
+        } elseif ($this->isType(self::IS_PREMIUM_CREATOR_STATUS)) {
+            return 'Premium Creator';
         } else {
             return 'Undefine';
         }
@@ -222,7 +238,7 @@ class User extends Eloquent
     public function textRegistedOn()
     {
         if ($this->date_added) {
-            return Carbon::parse($this->date_added)->toFormattedDateString();
+            return $this->date_added->toFormattedDateString();
         } else {
             return null;
         }
@@ -336,16 +352,29 @@ class User extends Eloquent
         return $commentCount + $hubCommentCount + $userCommentCount;
     }
 
+    public function isBasicCreator()
+    {
+        return $this->isType(self::IS_CREATOR_STATUS) and !$this->isPendingExpert();
+    }
+
     public function isCreator()
     {
-        return $this->isType(self::IS_CREATOR_STATUS);
+        return $this->isBasicCreator() or $this->isPremiumCreator();
+    }
+
+    public function isPremiumCreator()
+    {
+        return $this->isType(self::IS_PREMIUM_CREATOR_STATUS);
+    }
+
+    public function isBasicExpert()
+    {
+        return $this->isType(self::IS_EXPERT_STATUS);
     }
 
     public function isExpert()
     {
-        return $this->isType(self::IS_EXPERT_STATUS)
-        or $this->isPremiumExpert()
-        or $this->isHWTrekPM();
+        return $this->isBasicExpert() or $this->isPremiumExpert();
     }
 
     public function isToBeExpert()
@@ -378,6 +407,11 @@ class User extends Eloquent
         return $this->isToBeExpert() or $this->isApplyExpert();
     }
 
+    public function isPremium()
+    {
+        return $this->isPremiumCreator() or $this->isPremiumExpert();
+    }
+
     public function isEmailVerify()
     {
         return $this->email_verify == self::EMAIL_VERIFY;
@@ -395,7 +429,7 @@ class User extends Eloquent
     public function textSuspendedAt()
     {
         if ($this->suspended_at) {
-            return Carbon::parse($this->suspended_at)->toFormattedDateString();
+            return $this->suspended_at->toFormattedDateString();
         } else {
             return null;
         }

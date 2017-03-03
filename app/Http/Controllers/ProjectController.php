@@ -190,6 +190,7 @@ class ProjectController extends BaseController
         return redirect()->action('ProjectController@showDetail', $project_id);
     }
 
+
     public function delete($project_id)
     {
         $project = $this->project_repo->find($project_id);

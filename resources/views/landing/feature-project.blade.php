@@ -43,7 +43,7 @@
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Status</span>
-                    <span class="content">{!! $project->profile->text_status !!}</span>
+                    <span class="content">{!! $project->profile()->text_status !!}</span>
                 </div>
                 <div class="data-group group-half">
                     <span class="label">Submit</span>
@@ -70,7 +70,7 @@
             <div class="col-md-3 expertise-column">
                 @foreach (explode(',', $project->tags) as $tag)
                     @if($tag)
-                      <span class='tag'>{!! $tag !!}</span>
+                        <span class='tag'>{!! $tag !!}</span>
                     @endif
                 @endforeach
             </div>    

@@ -46,12 +46,13 @@
         <div class="input-group">
             @if((!isset($is_restricted) or !$is_restricted))
             {!! Form::select('status',[
-                'all'            => 'All Users',
-                'expert'         => 'Expert',
-                'creator'        => 'Creator',
-                'premium-expert' => 'Premium Expert',
-                'to-be-expert'   => 'To Be Expert',
-                'pm'             => 'HWTrek PM'
+                'all'             => 'All Users',
+                'expert'          => 'Expert',
+                'creator'         => 'Creator',
+                'premium-expert'  => 'Premium Expert',
+                'premium-creator' => 'Premium Creator',
+                'to-be-expert'    => 'To Be Expert',
+                'pm'              => 'HWTrek PM'
             ], request('status'), ['class'=>'form-control']) !!}
             @else
             {!! Form::select('status',[

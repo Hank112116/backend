@@ -28,12 +28,13 @@
     <div class="col-md-2 ">
         <div class="input-group">
             {!! Form::select('status',[
-                'all'            => 'All Users',
-                'expert'         => 'Expert',
-                'creator'        => 'Creator',
-                'premium-expert' => 'Premium Expert',
-                'to-be-expert'   => 'To Be Expert',
-                'pm'             => 'HWTrek PM'
+                'all'             => 'All Users',
+                'expert'          => 'Expert',
+                'creator'         => 'Creator',
+                'premium-expert'  => 'Premium Expert',
+                'premium-creator' => 'Premium Creator',
+                'to-be-expert'    => 'To Be Expert',
+                'pm'              => 'HWTrek PM'
             ], request('status'), ['class'=>'form-control']) !!}
         </div>
     </div>

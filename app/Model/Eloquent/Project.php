@@ -6,9 +6,8 @@ use Backend\Enums\ProjectCategoryEnum;
 use Backend\Model\ModelTrait\TagTrait;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Carbon;
+use Carbon\Carbon;
 use FrontLinkGenerator;
-use UrlFilter;
 
 class Project extends Eloquent
 {
@@ -16,6 +15,9 @@ class Project extends Eloquent
 
     protected $table = 'project';
     protected $primaryKey = 'project_id';
+    protected $dates = [
+        'hub_approve_time', 'date_added', 'update_time', 'deleted_date', 'project_submit_time'
+    ];
 
     public $timestamps = false;
     public static $unguarded = true;
@@ -425,22 +427,21 @@ class Project extends Eloquent
 
     public function textLastUpdateTime()
     {
-        $dt = Carbon::parse($this->update_time);
-        return $dt->toFormattedDateString();
+        return $this->update_time->toFormattedDateString();
     }
 
     public function textSubmitTime()
     {
         if ($this->project_submit_time) {
-            return Carbon::parse($this->project_submit_time)->toFormattedDateString();
+            return $this->project_submit_time->toFormattedDateString();
         } else {
-            return Carbon::parse($this->date_added)->toFormattedDateString();
+            return $this->date_added->toFormattedDateString();
         }
     }
 
     public function textDeletedTime()
     {
-        return Carbon::parse($this->deleted_date)->toFormattedDateString();
+        return $this->deleted_date->toFormattedDateString();
     }
 
     public function keyComponents()
@@ -528,6 +529,7 @@ class Project extends Eloquent
         return link_to($this->indiegogo_url . $crowdfunding_campaigns['indiegogo'], $crowdfunding_campaigns['indiegogo'], ['target' => '_blank']);
     }
 
+
     public function powerSpec()
     {
         $power_spec = json_decode($this->power_spec, true);
@@ -589,12 +591,7 @@ class Project extends Eloquent
                     $tmp['round'] = 'N/A';
                 }
 
-                if (!is_null($tmp['date'])) {
-                    $tmp['date'] = is_numeric($tmp['date']) ?
-                        Carbon::createFromTimestamp($tmp['date'])->toDateString() : $tmp['date'];
-                } else {
-                    $tmp['date'] = 'N/A';
-                }
+                $tmp['date'] = is_null($tmp['date']) ? 'N/A' : $tmp['date'];
 
                 $funding_rounds[$index] = $tmp;
             }
@@ -645,13 +642,16 @@ class Project extends Eloquent
         return !$this->launch_date;
     }
 
+    /**
+     * @return \Backend\Model\Plain\ProjectProfile
+     */
     public function profile()
     {
         return $this->getProfileAttribute();
     }
 
-    /*
-     * return Backend\Model\Plain\ProjectProfile
+    /**
+     * @return \Backend\Model\Plain\ProjectProfile
      */
     public function getProfileAttribute()
     {

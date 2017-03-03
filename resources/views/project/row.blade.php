@@ -19,14 +19,14 @@
 </td>
 
 <td>
-    {!! $project->profile->text_status !!}
+    {!! $project->profile()->text_status !!}
     @if($project->is_deleted)
         <br/><i class="fa fa-trash" title="deleted"></i> <span class="table--text-light">{{$project->textDeletedTime()}}</span>
     @else
         <br/><span class="table--text-light">{{ $project->textSubmitTime() }}</span>
     @endif
     @if(auth()->user()->isManagerHead() || auth()->user()->isAdmin())
-        @if(!$project->profile->isDraft() and !$project->isDeleted())
+        @if(!$project->profile()->isDraft() and !$project->isDeleted())
             <br/><a href="{{ $project->textScheduleFrontEditLink() }}" target="_blank" class="btn-mini">Schedule</a>
             @if(!$project->hub_approve)
                 <br/><a href="javascript:void(0)"

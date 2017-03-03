@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.1.2 (2017-03-03)
+* [NEW]    add premium-creator role (issue #59)
+* [NEW]    add Low Priority List (issue #63)
+* [CHANGE] upgrade laravel 5.3 to 5.4 (issue #62)
+
 ## v3.1.1 (2017-02-16)
 * [CHANGE] revise  member matching report display style (@Hank)
 

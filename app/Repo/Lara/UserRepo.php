@@ -1,9 +1,10 @@
 <?php namespace Backend\Repo\Lara;
 
-use Backend\Facades\Log;
 use ImageUp;
 use Validator;
-use Carbon;
+use Carbon\Carbon;
+use Backend\Facades\Log;
+use Backend\Model\Eloquent\PremiumAccountOrder;
 use Backend\Model\Eloquent\Expertise;
 use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Model\Eloquent\User;
@@ -272,6 +273,9 @@ class UserRepo implements UserInterface
                     case 'premium-expert':
                         $users = $users->queryPremiumExpert();
                         break;
+                    case 'premium-creator':
+                        $users = $users->queryPremiumCreator();
+                        break;
                     case 'pm':
                         $users = $users->queryPM();
                         break;
@@ -338,7 +342,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isExpert() && !$user->isHWTrekPM() && !$user->isPremiumExpert();
+                return $user->isBasicExpert();
             }
         );
     }
@@ -356,7 +360,7 @@ class UserRepo implements UserInterface
     {
         return $users->filter(
             function (User $user) {
-                return $user->isCreator() && !$user->isPendingExpert();
+                return $user->isBasicCreator();
             }
         );
     }
@@ -375,6 +379,15 @@ class UserRepo implements UserInterface
         return $users->filter(
             function (User $user) {
                 return $user->isPendingExpert();
+            }
+        );
+    }
+
+    public function filterPremiumCreator(Collection $users)
+    {
+        return $users->filter(
+            function (User $user) {
+                return $user->isPremiumCreator();
             }
         );
     }
@@ -447,6 +460,7 @@ class UserRepo implements UserInterface
 
     public function update($id, $data)
     {
+        $change_time = Carbon::now();
         /** @var User $user */
         $user = $this->user->find($id);
 
@@ -454,15 +468,22 @@ class UserRepo implements UserInterface
         if ($is_type_change) {
             // It means that the user_type change from creator to expert or from expert to creator
             // If the user is from creator to expert than write the expert_approved_at, otherwise clear expert_approved_at
-            $user->expert_approved_at = ($user->isPendingExpert()) ? Carbon::now() : null;
+            $user->expert_approved_at = ($user->isPendingExpert()) ? $change_time : null;
 
             if ($user->isPendingExpert()) {
-                /* @var ProfileApiInterface  $user*/
+                /* @var ProfileApiInterface  $profile_api */
                 $profile_api = app()->make(ProfileApiInterface::class);
 
                 $profile_api->approveExpert($user, $data['user_type']);
 
                 Log::info('User Approved to Expert', ['user_id' => $id]);
+            }
+
+            if ($data['user_type'] === User::TYPE_PREMIUM_CREATOR or $data['user_type'] === User::TYPE_PREMIUM_EXPERT) {
+                $premium_order             = new PremiumAccountOrder();
+                $premium_order->user_id    = $user->id();
+                $premium_order->created_at = $change_time;
+                $premium_order->save();
             }
         }
 
@@ -493,6 +514,8 @@ class UserRepo implements UserInterface
         if ($tags) {
             $user->tags = implode(',', $tags->toArray());
         }
+
+        $user->setUpdatedAt($change_time);
 
         $user->save();
     }

@@ -33,7 +33,7 @@
 			<div class="clearfix">
                 @include('modules.detail-half-column', [
                     'label' => 'Project Status',
-                    'content' => $project->profile->text_status . ($project->is_deleted? ' | Deleted (' .$project->deleted_date. ')' : '')
+                    'content' => $project->profile()->text_status . ($project->is_deleted? ' | Deleted (' .$project->deleted_date. ')' : '')
                 ])
 
 			    @include('modules.detail-half-column', [

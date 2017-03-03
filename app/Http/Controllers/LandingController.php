@@ -2,9 +2,12 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Enums\ObjectType;
 use Backend\Facades\Log;
+use Backend\Model\Plain\TagNode;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingExpertInterface;
+use Backend\Repo\RepoInterfaces\LandingRestrictedInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
 use Illuminate\Http\Request;
 use Noty;
@@ -15,15 +18,18 @@ class LandingController extends BaseController
 
     private $expert;
     private $feature;
+    private $restricted;
 
     public function __construct(
         LandingFeatureInterface $feature,
-        LandingExpertInterface $expert
+        LandingExpertInterface $expert,
+        LandingRestrictedInterface $restricted
     ) {
         parent::__construct();
 
-        $this->feature = $feature;
-        $this->expert  = $expert;
+        $this->feature    = $feature;
+        $this->expert     = $expert;
+        $this->restricted = $restricted;
     }
 
     public function showFeature()
@@ -36,6 +42,19 @@ class LandingController extends BaseController
     public function showHello(LogAccessHelloInterface $repo)
     {
         return view('landing.hello')->with(['records' => $repo->latest()]);
+    }
+
+    public function showRestricted()
+    {
+        $users     = $this->restricted->getUsers();
+        $projects  = $this->restricted->getProjects();
+        $solutions = $this->restricted->getSolutions();
+
+        return view('landing.restricted')
+            ->with('type_list', ObjectType::OBJECT_TYPE)
+            ->with('users', $users)
+            ->with('projects', $projects)
+            ->with('solutions', $solutions);
     }
 
     public function findFeatureEntity($type)
@@ -52,6 +71,46 @@ class LandingController extends BaseController
                 ->with('feature', $feature)
                 ->render();
             $res   = ['status' => 'success', 'new_block' => $block];
+        }
+
+        return response()->json($res);
+    }
+
+    public function addRestrictedObject($type)
+    {
+        $id = $this->request->get('id');
+
+        if ($this->restricted->alreadyHasObject($id, $type)) {
+            $res = ['status' => 'success'];
+            return response()->json($res);
+        }
+
+        if (!$this->restricted->addObject($id, $type)) {
+            $res = [
+                'status' => 'fail',
+                'msg'    => "There is no {$type} with id {$id}"
+            ];
+        } else {
+            Log::info("Low priority list add {$type} id: {$id}");
+            $res = ['status' => 'success'];
+        }
+
+        return response()->json($res);
+    }
+
+    public function removeRestrictedObject()
+    {
+        $id   = $this->request->get('id');
+        $type = $this->request->get('type');
+
+        if (!$this->restricted->revokeObject($id, $type)) {
+            $res = [
+                'status' => 'fail',
+                'msg'    => "Revoke {$type} {$id} fail"
+            ];
+        } else {
+            Log::info("Low priority list revoke {$type} id: {$id}");
+            $res = ['status' => 'success'];
         }
 
         return response()->json($res);
@@ -87,7 +146,7 @@ class LandingController extends BaseController
             ->with('experts', $experts);
     }
 
-    public function findExpertEntity($type)
+    public function findExpertEntity()
     {
         $id = $this->request->get('id');
         $user = $this->expert->getExpert($id);
@@ -103,6 +162,7 @@ class LandingController extends BaseController
 
         return response()->json($res);
     }
+
     public function updateExpert()
     {
         $data = [];
