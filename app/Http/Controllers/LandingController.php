@@ -36,8 +36,7 @@ class LandingController extends BaseController
     {
         return view('landing.feature')
             ->with('types', $this->feature->types())
-            ->with('features', $this->feature->all())
-            ->with('tag_tree', TagNode::tags());
+            ->with('features', $this->feature->all());
     }
 
     public function showHello(LogAccessHelloInterface $repo)

@@ -68,13 +68,11 @@
                 </div>
             </div> 
             <div class="col-md-3 expertise-column">
-                @if (is_array(json_decode($project->tags, true)))
-                    @foreach (json_decode($project->tags, true) as $tag)
-                        @if(array_key_exists($tag, $tag_tree))
-                            <span class='tag'>{!! $tag_tree[$tag] !!}</span>
-                        @endif
-                    @endforeach
-                @endif
+                @foreach (explode(',', $project->tags) as $tag)
+                    @if($tag)
+                        <span class='tag'>{!! $tag !!}</span>
+                    @endif
+                @endforeach
             </div>    
         </div> 
 
