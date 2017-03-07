@@ -57,6 +57,7 @@ class LandingFeatureRepo implements LandingFeatureInterface
                 $entity = $this->solution->findProgram($id);
                 break;
             case 'expert':
+            case 'user':
                 $entity = $this->user->find($id);
                 break;
         }

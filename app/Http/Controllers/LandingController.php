@@ -118,6 +118,7 @@ class LandingController extends BaseController
 
     public function updateFeature()
     {
+        die();
         $feature = $this->request->get('feature', []);
 
         $this->feature->reset($feature);

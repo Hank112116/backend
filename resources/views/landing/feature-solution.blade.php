@@ -4,59 +4,40 @@
 
 <div class="panel panel-default solution">
     <div class="panel-heading">
-        {!! link_to_action('SolutionController@showDetail', 
-          "SOLUTION #{$solution->solution_id}", $solution->solution_id) !!}
+        <span class="js-order-number"></span>.
+        <a href="{!! $solution->textFrontLink() !!}" target="_blank">
+            Solution #{{ $solution->solution_id }}
+        </a> -
+        <button type="button" class="btn btn-primary js-feature-edit" object="solution" rel="{{ $solution->solution_id }}">Edit</button>
         <span class='icon icon-remove js-remove'></span>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" object="solution" rel="{{ $solution->solution_id }}">
         <div class="row">
-            <div class="col-sm-2 image-column">
-              {!! HTML::image($solution->getImagePath(), '', ['class' => 'solution-cover']) !!}  
-            </div>  
             <div class="col-md-7">
-                <div class="data-group">
-                    <span class="label">Title</span>
-                    <span class="content">{{ $solution->solution_title }}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group">
+                        <span class="label">Title</span>
+                        <span class="content">{{ $solution->solution_title }}</span>
+                    </div>
                 </div>
-
-                <div class="data-group group-half">
-                    <span class="label">User</span>
-                    <span class="content">{{ e($solution->textUserName()) }}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Status</span>
+                        <span class="content">{!! $solution->textStatus() !!}</span>
+                    </div>
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Type</span>
+                        <span class="content">{{ e($solution->textType()) }}</span>
+                    </div>
                 </div>
-
-                <div class="data-group group-half">
-                    <span class="label">Category</span>
-                    <span class="content">{!! $solution->textMainCategory() !!}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Owner</span>
+                        <span class="content">{{ e($solution->textUserName()) }}</span>
+                    </div>
                 </div>
-
-                <div class="data-group group-half">
-                    <span class="label">Status</span>
-                    <span class="content">{!! $solution->textStatus() !!}</span>
-                </div>
-
-                <div class="data-group group-half">
-                    <span class="label">Approve Date</span>
-                    <span class="content">{!! HTML::date($solution->approve_time) !!}</span>
-                </div>
-                <div class="data-group group-half">
-                    <span class="label">Description</span>
-                    <span class="content">
-                        <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
-                            value="" maxlength="250"
-                            rel="{!! $feature->getEntityId() !!}">{{ $feature->description }}</textarea>
-                    </span>
-                    <span id="count_{!! $feature->getEntityId() !!}"></span>
-                </div>
-            </div> 
-            <div class="col-md-3 expertise-column">
-                @foreach (explode(',', $solution->tags) as $tag)
-                    @if($tag)
-                      <span class='tag'>{!! $tag !!}</span>
-                    @endif
-                @endforeach
-            </div>    
+            </div>
         </div> 
-
     </div>
 </div>
 

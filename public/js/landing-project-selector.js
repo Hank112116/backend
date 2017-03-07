@@ -28,11 +28,15 @@ var ProjectSelector = (function () {
 
         this.$root = $("body");
         this.$group = this.$root.find("#block-group").first();
+        this.$editFeature = this.$root.find("#edit-feature-dialog").first();
         this._setFeatureBlocks();
         this.$root.find(".js-search-form").each(function (kee, form_block) {
             return _this._setSearchForm(form_block);
         });
-        this._textareaCount();
+        this._openEditFeatureDialog();
+        this._sortBlocks();
+        this._updateFeatureList();
+        this._editFeature();
     }
 
     _createClass(ProjectSelector, [{
@@ -66,7 +70,6 @@ var ProjectSelector = (function () {
                         Notifier.showTimedMessage("Add successful", "information", 2);
                         instance.$group.append(feeback.new_block);
                         instance._setFeatureBlocks();
-                        instance._textareaCount();
                     }
                 });
 
@@ -88,6 +91,7 @@ var ProjectSelector = (function () {
                 remove_btn.unbind("click").click(function () {
                     $block.fadeOut("fast", function () {
                         $block.remove();
+                        instance._resetBlocksOrder();
                     });
                 });
 
@@ -117,18 +121,111 @@ var ProjectSelector = (function () {
                 $(block).find(".js-order").first().attr("value", order);
                 order++;
             });
+
+            this._sortBlocks();
         }
     }, {
-        key: "_textareaCount",
-        value: function _textareaCount() {
-            $("textarea[maxlength]").keyup(function () {
+        key: "_sortBlocks",
+        value: function _sortBlocks() {
+            var order = 1;
+            this.$root.find(".js-block").each(function (kee, block) {
+                $(block).find(".js-order-number").first().text(order);
+                order++;
+            });
+        }
+    }, {
+        key: "_updateFeatureList",
+        value: function _updateFeatureList() {
+            this.$root.find(".btn-submit").click(function () {
+                var features = [];
+                $(".panel-body").each(function (index) {
+                    var $this = $(this);
+                    var feature = {};
+                    feature["objectType"] = $this.attr("object");
+                    feature["objectId"] = $this.attr("rel");
+                    feature["order"] = index + 1;
+                    features[index] = feature;
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "/landing/update-feature",
+                    data: {
+                        features: JSON.stringify(features)
+                    },
+                    dataType: "JSON",
+                    statusCode: {
+                        200: function _(feeback) {
+                            if (feeback.status === "fail") {
+                                Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                                return;
+                            }
+                            Notifier.showTimedMessage("Update successful", "information", 2);
+                        },
+                        412: function _() {
+                            location.href = "/";
+                        }
+                    }
+                });
+            });
+        }
+    }, {
+        key: "_openEditFeatureDialog",
+        value: function _openEditFeatureDialog() {
+            var instance = this;
+
+            $(document).on("click", ".js-feature-edit", function () {
+                $("#object_type").val("");
+                $("#object_id").val("");
+
                 var $this = $(this);
-                var limit = parseInt($this.attr("maxlength"));
-                var text = $this.val();
-                var chars = text.length;
-                var userId = $this.attr("rel");
-                var tag = "count_" + userId.toString();
-                $("#" + tag).text(chars + "/" + limit);
+                var objectType = $this.attr("object");
+                var objectId = $this.attr("rel");
+
+                $("#block_id").val(objectType + "_" + objectId);
+
+                instance.$editFeature.dialog({
+                    title: "Edit feature",
+                    height: 250,
+                    width: 400
+                });
+            });
+        }
+    }, {
+        key: "_editFeature",
+        value: function _editFeature() {
+            var instance = this;
+
+            $("#edit-feature").click(function (event) {
+                var $block = $("#" + $("#block_id").val());
+                var objectType = $("#object_type").val();
+                var objectId = $("#object_id").val();
+
+                if (objectType === "" || objectId === "") {
+                    Notifier.showTimedMessage("Please enter object type and object id.", "warning", 2);
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/landing/find-feature/" + objectType,
+                    data: {
+                        id: objectId
+                    },
+                    dataType: "JSON",
+                    success: function success(feeback) {
+                        if (feeback.status == "fail") {
+                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                            return;
+                        }
+                        instance.$editFeature.dialog("close");
+                        Notifier.showTimedMessage("Edit successful", "information", 2);
+                        $block.replaceWith(feeback.new_block);
+                        instance._setFeatureBlocks();
+                        instance._sortBlocks();
+                        event.preventDefault();
+                    }
+                });
             });
         }
     }]);

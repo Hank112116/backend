@@ -1,5 +1,9 @@
 @extends('layouts.master')
 
+@section('jqui')
+    @include('layouts.jqui')
+@stop
+
 @section('css')
     <link rel="stylesheet" href="{{ LinkGen::assets('css/landing-expert.css') }}">
 @stop
@@ -36,10 +40,6 @@
         @endforeach
 
     </div>
-
-    {!! Form::open(['action' => ['LandingController@updateFeature'], 
-        'method' => 'POST', 'class' => 'update-form', 'id' => 'feature-form']) !!}
-        
         <div id="block-group">
             @foreach ($features as $feature)
                 @include('landing.feature-block', ['feature' => $feature])
@@ -49,8 +49,7 @@
         <div class="btn-block">
             <button class="btn-sassy btn-submit">UPDATE</button>    
         </div>
-    {!! Form::close() !!}
 </div>
-
+@include('landing.dialog.edit-feature')
 @stop
 

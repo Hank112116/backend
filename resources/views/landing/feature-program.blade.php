@@ -4,59 +4,40 @@
 
 <div class="panel panel-default program">
     <div class="panel-heading">
-        {!! link_to_action('SolutionController@showDetail', 
-          "PORGRAM #{$program->solution_id}", $program->solution_id) !!}
+        <span class="js-order-number"></span>.
+        <a href="{!! $program->textFrontLink() !!}" target="_blank">
+            Program #{{ $program->solution_id }}
+        </a> -
+        <button type="button" class="btn btn-primary js-feature-edit" object="program" rel="{{ $program->solution_id }}">Edit</button>
         <span class='icon icon-remove js-remove'></span>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" object="program" rel="{{ $program->solution_id }}">
         <div class="row">
-            <div class="col-sm-2 image-column">
-              {!! HTML::image($program->getImagePath(), '', ['class' => 'solution-cover']) !!}  
-            </div>  
             <div class="col-md-7">
-                <div class="data-group">
-                    <span class="label">Title</span>
-                    <span class="content">{{ $program->solution_title }}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group">
+                        <span class="label">Title</span>
+                        <span class="content">{{ $program->solution_title }}</span>
+                    </div>
                 </div>
-
-                <div class="data-group group-half">
-                    <span class="label">User</span>
-                    <span class="content">{{ e($program->textUserName()) }}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Status</span>
+                        <span class="content">{!! $program->textStatus() !!}</span>
+                    </div>
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Type</span>
+                        <span class="content">{{ e($program->textType()) }}</span>
+                    </div>
                 </div>
-
-                <div class="data-group group-half">
-                    <span class="label">Category</span>
-                    <span class="content">{!! $program->textMainCategory() !!}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Owner</span>
+                        <span class="content">{{ e($program->textUserName()) }}</span>
+                    </div>
                 </div>
-
-                <div class="data-group group-half">
-                    <span class="label">Status</span>
-                    <span class="content">{!! $program->textStatus() !!}</span>
-                </div>
-
-                <div class="data-group group-half">
-                    <span class="label">Approve Date</span>
-                    <span class="content">{!! HTML::date($program->approve_time) !!}</span>
-                </div>
-                <div class="data-group group-half">
-                    <span class="label">Description</span>
-                    <span class="content">
-                        <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
-                            value="" maxlength="250"
-                            rel="{!! $feature->getEntityId() !!}">{{ $feature->description }}</textarea>
-                    </span>
-                    <span id="count_{!! $feature->getEntityId() !!}"></span>
-                </div>
-            </div> 
-            <div class="col-md-3 expertise-column">
-                @foreach (explode(',', $program->tags) as $tag)
-                    @if($tag)
-                      <span class='tag'>{!! $tag !!}</span>
-                    @endif
-                @endforeach
-            </div>    
+            </div>
         </div> 
-
     </div>
 </div>
 

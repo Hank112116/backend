@@ -4,13 +4,17 @@ export default class ProjectSelector {
     constructor() {
         this.$root = $("body");
         this.$group = this.$root.find("#block-group").first();
+        this.$editFeature = this.$root.find("#edit-feature-dialog").first();
         this._setFeatureBlocks();
         this.$root.find(".js-search-form").each( (kee, form_block) => this._setSearchForm(form_block) );
-        this._textareaCount();
+        this._openEditFeatureDialog();
+        this._sortBlocks();
+        this._updateFeatureList();
+        this._editFeature();
     }
 
     _setSearchForm(block) {
-        var instance = this,
+        let instance = this,
             $block = $(block),
             $btn = $block.find("button");
 
@@ -38,7 +42,6 @@ export default class ProjectSelector {
                     Notifier.showTimedMessage("Add successful", "information", 2);
                     instance.$group.append(feeback.new_block);
                     instance._setFeatureBlocks();
-                    instance._textareaCount();
                 }
             });
 
@@ -47,18 +50,19 @@ export default class ProjectSelector {
     }
 
     _setFeatureBlocks() {
-        var instance = this;
+        let instance = this;
         instance._resetBlocksOrder();
 
         this.$root.find(".js-block").each(function (kee, block) {
-            var $block = $(block);
-            var remove_btn = $block.find(".js-remove").first();
-            var move_up_btn = $block.find(".js-move-up").first();
-            var move_down_btn = $block.find(".js-move-down").first();
+            let $block = $(block);
+            let remove_btn = $block.find(".js-remove").first();
+            let move_up_btn = $block.find(".js-move-up").first();
+            let move_down_btn = $block.find(".js-move-down").first();
 
             remove_btn.unbind("click").click(function () {
                 $block.fadeOut("fast", function () {
                     $block.remove();
+                    instance._resetBlocksOrder();
                 });
             });
 
@@ -81,22 +85,113 @@ export default class ProjectSelector {
     }
 
     _resetBlocksOrder() {
-        var order = 1;
+        let order = 1;
 
         this.$root.find(".js-block").each(function (kee, block) {
             $(block).find(".js-order").first().attr("value", order);
             order++;
         });
+
+        this._sortBlocks();
     }
-    _textareaCount() {
-        $("textarea[maxlength]").keyup(function(){
-            var $this = $(this);
-            var limit = parseInt($this.attr("maxlength"));
-            var text = $this.val();
-            var chars = text.length;
-            var userId = $this.attr("rel");
-            var tag = "count_"+userId.toString();
-            $("#"+tag).text(chars+"/"+limit);
-        }); 
+
+    _sortBlocks() {
+        let order = 1;
+        this.$root.find(".js-block").each(function (kee, block) {
+            $(block).find(".js-order-number").first().text(order);
+            order++;
+        });
+    }
+
+    _updateFeatureList() {
+        this.$root.find(".btn-submit").click(function () {
+            let features = [];
+            $(".panel-body").each(function(index){
+                let $this   = $(this);
+                let feature = {};
+                feature["objectType"] = $this.attr("object");
+                feature["objectId"]   = $this.attr("rel");
+                feature["order"]      = index + 1;
+                features[index]       = feature;
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/landing/update-feature",
+                data: {
+                    features: JSON.stringify(features)
+                },
+                dataType: "JSON",
+                statusCode: {
+                    200: function (feeback) {
+                        if (feeback.status === "fail") {
+                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                            return;
+                        }
+                        Notifier.showTimedMessage("Update successful", "information", 2);
+                    },
+                    412: function () {
+                        location.href = "/";
+                    }
+                }
+            });
+        });
+    }
+
+    _openEditFeatureDialog() {
+        let instance = this;
+
+        $(document).on("click", ".js-feature-edit", function () {
+            $("#object_type").val("");
+            $("#object_id").val("");
+
+            let $this      = $(this);
+            let objectType = $this.attr("object");
+            let objectId   = $this.attr("rel");
+
+            $("#block_id").val(objectType + "_" + objectId);
+
+            instance.$editFeature.dialog({
+                title: "Edit feature",
+                height: 250,
+                width: 400
+            });
+        });
+    }
+
+    _editFeature() {
+        let instance = this;
+
+        $("#edit-feature").click(function (event) {
+            let $block     = $("#" + $("#block_id").val());
+            let objectType = $("#object_type").val();
+            let objectId   = $("#object_id").val();
+
+            if (objectType === "" || objectId === "") {
+                Notifier.showTimedMessage("Please enter object type and object id.", "warning", 2);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/landing/find-feature/" + objectType,
+                data: {
+                    id: objectId
+                },
+                dataType: "JSON",
+                success: function success(feeback) {
+                    if (feeback.status == "fail") {
+                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
+                        return;
+                    }
+                    instance.$editFeature.dialog( "close" );
+                    Notifier.showTimedMessage("Edit successful", "information", 2);
+                    $block.replaceWith(feeback.new_block);
+                    instance._setFeatureBlocks();
+                    instance._sortBlocks();
+                    event.preventDefault();
+                }
+            });
+        });
     }
 }

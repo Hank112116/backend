@@ -4,64 +4,49 @@
 
 <div class="panel panel-default user">
     <div class="panel-heading">
-        {!! link_to_action('UserController@showDetail', "USER #{$user->user_id}", $user->user_id) !!} | 
+        <span class="js-order-number"></span>.
         <a href="{!! $user->textFrontLink() !!}" target="_blank">
-            HWTrek Profile
-        </a>
+            Expert #{{ $user->user_id }}
+        </a> -
+        <button type="button" class="btn btn-primary js-feature-edit" object="expert" rel="{{ $user->user_id }}">Edit</button>
         <span class='icon icon-remove js-remove'></span>
     </div>
     
-    <div class="panel-body">
+    <div class="panel-body" object="expert" rel="{{ $user->user_id }}">
         <div class="row">
-            <div class="col-sm-2 image-column">
-                {!! HTML::image($user->getImagePath(), 'member-thumb', ['class' => 'user-avatar']) !!}
-            </div> 
             <div class="col-md-7">
-                <div class="data-group group-half">
-                    <span class="label">Name</span>
-                    <span class="content">
-                        {{ $user->textFullName() }}
-                        @if ($user->isSuspended())
-                            ( <font color="red">{{ $user->textStatus() }}</font>)
-                        @endif
-                    </span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Name</span>
+                        <span class="content">
+                            {{ $user->textFullName() }}
+                            @if ($user->isSuspended())
+                                ( <font color="red">{{ $user->textStatus() }}</font>)
+                            @endif
+                        </span>
+                    </div>
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Role</span>
+                        <span class="content">{{ $user->textType() }}</span>
+                    </div>
                 </div>
-                <div class="data-group group-half">
-                    <span class="label">Email</span>
-                    <span class="content">{{ $user->email }}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Company</span>
+                        <span class="content">{{ $user->company }}</span>
+                    </div>
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Position</span>
+                        <span class="content">{{ $user->business_id }}</span>
+                    </div>
                 </div>
-                <div class="data-group group-half">
-                    <span class="label">Country</span>
-                    <span class="content">{{ $user->country }}</span>
+                <div class="col-sm-offset-0 row">
+                    <div class="col-xs-6 data-group group-half">
+                        <span class="label">Status</span>
+                        <span class="content">{{ $user->textStatus() }}</span>
+                    </div>
                 </div>
-                <div class="data-group group-half">
-                    <span class="label">City</span>
-                    <span class="content">{{ $user->city }}</span>
-                </div>
-                <div class="data-group group-half">
-                    <span class="label">Company</span>
-                    <span class="content">{{ $user->company }}</span>
-                </div>
-                <div class="data-group group-half">
-                    <span class="label">Position</span>
-                    <span class="content">{{ $user->business_id }}</span>
-                </div>
-                <div class="data-group group-half">
-                    <span class="label">Description</span>
-                    <span class="content">
-                        <textarea rows="4" cols="40" name="feature[{!! $feature->getEntityId() !!}][description]" 
-                            value="" maxlength="250"
-                            rel="{!! $feature->getEntityId() !!}" >{{ $feature->description }}</textarea>
-                    </span>
-                    <span id="count_{!! $feature->getEntityId() !!}"></span>
-                </div>
-            </div> 
-            <div class="col-md-3 expertise-column">
-                @foreach (explode(',', $user->tags) as $tag)
-                    <span class='tag'>{!! $tag !!}</span>
-                @endforeach
-            </div>    
+            </div>
         </div> 
-
     </div>
 </div>
