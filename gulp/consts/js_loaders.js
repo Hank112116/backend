@@ -16,7 +16,6 @@ module.exports = [
     'landing-hello.js',
     'hub-schedules.js',
     'hub-questionnaires.js',
-    'landing-expert.js',
     'solution-list.js',
     'user-list.js',
     'event-report-list.js',

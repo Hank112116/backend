@@ -122,11 +122,6 @@
                             </a>
                         </li>
                         @endif
-                        <li>
-                            <a href="{!! action('LandingController@showExpert') !!}">
-                                <i class="fa fa-tag fa-fw"></i> Home Expert List
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 @endif
