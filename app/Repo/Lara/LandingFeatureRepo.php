@@ -29,7 +29,7 @@ class LandingFeatureRepo implements LandingFeatureInterface
     {
         $features = $this->feature->all();
         foreach ($features as $f) {
-            $f->entity = $this->entityByType($f->block_data, $f->block_type);
+            $f->entity = $this->findEntity($f->block_data, $f->block_type);
         }
         return $features;
     }
@@ -48,17 +48,15 @@ class LandingFeatureRepo implements LandingFeatureInterface
         $entity = null;
         switch ($type) {
             case 'project':
-                $entity = $this->project->find($id);
+                $entity = $this->project->findOngoingProject($id);
                 break;
             case 'solution':
-                $entity = $this->solution->findSolution($id);
-                break;
             case 'program':
-                $entity = $this->solution->findProgram($id);
+                $entity = $this->solution->findSolution($id);
                 break;
             case 'expert':
             case 'user':
-                $entity = $this->user->find($id);
+                $entity = $this->user->findActiveExpert($id);
                 break;
         }
 
@@ -76,8 +74,30 @@ class LandingFeatureRepo implements LandingFeatureInterface
 
         foreach ($features as $new_feature) {
             $f = new Feature();
-            $f->fill($new_feature);
+            $f->block_type = $new_feature['objectType'];
+            $f->block_data = $new_feature['objectId'];
+            $f->order      = $new_feature['order'];
             $f->save();
         }
+    }
+
+    private function findEntity($id, $type)
+    {
+        $entity = null;
+        switch ($type) {
+            case 'project':
+                $entity = $this->project->find($id);
+                break;
+            case 'solution':
+            case 'program':
+                $entity = $this->solution->find($id);
+                break;
+            case 'expert':
+            case 'user':
+                $entity = $this->user->find($id);
+                break;
+        }
+
+        return $entity;
     }
 }

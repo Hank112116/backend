@@ -3,6 +3,24 @@
 @import "vendor/bootstrap/input-groups";
 @import "modules/detail-data";
 @import "modules/detail-expertise-tags";
-@import "modules/list-search"; 
+@import "modules/list-search";
 @import "modules/landing";
 
+.cover-wrapper {
+  @include responsive-rectangle(500px, 250px);
+  @include transition(width .5s, padding-bottom .5s);
+
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  background-position: center;
+  background-size: cover;
+
+  &:hover {
+    @include responsive-rectangle(1000px, 500px);
+  }
+}
+
+.cover-zooim-in {
+  margin-bottom: 50px;
+  color: #aaa;
+}

@@ -147,6 +147,14 @@ class User extends Eloquent
                      });
     }
 
+    public function scopeQueryActiveExpert($query)
+    {
+        return $query->whereIn('user_type', [self::TYPE_PREMIUM_EXPERT, self::TYPE_EXPERT])
+                        ->where('active', true)
+                        ->where('email_verify', self::EMAIL_VERIFY)
+                        ->whereNull('suspended_at');
+    }
+
     public function getPrimaryKey()
     {
         return $this->primaryKey;

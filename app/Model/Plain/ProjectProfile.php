@@ -39,6 +39,11 @@ class ProjectProfile
         'is_deleted'           => 0
     ];
 
+    public $ongoing_project = [
+        'is_project_submitted' => 1,
+        'is_deleted'           => 0
+    ];
+
     private $deleted_reason_map = [
         DeleteReason::BY_OWNER     => 'by owner',
         DeleteReason::BY_BACKEND   => 'by backend',
@@ -49,7 +54,7 @@ class ProjectProfile
     {
         $this->project = $project;
 
-        $this->is_ongoing  = $this->isStatus($this->public_project);
+        $this->is_ongoing  = $this->isStatus($this->ongoing_project);
         $this->is_postpone = $this->isPostPone();
         $this->is_fund_end = $this->isFundEnd();
 

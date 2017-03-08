@@ -12,6 +12,12 @@ interface ProjectInterface
     public function find($project_id);
 
     /**
+     * @param $project_id
+     * @return Project
+     */
+    public function findOngoingProject($project_id);
+
+    /**
      * @return Collection|Project[]
      */
     public function all();

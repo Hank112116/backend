@@ -109,11 +109,16 @@ export default class ProjectSelector {
             $(".panel-body").each(function(index){
                 let $this   = $(this);
                 let feature = {};
-                feature["objectType"] = $this.attr("object");
-                feature["objectId"]   = $this.attr("rel");
-                feature["order"]      = index + 1;
+                feature['objectType'] = $this.attr("object");
+                feature['objectId']   = $this.attr("rel");
+                feature['order']      = index + 1;
                 features[index]       = feature;
             });
+
+            if (features.length < 10) {
+                Notifier.showTimedMessage("Feature item must be greater than 10", "warning", 3);
+                return;
+            }
 
             $.ajax({
                 type: "POST",

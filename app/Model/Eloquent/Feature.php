@@ -26,8 +26,7 @@ class Feature extends Eloquent
     private static $types = [
         self::TYPE_PROJECT,
         self::TYPE_SOLUTION,
-        self::TYPE_EXPERT,
-        self::TYPE_PROGRAM
+        self::TYPE_EXPERT
     ];
 
     public function getEntityId()

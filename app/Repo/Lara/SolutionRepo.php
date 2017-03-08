@@ -55,7 +55,7 @@ class SolutionRepo implements SolutionInterface
     {
         return $this->solution
                     ->where('solution_id', $id)
-                    ->querySolution()
+                    ->queryOnShelf()
                     ->first();
     }
 

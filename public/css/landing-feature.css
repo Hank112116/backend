@@ -6983,3 +6983,28 @@ body.stop-scrolling {
 .btn-block > button {
   width: 25%;
 }
+
+/* line 9, ../../front/sass/landing-feature.scss */
+.cover-wrapper {
+  width: 500px;
+  height: 0;
+  padding-bottom: 250px;
+  -webkit-transition: width 0.5s, padding-bottom 0.5s;
+  transition: width 0.5s, padding-bottom 0.5s;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  background-position: center;
+  background-size: cover;
+}
+/* line 18, ../../front/sass/landing-feature.scss */
+.cover-wrapper:hover {
+  width: 1000px;
+  height: 0;
+  padding-bottom: 500px;
+}
+
+/* line 23, ../../front/sass/landing-feature.scss */
+.cover-zooim-in {
+  margin-bottom: 50px;
+  color: #aaa;
+}

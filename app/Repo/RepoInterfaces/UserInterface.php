@@ -21,6 +21,12 @@ interface UserInterface
      * @param $id
      * @return User
      */
+    public function findActiveExpert($id);
+
+    /**
+     * @param $id
+     * @return User
+     */
     public function findWithDetail($id);
 
     /**

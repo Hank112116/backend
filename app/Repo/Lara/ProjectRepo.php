@@ -86,6 +86,17 @@ class ProjectRepo implements ProjectInterface
         return $project;
     }
 
+    public function findOngoingProject($id)
+    {
+        $project = $this->find($id);
+
+        if (!$project->profile()->is_ongoing) {
+            return null;
+        }
+
+        return $project;
+    }
+
     /**
      * @return Collection
      */

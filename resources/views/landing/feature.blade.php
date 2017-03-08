@@ -5,7 +5,7 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="{{ LinkGen::assets('css/landing-expert.css') }}">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/landing-feature.css') }}">
 @stop
 
 @section('js')
@@ -18,8 +18,14 @@
 </div>
 
 <div id="feature">
-    <div class="row search-bar">
+    <div class="col-md-11 col-md-offset-1">
+        <div class="cover-wrapper" style="background-image: url(https://dev-backend.hwtrek.com/images/feature-list.png)">
 
+        </div>
+
+        <div class="cover-zooim-in">Hover to extend</div>
+    </div>
+    <div class="row search-bar">
         @foreach ($types as $type) 
             <div class="col-md-3">
                 {!! Form::open(['action' => ['LandingController@findFeatureEntity', $type], 
@@ -38,17 +44,17 @@
                 {!! Form::close() !!}
             </div>
         @endforeach
-
     </div>
-        <div id="block-group">
-            @foreach ($features as $feature)
-                @include('landing.feature-block', ['feature' => $feature])
-            @endforeach
-        </div>
-        
-        <div class="btn-block">
-            <button class="btn-sassy btn-submit">UPDATE</button>    
-        </div>
+
+    <div id="block-group">
+        @foreach ($features as $feature)
+            @include('landing.feature-block', ['feature' => $feature])
+        @endforeach
+    </div>
+
+    <div class="btn-block">
+        <button class="btn-sassy btn-submit">UPDATE</button>
+    </div>
 </div>
 @include('landing.dialog.edit-feature')
 @stop
