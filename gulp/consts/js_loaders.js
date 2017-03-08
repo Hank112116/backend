@@ -24,6 +24,3 @@ module.exports = [
     'member-matching.js',
     'landing-restricted.js',
 ];
-
-
-

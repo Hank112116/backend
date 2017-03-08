@@ -1,5 +1,9 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Model\Eloquent\Project;
+use Backend\Model\Eloquent\Solution;
+use Backend\Model\Eloquent\User;
+use Backend\Model\Feature\FeatureStatistics;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Model\Eloquent\Feature;
@@ -28,9 +32,39 @@ class LandingFeatureRepo implements LandingFeatureInterface
     public function all()
     {
         $features = $this->feature->all();
+
+        $feature_statistics = new FeatureStatistics();
+
         foreach ($features as $f) {
             $f->entity = $this->findEntity($f->block_data, $f->block_type);
+
+            switch (true) {
+                case $f->entity instanceof User:
+                    if ($f->entity->isBasicExpert()) {
+                        $feature_statistics->countExpert();
+                    }
+
+                    if ($f->entity->isPremiumExpert()) {
+                        $feature_statistics->countPremiumExpert();
+                    }
+                    break;
+                case $f->entity instanceof Project:
+                    $feature_statistics->countProject();
+                    break;
+                case $f->entity instanceof Solution:
+                    if ($f->entity->isSolution()) {
+                        $feature_statistics->countSolution();
+                    }
+
+                    if ($f->entity->isProgram()) {
+                        $feature_statistics->countProgram();
+                    }
+                    break;
+            }
         }
+
+        $features->statistics = $feature_statistics;
+
         return $features;
     }
 
@@ -42,6 +76,7 @@ class LandingFeatureRepo implements LandingFeatureInterface
         $feature->entity = $this->entityByType($id, $type);
         return $feature;
     }
+
 
     private function entityByType($id, $type)
     {

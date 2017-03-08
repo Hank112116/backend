@@ -4,7 +4,6 @@ namespace Backend\Http\Controllers;
 
 use Backend\Enums\ObjectType;
 use Backend\Facades\Log;
-use Backend\Model\Plain\TagNode;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LandingRestrictedInterface;
@@ -34,6 +33,7 @@ class LandingController extends BaseController
 
     public function showFeature()
     {
+
         return view('landing.feature')
             ->with('types', $this->feature->types())
             ->with('features', $this->feature->all());

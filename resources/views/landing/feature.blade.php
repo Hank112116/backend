@@ -25,7 +25,7 @@
 
         <div class="cover-zooim-in">Hover to extend</div>
     </div>
-    <div class="row search-bar">
+    <div class="row col-md-offset-1">
         @foreach ($types as $type) 
             <div class="col-md-3">
                 {!! Form::open(['action' => ['LandingController@findFeatureEntity', $type], 
@@ -45,15 +45,27 @@
             </div>
         @endforeach
     </div>
-
-    <div id="block-group">
-        @foreach ($features as $feature)
-            @include('landing.feature-block', ['feature' => $feature])
-        @endforeach
+    <div class="row col-md-offset-1">
+        <div class="col-md-4">
+            @foreach($features->statistics->statisticsData() as $item)
+                {{ $item['text'] }} <span class="badge">{{ $item['count'] }}</span>
+                @if (!$loop->last)
+                    |
+                @endif
+            @endforeach
+        </div>
     </div>
+    <hr>
+    <div class="row">
+        <div id="block-group">
+            @foreach ($features as $feature)
+                @include('landing.feature-block', ['feature' => $feature])
+            @endforeach
+        </div>
 
-    <div class="btn-block">
-        <button class="btn-sassy btn-submit">UPDATE</button>
+        <div class="btn-block">
+            <button class="btn-sassy btn-submit">UPDATE</button>
+        </div>
     </div>
 </div>
 @include('landing.dialog.edit-feature')
