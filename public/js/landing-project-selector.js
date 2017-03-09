@@ -54,10 +54,21 @@ var ProjectSelector = (function () {
             $btn.click(function (event) {
                 event.preventDefault();
 
+                var objectId = $block.find(".search_id")[0].value;
+                var objectType = $block.find(".search_type")[0].value;
+
+                if (objectId === "" || objectType === "") {
+                    Notifier.showTimedMessage("Please enter object type and object id.", "warning", 2);
+                    return;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: block.action,
-                    data: { id: $block.find(".search_id")[0].value },
+                    data: {
+                        id: objectId,
+                        type: objectType
+                    },
                     dataType: "JSON",
                     success: function success(feeback) {
                         $(block).find(".search_id")[0].value = "";
@@ -141,9 +152,9 @@ var ProjectSelector = (function () {
                 $(".panel-body").each(function (index) {
                     var $this = $(this);
                     var feature = {};
-                    feature['objectType'] = $this.attr("object");
-                    feature['objectId'] = $this.attr("rel");
-                    feature['order'] = index + 1;
+                    feature["objectType"] = $this.attr("object");
+                    feature["objectId"] = $this.attr("rel");
+                    feature["order"] = index + 1;
                     features[index] = feature;
                 });
 
@@ -213,9 +224,10 @@ var ProjectSelector = (function () {
 
                 $.ajax({
                     type: "POST",
-                    url: "/landing/find-feature/" + objectType,
+                    url: "/landing/find-feature",
                     data: {
-                        id: objectId
+                        id: objectId,
+                        type: objectType
                     },
                     dataType: "JSON",
                     success: function success(feeback) {

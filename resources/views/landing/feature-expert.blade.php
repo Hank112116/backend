@@ -5,7 +5,13 @@
             {{ $user->textType() }} #{{ $user->user_id }}
         </a> - {{ $user->textStatus() }}
         <button type="button"
-                class="btn {!! $user->textStatus() == 'Active' ? 'btn-primary' : 'btn-danger' !!} js-feature-edit"
+                class="btn
+                @if ($user->textStatus() == 'Active' and $user->isExpert())
+                        btn-primary
+                @else
+                        btn-danger
+                @endif
+                js-feature-edit"
                 object="expert" rel="{{ $user->user_id }}">
             Edit
         </button>

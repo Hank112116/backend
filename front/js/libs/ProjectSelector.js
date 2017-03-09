@@ -26,10 +26,21 @@ export default class ProjectSelector {
         $btn.click(function (event) {
             event.preventDefault();
 
+            let objectId   = $block.find(".search_id")[0].value;
+            let objectType = $block.find(".search_type")[0].value;
+
+            if (objectId === "" || objectType === "") {
+                Notifier.showTimedMessage("Please enter object type and object id.", "warning", 2);
+                return;
+            }
+
             $.ajax({
                 type: "POST",
                 url: block.action,
-                data: { id: $block.find(".search_id")[0].value },
+                data: {
+                    id: objectId,
+                    type: objectType
+                },
                 dataType: "JSON",
                 success: function success(feeback) {
                     $(block).find(".search_id")[0].value = "";
@@ -109,9 +120,9 @@ export default class ProjectSelector {
             $(".panel-body").each(function(index){
                 let $this   = $(this);
                 let feature = {};
-                feature['objectType'] = $this.attr("object");
-                feature['objectId']   = $this.attr("rel");
-                feature['order']      = index + 1;
+                feature["objectType"] = $this.attr("object");
+                feature["objectId"]   = $this.attr("rel");
+                feature["order"]      = index + 1;
                 features[index]       = feature;
             });
 
@@ -179,9 +190,10 @@ export default class ProjectSelector {
 
             $.ajax({
                 type: "POST",
-                url: "/landing/find-feature/" + objectType,
+                url: "/landing/find-feature",
                 data: {
-                    id: objectId
+                    id: objectId,
+                    type: objectType
                 },
                 dataType: "JSON",
                 success: function success(feeback) {

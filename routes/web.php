@@ -110,7 +110,7 @@ Route::group(['middleware' => 'route_filter:marketing'], function () {
     Route::get('landing/hello', 'LandingController@showHello');
     Route::get('landing/low-priority', 'LandingController@showRestricted');
 
-    Route::post('landing/find-feature/{type}', 'LandingController@findFeatureEntity');
+    Route::post('landing/find-feature', 'LandingController@findFeatureEntity');
     Route::post('landing/find-refer-project', 'LandingController@findReferenceProject');
     Route::post('landing/update-feature', 'LandingController@updateFeature');
     Route::post('landing/update-refer', 'LandingController@updateReferenceProject');

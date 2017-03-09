@@ -26,34 +26,33 @@
         <div class="cover-zooim-in">Hover to extend</div>
     </div>
     <div class="row col-md-offset-1">
-        @foreach ($types as $type) 
-            <div class="col-md-3">
-                {!! Form::open(['action' => ['LandingController@findFeatureEntity', $type], 
-                               'method' => 'POST', 'class' => 'js-search-form']) !!}
+        {!! Form::open(['action' => ['LandingController@findFeatureEntity', ''],
+                               'method' => 'POST', 'class' => 'form-inline js-search-form']) !!}
+            <div class="form-group">
+                {!! Form::select('type',[
+                    ''          => 'Select one Object type',
+                    'expert'    => 'Expert',
+                    'project'   => 'Project',
+                    'solution'  => 'Solution',
+                ], '',['class'=>'form-control search_type']) !!}
 
-                    <div class="input-group">
-                        {!! Form::text('id', '', 
-                            ['placeholder'=> "Add ".studly_case($type)." by ".studly_case($type)." Id", 
-                             'class'=>"form-control search_id"]) !!}
-
-                        <span class="input-group-btn">
-                            <button class="btn btn-default js-btn-search" type="button">Go!</button>
-                        </span>
-                    </div>
-
-                {!! Form::close() !!}
+                {!! Form::number('id', '',
+                    ['placeholder'=> 'Add Object Id',
+                     'class'=>"form-control search_id"]) !!}
             </div>
-        @endforeach
+            <button class="btn btn-default js-btn-search" type="button">Go!</button>
+        {!! Form::close() !!}
     </div>
+
     <div class="row col-md-offset-1">
-        <div class="col-md-4">
+        <h6>
             @foreach($features->statistics->statisticsData() as $item)
                 {{ $item['text'] }} <span class="badge">{{ $item['count'] }}</span>
                 @if (!$loop->last)
                     |
                 @endif
             @endforeach
-        </div>
+        </h6>
     </div>
     <hr>
     <div class="row">

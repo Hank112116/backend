@@ -57,9 +57,11 @@ class LandingController extends BaseController
             ->with('solutions', $solutions);
     }
 
-    public function findFeatureEntity($type)
+    public function findFeatureEntity()
     {
-        $id = $this->request->get('id');
+        $id   = $this->request->get('id');
+        $type = $this->request->get('type');
+
         $feature = $this->feature->byEntityIdType($id, $type);
         if (!$feature->entity) {
             $res = [
