@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1.3 (2017-03-10)
+* [CHANGE] revise feature UI (#66)
+* [REMOVE] remove home page expert list (@Hank)
+
 ## v3.1.2 (2017-03-03)
 * [NEW]    add premium-creator role (issue #59)
 * [NEW]    add Low Priority List (issue #63)
