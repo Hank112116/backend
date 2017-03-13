@@ -145,6 +145,7 @@ export default class ProjectSelector {
                             return;
                         }
                         Notifier.showTimedMessage("Update successful", "information", 2);
+                        window.location.reload();
                     },
                     412: function () {
                         location.href = "/";

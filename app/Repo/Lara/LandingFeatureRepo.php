@@ -103,6 +103,15 @@ class LandingFeatureRepo implements LandingFeatureInterface
         return $this->feature->types();
     }
 
+    public function hasFeature($id, $type)
+    {
+        $feature = $this->feature->where('block_type', $type)
+            ->where('block_data', $id)
+            ->first();
+
+        return empty($feature) ? false : true;
+    }
+
     public function reset($features)
     {
         Feature::truncate();

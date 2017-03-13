@@ -33,7 +33,6 @@ class LandingController extends BaseController
 
     public function showFeature()
     {
-
         return view('landing.feature')
             ->with('types', $this->feature->types())
             ->with('features', $this->feature->all());
@@ -62,7 +61,17 @@ class LandingController extends BaseController
         $id   = $this->request->get('id');
         $type = $this->request->get('type');
 
+        if ($this->feature->hasFeature($id, $type)) {
+            $res = [
+                'status' => 'fail',
+                'msg'    => "Duplicate object of {$type} #{$id}."
+            ];
+
+            return response()->json($res);
+        }
+
         $feature = $this->feature->byEntityIdType($id, $type);
+
         if (!$feature->entity) {
             $res = [
                 'status' => 'fail',
@@ -124,9 +133,16 @@ class LandingController extends BaseController
 
         $feature = json_decode($feature, true);
 
+        // remove duplicate values from multi array
+        $feature = collect($feature);
+
+        $feature = $feature->unique(function ($item) {
+            return $item['objectType'] . $item['objectId'];
+        });
+
         $this->feature->reset($feature);
 
-        Log::info('Update feature', $feature);
+        Log::info('Update feature', $feature->all());
 
         Noty::success('Update features successful');
 

@@ -177,6 +177,7 @@ var ProjectSelector = (function () {
                                 return;
                             }
                             Notifier.showTimedMessage("Update successful", "information", 2);
+                            window.location.reload();
                         },
                         412: function _() {
                             location.href = "/";

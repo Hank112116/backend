@@ -19,7 +19,7 @@
 
 <div id="feature">
     <div class="col-md-11 col-md-offset-1">
-        <div class="cover-wrapper" style="background-image: url(https://dev-backend.hwtrek.com/images/feature-list.png)">
+        <div class="cover-wrapper" style="background-image: url(/images/feature-list.png)">
 
         </div>
 
