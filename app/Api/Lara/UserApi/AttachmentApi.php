@@ -4,11 +4,8 @@ namespace Backend\Api\Lara\UserApi;
 
 use Backend\Api\ApiInterfaces\UserApi\AttachmentApiInterface;
 use Backend\Api\Lara\BasicApi;
-use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Enums\URI\API\HWTrek\UserApiEnum;
 use Backend\Model\Eloquent\User;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AttachmentApi extends BasicApi implements AttachmentApiInterface
@@ -18,7 +15,7 @@ class AttachmentApi extends BasicApi implements AttachmentApiInterface
      */
     public function getAttachment(User $user)
     {
-        $uri  = $this->hwtrek_url . str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
+        $uri  = $this->hwtrek_url . str_replace('(:num)', $user->id(), UserApiEnum::ATTACHMENT);
 
         return $this->get($uri);
     }
@@ -28,7 +25,7 @@ class AttachmentApi extends BasicApi implements AttachmentApiInterface
      */
     public function updateAttachment(User $user, array $attachments)
     {
-        $uri = $this->hwtrek_url . str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
+        $uri = $this->hwtrek_url . str_replace('(:num)', $user->id(), UserApiEnum::ATTACHMENT);
 
         $options = [
             'json' => [
@@ -43,7 +40,7 @@ class AttachmentApi extends BasicApi implements AttachmentApiInterface
      */
     public function putAttachment(User $user, UploadedFile $file)
     {
-        $uri  = $this->hwtrek_url . str_replace('(:num)', $user->user_id, UserApiEnum::ATTACHMENT);
+        $uri  = $this->hwtrek_url . str_replace('(:num)', $user->id(), UserApiEnum::ATTACHMENT);
 
         $upload_dir = '/tmp/';
 

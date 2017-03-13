@@ -2,6 +2,8 @@
 
 namespace Backend\Api\ApiInterfaces\SolutionApi;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 interface SolutionApiInterface
 {
     /**
@@ -70,4 +72,11 @@ interface SolutionApiInterface
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function offShelf(int $solution_id);
+
+    /**
+     * @param int $solution_id
+     * @param UploadedFile $picture
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function uploadPicture(int $solution_id, UploadedFile $picture);
 }

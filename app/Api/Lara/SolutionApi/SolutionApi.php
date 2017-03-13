@@ -2,12 +2,10 @@
 
 namespace Backend\Api\Lara\SolutionApi;
 
-use Backend\Api\ApiInterfaces\SolutionApi\ApproveApiInterface;
 use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
 use Backend\Api\Lara\BasicApi;
-use Backend\Enums\API\Response\Key\SolutionKey;
 use Backend\Enums\URI\API\HWTrek\SolutionApiEnum;
-use Backend\Model\Eloquent\Solution;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SolutionApi extends BasicApi implements SolutionApiInterface
 {
@@ -173,5 +171,34 @@ class SolutionApi extends BasicApi implements SolutionApiInterface
         ];
 
         return $this->patch($url, $data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uploadPicture(int $solution_id, UploadedFile $file)
+    {
+        $uri = str_replace('(:num)', $solution_id, SolutionApiEnum::PICTURE);
+        $url = $this->hwtrek_url . $uri;
+
+        $upload_dir = '/tmp/';
+
+        $file->move($upload_dir, $file->getClientOriginalName());
+        $file_path = $upload_dir . $file->getClientOriginalName();
+
+        $options = [
+            'multipart' => [
+                [
+                    'name'     => 'file',
+                    'contents' => fopen($file_path, "r"),
+                ]
+            ]
+        ];
+
+        $response = $this->post($url, $options);
+
+        unlink($file_path);
+
+        return $response;
     }
 }

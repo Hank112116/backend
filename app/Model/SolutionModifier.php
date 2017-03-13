@@ -1,9 +1,11 @@
 <?php namespace Backend\Model;
 
+use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
+use Backend\Assistant\ApiResponse\SolutionApi\UploadPictureResponseAssistant;
 use Backend\Model\Eloquent\Solution;
-use ImageUp;
-use Carbon;
 use Backend\Model\ModelInterfaces\SolutionModifierInterface;
+use Carbon;
+use ImageUp;
 
 class SolutionModifier implements SolutionModifierInterface
 {
@@ -118,9 +120,18 @@ class SolutionModifier implements SolutionModifierInterface
                     continue;
                 }
             }
-            $image_name = array_key_exists($key, $data) ?
-                $this->image_uploader->uploadImage($data[$key]) :
-                $gallery[$i][Solution::GALLERY_FILENAME];
+
+            /* @var SolutionApiInterface $solution_api */
+            $solution_api = app()->make(SolutionApiInterface::class);
+
+            if (array_key_exists($key, $data)) {
+                $response   = $solution_api->uploadPicture($solution_id, $data[$key]);
+                $assistant  = UploadPictureResponseAssistant::create($response);
+
+                $image_name = $assistant->getFileName();
+            } else {
+                $image_name = $gallery[$i][Solution::GALLERY_FILENAME];
+            }
 
             $gallery[$i] = [
                 Solution::GALLERY_URL         => $this->image_uploader->getThumbImage($image_name),
