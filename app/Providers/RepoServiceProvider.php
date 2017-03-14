@@ -1,8 +1,5 @@
 <?php namespace Backend\Providers;
 
-use Backend\Repo\Lara;
-use Backend\Model\Plain\SolutionCategory;
-use Backend\Model\Plain\SolutionCertification;
 use Illuminate\Support\ServiceProvider;
 
 class RepoServiceProvider extends ServiceProvider
@@ -36,50 +33,17 @@ class RepoServiceProvider extends ServiceProvider
 
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\ProjectInterface',
-            function ($app) {
-                return new Lara\ProjectRepo(
-                    $app->make('Backend\Repo\RepoInterfaces\AdminerInterface'),
-                    new \Backend\Model\Eloquent\Project(),
-                    new \Backend\Model\Eloquent\ProjectCategory(),
-                    $app->make('Backend\Repo\RepoInterfaces\UserInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\TagBuilderInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\ProjectModifierInterface'),
-                    new \Backend\Model\Eloquent\ProposeSolution(),
-                    new \Backend\Model\Eloquent\GroupMemberApplicant(),
-                    new \Backend\Model\Eloquent\ProjectMailExpert(),
-                    new \Backend\Model\Eloquent\ProjectManager(),
-                    new \Backend\Model\Eloquent\InternalProjectMemo(),
-                    new \Backend\Model\Eloquent\ProjectStatistic(),
-                    new \Backend\Model\Eloquent\Tag()
-                );
-            }
+            'Backend\Repo\Lara\ProjectRepo'
         );
 
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\SolutionInterface',
-            function ($app) {
-                return new Lara\SolutionRepo(
-                    new \Backend\Model\Eloquent\Solution(),
-                    $app->make('Backend\Model\ModelInterfaces\SolutionModifierInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\ProjectTagBuilderInterface'),
-                    $app->make('Backend\Model\ModelInterfaces\FeatureModifierInterface'),
-                    new SolutionCategory(),
-                    new SolutionCertification(),
-                    new \ImageUp(),
-                    $app->make('Backend\Repo\RepoInterfaces\UserInterface')
-                );
-            }
+            'Backend\Repo\Lara\SolutionRepo'
         );
 
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\LandingFeatureInterface',
             'Backend\Repo\Lara\LandingFeatureRepo'
-        );
-
-        $this->app->bind(
-            'Backend\Repo\RepoInterfaces\LandingExpertInterface',
-            'Backend\Repo\Lara\LandingExpertRepo'
         );
 
         $this->app->bind(
@@ -101,7 +65,6 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\CommentInterface',
             'Backend\Repo\Lara\CommentRepo'
         );
-
 
         $this->app->bind(
             'Backend\Repo\RepoInterfaces\LogAccessHelloInterface',

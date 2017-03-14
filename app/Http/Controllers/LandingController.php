@@ -5,7 +5,6 @@ namespace Backend\Http\Controllers;
 use Backend\Enums\ObjectType;
 use Backend\Facades\Log;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
-use Backend\Repo\RepoInterfaces\LandingExpertInterface;
 use Backend\Repo\RepoInterfaces\LandingRestrictedInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
 use Illuminate\Http\Request;
@@ -15,19 +14,16 @@ class LandingController extends BaseController
 {
     protected $cert = 'marketing';
 
-    private $expert;
     private $feature;
     private $restricted;
 
     public function __construct(
         LandingFeatureInterface $feature,
-        LandingExpertInterface $expert,
         LandingRestrictedInterface $restricted
     ) {
         parent::__construct();
 
         $this->feature    = $feature;
-        $this->expert     = $expert;
         $this->restricted = $restricted;
     }
 
@@ -151,7 +147,7 @@ class LandingController extends BaseController
 
     public function updateHelloRedirect(Request $request, LogAccessHelloInterface $repo)
     {
-        $default = "signup?status=2";
+        //$default = "signup?status=2";
         $repo->updateHelloDestination($request->get('destination'));
 
         return response()->json(['status' => 'success',]);
