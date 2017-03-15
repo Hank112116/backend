@@ -9,6 +9,7 @@ class FeatureEntity implements Serializable
     const KEY_OBJECT_TYPE = 'objectType';
     const KEY_ORDER       = 'order';
 
+
     const USER_TYPE     = 'user';
     const PROJECT_TYPE  = 'project';
     const SOLUTION_TYPE = 'solution';

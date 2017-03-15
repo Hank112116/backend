@@ -2,6 +2,7 @@
 
 namespace Backend\Api\Lara;
 
+use Backend\Enums\API\ApiStatusEnum;
 use Backend\Enums\API\Response\Key\OAuthKey;
 use Backend\Facades\Log;
 use GuzzleHttp\Exception\ConnectException;
@@ -34,6 +35,8 @@ abstract class BasicApi
         try {
             $response = $this->client->get($url, $options);
 
+            $this->validateResponse($response);
+
             $this->recordActionLog($url, $options, $response);
 
             return $this->response($response);
@@ -53,6 +56,8 @@ abstract class BasicApi
     {
         try {
             $response = $this->client->post($url, $options);
+
+            $this->validateResponse($response);
 
             $this->recordActionLog($url, $options, $response);
 
@@ -74,6 +79,8 @@ abstract class BasicApi
         try {
             $response = $this->client->patch($url, $options);
 
+            $this->validateResponse($response);
+
             $this->recordActionLog($url, $options, $response);
 
             return $this->response($response);
@@ -94,6 +101,8 @@ abstract class BasicApi
         try {
             $response = $this->client->put($url, $options);
 
+            $this->validateResponse($response);
+
             $this->recordActionLog($url, $options, $response);
 
             return $this->response($response);
@@ -113,6 +122,8 @@ abstract class BasicApi
     {
         try {
             $response = $this->client->delete($url, $options);
+
+            $this->validateResponse($response);
 
             $this->recordActionLog($url, $options, $response);
 
@@ -140,7 +151,7 @@ abstract class BasicApi
      */
     protected function connectExceptionResponse()
     {
-        session()->flash(OAuthKey::API_SERVER_STATUS, 'stop');
+        session()->flash(OAuthKey::API_SERVER_STATUS, ApiStatusEnum::STOP_STATUS);
 
         return Response::create([], Response::HTTP_SERVICE_UNAVAILABLE, ['Retry-After' => 120]);
     }
@@ -161,5 +172,17 @@ abstract class BasicApi
         ];
 
         Log::info('Call api', $data);
+    }
+
+    /**
+     * Validate response's http status code
+     *
+     * @param ResponseInterface $response
+     */
+    private function validateResponse(ResponseInterface $response)
+    {
+        if ($response->getStatusCode() === Response::HTTP_UNAUTHORIZED) {
+            session()->flash(OAuthKey::API_SERVER_STATUS, ApiStatusEnum::UNAUTHORIZED_STATUS);
+        }
     }
 }
