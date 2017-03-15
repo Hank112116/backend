@@ -798,6 +798,27 @@ class Project extends Eloquent
         }
     }
 
+    public function getStatus()
+    {
+        if ($this->profile()->isPrivate()) {
+            return 'private';
+        }
+
+        if ($this->profile()->isPublic()) {
+            return 'expert-only';
+        }
+
+        if ($this->profile()->isDeleted()) {
+            return 'deleted';
+        }
+
+        if ($this->profile()->isDraft()) {
+            return 'draft';
+        }
+
+        return null;
+    }
+
     /**
      * Query Draft Projects
      * @param Builder $query

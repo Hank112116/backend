@@ -57,5 +57,10 @@ class ApiServiceProvider extends ServiceProvider
             'Backend\Api\ApiInterfaces\AuthApi\OAuthApiInterface',
             'Backend\Api\Lara\AuthApi\OAuthApi'
         );
+
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\MarketingApi\FeatureApiInterface',
+            'Backend\Api\Lara\MarketingApi\FeatureApi'
+        );
     }
 }

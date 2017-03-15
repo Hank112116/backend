@@ -1,6 +1,12 @@
 <?php
+
 namespace Backend\Model\Feature;
 
+/**
+ * Class FeatureStatistics
+ *
+ * @author HankChang <hank.chang@hwtrek.com>
+ */
 class FeatureStatistics
 {
     private $expert_count         = 0;

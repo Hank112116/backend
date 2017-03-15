@@ -355,6 +355,29 @@ class Solution extends Eloquent
         return $this->deleted_reason_map[$this->deleted_reason];
     }
 
+    public function getStatus()
+    {
+        switch (true) {
+            case $this->isOffShelf():
+                return 'off-shelf';
+
+            case $this->isOnShelf():
+                return 'on-shelf';
+
+            case $this->isDeleted():
+                return 'archived';
+
+            case $this->isDraft():
+                return 'draft';
+
+            case $this->isWaitApprove():
+                return 'submitted';
+
+            default:
+                return 'undefined';
+        }
+    }
+
     public function textStatus()
     {
         switch (true) {
@@ -402,6 +425,26 @@ class Solution extends Eloquent
 
         return $this->category->textSubCategory($this->solution_type, $this->solution_detail);
     }
+
+    public function getType()
+    {
+        switch (true) {
+            case $this->isSolution():
+                return 'normal-solution';
+
+            case $this->isProgram():
+                return 'program';
+
+            case $this->isPendingSolution():
+                return 'pending-to-normal-solution';
+
+            case $this->isPendingProgram():
+                return 'pending-to-program';
+            default:
+                return 'N/A';
+        }
+    }
+
     public function textType()
     {
         switch (true) {

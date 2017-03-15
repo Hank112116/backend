@@ -21,10 +21,15 @@ class HWTrekApiEnum
     /*
      * Project
      */
-    const PROJECT    = '/projects';
+    const PROJECT = '/projects';
 
     /**
      * Solution
      */
-    const SOLUTION       = '/solutions';
+    const SOLUTION = '/solutions';
+
+    /**
+     * Marketing
+     */
+    const MARKETING = '/marketing';
 }

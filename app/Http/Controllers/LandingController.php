@@ -2,8 +2,12 @@
 
 namespace Backend\Http\Controllers;
 
+use Backend\Api\ApiInterfaces\MarketingApi\FeatureApiInterface;
+use Backend\Assistant\ApiResponse\MarketingApi\FeatureResponseAssistant;
 use Backend\Enums\ObjectType;
 use Backend\Facades\Log;
+use Backend\Model\Feature\FeatureAssistant;
+use Backend\Model\Feature\FeatureEntity;
 use Backend\Repo\RepoInterfaces\LandingFeatureInterface;
 use Backend\Repo\RepoInterfaces\LandingRestrictedInterface;
 use Backend\Repo\RepoInterfaces\LogAccessHelloInterface;
@@ -16,22 +20,33 @@ class LandingController extends BaseController
 
     private $feature;
     private $restricted;
+    private $feature_assistant;
 
     public function __construct(
         LandingFeatureInterface $feature,
-        LandingRestrictedInterface $restricted
+        LandingRestrictedInterface $restricted,
+        FeatureAssistant $feature_assistant
     ) {
         parent::__construct();
 
-        $this->feature    = $feature;
+        $this->feature = $feature;
         $this->restricted = $restricted;
+        $this->feature_assistant = $feature_assistant;
     }
 
     public function showFeature()
     {
+        $api = app()->make(FeatureApiInterface::class);
+
+        $feature_assistant = FeatureResponseAssistant::create($api->loadFeatures());
+
+        $features = $feature_assistant->getFeatures();
+
+        $feature_statistics =  $this->feature_assistant->getFeatureStatistics($features);
+
         return view('landing.feature')
-            ->with('types', $this->feature->types())
-            ->with('features', $this->feature->all());
+            ->with('features', $features)
+            ->with('feature_statistics', $feature_statistics);
     }
 
     public function showHello(LogAccessHelloInterface $repo)
@@ -68,12 +83,16 @@ class LandingController extends BaseController
 
         $feature = $this->feature->byEntityIdType($id, $type);
 
-        if (!$feature->entity) {
+        $feature = $this->feature_assistant->getFeatureData($feature);
+
+        if (empty($feature)) {
             $res = [
                 'status' => 'fail',
                 'msg'    => "There is no {$type} with id {$id}"
             ];
         } else {
+            $feature = FeatureEntity::denormalize($feature);
+
             $block = view('landing.feature-block')
                 ->with('feature', $feature)
                 ->render();
@@ -136,7 +155,9 @@ class LandingController extends BaseController
             return $item['objectType'] . $item['objectId'];
         });
 
-        $this->feature->reset($feature);
+        $api = app()->make(FeatureApiInterface::class);
+
+        $api->updateFeatures($feature->toArray());
 
         Log::info('Update feature', $feature->all());
 

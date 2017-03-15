@@ -46,7 +46,7 @@
 
     <div class="row col-md-offset-1">
         <h6>
-            @foreach($features->statistics->statisticsData() as $item)
+            @foreach($feature_statistics->statisticsData() as $item)
                 {{ $item['text'] }} <span class="badge">{{ $item['count'] }}</span>
                 @if (!$loop->last)
                     |
@@ -69,4 +69,3 @@
 </div>
 @include('landing.dialog.edit-feature')
 @stop
-

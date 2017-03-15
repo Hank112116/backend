@@ -251,6 +251,19 @@ class User extends Eloquent
             return null;
         }
     }
+
+    public function getStatus()
+    {
+        if ($this->isSuspended()) {
+            return 'archived';
+        }
+
+        if ($this->isActive()) {
+            return 'verified';
+        }
+
+        return 'pending-verify';
+    }
     
     public function textStatus()
     {
