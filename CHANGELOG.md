@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.1.4 (2017-03-17)
+* [CHANGE] integrate feature API (#61)
+* [CHANGE] revise feature duplicate issue (issue #67)
+* [FIXED]  fix feature list not display bug (issue #68)
+
 ## v3.1.3 (2017-03-10)
 * [CHANGE] revise feature UI (#66)
 * [REMOVE] remove home page expert list (@Hank)
