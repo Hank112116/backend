@@ -199,7 +199,7 @@ class User extends Eloquent
 
     public function textFullName()
     {
-        return UrlFilter::filterNoHyphen("{$this->user_name} {$this->last_name}");
+        return e("{$this->user_name} {$this->last_name}");
     }
 
     public function textFrontLink()
