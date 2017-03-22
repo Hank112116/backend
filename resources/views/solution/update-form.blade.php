@@ -13,7 +13,7 @@
 <div class="row">
     <div id="solution-gallery" class="solution-thumbs"
          data-solution-cover="{!! $solution->getImage() !!}"
-         data-solution-gallery='{!! $image_gallery !!}'>
+         data-solution-gallery="{{ $image_gallery }}">
     </div>
 </div>
 <!-- End Image Gallery -->
