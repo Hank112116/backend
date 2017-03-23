@@ -5,8 +5,8 @@ namespace Backend\Http\Controllers;
 use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
 use Backend\Facades\Log;
-use Backend\Model\Eloquent\MessageRelatedObject;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
+use Backend\Repo\RepoInterfaces\EventReportInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
@@ -23,13 +23,15 @@ class ReportController extends BaseController
     private $filter;
     private $event_repo;
     private $questionnaire_repo;
+    private $event_report_repo;
 
     public function __construct(
         AdminerInterface            $adminer_repo,
         UserInterface               $user_repo,
         ReportInterface             $report_repo,
         EventApplicationInterface   $event_repo,
-        EventQuestionnaireInterface $questionnaire_repo
+        EventQuestionnaireInterface $questionnaire_repo,
+        EventReportInterface        $event_report_repo
     ) {
         parent::__construct();
         $this->adminer_repo       = $adminer_repo;
@@ -37,6 +39,7 @@ class ReportController extends BaseController
         $this->report_repo        = $report_repo;
         $this->event_repo         = $event_repo;
         $this->questionnaire_repo = $questionnaire_repo;
+        $this->event_report_repo  = $event_report_repo;
     }
 
     /**
@@ -115,7 +118,7 @@ class ReportController extends BaseController
 
         $event_list       = $this->event_repo->getEvents();
 
-        $join_event_users = $this->report_repo->getEventReport($event_id, $this->request->all(), $this->page, $this->per_page);
+        $join_event_users = $this->event_report_repo->getEventReport($event_id, $this->request->all(), $this->page, $this->per_page);
 
         $log_data = ['event_id' => $event_id] + $this->request->all();
         Log::info('Search event report', $log_data);
@@ -191,7 +194,7 @@ class ReportController extends BaseController
         $dend    = $this->request->get('dend') ? $this->request->get('dend') : Carbon::now()->toDateString();
 
         $event_list     = $this->event_repo->getEvents();
-        $approve_event_users = $this->report_repo->getQuestionnaireReport($event_id, $this->request->all(), $this->page, $this->per_page);
+        $approve_event_users = $this->event_report_repo->getQuestionnaireReport($event_id, $this->request->all(), $this->page, $this->per_page);
 
         $log_data = ['event_id' => $event_id] + $this->request->all();
         Log::info('Search questionnaire report', $log_data);

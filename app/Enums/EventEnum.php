@@ -6,6 +6,7 @@ class EventEnum
 {
     const TYPE_AIT_2016_Q1 = 1;
     const TYPE_AIT_2016_Q4 = 2;
+    const TYPE_AIT_2017_Q2 = 3;
 
     const AIT_2016_Q4_SUBJECT   = 'asiatour_2016_q4';
 
@@ -19,6 +20,10 @@ class EventEnum
         self::TYPE_AIT_2016_Q4 => [
             'orig'  => 'Asia Innovation Tour 2016 Q4',
             'short' => '2016 AIT Q4'
+        ],
+        self::TYPE_AIT_2017_Q2 => [
+            'orig'  => 'Asia Innovation Tour 2017 Q2',
+            'short' => '2017 AIT Q2'
         ],
     ];
 

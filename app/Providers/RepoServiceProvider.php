@@ -115,5 +115,10 @@ class RepoServiceProvider extends ServiceProvider
             'Backend\Repo\RepoInterfaces\ProjectStatisticInterface',
             'Backend\Repo\Lara\ProjectStatisticRepo'
         );
+
+        $this->app->bind(
+            'Backend\Repo\RepoInterfaces\EventReportInterface',
+            'Backend\Repo\Lara\EventReportRepo'
+        );
     }
 }
