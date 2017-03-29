@@ -4,7 +4,7 @@ use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
 use Backend\Assistant\ApiResponse\SolutionApi\UploadPictureResponseAssistant;
 use Backend\Model\Eloquent\Solution;
 use Backend\Model\ModelInterfaces\SolutionModifierInterface;
-use Carbon;
+use Carbon\Carbon;
 use ImageUp;
 
 class SolutionModifier implements SolutionModifierInterface

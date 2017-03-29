@@ -147,7 +147,6 @@ return [
         'Form'      => 'Collective\Html\FormFacade',
         'HTML'      => 'Collective\Html\HtmlFacade',
         'Log'       => 'Backend\Facades\Log',
-        'Carbon'    => 'Carbon\Carbon',
         'Image'     => 'Intervention\Image\Facades\Image',
         'Purifier'  => 'Mews\Purifier\Facades\Purifier',
     ],

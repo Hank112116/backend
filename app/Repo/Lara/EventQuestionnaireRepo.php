@@ -2,7 +2,7 @@
 
 use Backend\Events\Event;
 use Backend\Model\Eloquent\EventApplication;
-use Carbon;
+use Carbon\Carbon;
 use Backend\Model\Eloquent\EventQuestionnaireFeedback;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;

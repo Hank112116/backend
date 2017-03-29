@@ -2,7 +2,7 @@
 
 use Backend\Enums\EventEnum;
 use Illuminate\Database\Eloquent\Model;
-use Carbon;
+use Carbon\Carbon;
 
 class EventApplication extends Model
 {

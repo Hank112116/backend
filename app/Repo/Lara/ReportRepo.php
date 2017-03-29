@@ -16,7 +16,7 @@ use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Illuminate\Database\Eloquent\Collection;
-use Carbon;
+use Carbon\Carbon;
 
 class ReportRepo implements ReportInterface
 {

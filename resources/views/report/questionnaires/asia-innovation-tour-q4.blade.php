@@ -200,7 +200,7 @@
                                     Shenzhen:
                                     {{ $approve_user->questionnaire->shenzhen_flight }} -
                                     @if(strtotime($approve_user->questionnaire->shenzhen_datetime))
-                                        {{ Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
+                                        {{ \Carbon\Carbon::parse($approve_user->questionnaire->shenzhen_datetime)->format('M jS g:ia') }}
                                     @else
                                         {{ $approve_user->questionnaire->shenzhen_datetime }}
                                     @endif
@@ -214,7 +214,7 @@
                                     Kyoto:
                                     {{ $approve_user->questionnaire->kyoto_flight }} -
                                     @if(strtotime($approve_user->questionnaire->kyoto_datetime))
-                                        {{ Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
+                                        {{ \Carbon\Carbon::parse($approve_user->questionnaire->kyoto_datetime)->format('M jS g:ia') }}
                                     @else
                                         {{ $approve_user->questionnaire->kyoto_datetime }}
                                     @endif
@@ -228,7 +228,7 @@
                                     Osaka:
                                     {{ $approve_user->questionnaire->osaka_flight }} -
                                     @if(strtotime($approve_user->questionnaire->osaka_datetime))
-                                        {{ Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
+                                        {{ \Carbon\Carbon::parse($approve_user->questionnaire->osaka_datetime)->format('M jS g:ia') }}
                                     @else
                                         {{ $approve_user->questionnaire->osaka_datetime }}
                                     @endif

@@ -1,6 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
-use Carbon;
+use Carbon\Carbon;
 use Backend\Model\Eloquent\EventApplication;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;

@@ -30,7 +30,7 @@
     </td>
     <td class="table--name">
         @if($q->schedule->hub_approve)
-            @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($q->schedule->date_added)))
+            @if(\Carbon\Carbon::parse(env('SHOW_DATE'))->lt(\Carbon\Carbon::parse($q->schedule->date_added)))
                 @if(!$q->mail_send_time)
                     @if(!$q->schedule->hub_managers)
                     <a class="btn-mini btn-danger sendmail" href="javascript:void(0)" projectId="{{ $q->schedule->project_id }}"

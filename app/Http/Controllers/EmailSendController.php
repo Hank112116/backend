@@ -9,7 +9,7 @@ use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
 use Backend\Facades\Log;
 use Backend\Model\Plain\TagNode;
 use Mews\Purifier\Purifier;
-use Carbon;
+use Carbon\Carbon;
 
 class EmailSendController extends BaseController
 {

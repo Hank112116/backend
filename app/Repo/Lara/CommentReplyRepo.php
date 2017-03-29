@@ -1,6 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
-use Carbon;
+use Carbon\Carbon;
 use Backend\Model\Eloquent\CommentReply;
 use Illuminate\Database\Eloquent\Collection;
 use Backend\Repo\RepoInterfaces\CommentReplyInterface;

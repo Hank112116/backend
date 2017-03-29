@@ -7,7 +7,7 @@ use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoInterfaces\EventReportInterface;
 use Illuminate\Support\Collection;
-use Carbon;
+use Carbon\Carbon;
 
 class EventReportRepo implements EventReportInterface
 {

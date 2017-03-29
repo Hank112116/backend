@@ -1,6 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
-use Carbon;
+use Carbon\Carbon;
 use Backend\Enums\DeleteReason;
 use Backend\Model\Eloquent\Project;
 use Backend\Model\Eloquent\ProjectCategory;

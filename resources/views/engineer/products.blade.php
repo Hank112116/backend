@@ -60,7 +60,7 @@
 	</div>
 
 	<div class="day">
-		{!! Carbon::now()->diffInDays(Carbon::parse($p->end_date)) !!} Days
+		{!! \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($p->end_date)) !!} Days
 	</div>
 </div>
 @endforeach

@@ -2,7 +2,7 @@
 
 namespace Backend\Http\Controllers;
 
-use Carbon;
+use Carbon\Carbon;
 use DB;
 use Noty;
 use Backend\Model\Eloquent\Project;

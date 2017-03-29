@@ -6,7 +6,7 @@ use Backend\Model\Eloquent\ProjectTeam;
 use Backend\Model\Eloquent\ProjectManager;
 use Backend\Model\Eloquent\Adminer;
 use ImageUp;
-use Carbon;
+use Carbon\Carbon;
 use Backend\Model\Plain\ProjectProfile;
 use Backend\Model\ModelInterfaces\ProjectModifierInterface;
 

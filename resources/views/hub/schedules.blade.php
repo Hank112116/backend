@@ -64,7 +64,7 @@
                 </td>
                 <td class="table--name">
                 @if($s->hub_approve)
-                    @if(Carbon::parse(env('SHOW_DATE'))->lt(Carbon::parse($s->date_added)))
+                    @if(\Carbon\Carbon::parse(env('SHOW_DATE'))->lt(\Carbon\Carbon::parse($s->date_added)))
                         @if(!$s->mail_send_time)
                             @if(!$s->hub_managers)
                             <a class="btn-mini btn-danger sendmail" href="javascript:void(0)" projectId="{{ $s->project_id }}"

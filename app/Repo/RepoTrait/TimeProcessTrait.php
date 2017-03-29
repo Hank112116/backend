@@ -1,6 +1,6 @@
 <?php namespace Backend\Repo\RepoTrait;
 
-use Carbon;
+use Carbon\Carbon;
 
 trait TimeProcessTrait
 {
