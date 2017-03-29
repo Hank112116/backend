@@ -2,7 +2,6 @@
 
 use Backend\Enums\EventEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Carbon;
 
 class EventApplication extends Model
@@ -348,6 +347,12 @@ class EventApplication extends Model
                             $r .= '<i class="fa fa-paper-plane-o" title="Mail Already send."></i>';
                         }
                         array_push($data, $r);
+                    } elseif ($trip === 'shanghai') {
+                        $r = 'Meetup SH';
+                        if ($this->isAlreadySendSZMail()) {
+                            $r .= '<i class="fa fa-paper-plane-o" title="Mail Already send."></i>';
+                        }
+                        array_push($data, $r);
                     }
                 }
                 return implode('<br/>', $data);
@@ -383,5 +388,20 @@ class EventApplication extends Model
         }
 
         return $memo['is_already_send_osaka_mail'];
+    }
+
+    public function isAlreadySendSHMail()
+    {
+        $memo = json_decode($this->note, true);
+
+        if (is_null($memo)) {
+            return false;
+        }
+
+        if (!array_key_exists('is_already_send_sh_mail', $memo)) {
+            return false;
+        }
+
+        return $memo['is_already_send_sh_mail'];
     }
 }

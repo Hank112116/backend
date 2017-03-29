@@ -13,7 +13,12 @@
 @section('content')
     <div class="page-header"></div>
     @include ('report.event.event-time-search')
-    @include ('report.event.event-summary')
+
+    @if ($event_id == 3)
+        @include ('report.event.event-2017-q2-summary')
+    @else
+        @include ('report.event.event-summary')
+    @endif
     @include ('report.event.event-search')
     <div class="row">
         <div class="col-md-12">

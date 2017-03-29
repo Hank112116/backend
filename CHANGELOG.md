@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.2.0
+* [NEW]   add AIT 2017 Q2 report
+* [FIXED] fix user name edit error (issue #69)
+* [FIXED] fix solution edit page not display (issue #70)
+
 ## v3.1.4 (2017-03-17)
 * [CHANGE] integrate feature API (#61)
 * [CHANGE] revise feature duplicate issue (issue #67)

@@ -2,6 +2,7 @@
 
 use Backend\Enums\EventEnum;
 use Backend\Model\Eloquent\EventApplication;
+use Backend\Model\Eloquent\User;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoInterfaces\EventReportInterface;
@@ -53,19 +54,36 @@ class EventReportRepo implements EventReportInterface
 
         // filter user role
         if (!empty($input['role']) && $input['role'] != 'all') {
-            if ($input['role'] === 'expert') {
-                $join_event_users = $join_event_users->filter(function (EventApplication $item) {
-                    if ($item->user->isExpert() or $item->user->isPendingExpert()) {
-                        return $item;
-                    }
-                });
-            } elseif ($input['role'] === 'creator') {
-                $join_event_users = $join_event_users->filter(function (EventApplication $item) {
-                    if ($item->user->isCreator() and !$item->user->isPendingExpert()) {
-                        return $item;
-                    }
-                });
-            }
+            $role = $input['role'];
+            $join_event_users = $join_event_users->filter(function (EventApplication $item) use ($role) {
+                switch ($role) {
+                    case User::TYPE_CREATOR:
+                        if ($item->user->isBasicCreator()) {
+                            return $item;
+                        }
+                        break;
+                    case User::TYPE_PREMIUM_CREATOR:
+                        if ($item->user->isPremiumCreator()) {
+                            return $item;
+                        }
+                        break;
+                    case User::TYPE_EXPERT:
+                        if ($item->user->isBasicExpert()) {
+                            return $item;
+                        }
+                        break;
+                    case User::TYPE_PREMIUM_EXPERT:
+                        if ($item->user->isPremiumExpert()) {
+                            return $item;
+                        }
+                        break;
+                    case User::TYPE_PM:
+                        if ($item->user->isHWTrekPM()) {
+                            return $item;
+                        }
+                        break;
+                }
+            });
         }
 
         if (!empty($input['project'])) {
@@ -165,6 +183,11 @@ class EventReportRepo implements EventReportInterface
                         break;
                     case 'meetup-osaka':
                         if (!$item->isTour() and in_array('osaka', $item->getTripParticipation())) {
+                            return $item;
+                        }
+                        break;
+                    case 'meetup-sh':
+                        if (!$item->isTour() and in_array('shanghai', $item->getTripParticipation())) {
                             return $item;
                         }
                         break;
@@ -401,7 +424,6 @@ class EventReportRepo implements EventReportInterface
             });
         }
 
-
         $approve_event_users = $this->event_repo->byCollectionPage($approve_event_users, $page, $per_page);
         switch ($event_id) {
             case EventEnum::TYPE_AIT_2016_Q1:
@@ -428,6 +450,7 @@ class EventReportRepo implements EventReportInterface
             'ait_applied'               => 0,
             'meetup_sz_applied'         => 0,
             'meetup_osaka_applied'      => 0,
+            'meetup_sh_applied'         => 0,
             'ait_dropped'               => 0,
             'meetup_dropped'            => 0,
             'ait_form_sent'             => 0,
@@ -439,7 +462,10 @@ class EventReportRepo implements EventReportInterface
             'meetup_sz_expert'          => 0,
             'meetup_osaka_rejected'     => 0,
             'meetup_osaka_premium'      => 0,
-            'meetup_osaka_expert'       => 0
+            'meetup_osaka_expert'       => 0,
+            'meetup_sh_rejected'        => 0,
+            'meetup_sh_premium'         => 0,
+            'meetup_sh_expert'          => 0,
         ];
 
         // filter entered at time
@@ -525,6 +551,19 @@ class EventReportRepo implements EventReportInterface
                                         break;
                                     case 'expert':
                                         $summary['meetup_osaka_expert'] = $summary['meetup_osaka_expert'] + 1;
+                                        break;
+                                }
+                            } elseif ($trip_participation == 'shanghai') {
+                                $summary['meetup_sh_applied'] = $summary['meetup_sh_applied'] + 1;
+                                switch ($event_user->getInternalSetStatus()) {
+                                    case 'rejected':
+                                        $summary['meetup_sh_rejected'] = $summary['meetup_sh_rejected'] + 1;
+                                        break;
+                                    case 'premium':
+                                        $summary['meetup_sh_premium'] = $summary['meetup_sh_premium'] + 1;
+                                        break;
+                                    case 'expert':
+                                        $summary['meetup_sh_expert'] = $summary['meetup_sh_expert'] + 1;
                                         break;
                                 }
                             }

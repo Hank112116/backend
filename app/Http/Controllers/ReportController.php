@@ -4,15 +4,15 @@ namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\EventApi\QuestionnaireApiInterface;
 use Backend\Enums\EventEnum;
-use Backend\Facades\Log;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\EventReportInterface;
 use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
-use Carbon;
+use Carbon\Carbon;
 use Noty;
+use Log;
 
 class ReportController extends BaseController
 {
@@ -111,7 +111,7 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $dstart  = $this->request->get('dstart') ? $this->request->get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dstart  = $this->request->get('dstart') ? $this->request->get('dstart') : EventEnum::AIT_START_DATE;
         $dend    = $this->request->get('dend') ? $this->request->get('dend') : Carbon::now()->toDateString();
 
         $view     = 'report.event.event-list';
@@ -190,7 +190,7 @@ class ReportController extends BaseController
             $event_id = $this->event_repo->getDefaultEvent();
         }
 
-        $dstart  = $this->request->get('dstart') ? $this->request->get('dstart') : EventEnum::AIT_Q4_START_DATE;
+        $dstart  = $this->request->get('dstart') ? $this->request->get('dstart') : EventEnum::AIT_START_DATE;
         $dend    = $this->request->get('dend') ? $this->request->get('dend') : Carbon::now()->toDateString();
 
         $event_list     = $this->event_repo->getEvents();

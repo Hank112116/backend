@@ -9,8 +9,9 @@ class EventEnum
     const TYPE_AIT_2017_Q2 = 3;
 
     const AIT_2016_Q4_SUBJECT   = 'asiatour_2016_q4';
+    const AIT_2017_Q2_SUBJECT   = 'asiatour_2017_q2';
 
-    const AIT_Q4_START_DATE = '2016-08-01';
+    const AIT_START_DATE = '2017-03-26';
 
     const EVENT_NAME = [
         self::TYPE_AIT_2016_Q1 => [
@@ -51,11 +52,19 @@ class EventEnum
             'company_name'                        => 'Company name',
             'phone'                               => 'Phone',
             'trip_participation'                  => 'Trip participation',
-        ]
+        ],
+        self::TYPE_AIT_2017_Q2 => [
+            'join_tour'                           => '',
+            'job_title'                           => 'Job title',
+            'company_name'                        => 'Company name',
+            'phone'                               => 'Phone',
+            'trip_participation'                  => 'Trip participation',
+        ],
     ];
 
     const QUESTIONNAIRE_VIEWS = [
         self::TYPE_AIT_2016_Q1 => 'report.questionnaires.asia-innovation-tour-q1',
-        self::TYPE_AIT_2016_Q4 => 'report.questionnaires.asia-innovation-tour-q4'
+        self::TYPE_AIT_2016_Q4 => 'report.questionnaires.asia-innovation-tour-q4',
+        self::TYPE_AIT_2017_Q2 => 'report.questionnaires.asia-innovation-tour-2017-q2',
     ];
 }

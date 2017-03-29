@@ -5,12 +5,15 @@
     </div>
 </div>
 <div class="row search-bar col-md-offset-0">
-    <div class="col-md-1">
+    <div class="col-md-2">
         <div class="input-group">
             {!! Form::select('role',[
-                'all'     => 'All Role',
-                'creator'  => 'Creator',
-                'expert' => 'Expert',
+                'all'               => 'All Role',
+                'creator'           => 'Creator',
+                'premium-creator'   => 'Premium Creator',
+                'expert'            => 'Expert',
+                'premium-expert'    => 'Premium Expert',
+                'pm'                => 'HWTrek PM'
             ], request('role'), ['class'=>'form-control']) !!}
         </div>
     </div>
