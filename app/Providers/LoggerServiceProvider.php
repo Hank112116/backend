@@ -2,7 +2,6 @@
 
 use Backend\Logger\LogService;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Application;
 
 class LoggerServiceProvider extends ServiceProvider
 {
@@ -10,10 +9,8 @@ class LoggerServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             'Psr\Log\LoggerInterface',
-            function (Application $app) {
-                return new LogService(
-                    $app['log']->getMonolog()
-                );
+            function () {
+                return new LogService(app('log')->getMonolog());
             }
         );
     }

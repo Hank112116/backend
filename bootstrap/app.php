@@ -53,7 +53,7 @@ $app->singleton(
 */
 
 //see:http://monolog-api.richardjh.org/namespace-Monolog.html
-$app->configureMonologUsing(function($monolog) {
+$app->configureMonologUsing(function(\Monolog\Logger $monolog) {
     //error log to syslog server
     $syslog = new \Monolog\Handler\SyslogUdpHandler(
             config('syslog.host'),
@@ -61,7 +61,9 @@ $app->configureMonologUsing(function($monolog) {
         );
     $formatter = new \Monolog\Formatter\JsonFormatter('%channel%.%level_name%: %message% %extra%');
     $processor = new \Monolog\Processor\TagProcessor(['backend_laravel_log']);
+
     $syslog->setFormatter($formatter);
+
     $monolog->pushProcessor($processor);
     $monolog->pushHandler($syslog);
 
