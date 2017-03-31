@@ -1,6 +1,5 @@
 <?php namespace Backend\Repo\RepoInterfaces;
 
-use Backend\Model\Eloquent\DuplicateSolution;
 use Backend\Model\Eloquent\Solution;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -42,33 +41,11 @@ interface SolutionInterface
     public function byTitle($title);
 
     /**
-     * @return array
-     */
-    public function categoryOptions();
-
-    /**
-     * @return array
-     */
-    public function certificationOptions();
-
-    /**
      * @param $id
      * @param $data
      * @return array
      */
     public function updateImageGalleries($id, $data);
-
-    /**
-     * @param $id
-     * @return void
-     */
-    public function onShelf($id);
-
-    /**
-     * @param $id
-     * @return void
-     */
-    public function offShelf($id);
 
     /**
      * @param $solutions

@@ -98,11 +98,6 @@ class LandingFeatureRepo implements LandingFeatureInterface
         return $entity;
     }
 
-    public function types()
-    {
-        return $this->feature->types();
-    }
-
     public function hasFeature($id, $type)
     {
         $feature = $this->feature->where('block_type', $type)
@@ -110,19 +105,6 @@ class LandingFeatureRepo implements LandingFeatureInterface
             ->first();
 
         return empty($feature) ? false : true;
-    }
-
-    public function reset($features)
-    {
-        Feature::truncate();
-
-        foreach ($features as $new_feature) {
-            $f = new Feature();
-            $f->block_type = $new_feature['objectType'];
-            $f->block_data = $new_feature['objectId'];
-            $f->order      = $new_feature['order'];
-            $f->save();
-        }
     }
 
     private function findEntity($id, $type)

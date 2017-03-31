@@ -4,7 +4,6 @@ use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
 use Backend\Assistant\ApiResponse\SolutionApi\UploadPictureResponseAssistant;
 use Backend\Model\Eloquent\Solution;
 use Backend\Model\ModelInterfaces\SolutionModifierInterface;
-use Carbon\Carbon;
 use ImageUp;
 
 class SolutionModifier implements SolutionModifierInterface
@@ -18,89 +17,6 @@ class SolutionModifier implements SolutionModifierInterface
     ) {
         $this->solution       = $solution;
         $this->image_uploader = $image_uploader;
-    }
-
-    public function managerApprove($solution_id)
-    {
-        $setter = [
-            'is_manager_approved' => 1,
-            'approve_time'        => Carbon::now(),
-        ];
-
-        $this->updateSolution($solution_id, $setter);
-    }
-
-    public function approve($solution_id)
-    {
-        $setter = array_merge(
-            $this->solution->on_shelf_status,
-            [
-            'is_manager_approved' => 0,
-            'approve_time'        => Carbon::now(),
-            ]
-        );
-
-        $this->updateSolution($solution_id, $setter);
-    }
-
-    public function managerToProgram($solution_id)
-    {
-        $setter = $this->solution->is_pending_program_status;
-
-        $this->updateSolution($solution_id, $setter);
-    }
-
-    public function toProgram($solution_id)
-    {
-        $setter = $this->solution->is_program_status;
-
-        $this->updateSolution($solution_id, $setter);
-    }
-
-    public function managerToSolution($solution_id)
-    {
-        $setter = $this->solution->is_pending_solution_status;
-
-        $this->updateSolution($solution_id, $setter);
-    }
-
-    public function toSolution($solution_id)
-    {
-        $setter = $this->solution->is_solution_status;
-
-        $this->updateSolution($solution_id, $setter);
-    }
-    public function reject($solution_id)
-    {
-        $setter = array_merge(
-            $this->solution->draft_status,
-            [
-            'is_manager_approved' => 0,
-            'approve_time'        => Carbon::now(),
-            ]
-        );
-
-        $this->updateSolution($solution_id, $setter);
-    }
-
-    public function onShelf($solution_id)
-    {
-        $this->updateSolution($solution_id, $this->solution->on_shelf_status);
-    }
-
-    public function offShelf($solution_id)
-    {
-        $this->updateSolution($solution_id, $this->solution->off_shelf_status);
-    }
-
-    private function updateSolution($solution_id, $data)
-    {
-        $solution = $this->solution->find($solution_id);
-        if ($solution) {
-            $solution->fill($data);
-            $solution->update_time = Carbon::now();
-            $solution->save();
-        }
     }
 
     public function updateImageGalleries($solution_id, $data)

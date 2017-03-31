@@ -115,26 +115,6 @@ class SolutionRepo implements SolutionInterface
         return $solutions;
     }
 
-    public function categoryOptions()
-    {
-        return $this->category->options();
-    }
-
-    public function certificationOptions()
-    {
-        return $this->certification->options();
-    }
-
-    public function onShelf($solution_id)
-    {
-        $this->solution_modifier->onShelf($solution_id);
-    }
-
-    public function offShelf($solution_id)
-    {
-        $this->solution_modifier->offShelf($solution_id);
-    }
-
     public function updateImageGalleries($solution_id, $data)
     {
         return $this->solution_modifier->updateImageGalleries($solution_id, $data);

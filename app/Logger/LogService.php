@@ -4,7 +4,6 @@ namespace Backend\Logger;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
-
 use Request;
 
 class LogService implements LoggerInterface

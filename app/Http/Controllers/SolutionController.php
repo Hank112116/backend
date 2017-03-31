@@ -160,7 +160,6 @@ class SolutionController extends BaseController
             }
         }
 
-        // TODO use upload solution picture API
         $image_gallery = $this->solution_repo->updateImageGalleries($solution_id, $this->request->all());
 
         $modify_data = [
