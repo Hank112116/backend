@@ -10,9 +10,9 @@ use Backend\Repo\RepoInterfaces\ReportInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\EventApplicationInterface;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
+use Backend\Facades\Log;
 use Carbon\Carbon;
 use Noty;
-use Log;
 
 class ReportController extends BaseController
 {
@@ -199,7 +199,7 @@ class ReportController extends BaseController
         $log_data = ['event_id' => $event_id] + $this->request->all();
         Log::info('Search questionnaire report', $log_data);
 
-        $view           = $this->questionnaire_repo->getView($event_id);
+        $view = $this->questionnaire_repo->getView($event_id);
 
         $admins = $this->adminer_repo->all();
 
