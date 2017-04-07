@@ -38,6 +38,7 @@ class User extends Eloquent
     const TYPE_PM              = 'pm';
     const TYPE_PREMIUM_EXPERT  = 'premium-expert';
     const TYPE_PREMIUM_CREATOR = 'premium-creator';
+    const TYPE_TO_BE_EXPERT    = 'to-be-expert';
 
     const EMAIL_VERIFY_NONE     = '1';
     const EMAIL_VERIFY          = '2';
