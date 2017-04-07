@@ -13,6 +13,7 @@
                 'premium-creator'   => 'Premium Creator',
                 'expert'            => 'Expert',
                 'premium-expert'    => 'Premium Expert',
+                'to-be-expert'      => 'To Be Expert',
                 'pm'                => 'HWTrek PM'
             ], request('role'), ['class'=>'form-control']) !!}
         </div>

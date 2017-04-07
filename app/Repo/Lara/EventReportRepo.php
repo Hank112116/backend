@@ -77,6 +77,11 @@ class EventReportRepo implements EventReportInterface
                             return $item;
                         }
                         break;
+                    case User::TYPE_TO_BE_EXPERT:
+                        if ($item->user->isToBeExpert()) {
+                            return $item;
+                        }
+                        break;
                     case User::TYPE_PM:
                         if ($item->user->isHWTrekPM()) {
                             return $item;
