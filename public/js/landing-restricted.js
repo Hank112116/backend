@@ -53,14 +53,16 @@ var RestrictedObjectSelector = (function () {
                     data: { id: $block.find(".search_id")[0].value },
                     dataType: "JSON",
                     statusCode: {
-                        200: function _(feeback) {
-                            if (feeback.status == "fail") {
-                                Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                                return;
-                            }
+                        204: function _() {
                             Notifier.showTimedMessage("Add successful", "information", 2);
 
                             window.location.reload();
+                        },
+                        400: function _(res) {
+                            Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
+                        },
+                        404: function _(res) {
+                            Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
                         },
                         412: function _() {
                             location.href = "/";
@@ -84,14 +86,16 @@ var RestrictedObjectSelector = (function () {
                     data: { id: id, type: object_type },
                     dataType: "JSON",
                     statusCode: {
-                        200: function _(feeback) {
-                            if (feeback.status == "fail") {
-                                Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                                return;
-                            }
+                        204: function _() {
                             Notifier.showTimedMessage("Revoke successful", "information", 2);
 
                             window.location.reload();
+                        },
+                        400: function _(res) {
+                            Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
+                        },
+                        404: function _(res) {
+                            Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
                         },
                         412: function _() {
                             location.href = "/";

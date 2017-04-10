@@ -9,11 +9,9 @@ class FeatureEntity implements Serializable
     const KEY_OBJECT_TYPE = 'objectType';
     const KEY_ORDER       = 'order';
 
-
     const USER_TYPE     = 'user';
     const PROJECT_TYPE  = 'project';
     const SOLUTION_TYPE = 'solution';
-
 
     private $data;
 
@@ -252,7 +250,6 @@ class FeatureEntity implements Serializable
         if (!is_array($data)) {
             throw new \InvalidArgumentException("'{$data}' is not a valid array format");
         }
-
 
         return new FeatureEntity($data);
     }

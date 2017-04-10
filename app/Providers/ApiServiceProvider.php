@@ -62,5 +62,10 @@ class ApiServiceProvider extends ServiceProvider
             'Backend\Api\ApiInterfaces\MarketingApi\FeatureApiInterface',
             'Backend\Api\Lara\MarketingApi\FeatureApi'
         );
+
+        $this->app->bind(
+            'Backend\Api\ApiInterfaces\MarketingApi\LowPriorityObjectApiInterface',
+            'Backend\Api\Lara\MarketingApi\LowPriorityObjectApi'
+        );
     }
 }

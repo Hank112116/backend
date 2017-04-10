@@ -1,3 +1,6 @@
+@php
+    /* @var $solution \Backend\Model\LowPriorityObject\LowPrioritySolution */
+@endphp
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
@@ -17,12 +20,12 @@
                         <tr>
                             <td>{{ $solution->id() }}</td>
                             <td>
-                                <a href="{{ $solution->textFrontLink() }}" target="_blank">{{ $solution->textTitle() }}</a>
+                                <a href="{{ $solution->url() }}" target="_blank">{{ $solution->title() }}</a>
                             </td>
                             <td>
-                                <a href="{{ $solution->user->textFrontLink() }}" target="_blank">{{ $solution->textUserName() }}</a>
+                                <a href="{{ $solution->ownerUrl() }}" target="_blank">{{ $solution->ownerFullName() }}</a>
                             </td>
-                            <td>{{ $solution->textStatus() }}</td>
+                            <td>{{ $solution->status() }}</td>
                             <td>
                                 <button class="btn-mini btn-flat-red js-revoke" rel="{!! $solution->id() !!}" object="solution">revoke</button>
                             </td>

@@ -1,3 +1,6 @@
+@php
+/* @var $user \Backend\Model\LowPriorityObject\LowPriorityUser */
+@endphp
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
@@ -21,13 +24,13 @@
                         <tr>
                             <td>{{ $user->id() }}</td>
                             <td>
-                                <a href="{!! $user->textFrontLink() !!}" target="_blank">{{ $user->textFullName() }}</a>
+                                <a href="{!! $user->url() !!}" target="_blank">{{ $user->fullName() }}</a>
                             </td>
-                            <td>{{ $user->textType() }}</td>
-                            <td>{{ $user->textStatus() }}</td>
+                            <td>{{ $user->textUserType() }}</td>
+                            <td>{{ $user->status() }}</td>
                             <td class="table--width-limit">
-                                {{ $user->company }}<br/>
-                                <span class="table--text-light">{{ $user->business_id  }}</span>
+                                {{ $user->companyName() }}<br/>
+                                <span class="table--text-light">{{ $user->position()  }}</span>
                             </td>
                             <td>
                                 <button class="btn-mini btn-flat-red js-revoke" rel="{!! $user->id() !!}" object="user">revoke</button>

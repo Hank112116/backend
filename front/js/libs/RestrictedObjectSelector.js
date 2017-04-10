@@ -25,14 +25,16 @@ export default class RestrictedObjectSelector {
                 data: { id: $block.find(".search_id")[0].value },
                 dataType: "JSON",
                 statusCode: {
-                    200: function (feeback) {
-                        if (feeback.status == "fail") {
-                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                            return;
-                        }
+                    204: function () {
                         Notifier.showTimedMessage("Add successful", "information", 2);
 
                         window.location.reload();
+                    },
+                    400: function (res) {
+                        Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
+                    },
+                    404: function (res) {
+                        Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
                     },
                     412: function () {
                         location.href = "/";
@@ -55,14 +57,16 @@ export default class RestrictedObjectSelector {
                 data: { id: id, type: object_type },
                 dataType: "JSON",
                 statusCode: {
-                    200: function (feeback) {
-                        if (feeback.status == "fail") {
-                            Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                            return;
-                        }
+                    204: function () {
                         Notifier.showTimedMessage("Revoke successful", "information", 2);
 
                         window.location.reload();
+                    },
+                    400: function (res) {
+                        Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
+                    },
+                    404: function (res) {
+                        Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
                     },
                     412: function () {
                         location.href = "/";
