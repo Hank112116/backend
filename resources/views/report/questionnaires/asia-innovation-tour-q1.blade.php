@@ -154,7 +154,7 @@
                                 <a href="javascript:void(0)"
                                    class="note" rel="{!! $approve_user->id !!}" note="{{ $approve_user->getNote() }}">
                                     <i class="fa fa-pencil"></i>
-                                    {{ mb_strimwidth($approve_user->getNote(), 0, 130, mb_substr($approve_user->getNote(), 0, 130) . '...') }}
+                                    {{ str_limit($approve_user->getNote(), 130) }}
                                 </a>
                             @else
                                 <div class="process-btns">

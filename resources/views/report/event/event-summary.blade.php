@@ -88,6 +88,14 @@
 
                 <td>
                     {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_sz_sent . ' Sent', [
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'sent',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sz_rejected . ' Rejected', [
                         $event_id,
                         'ticket'          => 'meetup-sz',
@@ -128,6 +136,14 @@
                     ], ['target' => '_blank']) !!}
                 </td>
                 <td>
+                    {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_osaka_sent . ' Sent', [
+                        $event_id,
+                        'ticket'          => 'meetup-osaka',
+                        'internal_status' => 'sent',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_osaka_rejected . ' Rejected', [
                         $event_id,

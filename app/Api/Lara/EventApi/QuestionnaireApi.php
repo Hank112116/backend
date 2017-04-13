@@ -11,7 +11,7 @@ class QuestionnaireApi extends BasicApi implements QuestionnaireApiInterface
 {
     public function sendNotificationMail(User $user)
     {
-        $url  = $this->hwtrek_url . HWTrekApiEnum::EVENT . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::EVENT_QUESTIONNAIRE . '/' . EventEnum::AIT_2016_Q4_SUBJECT;
+        $url = $this->hwtrek_url . HWTrekApiEnum::EVENT . HWTrekApiEnum::API . HWTrekApiEnum::USER . '/' . $user->user_id . HWTrekApiEnum::EVENT_QUESTIONNAIRE . '/' . EventEnum::AIT_2017_Q2_SUBJECT;
 
         $this->post($url . '/' . 'notification-mail');
     }

@@ -5,7 +5,6 @@
 @stop
 
 @section('js')
-    <script src='//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&language=en'></script>
     <script src="{{ LinkGen::assets('react/solution-update.js') }}"></script>
     <script src="{{ LinkGen::assets('js/solution-update.js') }}"></script>
 @stop

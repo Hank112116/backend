@@ -36,7 +36,11 @@
     </div>
 </div>
 
-@include('report.questionnaires.questionnaire-summary')
+@if ($event_id == 2)
+    @include('report.questionnaires.questionnaire-summary')
+@elseif ($event_id == 3)
+    @include('report.questionnaires.questionnaire-2017-q2-summary')
+@endif
 
 <div class="row search-bar col-md-offset-0">
     <div class="col-md-2">

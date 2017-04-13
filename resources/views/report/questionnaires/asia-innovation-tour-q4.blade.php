@@ -14,7 +14,7 @@
 @section('content')
     <div class="page-header"></div>
 
-    @include ('report.questionnaires.questionnaire-q4-search')
+    @include ('report.questionnaires.questionnaire-search')
 
     <div class="row">
         <div class="col-md-12">

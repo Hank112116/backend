@@ -8,8 +8,10 @@
 class LinkGen
 {
     /**
-     * Gen a link to output the page to csv
-     **/
+     * @param bool $all
+     * @param null $limit
+     * @return string
+     */
     public static function csv($all = false, $limit = null)
     {
         $num = $all?  'all' : 'this';
@@ -48,5 +50,15 @@ class LinkGen
         $path = $path . '?v=' . $check_sum;
 
         return secure_url($path);
+    }
+
+    /**
+     * Generate google map js link
+     *
+     * @return string
+     */
+    public static function googleMap()
+    {
+        return '//maps.googleapis.com/maps/api/js?key=' . config('app.google_map_frontend_key') . '&v=3.exp&libraries=places&language=en';
     }
 }

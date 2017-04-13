@@ -21,6 +21,9 @@ return [
 
     'tmp_folder'      => storage_path('app/tmp/'),
 
+    'google_map_frontend_key' => 'AIzaSyDOCCgJKsnV-0dxC96LpomvyIcBHwYIP_A',
+    'google_map_backend_key'  => 'AIzaSyBZpTqXSPzmhKTNDPjUfm2H4FFyY8x-Kg0',
+
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration

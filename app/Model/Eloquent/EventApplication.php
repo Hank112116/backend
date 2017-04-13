@@ -135,6 +135,11 @@ class EventApplication extends Model
         return $this->getInternalSetStatus() === self::INTERNAL_EXPERT_STATUS ? true : false;
     }
 
+    public function isAlreadySendMail()
+    {
+        return $this->isAlreadySendSHMail() or $this->isAlreadySendOsakaMail() or $this->isAlreadySendSHMail();
+    }
+
     public function getCompleteTime()
     {
         $email    = $this->email;
@@ -327,7 +332,13 @@ class EventApplication extends Model
     public function getTextTicketType()
     {
         if ($this->isTour()) {
-            return 'AIT';
+            $r = 'AIT';
+
+            if (!is_null($this->approved_at)) {
+                $r .= '<i class="fa fa-paper-plane-o" title="Mail Already send."></i>';
+            }
+
+            return $r;
         } else {
             $trips = $this->getTripParticipation();
             if (empty($trips)) {

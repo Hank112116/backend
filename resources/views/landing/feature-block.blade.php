@@ -10,7 +10,7 @@
         <div class="panel panel-default user">
             <div class="panel-heading">
                 <span class="js-order-number"></span>.
-                <a href="{!! $feature->textFrontLink() !!}" target="_blank">
+                <a href="{{ $feature->textFrontLink() }}" target="_blank">
                     {{ $feature->getTextObjectType() }} #{{ $feature->getObjectId() }}
                 </a> - {{ $feature->getObjectStatus() }}
                 <button type="button"

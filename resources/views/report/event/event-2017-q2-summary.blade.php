@@ -70,46 +70,54 @@
                 <td>
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sz_applied . ' Applied', [
-                    $event_id,
-                    'ticket' => 'meetup-sz',
-                    'status' => 'applied',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket' => 'meetup-sz',
+                        'status' => 'applied',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_dropped . ' Dropped', [
-                    $event_id,
-                    'ticket' => 'meetup',
-                    'status' => 'dropped',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket' => 'meetup',
+                        'status' => 'dropped',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!}
                 </td>
 
                 <td>
                     {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_sz_sent . ' Sent', [
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'sent',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sz_rejected . ' Rejected', [
-                    $event_id,
-                    'ticket'          => 'meetup-sz',
-                    'internal_status' => 'rejected',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'rejected',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sz_premium . ' Premium', [
-                    $event_id,
-                    'ticket'          => 'meetup-sz',
-                    'internal_status' => 'premium',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'premium',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sz_expert . ' Expert', [
-                    $event_id,
-                    'ticket'          => 'meetup-sz',
-                    'internal_status' => 'expert',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket'          => 'meetup-sz',
+                        'internal_status' => 'expert',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!}
                 </td>
             </tr>
@@ -129,28 +137,36 @@
                 </td>
                 <td>
                     {!! link_to_action('ReportController@showEventReport',
+                    $event_users->meetup_sh_sent . ' Sent', [
+                        $event_id,
+                        'ticket'          => 'meetup-sh',
+                        'internal_status' => 'sent',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sh_rejected . ' Rejected', [
-                    $event_id,
-                    'ticket'          => 'meetup-sh',
-                    'internal_status' => 'rejected',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket'          => 'meetup-sh',
+                        'internal_status' => 'rejected',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sh_premium . ' Premium', [
-                    $event_id,
-                    'ticket'          => 'meetup-sh',
-                    'internal_status' => 'premium',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket'          => 'meetup-sh',
+                        'internal_status' => 'premium',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showEventReport',
                     $event_users->meetup_sh_expert . ' Expert', [
-                    $event_id,
-                    'ticket'          => 'meetup-sh',
-                    'internal_status' => 'expert',
-                    'dstart' => $dstart,
-                    'dend'   => $dend,
+                        $event_id,
+                        'ticket'          => 'meetup-sh',
+                        'internal_status' => 'expert',
+                        'dstart' => $dstart,
+                        'dend'   => $dend,
                     ], ['target' => '_blank']) !!}
                 </td>
             </tr>

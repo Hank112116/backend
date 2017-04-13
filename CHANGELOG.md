@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## v3.2.0
+## v3.3.0
+* [NEW]    add AIT 2017 Q2 questionnaire report
+* [CHANGE] integrate low priority object API
+* [FIXED]  fix google map API warning
+
+## v3.2.0 (2017-04-07)
 * [NEW]   add AIT 2017 Q2 report
 * [FIXED] fix user name edit error (issue #69)
 * [FIXED] fix solution edit page not display (issue #70)

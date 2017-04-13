@@ -259,6 +259,11 @@ class EventReportRepo implements EventReportInterface
                             return $item;
                         }
                         break;
+                    case 'sent':
+                        if ($item->isAlreadySendMail()) {
+                            return $item;
+                        }
+                        break;
                 }
             });
         }
@@ -436,9 +441,9 @@ class EventReportRepo implements EventReportInterface
                 $approve_event_users = $this->appendStatistics($approve_event_users, $statistics);
                 break;
             case EventEnum::TYPE_AIT_2016_Q4:
+            case EventEnum::TYPE_AIT_2017_Q2:
                 $join_event_users   = $this->event_repo->findByEventId($event_id);
                 $join_event_summary = $this->getEventSummary($join_event_users, $input);
-
                 $summary_approve_event_users = $this->event_repo->findApproveEventUsers($event_id);
                 $approve_event_summary       = $this->getQuestionnaireSummary($summary_approve_event_users, $input);
 
@@ -462,12 +467,15 @@ class EventReportRepo implements EventReportInterface
             'ait_selected'              => 0,
             'ait_considering'           => 0,
             'ait_rejected'              => 0,
+            'meetup_sz_sent'            => 0,
             'meetup_sz_rejected'        => 0,
             'meetup_sz_premium'         => 0,
             'meetup_sz_expert'          => 0,
+            'meetup_osaka_sent'         => 0,
             'meetup_osaka_rejected'     => 0,
             'meetup_osaka_premium'      => 0,
             'meetup_osaka_expert'       => 0,
+            'meetup_sh_sent'            => 0,
             'meetup_sh_rejected'        => 0,
             'meetup_sh_premium'         => 0,
             'meetup_sh_expert'          => 0,
@@ -533,6 +541,12 @@ class EventReportRepo implements EventReportInterface
                         foreach ($event_user->getTripParticipation() as $trip_participation) {
                             if ($trip_participation == 'shenzhen') {
                                 $summary['meetup_sz_applied'] = $summary['meetup_sz_applied'] + 1;
+                                if ($event_user->isAlreadySendSZMail()) {
+                                    $summary['meetup_sz_sent'] = $summary['meetup_sz_sent'] + 1;
+                                    if ($event_user->hasGuestJoin()) {
+                                        $summary['meetup_sz_sent'] = $summary['meetup_sz_sent'] + 1;
+                                    }
+                                }
                                 switch ($event_user->getInternalSetStatus()) {
                                     case 'rejected':
                                         $summary['meetup_sz_rejected'] = $summary['meetup_sz_rejected'] + 1;
@@ -546,7 +560,12 @@ class EventReportRepo implements EventReportInterface
                                 }
                             } elseif ($trip_participation == 'osaka') {
                                 $summary['meetup_osaka_applied'] = $summary['meetup_osaka_applied'] + 1;
-
+                                if ($event_user->isAlreadySendOsakaMail()) {
+                                    $summary['meetup_osaka_sent'] = $summary['meetup_osaka_sent'] + 1;
+                                    if ($event_user->hasGuestJoin()) {
+                                        $summary['meetup_osaka_sent'] = $summary['meetup_osaka_sent'] + 1;
+                                    }
+                                }
                                 switch ($event_user->getInternalSetStatus()) {
                                     case 'rejected':
                                         $summary['meetup_osaka_rejected'] = $summary['meetup_osaka_rejected'] + 1;
@@ -560,6 +579,12 @@ class EventReportRepo implements EventReportInterface
                                 }
                             } elseif ($trip_participation == 'shanghai') {
                                 $summary['meetup_sh_applied'] = $summary['meetup_sh_applied'] + 1;
+                                if ($event_user->isAlreadySendSHMail()) {
+                                    $summary['meetup_sh_sent'] = $summary['meetup_sh_sent'] + 1;
+                                    if ($event_user->hasGuestJoin()) {
+                                        $summary['meetup_sh_sent'] = $summary['meetup_sh_sent'] + 1;
+                                    }
+                                }
                                 switch ($event_user->getInternalSetStatus()) {
                                     case 'rejected':
                                         $summary['meetup_sh_rejected'] = $summary['meetup_sh_rejected'] + 1;
@@ -588,10 +613,12 @@ class EventReportRepo implements EventReportInterface
             'ait_form_completed'    => 0,
             'ait_dinner'            => 0,
             'ait_sz'                => 0,
+            'ait_sh'                => 0,
             'ait_kyoto'             => 0,
             'ait_osaka'             => 0,
             'ait_guest_dinner'      => 0,
             'ait_guest_sz'          => 0,
+            'ait_guest_sh'          => 0,
             'ait_guest_kyoto'       => 0,
             'ait_guest_osaka'       => 0
         ];
@@ -680,6 +707,18 @@ class EventReportRepo implements EventReportInterface
                             or $questionnaire->guest_email
                         ) {
                             $summary['ait_guest_osaka'] = $summary['ait_guest_osaka'] + 1;
+                        }
+                    }
+
+                    if ($trip == 'shanghai') {
+                        $summary['ait_sh'] = $summary['ait_sh'] + 1;
+
+                        if ($questionnaire->guest_info
+                            or $questionnaire->guest_attendee_name
+                            or $questionnaire->guest_job_title
+                            or $questionnaire->guest_email
+                        ) {
+                            $summary['ait_guest_sh'] = $summary['ait_guest_sh'] + 1;
                         }
                     }
                 }
