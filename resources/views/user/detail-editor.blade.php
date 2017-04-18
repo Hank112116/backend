@@ -1,3 +1,6 @@
+@php
+/* @var \Backend\Model\Eloquent\User $user */
+@endphp
 @extends('layouts.master')
 @include('layouts.macro')
 
@@ -47,7 +50,7 @@
                 <span class="label">Role</span>
                   <span class="content">
                       @if($user->isToBeExpert() or $user->isApplyExpert())
-                      <font color="red">{{ $user->textType() }}</font>
+                      <span class="color-red">{{ $user->textType() }}</span>
                       @else
                       {{ $user->textType() }}
                       @endif

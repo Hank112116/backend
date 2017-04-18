@@ -1,5 +1,8 @@
 <?php
 
+use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
+use Backend\Assistant\ApiResponse\UserApi\CompanyLogoResponseAssistant;
+use Backend\Model\Eloquent\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Intervention\Image\Constraint;
 use Aws\S3\S3Client;
@@ -111,6 +114,26 @@ class ImageUp
         }
 
         return $this->name;
+    }
+
+    /**
+     * @param User $user
+     * @param UploadedFile $image
+     * @return bool
+     */
+    public function uploadCompanyLogo(User $user, UploadedFile $image)
+    {
+        if (!$this->valid($image)) {
+            return false;
+        }
+
+        $api = app()->make(ProfileApiInterface::class);
+
+        $response = $api->uploadCompanyLogo($user, $image);
+
+        $assistant = CompanyLogoResponseAssistant::create($response);
+
+        return $assistant->getFileName();
     }
 
     private function valid($image)

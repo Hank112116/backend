@@ -1,3 +1,6 @@
+@php
+/* @var \Backend\Model\Eloquent\User $user */
+@endphp
 @extends('layouts.master')
 
 @section('css')
@@ -46,6 +49,18 @@
 		    </div>
 		    <div class="col-md-5"></div>
 		</div>
+
+        @if ($user->isPremium())
+        <div class="form-group">
+
+            <label for="user-head" class="col-md-3">Upload Company Logo</label>
+            <div class="col-md-5">
+                {!! HTML::image($user->getCompanyLogo(), 'thumb', ['class' => 'company-logo']) !!}
+                <input type="file" name="company_logo" id="user-head">
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        @endif
 
         @if (!$is_restricted)
 

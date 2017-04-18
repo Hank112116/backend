@@ -3,6 +3,7 @@
 namespace Backend\Api\ApiInterfaces\UserApi;
 
 use Backend\Model\Eloquent\User;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ProfileApiInterface
 {
@@ -27,4 +28,11 @@ interface ProfileApiInterface
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function approveExpert(User $user, $user_type);
+
+    /**
+     * @var User $user
+     * @param UploadedFile $file
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function uploadCompanyLogo(User $user, UploadedFile $file);
 }

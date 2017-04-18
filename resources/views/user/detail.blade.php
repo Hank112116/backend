@@ -1,3 +1,7 @@
+@php
+/* @var \Backend\Model\Eloquent\User $user */
+@endphp
+
 @extends('layouts.master')
 @include('layouts.macro')
 
@@ -49,7 +53,7 @@
 			  <span class="label">Role</span>
 			  <span class="content">
 				  @if($user->isToBeExpert() or $user->isApplyExpert())
-					  <font color="red">{{ $user->textType() }}</font>
+					  <span class="color-red">{{ $user->textType() }}</span>
 				  @else
 					  {{ $user->textType() }}
 				  @endif
@@ -82,13 +86,6 @@
 			  <span class="content">{{ $user->address }}</span>
 			</div>
 			
-			@if (!$is_restricted)
-			<div class="data-group">
-			  <span class="label">Paypal Email</span>
-			  <span class="content">{{ $user->paypal_mail }}</span>
-			</div>
-			@endif
-			
 			@if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
 				@include ('user.detail-expert-company') 
 			@endif
@@ -112,6 +109,18 @@
 
 		</div>
 	</div>
+	@if ($user->isPremium())
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<div class="panel panel-default">
+				<div class="panel-heading">Company Logo</div>
+				<div class="panel-body">
+					{!! HTML::image($user->getCompanyLogo(), 'member-thumb', ['class' => 'company-logo']) !!}
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
 	@if (!$attachments->isEmpty())
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">

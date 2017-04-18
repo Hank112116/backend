@@ -289,6 +289,15 @@ class User extends Eloquent
             $this->company_url : "//{$this->company_url}";
     }
 
+    public function getCompanyLogo()
+    {
+        if (is_null($this->company_logo)) {
+            return 'https://' . config('app.front_domain') . '/images/company-logo-placeholder.svg';
+        }
+
+        return config('s3.thumb') . $this->company_logo;
+    }
+
     public function getPersonalLink()
     {
         return starts_with($this->personal_url, 'http') ?

@@ -195,13 +195,13 @@
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->shenzhen_flight_data)
                                     Shenzhen:
-                                    {{ $approve_user->questionnaire->shenzhen_flight_data }} -
+                                    {{ $approve_user->questionnaire->shenzhen_flight_data }}
                                     <br/>
                                 @endif
 
                                 @if($approve_user->questionnaire->shanghai_flight_data)
                                     Shanghai:
-                                    {{ $approve_user->questionnaire->shanghai_flight_data }} -
+                                    {{ $approve_user->questionnaire->shanghai_flight_data }}
                                     <br/>
                                 @endif
                             @endif

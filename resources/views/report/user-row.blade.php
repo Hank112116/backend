@@ -6,7 +6,7 @@
 @if($is_super_admin && $user->isHWTrekPM())
     <td>{!! $user->textHWTrekPM() !!}</td>
 @else
-    <td>{!! ($user->isToBeExpert() or $user->isApplyExpert())?"<font color='red'>{$user->textType()}</font>":$user->textType()  !!}</td>
+    <td>{!! ($user->isToBeExpert() or $user->isApplyExpert())?"<span class='color-red'>{$user->textType()}</span>":$user->textType() !!}</td>
 @endif
 
 

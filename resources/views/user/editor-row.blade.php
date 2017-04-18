@@ -6,7 +6,7 @@
         <a href="{!! $user->textFrontLink() !!}" target="_blank">{{ $user->textFullName() }}</a>
     @endif
 </td>
-<td>{!! ($user->isToBeExpert() && $user->isCreator())?'<font color="red">To Be Expert</font>':$user->textType()  !!}</td>
+<td>{!! ($user->isToBeExpert() && $user->isCreator())?'<span class="color-red">To Be Expert</span>':$user->textType()  !!}</td>
 <td>{{ $user->country }}<br/><span class="table--text-light">{{ $user->city }}</span></td>
 <td class="table--width-limit">
     {{ $user->company }}<br/>

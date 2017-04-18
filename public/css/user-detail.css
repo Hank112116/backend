@@ -6902,72 +6902,79 @@ body {
 }
 
 /* line 14, ../../front/sass/user-detail.scss */
+.company-logo {
+  width: 480px;
+  height: 300px;
+  border: 1px solid #ddd;
+}
+
+/* line 20, ../../front/sass/user-detail.scss */
 .table-title {
   width: 15em;
 }
 
-/* line 18, ../../front/sass/user-detail.scss */
+/* line 24, ../../front/sass/user-detail.scss */
 .data-group {
   width: 100%;
 }
-/* line 21, ../../front/sass/user-detail.scss */
+/* line 27, ../../front/sass/user-detail.scss */
 .data-group.group-half {
   width: 48%;
 }
 
-/* line 26, ../../front/sass/user-detail.scss */
+/* line 32, ../../front/sass/user-detail.scss */
 .rich-text-content {
   color: #333 !important;
   font-size: 16px !important;
   line-height: 24px !important;
 }
-/* line 31, ../../front/sass/user-detail.scss */
+/* line 37, ../../front/sass/user-detail.scss */
 .rich-text-content img {
   max-width: 100%;
 }
-/* line 35, ../../front/sass/user-detail.scss */
+/* line 41, ../../front/sass/user-detail.scss */
 .rich-text-content h3 {
   color: #333 !important;
   font-size: 24px !important;
   font-weight: initial !important;
   line-height: 30px !important;
 }
-/* line 42, ../../front/sass/user-detail.scss */
+/* line 48, ../../front/sass/user-detail.scss */
 .rich-text-content h4 {
   color: #333 !important;
   font-size: 18px !important;
   font-weight: initial !important;
   line-height: 27px !important;
 }
-/* line 49, ../../front/sass/user-detail.scss */
+/* line 55, ../../front/sass/user-detail.scss */
 .rich-text-content p {
   min-height: 24px;
   font-size: 16px !important;
   line-height: 24px !important;
 }
-/* line 55, ../../front/sass/user-detail.scss */
+/* line 61, ../../front/sass/user-detail.scss */
 .rich-text-content a {
   color: #41acf8 !important;
   text-decoration: none !important;
 }
-/* line 60, ../../front/sass/user-detail.scss */
+/* line 66, ../../front/sass/user-detail.scss */
 .rich-text-content b,
 .rich-text-content strong {
   font-weight: bold;
 }
-/* line 65, ../../front/sass/user-detail.scss */
+/* line 71, ../../front/sass/user-detail.scss */
 .rich-text-content i,
 .rich-text-content em {
   font-style: italic;
 }
-/* line 70, ../../front/sass/user-detail.scss */
+/* line 76, ../../front/sass/user-detail.scss */
 .rich-text-content ul {
   padding-left: 2em !important;
   font-size: 16px;
   line-height: 24px;
   list-style: disc;
 }
-/* line 77, ../../front/sass/user-detail.scss */
+/* line 83, ../../front/sass/user-detail.scss */
 .rich-text-content ol {
   padding-left: 2em !important;
   font-size: 16px;

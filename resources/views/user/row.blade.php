@@ -28,13 +28,13 @@
 @else
     <td>
         @if($user->isToBeExpert() or $user->isApplyExpert())
-            <font color="red">{{ $user->textType() }}</font>
+            <span class="color-red">{{ $user->textType() }}</span>
         @else
             {!! $user->textType() !!}
         @endif
 
         @if($user->applyExpertMessage->count() > 0)
-            <font color="{!! $user->isApplyExpert() ? 'red' : 'black' !!}"><li style="cursor:pointer" class="fa fa-commenting-o fa-fw fa-2x" rel="{!! $user->user_id !!}"></li></font>
+            <span class="{!! $user->isApplyExpert() ? 'color-red' : '' !!}"><li style="cursor:pointer" class="fa fa-commenting-o fa-fw fa-2x" rel="{!! $user->user_id !!}"></li></span>
         @endif
     </td>
 @endif

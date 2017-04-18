@@ -51,7 +51,7 @@
             </label>
             <div class="col-md-5">
                 @if($user->isToBeExpert() or $user->isApplyExpert())
-                <font color="red">{{ $user->textType() }}</font>
+                <span class="color-red">{{ $user->textType() }}</span>
                 @else
                 {{ $user->textType() }}
                 @endif

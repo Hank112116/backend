@@ -32,7 +32,7 @@ class UserRepo implements UserInterface
     private static $update_columns = [
         'active', 'email_verify', 'user_type', 'email',
         'user_name', 'last_name', 'country', 'city',
-        'company', 'company_url', 'personal_url', 'business_id',
+        'company', 'company_url', 'company_logo', 'personal_url', 'business_id',
         'user_about', 'expertises',
     ];
 
@@ -504,6 +504,11 @@ class UserRepo implements UserInterface
         if (null !== array_get($data, 'head', null)) {
             $user->image = $this->image_uplodaer->uploadUserImage($data['head']);
         }
+
+        if (null !== array_get($data, 'company_logo', null)) {
+            $user->company_logo = $this->image_uplodaer->uploadCompanyLogo($user, $data['company_logo']);
+        }
+
         //check input user_type exists, not exists don't change user role
         if (array_key_exists('user_type', $data)) {
             $user->is_sign_up_as_expert = 0;
