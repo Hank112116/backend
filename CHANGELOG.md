@@ -2,6 +2,7 @@
 
 ## v3.3.0
 * [NEW]    add AIT 2017 Q2 questionnaire report
+* [NEW]    add user's company logo upload function
 * [CHANGE] integrate low priority object API
 * [FIXED]  fix google map API warning
 

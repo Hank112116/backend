@@ -23,13 +23,21 @@ $(function () {
                         },
                         dataType: "JSON",
                         statusCode: {
-                            200: function (feeback) {
-                                if (feeback.status === "fail") {
-                                    Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                                    return;
-                                }
+                            200: function () {
                                 Notifier.showTimedMessage("Update successful", "information", 2);
                                 window.location = "/report/tour-form?event=" + event_id;
+                            },
+                            400: function (res) {
+                                Notifier.showTimedMessage(res.responseJSON.error, "warning", 2);
+                            },
+                            401: function () {
+                                location.href = "/";
+                            },
+                            403: function () {
+                                location.href = "/";
+                            },
+                            404: function () {
+                                Notifier.showTimedMessage('User not found', "warning", 2);
                             },
                             412: function () {
                                 location.href = "/";

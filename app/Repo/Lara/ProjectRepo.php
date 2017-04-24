@@ -90,6 +90,10 @@ class ProjectRepo implements ProjectInterface
     {
         $project = $this->find($id);
 
+        if (empty($project)) {
+            return null;
+        }
+
         if (!$project->profile()->is_ongoing) {
             return null;
         }

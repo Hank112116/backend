@@ -105,14 +105,14 @@ Route::group(['middleware' => ['route_filter:solution', 'check_source_server', '
 });
 
 // Landing
-Route::group(['middleware' => 'route_filter:marketing'], function () {
-    Route::get('landing/feature', 'LandingController@showFeature')->middleware('check_source_server');
+Route::group(['middleware' => ['route_filter:marketing', 'check_source_server', 'api_auth']], function () {
+    Route::get('landing/feature', 'LandingController@showFeature');
     Route::get('landing/hello', 'LandingController@showHello');
     Route::get('landing/low-priority', 'LandingController@showRestricted');
 
     Route::post('landing/find-feature', 'LandingController@findFeatureEntity');
     Route::post('landing/find-refer-project', 'LandingController@findReferenceProject');
-    Route::post('landing/update-feature', 'LandingController@updateFeature')->middleware('check_source_server');
+    Route::post('landing/update-feature', 'LandingController@updateFeature');
     Route::post('landing/update-refer', 'LandingController@updateReferenceProject');
     Route::post('landing/update-hello-redirect', 'LandingController@updateHelloRedirect');
     Route::post('landing/add-object/{type}', 'LandingController@addRestrictedObject');
@@ -130,7 +130,7 @@ Route::group([ 'middleware' => 'route_filter:report_full|member_matching_report'
     Route::get('report/member-matching', 'ReportController@showMemberMatchingReport');
     Route::post('report/matching-data', 'ReportController@showMatchingDate');
 });
-Route::group([ 'middleware' => 'route_filter:report_full|event_report' ], function () {
+Route::group([ 'middleware' => ['route_filter:report_full|event_report', 'check_source_server', 'api_auth']], function () {
     Route::get('report/events', 'ReportController@showEventReport');
     Route::get('report/events/{event_id}', 'ReportController@showEventReport');
     Route::get('report/tour-form', 'ReportController@showQuestionnaire');

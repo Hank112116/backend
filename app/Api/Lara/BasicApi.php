@@ -181,7 +181,9 @@ abstract class BasicApi
      */
     private function validateResponse(ResponseInterface $response)
     {
-        if ($response->getStatusCode() === Response::HTTP_UNAUTHORIZED) {
+        if ($response->getStatusCode() === Response::HTTP_UNAUTHORIZED
+            or $response->getStatusCode() === Response::HTTP_FORBIDDEN
+        ) {
             session()->flash(OAuthKey::API_SERVER_STATUS, ApiStatusEnum::UNAUTHORIZED_STATUS);
         }
     }

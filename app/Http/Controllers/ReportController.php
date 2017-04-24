@@ -13,6 +13,7 @@ use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Facades\Log;
 use Carbon\Carbon;
 use Noty;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReportController extends BaseController
 {
@@ -162,24 +163,27 @@ class ReportController extends BaseController
         $user_id  = $this->request->get('user_id');
         $event_id = $this->request->get('event_id');
 
-        if ($this->event_repo->approveEventUser($user_id, $event_id)) {
-            $user = $this->user_repo->find($user_id);
+        $user = $this->user_repo->find($user_id);
 
-            /* @var QuestionnaireApiInterface $event_api*/
-            $event_api = app()->make(QuestionnaireApiInterface::class);
-            $event_api->sendNotificationMail($user);
-
-            $log_data = [
-                'user_id'  => $user_id,
-                'event_id' => $event_id
-            ];
-            Log::info('Approve event application', $log_data);
-
-            $result['status'] = 'success';
-        } else {
-            $result['status'] = 'fail';
+        if (empty($user)) {
+            return response('', Response::HTTP_NOT_FOUND);
         }
-        return json_encode($result);
+
+        /* @var QuestionnaireApiInterface $event_api*/
+        $event_api = app()->make(QuestionnaireApiInterface::class);
+        $response = $event_api->sendNotificationMail($user);
+
+        if ($response->isOk()) {
+            $this->event_repo->approveEventUser($user_id, $event_id);
+        }
+
+        $log_data = [
+            'user_id'  => $user_id,
+            'event_id' => $event_id
+        ];
+        Log::info('Approve event application', $log_data);
+
+        return $response;
     }
 
     public function showQuestionnaire()

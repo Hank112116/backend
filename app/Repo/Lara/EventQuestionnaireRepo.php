@@ -1,13 +1,10 @@
 <?php namespace Backend\Repo\Lara;
 
-use Backend\Events\Event;
 use Backend\Model\Eloquent\EventApplication;
-use Carbon\Carbon;
 use Backend\Model\Eloquent\EventQuestionnaireFeedback;
 use Backend\Repo\RepoInterfaces\EventQuestionnaireInterface;
 use Backend\Repo\RepoTrait\PaginateTrait;
 use Backend\Enums\EventEnum;
-use Illuminate\Database\Eloquent\Collection;
 
 class EventQuestionnaireRepo implements EventQuestionnaireInterface
 {
@@ -70,12 +67,13 @@ class EventQuestionnaireRepo implements EventQuestionnaireInterface
 
         switch ($user->event_id) {
             case EventEnum::TYPE_AIT_2016_Q4:
+            case EventEnum::TYPE_AIT_2017_Q2:
                 if ($questionnaire->join_tour and $questionnaire->is_done) {
                     $questionnaire->form_status = 'Completed';
                 } elseif ($questionnaire->join_tour and !$questionnaire->is_done) {
                     $questionnaire->form_status = 'Ongoing';
-                } elseif (!$questionnaire->join_tour and !$questionnaire->is_done) {
-                    $questionnaire->form_status = 'Rejected';
+                } elseif (!$questionnaire->join_tour) {
+                    $questionnaire->form_status = 'Decline';
                 } else {
                     $questionnaire->form_status = 'N/A';
                 }
@@ -84,7 +82,8 @@ class EventQuestionnaireRepo implements EventQuestionnaireInterface
                 $guest['guest_job_title']       = $questionnaire->guest_job_title;
                 $guest['guest_email']           = $questionnaire->guest_email;
                 $guest['guest_phone']           = $questionnaire->guest_phone;
-                $questionnaire->guest_json = json_encode($guest);
+
+                $questionnaire->guest_json      = json_encode($guest);
                 break;
         }
         return $questionnaire;

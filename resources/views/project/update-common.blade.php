@@ -73,7 +73,7 @@
     <label for="title" class="col-md-3">Project Title*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="title" maxlength="55"
-               name="project_title" value="{!! $project->project_title !!}">
+               name="project_title" value="{{ $project->project_title }}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -83,14 +83,14 @@
     <label for="project_summary" class="col-md-3">Brief*</label>
     <div class="col-md-5">
         <textarea id="project_summary" name="project_summary" maxlength="150"
-            class="form-control" rows="5">{!! $project->project_summary !!}</textarea>
+            class="form-control" rows="5">{{ $project->project_summary }}</textarea>
     </div>
 </div>
 
 <!-- Project Location -->
 <div class="form-group">
     <label for="address" class="col-md-3">Project Location*</label>
-    <div class="col-md-5">{!! $project->project_address !!}</div>
+    <div class="col-md-5">{{ $project->project_address }}</div>
     <div class="col-md-5"></div>
 </div>
 
@@ -99,7 +99,7 @@
     <label for="country" class="col-md-3">Country*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="country"
-            name="project_country" value="{!! $project->project_country !!}">
+            name="project_country" value="{{ $project->project_country }}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -109,7 +109,7 @@
     <label for="city" class="col-md-3">City*</label>
     <div class="col-md-5">
         <input type="text" class="form-control" id="city"
-            name="project_city" value="{!! $project->project_city !!}">
+            name="project_city" value="{{ $project->project_city }}">
     </div>
     <div class="col-md-5"></div>
 </div>
@@ -117,19 +117,19 @@
 <!-- KickStarter -->
 <div class="form-group">
     <label for="kickstarter" class="col-md-3">Kickstarter Campaign</label>
-    <div class="col-md-5">{!! $project->textKickstarterLink() !!}</div>
+    <div class="col-md-5">{{ $project->textKickstarterLink() }}</div>
 </div>
 
 <!-- Indiegogo -->
 <div class="form-group">
     <label for="indiegogo" class="col-md-3">Indiegogo Campaign</label>
-    <div class="col-md-5">{!! $project->textIndiegogoLink() !!}</div>
+    <div class="col-md-5">{{ $project->textIndiegogoLink() }}</div>
 </div>
 
 <!-- Design Concept -->
 <div class="form-group">
     <label for="description" class="col-md-3">Project Concept*</label>
     <div class="col-md-9">
-        <textarea id="description" class='js-editor' name="description">{!! $project->description !!}</textarea>
+        <textarea id="description" class='js-editor' name="description">{{ htmlspecialchars($project->description) }}</textarea>
     </div>
 </div>

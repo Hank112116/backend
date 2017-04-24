@@ -649,7 +649,7 @@ class EventReportRepo implements EventReportInterface
                 continue;
             }
             switch ($questionnaire->form_status) {
-                case 'Rejected':
+                case 'Decline':
                     $summary['ait_form_rejected'] = $summary['ait_form_rejected'] + 1;
                     break;
                 case 'Ongoing':
@@ -660,6 +660,10 @@ class EventReportRepo implements EventReportInterface
                     break;
             }
 
+            if ($questionnaire->form_status === 'Decline') {
+                continue;
+            }
+            
             if ($questionnaire->trip_participation) {
                 foreach ($questionnaire->trip_participation as $trip) {
                     if ($trip == 'dinner') {

@@ -9,7 +9,7 @@
                             <div class="adminer-tag">
                                 <input id="hwtrek_member_{{$ad->hwtrek_member}}" type='checkbox' name="managers[]" value='{!! $ad->hwtrek_member !!}' !!}/>
                                 <label for="hwtrek_member_{{$ad->hwtrek_member}}">
-                                    {!! $ad->name !!}
+                                    {!! $ad->name() !!}
                                     @if($ad->role->isFrontendPM())
                                         (Frontend)
                                     @elseif($ad->role->isBackendPM())

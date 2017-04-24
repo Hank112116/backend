@@ -97,4 +97,13 @@ class Adminer extends Eloquent implements AuthenticatableContract
             ->where('id', '<>', session()->getId())
             ->update(['user_id' => 0]);
     }
+
+    public function name()
+    {
+        if ($this->user) {
+            return $this->user->textFullName();
+        } else {
+            return $this->name;
+        }
+    }
 }

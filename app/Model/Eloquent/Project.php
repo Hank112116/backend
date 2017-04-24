@@ -724,7 +724,7 @@ class Project extends Eloquent
             $managers[] = $manager->pm_id;
         }
 
-        return Adminer::whereIn('hwtrek_member', $managers)->pluck('name');
+        return User::whereIn('user_id', $managers)->pluck('user_name');
     }
 
     public function getDeletedHubManagerNames()

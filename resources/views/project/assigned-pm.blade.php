@@ -3,13 +3,13 @@
     and Route::current()->uri() != 'report/project'
 )
     @if(!$project->hasProjectManager())
-        <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->project_id }}" pm="">
+        <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->id() }}" pm="">
             <p class="hub-manages">
                 <i class="fa fa-fw fa-exclamation-triangle"></i> No PM
             </p>
         </a>
     @else
-        <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->project_id }}" pm="{{ $project->getProjectManagers() }}">
+        <a href="javascript:void(0)" class="schedule-manager" rel="{{ $project->id() }}" pm="{{ $project->getProjectManagers() }}">
         @foreach($project->getHubManagerNames() as $manager)
             <p class="hub-manages">
                 <i class="fa fa-user fa-fw"></i> {!! $manager !!}

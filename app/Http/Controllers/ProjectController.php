@@ -278,9 +278,8 @@ class ProjectController extends BaseController
 
         $response = $release_api->releaseSchedule($project);
 
-        if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_NO_CONTENT) {
-            $error_message = json_decode($response->getContent());
-            $res   = ['status' => 'fail', 'msg' => $error_message->error->message];
+        if (!$response->isEmpty()) {
+            $res   = ['status' => 'fail', 'msg' => 'Approve schedule fail.'];
             return response()->json($res);
         }
 
