@@ -12,6 +12,10 @@
                 </td>
                 <td>
                     {!! link_to_action('ReportController@showQuestionnaire',
+                    $approve_event_users->total() . ' Sent', [
+                        'event'       => $event_id,
+                    ], ['target' => '_blank']) !!} |
+                    {!! link_to_action('ReportController@showQuestionnaire',
                     $approve_event_users->ait_form_rejected . ' Decline', [
                         'event'       => $event_id,
                         'form_status' => 'Rejected',
