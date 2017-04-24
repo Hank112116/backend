@@ -23,7 +23,6 @@ $(function () {
         $("#guest_job_title").text(guest_data.guest_job_title);
         $("#guest_email").text(guest_data.guest_email);
         $("#guest_phone").text(guest_data.guest_phone);
-        $("#guest_info").text(guest_data.guest_info);
 
         var $dialog = $("#questionnaire_guest_info_dialog");
         $dialog.dialog({

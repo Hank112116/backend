@@ -32,13 +32,5 @@
                 <span id="guest_phone"></span>
             </td>
         </tr>
-        <tr>
-            <td>
-                Info
-            </td>
-            <td>
-                <span id="guest_info"></span>
-            </td>
-        </tr>
     </table>
 </div>

@@ -12,7 +12,7 @@
                 </td>
                 <td>
                     {!! link_to_action('ReportController@showQuestionnaire',
-                    $approve_event_users->total() . ' Sent', [
+                    $approve_event_users->total() . ' Initial (Sent)', [
                         'event'       => $event_id,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showQuestionnaire',

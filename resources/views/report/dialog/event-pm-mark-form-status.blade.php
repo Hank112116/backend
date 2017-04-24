@@ -4,7 +4,7 @@
             <td>
                 <select id="mark_status" title="Mark Status">
                     <option value="">Select one status</option>
-                    <option value="Rejected">Rejected</option>
+                    <option value="Decline">Decline</option>
                 </select>
             </td>
         </tr>
