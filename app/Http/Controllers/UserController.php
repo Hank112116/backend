@@ -3,6 +3,7 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Assistant\ApiResponse\UserApi\UserAttachmentResponseAssistant;
+use Backend\Exceptions\Api\CompanyLogoApiException;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
@@ -268,7 +269,16 @@ class UserController extends BaseController
                 ->withErrors($this->user_repo->errors());
         }
 
-        $this->user_repo->update($id, $data);
+        try {
+            $this->user_repo->update($id, $data);
+        } catch (CompanyLogoApiException $e) {
+            Log::error($e->getMessage(), $e->getTrace());
+
+            Noty::warn($e->getMessage());
+
+            return redirect()->action('UserController@showUpdate', [$id])
+                ->withInput();
+        }
 
         if (array_key_exists('attachments', $data)) {
             $attachments['put']    = [];
@@ -288,7 +298,7 @@ class UserController extends BaseController
             }
         }
 
-        Noty::success(trans('user.update'));
+        //Noty::success(trans('user.update'));
 
         $log_action = 'Edit user';
         $log_data   = [

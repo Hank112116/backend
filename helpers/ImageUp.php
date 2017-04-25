@@ -3,6 +3,7 @@
 use Backend\Api\ApiInterfaces\UserApi\ProfileApiInterface;
 use Backend\Assistant\ApiResponse\UserApi\CompanyLogoResponseAssistant;
 use Backend\Model\Eloquent\User;
+use Backend\Exceptions\Api\CompanyLogoApiException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Intervention\Image\Constraint;
 use Aws\S3\S3Client;
@@ -13,7 +14,7 @@ use Aws\S3\S3Client;
  **/
 class ImageUp
 {
-    private static $size_limit = 3145728; //3*1024*1024 limit size to 3M
+    private static $size_limit = 2048; // limit size to 2M
     private $s3config;
     private $upload_set;
     private $name; // upload image name
@@ -124,12 +125,16 @@ class ImageUp
     public function uploadCompanyLogo(User $user, UploadedFile $image)
     {
         if (!$this->valid($image)) {
-            return false;
+            return null;
         }
 
         $api = app()->make(ProfileApiInterface::class);
 
         $response = $api->uploadCompanyLogo($user, $image);
+
+        if (!$response->isOk()) {
+            throw new CompanyLogoApiException('Upload company logo fail');
+        }
 
         $assistant = CompanyLogoResponseAssistant::create($response);
 

@@ -42,23 +42,29 @@
 
 		<div class="form-group">
 
-		    <label for="user-head" class="col-md-3">Upload Image</label>
+		    <label for="user-head" class="col-md-3">Upload Image <br/>
+                <span class="color-info">250px by 250px  <br/>
+                    (png, jpeg, gif only and maximum 2MB)</span>
+            </label>
 		    <div class="col-md-5">
 		       	{!! HTML::image($user->getImagePath(), 'thumb', ['class' => 'user-avatar']) !!}
 		        <input type="file" name="head" id="user-head">
 		    </div>
-		    <div class="col-md-5"></div>
+            <div class="col-md-5"><span class='error'>{!! $errors->first('head') !!}</span></div>
 		</div>
 
         @if ($user->isPremium())
         <div class="form-group">
 
-            <label for="user-head" class="col-md-3">Upload Company Logo</label>
+            <label for="user-head" class="col-md-3">Upload Company Logo <br/>
+                <span class="color-info">480px by 300px  <br/>
+                    (png, jpeg, gif only and maximum 2MB)</span>
+            </label>
             <div class="col-md-5">
                 {!! HTML::image($user->getCompanyLogo(), 'thumb', ['class' => 'company-logo']) !!}
                 <input type="file" name="company_logo" id="user-head">
             </div>
-            <div class="col-md-5"></div>
+            <div class="col-md-5"><span class='error'>{!! $errors->first('company_logo') !!}</span></div>
         </div>
         @endif
 

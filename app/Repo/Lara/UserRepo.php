@@ -444,10 +444,20 @@ class UserRepo implements UserInterface
         $rule = [
             'email'        => 'required|email|unique:user,email,' . $id . ',user_id',
             'company_url'  => 'url',
-            'personal_url' => 'url'
+            'personal_url' => 'url',
+            'head'         => 'image|max:2048|mimes:jpeg,jpg,png,gif',
+            'company_logo' => 'image|max:2048|mimes:jpeg,jpg,png,gif',
         ];
 
         $validator = Validator::make($data, $rule);
+
+        $validator->setCustomMessages([
+            'head.max'           => 'The avatar may not be greater than 2MB.',
+            'head.mimes'         => 'The avatar must be a file of type: jpeg, jpg, png, gif.',
+            'company_logo.max'   => 'The company logo may not be greater than 2MB.',
+            'company_logo.mimes' => 'The company logo must be a file of type: jpeg, jpg, png, gif.',
+        ]);
+
         if ($validator->passes()) {
             return true;
         }
