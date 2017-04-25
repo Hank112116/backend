@@ -660,7 +660,9 @@ class EventReportRepo implements EventReportInterface
                     break;
             }
 
-            if ($questionnaire->form_status === 'Decline') {
+            if ($questionnaire->form_status === 'Decline'
+                or ($approve_event_user->getInternalSetFormStatus() === 'Decline'
+                    and $questionnaire->form_status !== 'Completed') ) {
                 continue;
             }
             
