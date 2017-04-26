@@ -10,21 +10,19 @@
 	</div>				
 </div>
 
-@if (!$is_restricted)
-
-<div class="data-group">
+<div class="data-group group-half">
   <span class="label">Company URL</span>
   <span class="content">
   	<a href="{{ $user->getCompanyLink() }}" target="_blank">
   		{{ $user->company_url }}</a>
   </span>
 </div>
-<div class="data-group">
+@if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
+<div class="data-group group-half">
   <span class="label">Personal URL</span>
   <span class="content">
   	<a href='{{ $user->getPersonalLink() }}' target="_blank">
   		{{ $user->personal_url }}</a>
   </span>
 </div>
-
 @endif

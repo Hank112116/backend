@@ -252,36 +252,23 @@
         </div>
         @endif
 
-        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
-            <div class="form-group">
-                <label for="company" class="col-md-3">Company</label>
-                <div class="col-md-5">
-                    {!! Form::text('company', $user->company,
-                        ['placeholder' => 'Company', 'class'=>'form-control', 'id'=>'company']) !!}
-                </div>
-                <div class="col-md-5"></div>
-            </div>
-        
-            @if (!$is_restricted)
-            <div class="form-group">
-                <label for="company-url" class="col-md-3">Company URL</label>
-                <div class="col-md-5">
-                    {!! Form::text('company_url', $user->company_url,
-                        ['placeholder' => 'Company URL ex:https://www.hwtrek.com', 'class'=>'form-control', 'id'=>'company-url']) !!}
-                </div>
-                <div class="col-md-5"><span class='error'>{!! $errors->first('company_url') !!}</span></div>
-            </div>
 
-            <div class="form-group">
-                <label for="personal-url" class="col-md-3">Personal URL</label>
-                <div class="col-md-5">
-                    {!! Form::text('personal_url', $user->personal_url,
-                        ['placeholder' => 'Personal URL ex:https://www.personal.com', 'class'=>'form-control', 'id'=>'personal-url']) !!}
-                </div>
-                <div class="col-md-5"><span class='error'>{!! $errors->first('personal_url') !!}</span></div>
+        <div class="form-group">
+            <label for="company" class="col-md-3">Company</label>
+            <div class="col-md-5">
+                {!! Form::text('company', $user->company,
+                    ['placeholder' => 'Company', 'class'=>'form-control', 'id'=>'company']) !!}
             </div>
-        @endif
-
+            <div class="col-md-5"></div>
+        </div>
+        <div class="form-group">
+            <label for="company-url" class="col-md-3">Company URL</label>
+            <div class="col-md-5">
+                {!! Form::text('company_url', $user->company_url,
+                    ['placeholder' => 'Company URL ex:https://www.hwtrek.com', 'class'=>'form-control', 'id'=>'company-url']) !!}
+            </div>
+            <div class="col-md-5"><span class='error'>{!! $errors->first('company_url') !!}</span></div>
+        </div>
         <div class="form-group">
             <label for="position" class="col-md-3">Position</label>
             <div class="col-md-5">
@@ -290,7 +277,15 @@
             </div>
             <div class="col-md-5"></div>
         </div>
-
+        @if ($user->isExpert() or $user->isToBeExpert() or $user->isApplyExpert())
+        <div class="form-group">
+            <label for="personal-url" class="col-md-3">Personal URL</label>
+            <div class="col-md-5">
+                {!! Form::text('personal_url', $user->personal_url,
+                    ['placeholder' => 'Personal URL ex:https://www.personal.com', 'class'=>'form-control', 'id'=>'personal-url']) !!}
+            </div>
+            <div class="col-md-5"><span class='error'>{!! $errors->first('personal_url') !!}</span></div>
+        </div>
         <div class="form-group">
             <label for="industry" class="col-md-3">Industry</label>
             <div class="col-md-9 industry">
@@ -365,6 +360,4 @@
         <input type="hidden" name="user_id" id="user_id" value="{{ $user->user_id }}">
 	{!! Form::close() !!}		
 	</div>
-
 @stop
-
