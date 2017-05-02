@@ -1,5 +1,6 @@
 <?php namespace Backend\Repo\Lara;
 
+use Backend\Exceptions\User\CompanyLogoRequiredException;
 use ImageUp;
 use Validator;
 use Carbon\Carbon;
@@ -27,7 +28,6 @@ class UserRepo implements UserInterface
     private $expertise;
     private $apply_expert_msg_repo;
     private $image_uplodaer;
-    private $expertise_elq;
 
     private static $update_columns = [
         'active', 'email_verify', 'user_type', 'email',
@@ -497,6 +497,10 @@ class UserRepo implements UserInterface
             }
 
             if ($data['user_type'] === User::TYPE_PREMIUM_CREATOR or $data['user_type'] === User::TYPE_PREMIUM_EXPERT) {
+                if (is_null($user->company_logo) and null === array_get($data, 'company_logo', null)) {
+                    throw new CompanyLogoRequiredException('Logo is required for Premium account');
+                }
+
                 $premium_order             = new PremiumAccountOrder();
                 $premium_order->user_id    = $user->id();
                 $premium_order->created_at = $change_time;
@@ -513,10 +517,6 @@ class UserRepo implements UserInterface
 
         if (null !== array_get($data, 'head', null)) {
             $user->image = $this->image_uplodaer->uploadUserImage($data['head']);
-        }
-
-        if (null !== array_get($data, 'company_logo', null)) {
-            $user->company_logo = $this->image_uplodaer->uploadCompanyLogo($user, $data['company_logo']);
         }
 
         //check input user_type exists, not exists don't change user role
@@ -540,6 +540,10 @@ class UserRepo implements UserInterface
         $user->setUpdatedAt($change_time);
 
         $user->save();
+
+        if (null !== array_get($data, 'company_logo', null)) {
+            $this->image_uplodaer->uploadCompanyLogo($user, $data['company_logo']);
+        }
     }
 
     public function changeUserType($id, $user_type)

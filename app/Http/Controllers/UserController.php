@@ -4,6 +4,7 @@ namespace Backend\Http\Controllers;
 
 use Backend\Assistant\ApiResponse\UserApi\UserAttachmentResponseAssistant;
 use Backend\Exceptions\Api\CompanyLogoApiException;
+use Backend\Exceptions\User\CompanyLogoRequiredException;
 use Backend\Repo\RepoInterfaces\UserInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
@@ -271,6 +272,11 @@ class UserController extends BaseController
 
         try {
             $this->user_repo->update($id, $data);
+        } catch (CompanyLogoRequiredException $e) {
+            Noty::warn($e->getMessage());
+
+            return redirect()->action('UserController@showUpdate', [$id])
+                ->withInput();
         } catch (CompanyLogoApiException $e) {
             Log::error($e->getMessage(), $e->getTrace());
 

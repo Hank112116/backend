@@ -53,8 +53,7 @@
             <div class="col-md-5"><span class='error'>{!! $errors->first('head') !!}</span></div>
 		</div>
 
-        @if ($user->isPremium())
-        <div class="form-group">
+        <div class="form-group" style="display: none;" id="company-logo">
 
             <label for="user-head" class="col-md-3">Upload Company Logo <br/>
                 <span class="color-info">480px by 300px  <br/>
@@ -66,7 +65,6 @@
             </div>
             <div class="col-md-5"><span class='error'>{!! $errors->first('company_logo') !!}</span></div>
         </div>
-        @endif
 
         @if (!$is_restricted)
 

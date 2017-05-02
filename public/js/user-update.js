@@ -566,6 +566,16 @@ $(function () {
     var $country = $("#country");
     var $city = $("#city");
     var $active = $("input[name='active']");
+    var $user_type = $("input[name='user_type']");
+    var $company_logo = $("#company-logo");
+
+    var active_user_type = $("input[name='user_type']:checked").val();
+
+    if (active_user_type === "premium-creator" || active_user_type === "premium-expert") {
+        $company_logo.show();
+    } else {
+        $company_logo.hide();
+    }
 
     if ($country.length) {
         FormUtility.locationSelector($country);
@@ -582,14 +592,23 @@ $(function () {
         var active = $("input[name='active']:checked").val();
         var $email_verify_1 = $("#email_verify_1");
         var $email_verify_2 = $("#email_verify_2");
-        if (active == 0) {
+        if (active === "0") {
             $email_verify_2.removeAttr("checked");
             $email_verify_1.attr("checked", "checked");
             $email_verify_1.iCheck("check");
-        } else if (active == 1) {
+        } else if (active === "1") {
             $email_verify_1.removeAttr("checked");
             $email_verify_2.attr("checked", "checked");
             $email_verify_2.iCheck("check");
+        }
+    });
+
+    $user_type.on("ifChecked", function () {
+        var user_type = $(this).val();
+        if (user_type === "premium-creator" || user_type === "premium-expert") {
+            $company_logo.show();
+        } else {
+            $company_logo.hide();
         }
     });
 });
