@@ -213,7 +213,7 @@
                                 @endif
                                 @if($approve_user->questionnaire->attachments)
                                     @foreach($approve_user->questionnaire->attachments as $attachment)
-                                        - {!! link_to($attachment['key'], str_limit($attachment['name'], 25), ['target' => '_blank', 'title' => $attachment['name']]) !!}<br/>
+                                        - {!! link_to($attachment['key'], str_limit($attachment['name'], 11), ['target' => '_blank', 'title' => $attachment['name']]) !!}<br/>
                                     @endforeach
                                 @endif
                             @endif
