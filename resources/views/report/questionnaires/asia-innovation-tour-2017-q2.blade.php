@@ -207,28 +207,32 @@
                             @endif
                         </td>
                         <td>
+                            <ul style="padding-left: 15px;">
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->company_logo)
-                                    - {!! link_to($approve_user->questionnaire->company_logo[0]['key'], 'Company Logo', ['target' => '_blank']) !!}<br/>
+                                    <li>{!! link_to($approve_user->questionnaire->company_logo[0]['key'], 'Company Logo', ['target' => '_blank']) !!}</li>
                                 @endif
                                 @if($approve_user->questionnaire->attachments)
                                     @foreach($approve_user->questionnaire->attachments as $attachment)
-                                        - {!! link_to($attachment['key'], str_limit($attachment['name'], 12), ['target' => '_blank', 'title' => $attachment['name']]) !!}<br/>
+                                        <li>{!! link_to($attachment['key'], str_limit($attachment['name'], 12), ['target' => '_blank', 'title' => $attachment['name']]) !!}</li>
                                     @endforeach
                                 @endif
                             @endif
+                            </ul>
                         </td>
 
                         <td>
+                            <ul style="padding-left: 15px;">
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->video_url)
                                     @foreach($approve_user->questionnaire->video_url as $key => $url)
                                         @if($url)
-                                            - {!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}<br/>
+                                            <li>{!! link_to($url, 'Video No.' . ($key + 1) , ['target' => '_blank']) !!}</li>
                                         @endif
                                     @endforeach
                                 @endif
                             @endif
+                            </ul>
                         </td>
 
                         <td>
