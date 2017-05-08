@@ -191,7 +191,7 @@
 
                             @endif
                         </td>
-                        <td style="min-width: 280px">
+                        <td style="min-width: 270px">
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->shenzhen_flight_data)
                                     Shenzhen:
@@ -221,7 +221,7 @@
                             </ul>
                         </td>
 
-                        <td>
+                        <td style="min-width: 115px">
                             <ul style="padding-left: 15px;">
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->video_url)
