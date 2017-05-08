@@ -191,7 +191,7 @@
 
                             @endif
                         </td>
-                        <td style="min-width: 300px">
+                        <td style="min-width: 280px">
                             @if($approve_user->questionnaire)
                                 @if($approve_user->questionnaire->shenzhen_flight_data)
                                     Shenzhen:
@@ -213,7 +213,7 @@
                                 @endif
                                 @if($approve_user->questionnaire->attachments)
                                     @foreach($approve_user->questionnaire->attachments as $attachment)
-                                        - {!! link_to($attachment['key'], str_limit($attachment['name'], 11), ['target' => '_blank', 'title' => $attachment['name']]) !!}<br/>
+                                        - {!! link_to($attachment['key'], str_limit($attachment['name'], 12), ['target' => '_blank', 'title' => $attachment['name']]) !!}<br/>
                                     @endforeach
                                 @endif
                             @endif
