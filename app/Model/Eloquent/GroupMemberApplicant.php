@@ -9,6 +9,7 @@ class GroupMemberApplicant extends Eloquent
     const REFERRAL_USER = 'referral-user';
     const APPLY_PM      = 'apply-pm';
     const APPLY_USER    = 'apply-user';
+    const INVITE_OWNER  = 'invite-owner';
 
     protected $table = 'group_member_applicants';
     protected $primaryKey = 'applicant_id';
@@ -32,7 +33,7 @@ class GroupMemberApplicant extends Eloquent
 
     public function isUserReferral()
     {
-        return $this->event === self::REFERRAL_USER or $this->event === self::APPLY_USER;
+        return $this->event === self::REFERRAL_USER or $this->event === self::APPLY_USER or $this->event === self::INVITE_OWNER;
     }
 
     public function isSelfReferral()
@@ -42,7 +43,7 @@ class GroupMemberApplicant extends Eloquent
 
     public function isMemberReferral()
     {
-        return ($this->event === self::REFERRAL_PM or $this->event === self::REFERRAL_USER) and !is_null($this->referral);
+        return ($this->event === self::REFERRAL_PM or $this->event === self::REFERRAL_USER or $this->event === self::INVITE_OWNER) and !is_null($this->referral);
     }
 
     public function isRecommendExpert()

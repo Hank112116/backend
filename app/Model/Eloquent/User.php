@@ -66,18 +66,6 @@ class User extends Eloquent
         'is_apply_to_be_expert' => 0
     ];
 
-    const IS_PENDING_TO_BE_EXPERT_STATUS = [
-        'user_type'             => self::TYPE_CREATOR,
-        'is_sign_up_as_expert'  => 1,
-        'is_apply_to_be_expert' => 0
-    ];
-
-    const IS_APPLY_TO_BE_EXPERT_STATUS = [
-        'user_type'             => self::TYPE_CREATOR,
-        'is_sign_up_as_expert'  => 0,
-        'is_apply_to_be_expert' => 1
-    ];
-
     const IS_PREMIUM_EXPERT_STATUS = [
         'user_type'             => self::TYPE_PREMIUM_EXPERT,
         'is_sign_up_as_expert'  => 0,
@@ -176,9 +164,9 @@ class User extends Eloquent
     {
         if ($this->isType(self::IS_EXPERT_STATUS)) {
             return 'Expert';
-        } elseif ($this->isType(self::IS_PENDING_TO_BE_EXPERT_STATUS)) {
+        } elseif ($this->isToBeExpert()) {
             return 'Sign up to Be Expert';
-        } elseif ($this->isType(self::IS_APPLY_TO_BE_EXPERT_STATUS)) {
+        } elseif ($this->isApplyExpert()) {
             return 'Apply to Be Expert';
         } elseif ($this->isHWTrekPM()) {
             return 'HWTrek PM';
@@ -410,7 +398,14 @@ class User extends Eloquent
 
     public function isToBeExpert()
     {
-        return $this->isType(self::IS_PENDING_TO_BE_EXPERT_STATUS);
+        if ($this->is_sign_up_as_expert === 1
+            and $this->is_apply_to_be_expert === 0
+            and ($this->user_type === self::TYPE_CREATOR or $this->user_type === self::TYPE_PREMIUM_CREATOR)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function isHWTrekPM()
@@ -425,7 +420,14 @@ class User extends Eloquent
 
     public function isApplyExpert()
     {
-        return $this->isType(self::IS_APPLY_TO_BE_EXPERT_STATUS);
+        if ($this->is_sign_up_as_expert === 0
+            and $this->is_apply_to_be_expert === 1
+            and ($this->user_type === self::TYPE_CREATOR or $this->user_type === self::TYPE_PREMIUM_CREATOR)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function isActive()
