@@ -337,6 +337,15 @@ class EventReportRepo implements EventReportInterface
             });
         }
 
+        if (!empty($input['internal_form_status'])) {
+            $internal_form_status = trim($input['internal_form_status']);
+            $approve_event_users = $approve_event_users->filter(function (EventApplication $item) use ($internal_form_status) {
+                if ($item->getInternalSetFormStatus() === $internal_form_status) {
+                    return $item;
+                }
+            });
+        }
+
         if (!empty($input['attendees'])) {
             $attendees = trim($input['attendees']);
             $approve_event_users = $approve_event_users->filter(function ($item) use ($attendees) {
@@ -608,19 +617,20 @@ class EventReportRepo implements EventReportInterface
     private function getQuestionnaireSummary(Collection $approve_event_users, $input)
     {
         $summary = [
-            'ait_form_rejected'     => 0,
-            'ait_form_ongoing'      => 0,
-            'ait_form_completed'    => 0,
-            'ait_dinner'            => 0,
-            'ait_sz'                => 0,
-            'ait_sh'                => 0,
-            'ait_kyoto'             => 0,
-            'ait_osaka'             => 0,
-            'ait_guest_dinner'      => 0,
-            'ait_guest_sz'          => 0,
-            'ait_guest_sh'          => 0,
-            'ait_guest_kyoto'       => 0,
-            'ait_guest_osaka'       => 0
+            'ait_form_rejected'         => 0,
+            'ait_form_ongoing'          => 0,
+            'ait_form_completed'        => 0,
+            'ait_dinner'                => 0,
+            'ait_sz'                    => 0,
+            'ait_sh'                    => 0,
+            'ait_kyoto'                 => 0,
+            'ait_osaka'                 => 0,
+            'ait_guest_dinner'          => 0,
+            'ait_guest_sz'              => 0,
+            'ait_guest_sh'              => 0,
+            'ait_guest_kyoto'           => 0,
+            'ait_guest_osaka'           => 0,
+            'ait_form_internal_decline' => 0,
         ];
 
         // filter entered at time
@@ -644,6 +654,10 @@ class EventReportRepo implements EventReportInterface
 
         /* @var EventApplication $approve_event_user */
         foreach ($approve_event_users as $approve_event_user) {
+            if ($approve_event_user->getInternalSetFormStatus() === 'Decline') {
+                $summary['ait_form_internal_decline'] = $summary['ait_form_internal_decline'] + 1;
+            }
+
             $questionnaire = $this->questionnaire_repo->findByApproveUser($approve_event_user);
             if (empty($questionnaire)) {
                 continue;

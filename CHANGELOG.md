@@ -1,10 +1,12 @@
 # CHANGELOG
 
-## v3.3.0
-* [NEW]    add AIT 2017 Q2 questionnaire report
-* [NEW]    add user's company logo upload function
+## v3.3.0 (2017-05-11)
+* [NEW]    add AIT 2017 Q2 questionnaire report (issue #72)
+* [NEW]    add user's company logo upload function  (issue #60, #74)
 * [CHANGE] integrate low priority object API
 * [FIXED]  fix google map API warning
+* [FIXED]  fix member matching report collaborators miss creator data (#75)
+* [FIXED]  fix feature object link miss error (#73)
 
 ## v3.2.0 (2017-04-07)
 * [NEW]   add AIT 2017 Q2 report
