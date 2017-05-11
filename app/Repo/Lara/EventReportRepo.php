@@ -654,6 +654,10 @@ class EventReportRepo implements EventReportInterface
 
         /* @var EventApplication $approve_event_user */
         foreach ($approve_event_users as $approve_event_user) {
+            if ($approve_event_user->getInternalSetFormStatus() === 'Decline') {
+                $summary['ait_form_internal_decline'] = $summary['ait_form_internal_decline'] + 1;
+            }
+
             $questionnaire = $this->questionnaire_repo->findByApproveUser($approve_event_user);
             if (empty($questionnaire)) {
                 continue;
@@ -668,10 +672,6 @@ class EventReportRepo implements EventReportInterface
                 case 'Completed':
                     $summary['ait_form_completed'] = $summary['ait_form_completed'] + 1;
                     break;
-            }
-
-            if ($approve_event_user->getInternalSetFormStatus() === 'Decline') {
-                $summary['ait_form_internal_decline'] = $summary['ait_form_internal_decline'] + 1;
             }
 
             if ($questionnaire->form_status === 'Decline'
