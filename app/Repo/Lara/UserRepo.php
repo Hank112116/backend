@@ -30,7 +30,7 @@ class UserRepo implements UserInterface
     private $image_uplodaer;
 
     private static $update_columns = [
-        'active', 'email_verify', 'user_type', 'email',
+        'active', 'email_verify', 'email',
         'user_name', 'last_name', 'country', 'city',
         'company', 'company_url', 'company_logo', 'personal_url', 'business_id',
         'user_about', 'expertises',
@@ -483,34 +483,16 @@ class UserRepo implements UserInterface
 
         $is_type_change = isset($data['user_type']) && $user->user_type !== $data['user_type'];
         if ($is_type_change) {
-            // It means that the user_type change from creator to expert or from expert to creator
-            // If the user is from creator to expert than write the expert_approved_at, otherwise clear expert_approved_at
-            $user->expert_approved_at = ($user->isPendingExpert()) ? $change_time : null;
-
-            if ($user->isPendingExpert()) {
-                /* @var ProfileApiInterface  $profile_api */
-                $profile_api = app()->make(ProfileApiInterface::class);
-
-                $profile_api->approveExpert($user, $data['user_type']);
-
-                Log::info('User Approved to Expert', ['user_id' => $id]);
-            }
-
             if ($data['user_type'] === User::TYPE_PREMIUM_CREATOR or $data['user_type'] === User::TYPE_PREMIUM_EXPERT) {
                 if (is_null($user->company_logo) and null === array_get($data, 'company_logo', null)) {
                     throw new CompanyLogoRequiredException('Logo is required for Premium account');
                 }
-
-                $premium_order             = new PremiumAccountOrder();
-                $premium_order->user_id    = $user->id();
-                $premium_order->created_at = $change_time;
-                $premium_order->save();
             }
-        }
 
-        if ($is_type_change && $user->isPendingExpert() &&  $apply_expert_msg = $this->apply_expert_msg_repo->byUserId($user->user_id)->first()) {
-            $apply_expert_msg->expired_at = (!is_null($apply_expert_msg->expired_at)) ? $apply_expert_msg->expired_at : Carbon::now();
-            $apply_expert_msg->save();
+            /* @var ProfileApiInterface  $profile_api */
+            $profile_api = app()->make(ProfileApiInterface::class);
+
+            $profile_api->transformAccountType($user, $data['user_type']);
         }
 
         $user->fill(array_only($data, self::$update_columns));
@@ -519,20 +501,15 @@ class UserRepo implements UserInterface
             $user->image = $this->image_uplodaer->uploadUserImage($data['head']);
         }
 
-        //check input user_type exists, not exists don't change user role
-        if (array_key_exists('user_type', $data)) {
-            $user->is_sign_up_as_expert = 0;
-            $user->is_apply_to_be_expert = 0;
-        }
-        
         if (array_key_exists('active', $data)) {
             $user->email_verify = $data['active'] ? User::EMAIL_VERIFY : User::EMAIL_VERIFY_NONE;
         }
 
-        $user->user_category_id     = implode(',', array_get($data, 'user_category_ids', []));
+        $user->user_category_id = implode(',', array_get($data, 'user_category_ids', []));
 
-        $tag_ids    = $user->expertises ? explode(',', $user->expertises) : [];
-        $tags = $this->expertise->getDisplayTags($tag_ids);
+        $tag_ids = $user->expertises ? explode(',', $user->expertises) : [];
+        $tags    = $this->expertise->getDisplayTags($tag_ids);
+
         if ($tags) {
             $user->tags = implode(',', $tags->toArray());
         }
@@ -544,23 +521,6 @@ class UserRepo implements UserInterface
         if (null !== array_get($data, 'company_logo', null)) {
             $this->image_uplodaer->uploadCompanyLogo($user, $data['company_logo']);
         }
-    }
-
-    public function changeUserType($id, $user_type)
-    {
-        $user = $this->user->find($id);
-        switch ($user_type) {
-            case User::TYPE_CREATOR:
-            case User::TYPE_EXPERT:
-                $user->user_type             = $user_type;
-                $user->is_sign_up_as_expert  = 0;
-                $user->is_apply_to_be_expert = 0;
-                break;
-            case User::TYPE_PM:
-                $user->user_type = User::TYPE_PM;
-                break;
-        }
-        $user->save();
     }
 
     public function findHWTrekPM()

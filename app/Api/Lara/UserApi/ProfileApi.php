@@ -35,23 +35,6 @@ class ProfileApi extends BasicApi implements ProfileApiInterface
     /**
      * {@inheritDoc}
      */
-    public function approveExpert(User $user, $user_type)
-    {
-        $uri = str_replace('(:num)', $user->user_id, UserApiEnum::APPROVE_EXPERT);
-        $url = $this->hwtrek_url . $uri;
-
-        $options = [
-            'json' => [
-                'userType' => $user_type
-            ]
-        ];
-
-        return $this->patch($url, $options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function uploadCompanyLogo(User $user, UploadedFile $file)
     {
         $uri  = $this->hwtrek_url . str_replace('(:num)', $user->id(), UserApiEnum::UPLOAD_COMPANY_LOGO);
@@ -75,5 +58,22 @@ class ProfileApi extends BasicApi implements ProfileApiInterface
         unlink($file_path);
 
         return $response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function transformAccountType(User $user, string $user_type)
+    {
+        $uri = str_replace('(:num)', $user->user_id, UserApiEnum::TRANSFORM_ACCOUNT_TYPE);
+        $url = $this->hwtrek_url . $uri;
+
+        $options = [
+            'json' => [
+                'userType' => $user_type
+            ]
+        ];
+
+        return $this->put($url, $options);
     }
 }

@@ -220,13 +220,6 @@ interface UserInterface
     public function toOutputArray($users);
 
     /**
-     * @param $user_id
-     * @param $user_type
-     * @return void
-     */
-    public function changeUserType($user_id, $user_type);
-
-    /**
      * @return mixed
      * @return Collection|User[]
      */

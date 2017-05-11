@@ -300,7 +300,7 @@ class UserController extends BaseController
                 }
                 /* @var AttachmentApiInterface $attachment_api*/
                 $attachment_api = app()->make(AttachmentApiInterface::class);
-                $r = $attachment_api->updateAttachment($user, $attachments);
+                $attachment_api->updateAttachment($user, $attachments);
             }
         }
 
@@ -343,7 +343,11 @@ class UserController extends BaseController
             return response()->json($res);
         }
 
-        $this->user_repo->changeUserType($user_id, $user_type);
+        /* @var ProfileApiInterface  $profile_api */
+        $profile_api = app()->make(ProfileApiInterface::class);
+
+        $profile_api->transformAccountType($user, $user_type);
+
         Log::info('Change user type', [
             'user_id'   => $user_id,
             'user_type' => $user_type

@@ -22,17 +22,16 @@ interface ProfileApiInterface
     public function enable(User $user);
 
     /**
-     * @param User $user
-     * @param $user_type
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function approveExpert(User $user, $user_type);
-
-    /**
      * @var User $user
      * @param UploadedFile $file
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function uploadCompanyLogo(User $user, UploadedFile $file);
+
+    /**
+     * @param User    $user
+     * @param string  $user_type
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function transformAccountType(User $user, string $user_type);
 }
