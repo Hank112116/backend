@@ -12,7 +12,7 @@
                 </td>
                 <td>
                     {!! link_to_action('ReportController@showQuestionnaire',
-                    $approve_event_users->total() . ' Initial (Sent)', [
+                    $approve_event_users->total() . ' Sent', [
                         'event'       => $event_id,
                     ], ['target' => '_blank']) !!} |
                     {!! link_to_action('ReportController@showQuestionnaire',
@@ -21,7 +21,16 @@
                         'form_status' => 'Rejected',
                         'dstart'      => $dstart,
                         'dend'        => $dend,
-                    ], ['target' => '_blank']) !!} |
+                    ], ['target' => '_blank']) !!} (
+
+                    {!! link_to_action('ReportController@showQuestionnaire',
+                    $approve_event_users->ait_form_internal_decline . ' Internal Decline', [
+                        'event'                => $event_id,
+                        'internal_form_status' => 'Decline',
+                        'dstart'               => $dstart,
+                        'dend'                 => $dend,
+                    ], ['target' => '_blank']) !!} ) |
+
                     {!! link_to_action('ReportController@showQuestionnaire',
                     $approve_event_users->ait_form_ongoing . ' In Progress', [
                         'event'       => $event_id,
