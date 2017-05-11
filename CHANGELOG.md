@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v3.3.0 (2017-05-10)
+## v3.3.0 (2017-05-11)
 * [NEW]    add AIT 2017 Q2 questionnaire report (issue #72)
 * [NEW]    add user's company logo upload function  (issue #60, #74)
 * [CHANGE] integrate low priority object API
