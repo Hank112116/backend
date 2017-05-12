@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v3.3.1 (2017-05-12)
+* [FIXED]  fix member matching report error (issue #77)
+
 ## v3.3.0 (2017-05-11)
 * [NEW]    add AIT 2017 Q2 questionnaire report (issue #72)
 * [NEW]    add user's company logo upload function  (issue #60, #74)

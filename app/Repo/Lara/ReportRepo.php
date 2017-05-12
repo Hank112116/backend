@@ -192,6 +192,7 @@ class ReportRepo implements ReportInterface
             ->select(['applicant_id', 'user_id', 'user_type', 'referral', 'apply_date', 'additional_privileges', 'event'])
             ->with(['user', 'referralUser'])
             ->whereBetween('apply_date', [$input['dstart'], $dend])
+            ->whereNotNull('user_type')
             ->orderBy('apply_date', 'desc')
             ->get();
 
@@ -718,6 +719,7 @@ class ReportRepo implements ReportInterface
             ->with(['user', 'referralUser'])
             ->whereBetween('apply_date', [$dstart, $dend])
             ->whereIn('group_id', $project_groups)
+            ->whereNotNull('user_type')
             ->orderBy('apply_date', 'desc')
             ->get();
 
@@ -727,6 +729,7 @@ class ReportRepo implements ReportInterface
             ->whereBetween('apply_date', [$dstart, $dend])
             ->where('user_id', $user_id)
             ->whereNull('referral')
+            ->whereNotNull('user_type')
             ->whereIn('event', [GroupMemberApplicant::APPLY_PM, GroupMemberApplicant::APPLY_USER])
             ->orderBy('apply_date', 'desc')
             ->get();
@@ -736,6 +739,7 @@ class ReportRepo implements ReportInterface
             ->whereBetween('apply_date', [$dstart, $dend])
             ->where('user_id', $user_id)
             ->whereNotNull('referral')
+            ->whereNotNull('user_type')
             ->orderBy('apply_date', 'desc')
             ->get();
 
