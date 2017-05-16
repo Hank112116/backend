@@ -75,6 +75,7 @@ Route::group(['middleware' => ['route_filter:project', 'check_source_server', 'a
     Route::post('project/update-project-manager', 'ProjectController@updateManager');
     Route::post('project/approve-schedule', 'ProjectController@approveSchedule');
     Route::post('project/get-expert', 'ProjectController@getExpert');
+    Route::post('project/staff-recommend-experts', 'ProjectController@staffRecommendExperts');
 });
 
 // Solution
@@ -140,6 +141,5 @@ Route::group([ 'middleware' => ['route_filter:report_full|event_report', 'check_
 });
 
 Route::post('/upload-editor-image', 'ImageUploadController@index');
-Route::post('/hub_email-send', 'EmailSendController@hubMailSend');
 
 Route::post('apply-expert-message/messages', 'ApplyExpertMessageController@showMessages');

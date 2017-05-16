@@ -2,8 +2,9 @@
 
 namespace Backend\Http\Controllers;
 
-use Backend\Api\ApiInterfaces\ProjectApi\ReleaseApiInterface;
+use Backend\Api\ApiInterfaces\ProjectApi\ProjectApiInterface;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
+use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
 use Backend\Repo\RepoInterfaces\HubInterface;
 use Backend\Repo\RepoInterfaces\UserInterface;
@@ -19,18 +20,24 @@ class ProjectController extends BaseController
     private $adminer_repo;
     private $hub_repo;
     private $user_repo;
+    private $applicant_repo;
+    private $project_api;
 
     public function __construct(
         ProjectInterface $project,
         AdminerInterface $adminer,
         HubInterface $hub,
-        UserInterface $user
+        UserInterface $user,
+        GroupMemberApplicantInterface $applicant_repo,
+        ProjectApiInterface $project_api
     ) {
         parent::__construct();
         $this->project_repo      = $project;
         $this->adminer_repo      = $adminer;
         $this->hub_repo          = $hub;
         $this->user_repo         = $user;
+        $this->applicant_repo    = $applicant_repo;
+        $this->project_api       = $project_api;
         $this->per_page          = 100;
     }
 
@@ -210,7 +217,12 @@ class ProjectController extends BaseController
     public function updateMemo()
     {
         $input = $this->request->all();
-        if ($this->project_repo->updateInternalNote($input['project_id'], $input)) {
+
+        $project = $this->project_repo->find($input['project_id']);
+
+        $response = $this->project_api->updateMemo($project, $input);
+
+        if ($response->isOk()) {
             $project = $this->project_repo->find($input['project_id']);
 
             // make project row view
@@ -221,22 +233,28 @@ class ProjectController extends BaseController
                 ]
             )->render();
 
+            $log_action = 'Edit internal project memo';
+            Log::info($log_action, $input);
+
             $res  = ['status' => 'success', 'view' => $view];
+
+            return response()->json($res);
         } else {
-            $res   = ['status' => 'fail', "msg" => "Update Fail!"];
+            return $response;
         }
-
-        $log_action = 'Edit internal project memo';
-        Log::info($log_action, $input);
-
-        return response()->json($res);
     }
     
     public function updateManager()
     {
         $input = $this->request->all();
-        if ($this->project_repo->updateProjectManager($input['project_id'], $input)) {
-            $project       = $this->project_repo->find($input['project_id']);
+
+        $pms     = json_decode($input['project_managers'], true);
+        $project = $this->project_repo->find($input['project_id']);
+
+        $response = $this->project_api->assignPM($project, $pms);
+
+        if ($response->isOk()) {
+            $project = $this->project_repo->find($input['project_id']);
             // make project row view
             $view = view()->make('project.row')->with(
                 [
@@ -244,15 +262,16 @@ class ProjectController extends BaseController
                     'tag_tree'      => TagNode::tags()
                 ]
             )->render();
+
+            $log_action = 'Edit project manager';
+            Log::info($log_action, $input);
+
             $res  = ['status' => 'success', 'view' => $view];
+
+            return response()->json($res);
         } else {
-            $res   = ['status' => 'fail', "msg" => "Update Fail! At least one frontend and one backend PM."];
+            return $response;
         }
-
-        $log_action = 'Edit project manager';
-        Log::info($log_action, $input);
-
-        return response()->json($res);
     }
 
     /**
@@ -273,12 +292,10 @@ class ProjectController extends BaseController
             $res   = ['status' => 'fail', 'msg' => 'Permission deny'];
             return response()->json($res);
         }
-        /* @var ReleaseApiInterface $release_api*/
-        $release_api = app()->make(ReleaseApiInterface::class);
 
-        $response = $release_api->releaseSchedule($project);
+        $response = $this->project_api->releaseSchedule($project);
 
-        if (!$response->isEmpty()) {
+        if (!$response->isOk()) {
             $res   = ['status' => 'fail', 'msg' => 'Approve schedule fail.'];
             return response()->json($res);
         }
@@ -299,6 +316,71 @@ class ProjectController extends BaseController
         )->render();
         
         $res  = ['status' => 'success', 'view' => $view];
+
+        return response()->json($res);
+    }
+
+    /**
+     * PM recommend two expert for project owner (send email)
+     *
+     * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function staffRecommendExperts()
+    {
+        if (empty($this->request->session()->get('admin'))) {
+            $res   = ['status' => 'fail', 'msg' => 'Permissions denied'];
+            return response()->json($res);
+        }
+
+        $input   = $this->request->all();
+        $expert1 = $this->user_repo->findExpert($input['expert1']);
+        $expert2 = $this->user_repo->findExpert($input['expert2']);
+
+        if (empty($expert1)  || empty($expert2)) {
+            $res   = ['status' => 'fail', 'msg' => 'Error expert id!'];
+            return response()->json($res);
+        }
+
+        if ($expert1 === $expert2) {
+            $res   = ['status' => 'fail', 'msg' => 'Duplicate expert.'];
+            return response()->json($res);
+        }
+
+        $experts[] = $input['expert1'];
+        $experts[] = $input['expert2'];
+
+        $project = $this->project_repo->find($input['projectId']);
+
+        $log_action = 'Send mail of recommend experts';
+        $log_data   = [
+            'project_id' => $project->project_id,
+            'recommend_experts' => [
+                $input['expert1'],
+                $input['expert2']
+            ]
+        ];
+        Log::info($log_action, $log_data);
+
+        $response = $this->project_api->staffRecommendExperts($project, $experts, $this->request->session()->get('admin'));
+
+        if ($response->getStatusCode() != \Illuminate\Http\Response::HTTP_OK) {
+            return $response;
+        }
+
+        $date = new \DateTime();
+        foreach ($experts as $expert) {
+            $data['expert_id']  = $expert;
+            $data['project_id'] = $input['projectId'];
+            $data['admin_id']   = $this->request->session()->get('admin');
+            $data['date_send']  = $date;
+            $this->applicant_repo->insertItem($data);
+        }
+
+        // TODO user project entity
+        $project = $this->project_repo->find($input['projectId']);
+
+        $view = view()->make('project.row')->with(['project' => $project, 'tag_tree' => TagNode::tags()])->render();
+        $res   = ['status' => 'success', 'view'=> $view];
 
         return response()->json($res);
     }

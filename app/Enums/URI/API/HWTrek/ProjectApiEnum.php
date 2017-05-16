@@ -13,4 +13,6 @@ class ProjectApiEnum extends HWTrekApiEnum
     const PROJECT_STATISTICS      = self::API . '/project-statistics';
     const RELEASE                 = self::PROJECT . '/release';
     const STAFF_RECOMMEND_EXPERTS = self::PROJECT . '/staff-recommend-experts';
+    const ASSIGN_PMS              = self::PROJECT . '/assign-pms';
+    const MEMO                    = self::PROJECT . '/memo';
 }

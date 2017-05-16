@@ -30,14 +30,13 @@ $(function () {
     $document.on("click", "#add-tags", function () {
         var project_id = $("#internal_tag_project_id").val();
         var tags = $internal_tag_input.val();
-        var route_path = $("#route-path").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
-                tags: tags,
-                route_path: route_path
+                tags: tags
             },
             dataType: "JSON",
             statusCode: {
@@ -50,6 +49,14 @@ $(function () {
                     Notifier.showTimedMessage("Update successful", "information", 2);
                     var $project_row = $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function _() {
                     location.href = "/";
@@ -76,15 +83,14 @@ $(function () {
         var project_id = $("#grade_project_id").val();
         var note = $("#grade_note").val();
         var grade = $("#grade").val();
-        var route_path = $("#route-path").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
                 schedule_note: note,
-                schedule_note_grade: grade,
-                route_path: route_path
+                schedule_note_grade: grade
             },
             dataType: "JSON",
             statusCode: {
@@ -97,6 +103,14 @@ $(function () {
                     Notifier.showTimedMessage("Update successful", "information", 2);
                     var $project_row = $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function _() {
                     location.href = "/";
@@ -121,14 +135,13 @@ $(function () {
     $document.on("click", "#edit_internal_description", function () {
         var project_id = $("#internal_description_project_id").val();
         var internal_description = $("#internal_description").val();
-        var route_path = $("#route-path").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
-                description: internal_description,
-                route_path: route_path
+                description: internal_description
             },
             dataType: "JSON",
             statusCode: {
@@ -141,6 +154,14 @@ $(function () {
                     Notifier.showTimedMessage("Update successful", "information", 2);
                     var $project_row = $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function _() {
                     location.href = "/";
@@ -187,14 +208,15 @@ $(function () {
             dataType: "JSON",
             statusCode: {
                 200: function _(feeback) {
-                    if (feeback.status === "fail") {
-                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                        return;
-                    }
                     $("#schedule-manager-dialog").dialog("close");
                     Notifier.showTimedMessage("Update successful", "information", 2);
                     var $project_row = $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function _(feeback) {
+                    var msg = feeback.responseJSON.error[0].message;
+
+                    Notifier.showTimedMessage(msg, "warning", 2);
                 },
                 412: function _() {
                     location.href = "/";
@@ -219,20 +241,13 @@ $(function () {
     $document.on("click", "#edi-project-report-action", function () {
         var project_id = $("#project-report-action-project-id").val();
         var report_action = $("#project-report-action").val();
-        var route_path = $("#route-path").val();
-        var dstart = $("#statistic-start-date").val();
-        var dend = $("#statistic-end-date").val();
-        var time_type = $("#time_type").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
-                report_action: report_action,
-                route_path: route_path,
-                dstart: dstart,
-                dend: dend,
-                time_type: time_type
+                report_action: report_action
             },
             dataType: "JSON",
             statusCode: {
@@ -245,6 +260,14 @@ $(function () {
                     Notifier.showTimedMessage("Update successful", "information", 2);
                     var $project_row = $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function _(feeback) {
+                    var error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function _() {
                     location.href = "/";
@@ -336,11 +359,17 @@ $(function () {
         var projectTitle = $("#projectTitle").val();
         var userId = $("#userId").val();
         var PM = $("#PM").val();
+
+        if (expert1 === expert2) {
+            Notifier.showTimedMessage("Duplicate expert.", "warning", 2);
+            return;
+        }
+
         if (expert1 && expert2 && PM) {
             $("#email-recommend-expert-dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
-                url: "/hub_email-send",
+                url: "/project/staff-recommend-experts",
                 data: {
                     expert1: expert1,
                     expert2: expert2,
@@ -361,6 +390,11 @@ $(function () {
                         Notifier.showTimedMessage("Send mail successful", "information", 2);
                         var $project_row = $("#row-" + projectId);
                         $project_row.html(feeback.view);
+                    },
+                    400: function _(feeback) {
+                        var error_message = feeback.responseJSON.error.message;
+                        Notifier.showTimedMessage(error_message, "warning", 2);
+                        location.reload();
                     },
                     412: function _() {
                         location.href = "/";

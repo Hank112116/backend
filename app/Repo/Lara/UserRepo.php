@@ -97,7 +97,8 @@ class UserRepo implements UserInterface
         return $this->user->where('user_id', $id)
             ->whereIn('user_type', [
                 User::TYPE_EXPERT,
-                User::TYPE_PREMIUM_EXPERT
+                User::TYPE_PREMIUM_EXPERT,
+                User::TYPE_PM
             ])
             ->first();
     }

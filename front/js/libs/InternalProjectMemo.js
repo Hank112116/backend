@@ -1,7 +1,7 @@
 /* jshint quotmark: false */
 $(function () {
-    var $document = $(document);
-    var $internal_tag_input = $("#internal-tag");
+    let $document = $(document);
+    let $internal_tag_input = $("#internal-tag");
     $internal_tag_input.tagsinput({
         confirmKeys: [13],
         allowDuplicates: false,
@@ -10,10 +10,10 @@ $(function () {
     
     //open dialog
     $document.on("click", ".internal-tag", function () {
-        var $this = $(this);
-        var tech_tag     = $this.attr("tech-tags");
-        var internal_tag = $this.attr("tags");
-        var project_id   = $this.attr("rel");
+        let $this = $(this);
+        let tech_tag     = $this.attr("tech-tags");
+        let internal_tag = $this.attr("tags");
+        let project_id   = $this.attr("rel");
         $internal_tag_input.tagsinput('removeAll');
         $internal_tag_input.tagsinput('add', internal_tag);
         $("#internal_tag_project_id").val(project_id);
@@ -25,16 +25,15 @@ $(function () {
     });
 
     $document.on("click", "#add-tags", function () {
-        var project_id = $("#internal_tag_project_id").val();
-        var tags       = $internal_tag_input.val();
-        var route_path = $("#route-path").val();
+        let project_id = $("#internal_tag_project_id").val();
+        let tags       = $internal_tag_input.val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
-                tags: tags,
-                route_path: route_path
+                tags: tags
             },
             dataType: "JSON",
             statusCode: {
@@ -45,8 +44,16 @@ $(function () {
                     }
                     $( "#internal-tag-dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Update successful", "information", 2);
-                    var $project_row =  $("#row-" + project_id);
+                    let $project_row =  $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function () {
                     location.href = "/";
@@ -57,10 +64,10 @@ $(function () {
     });
 
     $document.on("click", ".grade", function () {
-        var $this = $(this);
-        var project_id = $this.attr("rel");
-        var note = $this.attr("note");
-        var grade = $this.attr("grade");
+        let $this = $(this);
+        let project_id = $this.attr("rel");
+        let note = $this.attr("note");
+        let grade = $this.attr("grade");
         $("#grade_note").val(note);
         $("#grade").val(grade);
         $("#grade_project_id").val(project_id);
@@ -71,18 +78,17 @@ $(function () {
     });
 
     $document.on("click", "#edit_grade", function(){
-        var project_id  = $("#grade_project_id").val();
-        var note        = $("#grade_note").val();
-        var grade       = $("#grade").val();
-        var route_path  = $("#route-path").val();
+        let project_id  = $("#grade_project_id").val();
+        let note        = $("#grade_note").val();
+        let grade       = $("#grade").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
                 schedule_note: note,
-                schedule_note_grade: grade,
-                route_path: route_path
+                schedule_note_grade: grade
             },
             dataType: "JSON",
             statusCode: {
@@ -93,8 +99,16 @@ $(function () {
                     }
                     $( "#grade_dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Update successful", "information", 2);
-                    var $project_row =  $("#row-" + project_id);
+                    let $project_row =  $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function () {
                     location.href = "/";
@@ -106,9 +120,9 @@ $(function () {
 
     //open dialog
     $document.on("click", ".internal-description", function () {
-        var $this = $(this);
-        var project_id = $this.attr("rel");
-        var internal_description = $this.attr("description");
+        let $this = $(this);
+        let project_id = $this.attr("rel");
+        let internal_description = $this.attr("description");
         $("#internal_description").val(internal_description);
         $("#internal_description_project_id").val(project_id);
         $("#internal-description-dialog").dialog({
@@ -118,16 +132,15 @@ $(function () {
     });
 
     $document.on("click", "#edit_internal_description", function () {
-        var project_id           = $("#internal_description_project_id").val();
-        var internal_description = $("#internal_description").val();
-        var route_path           = $("#route-path").val();
+        let project_id           = $("#internal_description_project_id").val();
+        let internal_description = $("#internal_description").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
-                description: internal_description,
-                route_path: route_path
+                description: internal_description
             },
             dataType: "JSON",
             statusCode: {
@@ -138,8 +151,16 @@ $(function () {
                     }
                     $("#internal-description-dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Update successful", "information", 2);
-                    var $project_row =  $("#row-" + project_id);
+                    let $project_row =  $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function () {
                     location.href = "/";
@@ -150,9 +171,9 @@ $(function () {
 
     //open dialog
     $document.on("click", ".schedule-manager", function () {
-        var $this = $(this);
-        var project_id = $this.attr("rel");
-        var pm         = $this.attr("pm");
+        let $this = $(this);
+        let project_id = $this.attr("rel");
+        let pm         = $this.attr("pm");
         $("input[name='managers[]']").iCheck("uncheck");
         if (pm) {
             pm = JSON.parse(pm);
@@ -168,8 +189,8 @@ $(function () {
     });
 
     $document.on("click", "#update-schedule-manager", function () {
-        var project_id = $("#schedule_manager_project_id").val();
-        var managers   = [];
+        let project_id = $("#schedule_manager_project_id").val();
+        let managers   = [];
         $("input[type=checkbox]").each(function () {
             if (this.checked) {
                 managers.push(Number($(this).val()));
@@ -186,14 +207,15 @@ $(function () {
             dataType: "JSON",
             statusCode: {
                 200: function (feeback) {
-                    if (feeback.status === "fail") {
-                        Notifier.showTimedMessage(feeback.msg, "warning", 2);
-                        return;
-                    }
                     $("#schedule-manager-dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Update successful", "information", 2);
-                    var $project_row =  $("#row-" + project_id);
+                    let $project_row =  $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function (feeback) {
+                    let msg = feeback.responseJSON.error[0].message;
+
+                    Notifier.showTimedMessage(msg, "warning", 2);
                 },
                 412: function () {
                     location.href = "/";
@@ -204,9 +226,9 @@ $(function () {
 
     //open dialog
     $document.on("click", ".project-report-action", function () {
-        var $this = $(this);
-        var project_id = $this.attr("rel");
-        var report_action = $this.attr("action");
+        let $this = $(this);
+        let project_id = $this.attr("rel");
+        let report_action = $this.attr("action");
         $("#project-report-action").val(report_action);
         $("#project-report-action-project-id").val(project_id);
         $("#project-report-action-dialog").dialog({
@@ -216,22 +238,15 @@ $(function () {
     });
 
     $document.on("click", "#edi-project-report-action", function () {
-        var project_id    = $("#project-report-action-project-id").val();
-        var report_action = $("#project-report-action").val();
-        var route_path    = $("#route-path").val();
-        var dstart        = $("#statistic-start-date").val();
-        var dend          = $("#statistic-end-date").val();
-        var time_type     = $("#time_type").val();
+        let project_id    = $("#project-report-action-project-id").val();
+        let report_action = $("#project-report-action").val();
+
         $.ajax({
             type: "POST",
             url: "/project/update-memo",
             data: {
                 project_id: project_id,
-                report_action: report_action,
-                route_path: route_path,
-                dstart: dstart,
-                dend: dend,
-                time_type: time_type
+                report_action: report_action
             },
             dataType: "JSON",
             statusCode: {
@@ -242,8 +257,16 @@ $(function () {
                     }
                     $("#project-report-action-dialog" ).dialog( "close" );
                     Notifier.showTimedMessage("Update successful", "information", 2);
-                    var $project_row =  $("#row-" + project_id);
+                    let $project_row =  $("#row-" + project_id);
                     $project_row.html(feeback.view);
+                },
+                400: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
+                },
+                404: function (feeback) {
+                    let error_message = feeback.responseJSON.error.message;
+                    Notifier.showTimedMessage(error_message, "warning", 2);
                 },
                 412: function () {
                     location.href = "/";

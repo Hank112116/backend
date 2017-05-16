@@ -1,17 +1,17 @@
 /* jshint quotmark: false */
 $(function () {
-    var $document = $(document);
+    let $document = $(document);
     //open dialog
-    $document.on("click", ".sendmail", function() {
-        var $this = $(this);
-        $("#expert1").val("") ;
+    $document.on("click", ".sendmail", function () {
+        let $this = $(this);
+        $("#expert1").val("");
         $("#expert2").val("");
         $("#expert1Info").empty();
         $("#expert2Info").empty();
-        var projectId = $this.attr("projectId");
-        var projectTitle = $this.attr("projectTitle");
-        var userId = $this.attr("userId");
-        var PM = $this.attr("PM");
+        let projectId = $this.attr("projectId");
+        let projectTitle = $this.attr("projectTitle");
+        let userId = $this.attr("userId");
+        let PM = $this.attr("PM");
         $("#projectId").val(projectId);
         $("#projectTitle").val(projectTitle);
         $("#userId").val(userId);
@@ -22,16 +22,16 @@ $(function () {
         });
     });
     //search expert info
-    $document.on("change", "#expert1", function() {
-        var $expert1Info = $("#expert1Info");
+    $document.on("change", "#expert1", function () {
+        let $expert1Info = $("#expert1Info");
         $expert1Info.empty();
         $expert1Info.append('<i class="fa fa-refresh fa-spin"></i>');
-        var $this = $(this);
-        var expertId = $this.val();
+        let $this = $(this);
+        let expertId = $this.val();
         $.ajax({
             type: "POST",
             url: "/project/get-expert",
-            data: { 
+            data: {
                 expertId: expertId
             },
             dataType: "JSON",
@@ -46,16 +46,16 @@ $(function () {
         });
     });
 
-    $document.on("change", "#expert2", function() {
-        var $expert2Info = $("#expert2Info");
+    $document.on("change", "#expert2", function () {
+        let $expert2Info = $("#expert2Info");
         $expert2Info.empty();
         $expert2Info.append('<i class="fa fa-refresh fa-spin"></i>');
-        var $this = $(this);
-        var expertId = $this.val();
+        let $this = $(this);
+        let expertId = $this.val();
         $.ajax({
             type: "POST",
             url: "/project/get-expert",
-            data: { 
+            data: {
                 expertId: expertId
             },
             dataType: "JSON",
@@ -70,21 +70,27 @@ $(function () {
         });
     });
     //send mail
-    $document.on("click", "#sendMail", function() {
-        var expert1 = $("#expert1").val();
-        var expert2 = $("#expert2").val();
-        var projectId = $("#projectId").val();
-        var projectTitle = $("#projectTitle").val();
-        var userId = $("#userId").val();
-        var PM = $("#PM").val();
-        if(expert1 && expert2 && PM){
+    $document.on("click", "#sendMail", function () {
+        let expert1 = $("#expert1").val();
+        let expert2 = $("#expert2").val();
+        let projectId = $("#projectId").val();
+        let projectTitle = $("#projectTitle").val();
+        let userId = $("#userId").val();
+        let PM = $("#PM").val();
+
+        if (expert1 === expert2) {
+            Notifier.showTimedMessage("Duplicate expert.", "warning", 2);
+            return;
+        }
+
+        if (expert1 && expert2 && PM) {
             $("#email-recommend-expert-dialog").html('<i class="fa fa-refresh fa-spin" style="font-size: 150px;"></i>');
             $.ajax({
                 type: "POST",
-                url: "/hub_email-send",
-                data: { 
-                    expert1:  expert1,
-                    expert2:  expert2,
+                url: "/project/staff-recommend-experts",
+                data: {
+                    expert1: expert1,
+                    expert2: expert2,
                     projectId: projectId,
                     projectTitle: projectTitle,
                     userId: userId,
@@ -98,22 +104,27 @@ $(function () {
                             location.reload();
                             return;
                         }
-                        $( "#email-recommend-expert-dialog" ).dialog( "close" );
+                        $("#email-recommend-expert-dialog").dialog("close");
                         Notifier.showTimedMessage("Send mail successful", "information", 2);
-                        var $project_row =  $("#row-" + projectId);
+                        let $project_row = $("#row-" + projectId);
                         $project_row.html(feeback.view);
+                    },
+                    400: function (feeback) {
+                        let error_message = feeback.responseJSON.error.message;
+                        Notifier.showTimedMessage(error_message, "warning", 2);
+                        location.reload();
                     },
                     412: function () {
                         location.href = "/";
                     }
                 }
             });
-        }else{
-            var errorMsg = "";
-            if(!PM){
+        } else {
+            let errorMsg = "";
+            if (!PM) {
                 errorMsg = errorMsg + "PM is empty! ";
             }
-            if(!expert1 || !expert2){
+            if (!expert1 || !expert2) {
                 errorMsg = errorMsg + "Expert is empty!";
             }
             Notifier.showTimedMessage(errorMsg, "warning", 2);
