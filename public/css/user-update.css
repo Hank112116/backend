@@ -6041,13 +6041,13 @@ body.stop-scrolling {
 .master-navbar .nav > li a:hover {
   box-shadow: -0.3em 0em 0.05em #2a6496 inset;
 }
-/* line 23, ../../front/sass/modules/_master-bar.scss */
-.master-navbar .nav > li a.nav-second-level {
-  font-size: 1em;
-}
-/* line 26, ../../front/sass/modules/_master-bar.scss */
+/* line 24, ../../front/sass/modules/_master-bar.scss */
 .master-navbar .nav > li a i {
   margin-right: 3px;
+}
+/* line 28, ../../front/sass/modules/_master-bar.scss */
+.master-navbar .nav > li .nav-second-level {
+  padding-left: 15px;
 }
 
 /* line 34, ../../front/sass/modules/_master-bar.scss */
@@ -6060,7 +6060,7 @@ body.stop-scrolling {
 }
 
 @media (min-width: 768px) {
-  /* line 43, ../../front/sass/modules/_master-bar.scss */
+  /* line 42, ../../front/sass/modules/_master-bar.scss */
   .navbar-static-side {
     z-index: 1;
     position: absolute;
@@ -6069,7 +6069,7 @@ body.stop-scrolling {
   }
 }
 @media (max-height: 600px) and (max-width: 767px) {
-  /* line 52, ../../front/sass/modules/_master-bar.scss */
+  /* line 51, ../../front/sass/modules/_master-bar.scss */
   .sidebar-collapse {
     max-height: 300px;
     overflow-y: scroll;

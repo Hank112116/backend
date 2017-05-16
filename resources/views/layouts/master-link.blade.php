@@ -32,7 +32,7 @@
                             Report
                             <span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level">
+                        <ul class="nav nav-second-level collapse">
                             @if(auth()->user()->isShowLink('report_full') || auth()->user()->isShowLink('registration_report'))
                                 <li>
                                     <a href="{!! action('ReportController@showRegistrationReport', ['range' => 7]) !!}">
@@ -104,7 +104,7 @@
                         <span class="fa arrow"></span>
                     </a>
 
-                    <ul class="nav nav-second-level">
+                    <ul class="nav nav-second-level collapse">
                         @if(auth()->user()->isShowLink('marketing_full'))
                         <li>
                             <a href="{!! action('LandingController@showFeature') !!}">
@@ -134,7 +134,7 @@
                         <span class="fa arrow"></span>
                     </a>
 
-                    <ul class="nav nav-second-level">
+                    <ul class="nav nav-second-level collapse">
                         <li>
                             <a href="{!! action('CommentController@showProfession') !!}">
                                 <i class="fa fa-comment-o fa-fw"></i>
