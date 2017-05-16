@@ -1,0 +1,22 @@
+@import "common";
+@import "elements/pagination";
+@import "modules/page-header-with-btn";
+@import "modules/list-search";
+@import "modules/list-table";
+@import "modules/list-icon";
+@import "modules/detail-tags";
+@import "pages/project/tag-component";
+@import "vendor/bootstrap-sass-datepicker/datepicker";
+@import "vendor/fronteed/icheck/blue";
+@import "vendor/bootstrap/pagination";
+
+.adminer-tag {
+  display: inline-block;
+  min-width: 15em;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px 8px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background: #fcfcfc;
+}

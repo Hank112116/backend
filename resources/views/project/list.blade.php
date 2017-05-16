@@ -4,7 +4,7 @@
     @include('layouts.jqui')
 @stop
 @section('css')
-    <link rel="stylesheet" href="{{ LinkGen::assets('css/product-list.css') }}">
+    <link rel="stylesheet" href="{{ LinkGen::assets('css/project-list.css') }}">
 @stop
 
 @section('js')
