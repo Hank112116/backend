@@ -3,6 +3,9 @@
 namespace Backend\Http\Controllers;
 
 use Backend\Api\ApiInterfaces\ProjectApi\ProjectApiInterface;
+use Backend\Assistant\ApiResponse\ProjectApi\ProjectListResponseAssistant;
+use Backend\Assistant\ApiResponse\ProjectApi\ProjectResponseAssistant;
+use Backend\Assistant\SearchAssistant;
 use Backend\Repo\RepoInterfaces\AdminerInterface;
 use Backend\Repo\RepoInterfaces\GroupMemberApplicantInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
@@ -38,39 +41,20 @@ class ProjectController extends BaseController
         $this->user_repo         = $user;
         $this->applicant_repo    = $applicant_repo;
         $this->project_api       = $project_api;
-        $this->per_page          = 100;
     }
 
     public function showList()
     {
-        $projects = $this->project_repo->byPage($this->page, $this->per_page);
-        return $this->showProjects($projects);
-    }
+        $query = SearchAssistant::projectSearchQuery($this->request);
 
-    public function showDeletedProjects()
-    {
-        $projects = $this->project_repo->deletedProjects();
+        $response  = $this->project_api->listProjects($query);
 
-        return $this->showProjects($projects, $paginate = false, $title = 'Deleted Projects');
-    }
+        $assistant = ProjectListResponseAssistant::create($response);
 
-    public function showSearch()
-    {
-        $projects = $this->project_repo->byUnionSearch($this->request->all(), $this->page, $this->per_page);
-        $log_action = 'Search project';
-        Log::info($log_action, $this->request->all());
+        $projects = $assistant->getProjectListPaginate($this->per_page);
 
         if ($projects->count() == 0) {
             Noty::warnLang('common.no-search-result');
-        }
-
-        return $this->showProjects($projects, $paginate = true);
-    }
-
-    public function showProjects($projects, $paginate = true, $title = '')
-    {
-        if ($this->request->has('csv')) {
-            return $this->renderCsv($projects);
         }
 
         $hwtrek_pms = $this->user_repo->findHWTrekPM();
@@ -82,30 +66,21 @@ class ProjectController extends BaseController
             }
         }
 
-        $projects->not_recommend_count = $this->project_repo->getNotRecommendExpertProjectCount();
-
-        return view('project.list')
-            ->with([
-                'title'            => $title ?: 'projects',
-                'projects'         => $projects,
-                'per_page'         => $this->per_page,
-                'show_paginate'    => $paginate,
-                'adminers'         => $this->adminer_repo->all(),
-                'tag_tree'         => TagNode::tags(),
-                'pm_ids'           => $pm_ids
-            ]);
+        return view('project.list')->with([
+            'projects'                => $projects,
+            'per_page'                => $this->per_page,
+            'adminers'                => $this->adminer_repo->all(),
+            'pm_ids'                  => $pm_ids,
+            'not_yet_email_out_count' => $assistant->getNotYetEmailOUtCount(),
+        ]);
     }
 
-    private function renderCsv($projects)
+    public function csv()
     {
-        if ($this->request->get('csv') == 'all') {
-            $output = $this->project_repo->toOutputArray($this->project_repo->all());
-        } else {
-            $output = $this->project_repo->toOutputArray($projects);
-        }
+        $output = $this->project_repo->toOutputArray($this->project_repo->all());
 
-        $csv_type   = $this->request->get('csv') == 'all' ? 'all' : 'this';
-        $log_action = 'CSV of Project ('.$csv_type.')';
+        $log_action = 'CSV of Project'
+        ;
         Log::info($log_action);
 
         return $this->outputArrayToCsv($output, 'projects');
@@ -223,13 +198,12 @@ class ProjectController extends BaseController
         $response = $this->project_api->updateMemo($project, $input);
 
         if ($response->isOk()) {
-            $project = $this->project_repo->find($input['project_id']);
+            $assistant = ProjectResponseAssistant::create($response);
 
             // make project row view
             $view = view()->make('project.row')->with(
                 [
-                    'project'       => $project,
-                    'tag_tree'      => TagNode::tags()
+                    'project' => $assistant->getBasicProject(),
                 ]
             )->render();
 
@@ -254,12 +228,12 @@ class ProjectController extends BaseController
         $response = $this->project_api->assignPM($project, $pms);
 
         if ($response->isOk()) {
-            $project = $this->project_repo->find($input['project_id']);
+            $assistant = ProjectResponseAssistant::create($response);
+
             // make project row view
             $view = view()->make('project.row')->with(
                 [
-                    'project'       => $project,
-                    'tag_tree'      => TagNode::tags()
+                    'project' => $assistant->getBasicProject()
                 ]
             )->render();
 
@@ -300,7 +274,8 @@ class ProjectController extends BaseController
             return response()->json($res);
         }
 
-        $project->hub_approve = true;
+        $assistant = ProjectResponseAssistant::create($response);
+
         $log_action = 'release schedule';
         $log_data   = [
             'project_id' => $id
@@ -310,8 +285,8 @@ class ProjectController extends BaseController
         // make project row view
         $view = view()->make('project.row')->with(
             [
-                'project'       => $project,
-                'tag_tree'      => TagNode::tags()
+                'project' => $assistant->getBasicProject()
+
             ]
         )->render();
         

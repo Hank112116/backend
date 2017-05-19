@@ -12,6 +12,20 @@ class ProjectApi extends BasicApi implements ProjectApiInterface
     /**
      * {@inheritDoc}
      */
+    public function listProjects($query = null)
+    {
+        $url = $this->hwtrek_url . ProjectApiEnum::PROJECTS;
+
+        if (!is_null($query)) {
+            $url = $url . '?' . http_build_query($query, null, '&', PHP_QUERY_RFC3986);
+        }
+
+        return $this->get($url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function releaseSchedule(Project $project)
     {
         $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::RELEASE);

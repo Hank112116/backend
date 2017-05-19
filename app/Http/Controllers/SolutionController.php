@@ -5,7 +5,7 @@ namespace Backend\Http\Controllers;
 use Backend\Api\ApiInterfaces\SolutionApi\SolutionApiInterface;
 use Backend\Assistant\ApiResponse\SolutionApi\SolutionListResponseAssistant;
 use Backend\Assistant\ApiResponse\SolutionApi\SolutionResponseAssistant;
-use Backend\Enums\API\Response\Key\SolutionKey;
+use Backend\Assistant\SearchAssistant;
 use Backend\Model\ModelInterfaces\FeatureModifierInterface;
 use Backend\Repo\RepoInterfaces\SolutionInterface;
 use Backend\Repo\RepoInterfaces\ProjectInterface;
@@ -43,16 +43,7 @@ class SolutionController extends BaseController
 
     public function showList()
     {
-        $query = [
-            SolutionKey::KEY_PAGE                => $this->page,
-            SolutionKey::KEY_LIMIT               => $this->per_page,
-            SolutionKey::KEY_SOLUTION_ID         => empty($this->request->get('solution_id')) ? null : $this->request->get('solution_id'),
-            SolutionKey::KEY_OWNER               => empty($this->request->get('user_name')) ? null : $this->request->get('user_name'),
-            SolutionKey::KEY_TITLE               => empty($this->request->get('solution_title')) ? null : $this->request->get('solution_title'),
-            SolutionKey::KEY_APPROVED_START_TIME => empty($this->request->get('dstart')) ? null : $this->request->get('dstart'),
-            SolutionKey::KEY_APPROVED_END_TIME   => empty($this->request->get('dend')) ? null : $this->request->get('dend'),
-            SolutionKey::KEY_STATUS              => $this->request->get('status') === 'all' ? null : $this->request->get('status')
-        ];
+        $query = SearchAssistant::solutionSearchQuery($this->request);
 
         $response = $this->solution_api->listSolutions($query);
 

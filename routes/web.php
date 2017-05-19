@@ -55,11 +55,10 @@ Route::group(['middleware' => ['route_filter:project', 'check_source_server', 'a
 
     Route::get('project/all', 'ProjectController@showList');
 
-    Route::get('project/search', 'ProjectController@showSearch');
-
     Route::get('project/detail/{id}', 'ProjectController@showDetail');
     Route::get('project/update/{id}', 'ProjectController@showUpdate');
     Route::get('project/delete/{id}', 'ProjectController@delete');
+    Route::get('project/csv', 'ProjectController@csv');
 
     Route::get('project/update-status/{status}/{project_id}', 'ProjectController@updateStatus');
 

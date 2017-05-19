@@ -1,3 +1,6 @@
+@php
+/* @var \Backend\Model\Project\Entity\BasicProject $project */
+@endphp
 @extends('layouts.master')
 @include('layouts.macro')
 @section('jqui')
@@ -15,10 +18,15 @@
 @section('content')
 
 <div class="page-header">
-    <h1>{!! $title !!}</h1>
+    <h1>Projects</h1>
 
     <div id="output_all" class='header-output'>
-        @include('layouts.get-csv')
+        @if(auth()->user()->isAdmin())
+            {!! link_to_action('ProjectController@csv', 'CSV', [], [
+                'target' => '_blank',
+                'class'  => 'btn-mini header-output-link'
+            ]) !!}
+        @endif
     </div>
 </div>
 
@@ -48,7 +56,7 @@
 
             <tbody>
             @foreach($projects as $project)
-                <tr id="row-{{ $project->project_id }}">
+                <tr id="row-{{ $project->getId() }}">
                 @include('project.row', ['project' => $project])
                 </tr>
             @endforeach

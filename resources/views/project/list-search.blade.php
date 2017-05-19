@@ -1,4 +1,4 @@
-{!! Form::open(['action' => ['ProjectController@showSearch'], 'method' => 'GET', 'name' => 'search-form']) !!}
+{!! Form::open(['action' => ['ProjectController@showList'], 'method' => 'GET', 'name' => 'search-form']) !!}
 <div class="row search-bar">
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">
@@ -72,11 +72,11 @@
     <div class="col-md-2 col-md-offset-1">
         <div class="input-group">
             {!! Form::select('status',[
-                'all'     => 'All Status',
-                'public'  => 'Expert Mode',
-                'private' => 'Private Mode',
-                'draft'   => 'Unfinished Draft',
-                'deleted' => 'Deleted'
+                'all'         => 'All Status',
+                'expert-only' => 'Expert Mode',
+                'private'     => 'Private Mode',
+                'draft'       => 'Unfinished Draft',
+                'deleted'     => 'Deleted'
             ], request('status'), ['class'=>'form-control']) !!}
         </div>
     </div>
@@ -89,7 +89,7 @@
 
     <div class="col-md-4">
         <i class="fa fa-envelope fa-fw fa-2x" style="color: #d9534f"></i>
-        {!! link_to_action('ProjectController@showSearch', $projects->not_recommend_count . ' schedule email not sent',
+        {!! link_to_action('ProjectController@showList', $not_yet_email_out_count . ' schedule email not sent',
          ['status' => 'not-yet-email-out'], ['target' => '_blank']) !!}
     </div>
 </div>

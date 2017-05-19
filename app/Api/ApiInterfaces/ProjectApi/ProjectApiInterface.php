@@ -7,6 +7,12 @@ use Backend\Model\Eloquent\Project;
 interface ProjectApiInterface
 {
     /**
+     * @param array|null $query
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listProjects($query = null);
+
+    /**
      * @param Project $project
      * @return \Symfony\Component\HttpFoundation\Response
      */
