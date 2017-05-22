@@ -57,6 +57,27 @@ class ProjectKey
     const KEY_LAST_EDITOR_URL           = 'lastEditorUrl';
     const KEY_COUNTRY                   = 'country';
     const KEY_CITY                      = 'city';
+    const KEY_STAGE                     = 'stage';
+    const KEY_INNOVATION_TYPE           = 'innovationType';
+    const KEY_SUMMARY                   = 'summary';
+    const KEY_KICKSTARTER               = 'kickstarter';
+    const KEY_INDIEGOGO                 = 'indiegogo';
+    const KEY_TEAM_SIZE                 = 'teamSize';
+    const KEY_TEAM_STRENGTH             = 'teamStrength';
+    const KEY_RESOURCE                  = 'resource';
+    const KEY_RESOURCE_OTHER            = 'resourceOther';
+    const KEY_RESOURCE_MESSAGE          = 'resourceMessage';
+    const KEY_POWER_SPEC                = 'powerSpec';
+    const KEY_DIMENSION_SPEC            = 'dimensionSpec';
+    const KEY_WEIGHT_SPEC               = 'weightSpec';
+    const KEY_TARGET_MARKET             = 'targetMarket';
+    const KEY_SHIP_DATE                 = 'shipDate';
+    const KEY_QUANTITY                  = 'quantity';
+    const KEY_BUDGET                    = 'budget';
+    const KEY_TARGET_PRICE              = 'targetPrice';
+    const KEY_DESIGN_CONCEPT            = 'designConcept';
+    const KEY_ATTACHMENTS               = 'attachments';
+    const KEY_FUNDING                   = 'funding';
 
     const SEARCH_MEMO_ACTION            = 'memoAction';
     const SEARCH_MEMO_DESCRIPTION       = 'memoDescription';

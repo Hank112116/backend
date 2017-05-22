@@ -15,4 +15,5 @@ class ProjectApiEnum extends HWTrekApiEnum
     const STAFF_RECOMMEND_EXPERTS = self::PROJECT  . '/staff-recommend-experts';
     const ASSIGN_PMS              = self::PROJECT  . '/assign-pms';
     const MEMO                    = self::PROJECT  . '/memo';
+    const MODE                    = self::PROJECT  . '/mode';
 }

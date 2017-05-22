@@ -26,6 +26,29 @@ class ProjectApi extends BasicApi implements ProjectApiInterface
     /**
      * {@inheritDoc}
      */
+    public function loadProject(Project $project)
+    {
+        $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::PROJECT);
+
+        $url = $this->hwtrek_url . $uri;
+
+        return $this->get($url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteProject(Project $project)
+    {
+        $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::PROJECT);
+        $url = $this->hwtrek_url . $uri;
+
+        return $this->delete($url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function releaseSchedule(Project $project)
     {
         $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::RELEASE);
@@ -106,5 +129,22 @@ class ProjectApi extends BasicApi implements ProjectApiInterface
         $url = $this->hwtrek_url . $uri;
 
         return $this->patch($url, $data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function changeStatus(Project $project, string $status)
+    {
+        $data = [
+            'json' => [
+                'mode' => $status
+            ]
+        ];
+
+        $uri = str_replace('(:any)', $project->uuid, ProjectApiEnum::MODE);
+        $url = $this->hwtrek_url . $uri;
+
+        return $this->put($url, $data);
     }
 }

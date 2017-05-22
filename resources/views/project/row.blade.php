@@ -34,7 +34,7 @@
         <br/><i class="fa fa-trash" title="deleted"></i>
         <span class="table--text-light">
             @if($project->getDeletedReason())
-                by {{ $project->getDeletedReason() }}
+                {{ $project->getDeletedReason() }}
             @endif
             {{$project->getTextDeletedAt()}}
         </span>

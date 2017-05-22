@@ -2,7 +2,7 @@
 namespace Backend\Assistant\ApiResponse\ProjectApi;
 
 use Backend\Assistant\ApiResponse\BaseResponseAssistant;
-use Backend\Model\Project\Entity\BasicProject;
+use Backend\Model\Project\Entity\DetailProject;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProjectResponseAssistant extends BaseResponseAssistant
@@ -18,9 +18,9 @@ class ProjectResponseAssistant extends BaseResponseAssistant
     }
 
     /**
-     * @return BasicProject|null
+     * @return DetailProject|null
      */
-    public function getBasicProject()
+    public function getDetailProject()
     {
         if (!$this->response->isOk()) {
             return null;
@@ -28,6 +28,6 @@ class ProjectResponseAssistant extends BaseResponseAssistant
 
         $response = $this->decode();
 
-        return BasicProject::denormalize($response);
+        return DetailProject::denormalize($response);
     }
 }

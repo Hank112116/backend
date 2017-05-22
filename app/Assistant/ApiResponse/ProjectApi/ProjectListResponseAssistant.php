@@ -3,9 +3,7 @@ namespace Backend\Assistant\ApiResponse\ProjectApi;
 
 use Backend\Assistant\ApiResponse\BaseResponseAssistant;
 use Backend\Enums\API\Response\Key\ProjectKey;
-use Backend\Enums\API\Response\Key\SolutionKey;
 use Backend\Model\Project\Entity\BasicProject;
-use Backend\Model\Solution\Entity\BasicSolution;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;

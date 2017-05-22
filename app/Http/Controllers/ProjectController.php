@@ -131,19 +131,28 @@ class ProjectController extends BaseController
 
     public function updateStatus($status, $project_id)
     {
+        $project = $this->project_repo->find($project_id);
+
+        $response = null;
         switch ($status) {
             case 'draft':
-                $this->project_repo->toDraft($project_id);
+                $response = $this->project_api->changeStatus($project, 'draft');
                 break;
 
             case 'private':
-                $this->project_repo->toSubmittedPrivate($project_id);
+                $response = $this->project_api->changeStatus($project, 'private');
                 break;
 
             case 'public':
-                $this->project_repo->toSubmittedPublic($project_id);
+                $response = $this->project_api->changeStatus($project, 'expert-only');
                 break;
         }
+
+        if (!$response->isOk() or is_null($response)) {
+            Noty::warnLang('Change project status fail.');
+            return redirect()->action('ProjectController@showDetail', $project_id);
+        }
+
 
         $log_action = 'Update status';
         $log_data   = [
@@ -176,7 +185,13 @@ class ProjectController extends BaseController
     public function delete($project_id)
     {
         $project = $this->project_repo->find($project_id);
-        $this->project_repo->delete($project);
+
+        $response = $this->project_api->deleteProject($project);
+
+        if (!$response->isEmpty()) {
+            Noty::warn("Delete Project #{$project_id} fail");
+            return redirect()->action('ProjectController@showList');
+        }
 
         Noty::success("Delete Project #{$project_id} successful");
 

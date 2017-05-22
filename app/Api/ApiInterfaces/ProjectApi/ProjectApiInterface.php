@@ -8,12 +8,28 @@ interface ProjectApiInterface
 {
     /**
      * @param array|null $query
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listProjects($query = null);
 
     /**
      * @param Project $project
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function loadProject(Project $project);
+
+    /**
+     * @param Project $project
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteProject(Project $project);
+
+    /**
+     * @param Project $project
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function releaseSchedule(Project $project);
@@ -22,6 +38,7 @@ interface ProjectApiInterface
      * @param Project $project
      * @param array   $experts
      * @param int     $admin_id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function staffRecommendExperts(Project $project, array $experts, int $admin_id);
@@ -29,6 +46,7 @@ interface ProjectApiInterface
     /**
      * @param Project $project
      * @param array   $pms
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function assignPM(Project $project, array $pms);
@@ -36,7 +54,16 @@ interface ProjectApiInterface
     /**
      * @param Project $project
      * @param array   $data
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function updateMemo(Project $project, array $data);
+
+    /**
+     * @param Project $project
+     * @param string  $status
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function changeStatus(Project $project, string $status);
 }
